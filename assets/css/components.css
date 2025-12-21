@@ -25,8 +25,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing-sm) var(--spacing-lg);
-  font-size: var(--font-size-base);
+  padding: var(--spacing-xs) var(--spacing-md);
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   border-radius: var(--border-radius-lg);
   transition: all var(--transition-base);
@@ -35,6 +35,13 @@
   cursor: pointer;
   position: relative;
   overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .btn {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: var(--font-size-base);
+  }
 }
 
 .btn::before {
@@ -156,7 +163,13 @@
 
 /* Section */
 .section {
-  padding: var(--spacing-3xl) 0;
+  padding: var(--spacing-2xl) 0;
+}
+
+@media (min-width: 640px) {
+  .section {
+    padding: var(--spacing-3xl) 0;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -167,7 +180,7 @@
 
 .section-title {
   text-align: center;
-  margin-bottom: var(--spacing-2xl);
+  margin-bottom: var(--spacing-xl);
   background: linear-gradient(
     135deg,
     var(--color-gradient-start),
@@ -177,9 +190,16 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   font-weight: var(--font-weight-bold);
-  font-size: var(--font-size-3xl);
+  font-size: var(--font-size-2xl);
   position: relative;
   padding-bottom: var(--spacing-md);
+}
+
+@media (min-width: 640px) {
+  .section-title {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--spacing-2xl);
+  }
 }
 
 .section-title::after {
@@ -201,17 +221,30 @@
 .section-intro {
   text-align: center;
   max-width: var(--max-width-md);
-  margin: 0 auto var(--spacing-2xl);
-  font-size: var(--font-size-lg);
+  margin: 0 auto var(--spacing-lg);
+  font-size: var(--font-size-base);
   color: var(--color-text-secondary);
+}
+
+@media (min-width: 640px) {
+  .section-intro {
+    font-size: var(--font-size-lg);
+    margin: 0 auto var(--spacing-2xl);
+  }
 }
 
 /* Page Header */
 .page-header {
-  padding: var(--spacing-4xl) 0 var(--spacing-2xl);
+  padding: var(--spacing-3xl) 0 var(--spacing-xl);
   text-align: center;
   background-color: var(--color-surface);
   border-bottom: 1px solid var(--color-border);
+}
+
+@media (min-width: 640px) {
+  .page-header {
+    padding: var(--spacing-4xl) 0 var(--spacing-2xl);
+  }
 }
 
 .page-header h1 {

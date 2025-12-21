@@ -116,25 +116,17 @@
   });
 
   // Add fade-in animation CSS dynamically
-  const style = document.createElement("style");
-  style.textContent = `
-        .project-card, .skill-category, .tech-detail, .learning-list li {
-            opacity: 0;
-            transform:  translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        
-        .fade-in {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
-        }
-    `;
-  document.head.appendChild(style);
+  if (!document.getElementById("dynamic-animations")) {
+    const style = document.createElement("style");
+    style.id = "dynamic-animations";
+    style.textContent = `.project-card, .skill-category, .tech-detail, .learning-list li { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; } .fade-in { opacity: 1 !important; transform: translateY(0) !important; }`;
+    document.head.appendChild(style);
+  }
 
   // ==================== Active Navigation Link ====================
   function setActiveNavLink() {
     const sections = document.querySelectorAll("section[id]");
-    const navLinks = document.querySelectorAll('. nav-links a[href^="#"]');
+    const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
 
     let current = "";
 
@@ -157,24 +149,12 @@
   window.addEventListener("scroll", setActiveNavLink, { passive: true });
 
   // Add active link styling
-  const navStyle = document.createElement("style");
-  navStyle.textContent = `
-        .nav-links a. active {
-            color: var(--color-primary) !important;
-            position: relative;
-        }
-        
-        .nav-links a. active:: after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            right: 0;
-            height:  2px;
-            background-color:  var(--color-primary);
-        }
-    `;
-  document.head.appendChild(navStyle);
+  if (!document.getElementById("nav-active-styles")) {
+    const navStyle = document.createElement("style");
+    navStyle.id = "nav-active-styles";
+    navStyle.textContent = `.nav-links a.active { color: var(--color-primary) !important; position: relative; } .nav-links a.active::after { content: ''; position: absolute; bottom: -4px; left: 0; right: 0; height: 2px; background-color: var(--color-primary); }`;
+    document.head.appendChild(navStyle);
+  }
 
   // ==================== Performance:  Debounce Function ====================
   function debounce(func, wait = 20, immediate = true) {
