@@ -24,12 +24,9 @@
     />
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="assets/css/variables.css" />
     <link rel="stylesheet" href="assets/css/reset.css" />
     <link rel="stylesheet" href="assets/css/typography.css" />
-    <link rel="stylesheet" href="assets/css/components.css" />
     <link rel="stylesheet" href="assets/css/style.css" />
-    <link rel="stylesheet" href="assets/css/modern-layout.css" />
 
     <!-- Favicon -->
     <link
@@ -40,37 +37,40 @@
   </head>
   <body>
     <!-- Navigation -->
-    <nav class="navbar" id="navbar">
-      <div class="container nav-container">
-        <a href="#hero" class="logo">RY</a>
-
-        <button
-          class="mobile-toggle"
-          id="mobile-toggle"
-          aria-label="Toggle menu"
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="#hero" class="logo">
+          <span class="logo-text">Ryan Yoon</span>
+          <span class="logo-subtitle">Portfolio</span>
+        </a>
 
         <ul class="nav-links" id="nav-links">
-          <li><a href="#about">About</a></li>
-          <li><a href="#skills">Skills</a></li>
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#learning">Learning</a></li>
-          <li><a href="#contact">Contact</a></li>
-          <li>
-            <button
-              class="theme-toggle"
-              id="theme-toggle"
-              aria-label="Toggle dark mode"
-            >
-              <span class="sun-icon">☀️</span>
-              <span class="moon-icon">🌙</span>
-            </button>
-          </li>
+          <li><a href="#about" class="nav-link">About</a></li>
+          <li><a href="#skills" class="nav-link">Skills</a></li>
+          <li><a href="#projects" class="nav-link">Projects</a></li>
+          <li><a href="#learning" class="nav-link">Learning</a></li>
+          <li><a href="#contact" class="nav-link">Contact</a></li>
         </ul>
+
+        <div class="nav-actions">
+          <button
+            class="theme-toggle"
+            id="theme-toggle"
+            aria-label="Toggle theme"
+          >
+            <span class="sun-icon">☀️</span>
+            <span class="moon-icon">🌙</span>
+          </button>
+          <button
+            class="mobile-toggle"
+            id="mobile-toggle"
+            aria-label="Toggle menu"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
       </div>
     </nav>
 
@@ -102,14 +102,6 @@
             </div>
           </div>
         </div>
-        
-        <!-- Scroll Indicator -->
-        <a href="#about" class="scroll-indicator" aria-label="Scroll to content">
-          <div class="scroll-indicator-box">
-            <div class="scroll-indicator-wheel"></div>
-          </div>
-          <span class="scroll-indicator-text">Scroll to explore</span>
-        </a>
       </div>
     </header>
 

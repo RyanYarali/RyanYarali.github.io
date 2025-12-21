@@ -6,24 +6,6 @@
 (function () {
   "use strict";
 
-  // ==================== Navigation Scroll Effect ====================
-  const navbar = document.getElementById("navbar");
-  let lastScrollTop = 0;
-
-  function handleNavbarScroll() {
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-    if (scrollTop > 50) {
-      navbar.classList.add("scrolled");
-    } else {
-      navbar.classList.remove("scrolled");
-    }
-
-    lastScrollTop = scrollTop;
-  }
-
-  window.addEventListener("scroll", handleNavbarScroll, { passive: true });
-
   // ==================== Mobile Menu Toggle ====================
   const mobileToggle = document.getElementById("mobile-toggle");
   const navLinks = document.getElementById("nav-links");
@@ -51,46 +33,6 @@
       }
     });
   }
-
-  // ==================== Smooth Scrolling ====================
-  function smoothScroll(target, duration = 1000) {
-    const targetElement = document.querySelector(target);
-    if (!targetElement) return;
-
-    const targetPosition =
-      targetElement.getBoundingClientRect().top + window.pageYOffset;
-    const startPosition = window.pageYOffset;
-    const distance = targetPosition - startPosition - 64; // Offset for fixed navbar
-    let startTime = null;
-
-    function animation(currentTime) {
-      if (startTime === null) startTime = currentTime;
-      const timeElapsed = currentTime - startTime;
-      const run = ease(timeElapsed, startPosition, distance, duration);
-      window.scrollTo(0, run);
-      if (timeElapsed < duration) requestAnimationFrame(animation);
-    }
-
-    function ease(t, b, c, d) {
-      t /= d / 2;
-      if (t < 1) return (c / 2) * t * t + b;
-      t--;
-      return (-c / 2) * (t * (t - 2) - 1) + b;
-    }
-
-    requestAnimationFrame(animation);
-  }
-
-  // Apply smooth scrolling to all anchor links
-  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-    anchor.addEventListener("click", function (e) {
-      const href = this.getAttribute("href");
-      if (href !== "#" && href.length > 1) {
-        e.preventDefault();
-        smoothScroll(href);
-      }
-    });
-  });
 
   // ==================== Intersection Observer for Animations ====================
   const observerOptions = {
@@ -148,13 +90,7 @@
 
   window.addEventListener("scroll", setActiveNavLink, { passive: true });
 
-  // Add active link styling
-  if (!document.getElementById("nav-active-styles")) {
-    const navStyle = document.createElement("style");
-    navStyle.id = "nav-active-styles";
-    navStyle.textContent = `.nav-links a.active { color: var(--color-primary) !important; position: relative; } .nav-links a.active::after { content: ''; position: absolute; bottom: -4px; left: 0; right: 0; height: 2px; background-color: var(--color-primary); }`;
-    document.head.appendChild(navStyle);
-  }
+  // Active link styling is handled in CSS
 
   // ==================== Performance:  Debounce Function ====================
   function debounce(func, wait = 20, immediate = true) {
@@ -174,10 +110,8 @@
   }
 
   // Apply debounce to scroll events
-  const debouncedScroll = debounce(handleNavbarScroll);
   const debouncedActiveLink = debounce(setActiveNavLink);
 
-  window.addEventListener("scroll", debouncedScroll, { passive: true });
   window.addEventListener("scroll", debouncedActiveLink, { passive: true });
 
   console.log("✅ Portfolio loaded successfully");
