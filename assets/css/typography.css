@@ -1,38 +1,58 @@
 /* Typography System */
 
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: -0.02em;
+}
+
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-snug);
+}
+
 h1 {
-  font-size: var(--font-size-4xl);
+  font-size: var(--font-size-5xl);
   margin-bottom: var(--spacing-lg);
+  font-weight: var(--font-weight-extrabold);
 }
 
 h2 {
-  font-size: var(--font-size-3xl);
+  font-size: var(--font-size-4xl);
   margin-bottom: var(--spacing-md);
 }
 
 h3 {
-  font-size: var(--font-size-2xl);
+  font-size: var(--font-size-3xl);
   margin-bottom: var(--spacing-md);
 }
 
 h4 {
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-2xl);
   margin-bottom: var(--spacing-sm);
 }
 
 h5 {
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-xl);
   margin-bottom: var(--spacing-sm);
 }
 
 h6 {
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-lg);
   margin-bottom: var(--spacing-sm);
 }
 
 p {
   margin-bottom: var(--spacing-md);
   color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+  font-size: var(--font-size-base);
 }
 
 p:last-child {
