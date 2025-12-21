@@ -1,228 +1,364 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="View all projects by Ryan Yarali - Computer Science Student and Software Developer">
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="View all projects by Ryan Yarali - Computer Science Student and Software Developer"
+    />
     <title>All Projects | Ryan Yarali</title>
-    
-    <link rel="stylesheet" href="assets/css/variables.css">
-    <link rel="stylesheet" href="assets/css/reset.css">
-    <link rel="stylesheet" href="assets/css/typography.css">
-    <link rel="stylesheet" href="assets/css/components.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-    
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
-</head>
-<body>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="assets/css/variables.css" />
+    <link rel="stylesheet" href="assets/css/reset.css" />
+    <link rel="stylesheet" href="assets/css/typography.css" />
+    <link rel="stylesheet" href="assets/css/components.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/modern-layout.css" />
+
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>"
+    />
+  </head>
+  <body>
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
-        <div class="container nav-container">
-            <a href="index.html" class="logo">RY</a>
-            
-            <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
+      <div class="container nav-container">
+        <a href="index.html" class="logo">RY</a>
+
+        <button
+          class="mobile-toggle"
+          id="mobile-toggle"
+          aria-label="Toggle menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <ul class="nav-links" id="nav-links">
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="index.html#skills">Skills</a></li>
+          <li><a href="index.html#projects">Projects</a></li>
+          <li><a href="index.html#learning">Learning</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+          <li>
+            <button
+              class="theme-toggle"
+              id="theme-toggle"
+              aria-label="Toggle dark mode"
+            >
+              <span class="sun-icon">☀️</span>
+              <span class="moon-icon">🌙</span>
             </button>
-            
-            <ul class="nav-links" id="nav-links">
-                <li><a href="index.html#about">About</a></li>
-                <li><a href="index.html#skills">Skills</a></li>
-                <li><a href="index.html#projects">Projects</a></li>
-                <li><a href="index.html#learning">Learning</a></li>
-                <li><a href="index.html#contact">Contact</a></li>
-                <li>
-                    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
-                        <span class="sun-icon">☀️</span>
-                        <span class="moon-icon">🌙</span>
-                    </button>
-                </li>
-            </ul>
-        </div>
+          </li>
+        </ul>
+      </div>
     </nav>
 
     <!-- Page Header -->
     <section class="page-header">
-        <div class="container">
-            <h1>All Projects</h1>
-            <p>A collection of my work showcasing various skills and technologies</p>
-        </div>
+      <div class="container">
+        <h1>All Projects</h1>
+        <p>
+          A collection of my work showcasing various skills and technologies
+        </p>
+      </div>
     </section>
 
     <!-- Projects Grid -->
     <section class="section">
-        <div class="container">
-            <div class="projects-grid">
-                <!-- Portfolio Website -->
-                <article class="project-card">
-                    <div class="project-image">
-                        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="400" height="300" fill="var(--color-surface)"/>
-                            <text x="50%" y="50%" text-anchor="middle" fill="var(--color-text-muted)" font-size="48">🌐</text>
-                        </svg>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Personal Portfolio Website</h3>
-                        <p class="project-description">
-                            A fully responsive portfolio built from scratch using vanilla JavaScript, showcasing clean architecture and modern web development practices.
-                        </p>
-                        <div class="project-tech">
-                            <span class="tag-sm">HTML5</span>
-                            <span class="tag-sm">CSS3</span>
-                            <span class="tag-sm">JavaScript</span>
-                            <span class="tag-sm">Responsive</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="project-detail.html?project=portfolio" class="btn btn-sm btn-primary">View Details</a>
-                            <a href="https://github.com/RyanYarali/portfolio" class="btn btn-sm btn-secondary" target="_blank">GitHub</a>
-                            <a href="/" class="btn btn-sm btn-secondary">Live Demo</a>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Task Manager -->
-                <article class="project-card">
-                    <div class="project-image">
-                        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="400" height="300" fill="var(--color-surface)"/>
-                            <text x="50%" y="50%" text-anchor="middle" fill="var(--color-text-muted)" font-size="48">✅</text>
-                        </svg>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Task Management App</h3>
-                        <p class="project-description">
-                            A dynamic task manager with local storage persistence, featuring CRUD operations, filtering, and a clean user interface. 
-                        </p>
-                        <div class="project-tech">
-                            <span class="tag-sm">JavaScript</span>
-                            <span class="tag-sm">LocalStorage</span>
-                            <span class="tag-sm">CSS Grid</span>
-                            <span class="tag-sm">ES6+</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="project-detail.html?project=task-manager" class="btn btn-sm btn-primary">View Details</a>
-                            <a href="https://github.com/RyanYarali/task-manager" class="btn btn-sm btn-secondary" target="_blank">GitHub</a>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Weather App -->
-                <article class="project-card">
-                    <div class="project-image">
-                        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="400" height="300" fill="var(--color-surface)"/>
-                            <text x="50%" y="50%" text-anchor="middle" fill="var(--color-text-muted)" font-size="48">🌤️</text>
-                        </svg>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Weather Dashboard</h3>
-                        <p class="project-description">
-                            Real-time weather application using API integration, asynchronous JavaScript, and responsive design principles.
-                        </p>
-                        <div class="project-tech">
-                            <span class="tag-sm">JavaScript</span>
-                            <span class="tag-sm">REST API</span>
-                            <span class="tag-sm">Async/Await</span>
-                            <span class="tag-sm">Flexbox</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="project-detail.html?project=weather-app" class="btn btn-sm btn-primary">View Details</a>
-                            <a href="https://github.com/RyanYarali/weather-dashboard" class="btn btn-sm btn-secondary" target="_blank">GitHub</a>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Algorithm Visualizer -->
-                <article class="project-card">
-                    <div class="project-image">
-                        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="400" height="300" fill="var(--color-surface)"/>
-                            <text x="50%" y="50%" text-anchor="middle" fill="var(--color-text-muted)" font-size="48">📊</text>
-                        </svg>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Sorting Algorithm Visualizer</h3>
-                        <p class="project-description">
-                            Interactive visualization tool for common sorting algorithms like bubble sort, merge sort, and quick sort with step-by-step animation.
-                        </p>
-                        <div class="project-tech">
-                            <span class="tag-sm">JavaScript</span>
-                            <span class="tag-sm">Canvas API</span>
-                            <span class="tag-sm">Algorithms</span>
-                            <span class="tag-sm">Animation</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="project-detail.html?project=algorithm-visualizer" class="btn btn-sm btn-primary">View Details</a>
-                            <a href="https://github.com/RyanYarali/algo-visualizer" class="btn btn-sm btn-secondary" target="_blank">GitHub</a>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Expense Tracker -->
-                <article class="project-card">
-                    <div class="project-image">
-                        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="400" height="300" fill="var(--color-surface)"/>
-                            <text x="50%" y="50%" text-anchor="middle" fill="var(--color-text-muted)" font-size="48">💰</text>
-                        </svg>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Personal Expense Tracker</h3>
-                        <p class="project-description">
-                            Budget management application with data visualization, category tracking, and export functionality using localStorage.
-                        </p>
-                        <div class="project-tech">
-                            <span class="tag-sm">JavaScript</span>
-                            <span class="tag-sm">Chart.js</span>
-                            <span class="tag-sm">LocalStorage</span>
-                            <span class="tag-sm">CSV Export</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="project-detail. html?project=expense-tracker" class="btn btn-sm btn-primary">View Details</a>
-                            <a href="https://github.com/RyanYarali/expense-tracker" class="btn btn-sm btn-secondary" target="_blank">GitHub</a>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Quiz App -->
-                <article class="project-card">
-                    <div class="project-image">
-                        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="400" height="300" fill="var(--color-surface)"/>
-                            <text x="50%" y="50%" text-anchor="middle" fill="var(--color-text-muted)" font-size="48">🎯</text>
-                        </svg>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Interactive Quiz Application</h3>
-                        <p class="project-description">
-                            Dynamic quiz app with multiple categories, timed questions, score tracking, and result analytics using vanilla JavaScript.
-                        </p>
-                        <div class="project-tech">
-                            <span class="tag-sm">JavaScript</span>
-                            <span class="tag-sm">JSON</span>
-                            <span class="tag-sm">State Management</span>
-                            <span class="tag-sm">Timers</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="project-detail. html?project=quiz-app" class="btn btn-sm btn-primary">View Details</a>
-                            <a href="https://github.com/RyanYarali/quiz-app" class="btn btn-sm btn-secondary" target="_blank">GitHub</a>
-                        </div>
-                    </div>
-                </article>
+      <div class="container">
+        <div class="projects-grid">
+          <!-- Portfolio Website -->
+          <article class="project-card">
+            <div class="project-image">
+              <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                <rect width="400" height="300" fill="var(--color-surface)" />
+                <text
+                  x="50%"
+                  y="50%"
+                  text-anchor="middle"
+                  fill="var(--color-text-muted)"
+                  font-size="48"
+                >
+                  🌐
+                </text>
+              </svg>
             </div>
+            <div class="project-content">
+              <h3 class="project-title">Personal Portfolio Website</h3>
+              <p class="project-description">
+                A fully responsive portfolio built from scratch using vanilla
+                JavaScript, showcasing clean architecture and modern web
+                development practices.
+              </p>
+              <div class="project-tech">
+                <span class="tag-sm">HTML5</span>
+                <span class="tag-sm">CSS3</span>
+                <span class="tag-sm">JavaScript</span>
+                <span class="tag-sm">Responsive</span>
+              </div>
+              <div class="project-links">
+                <a
+                  href="project-detail.html?project=portfolio"
+                  class="btn btn-sm btn-primary"
+                  >View Details</a
+                >
+                <a
+                  href="https://github.com/RyanYarali/portfolio"
+                  class="btn btn-sm btn-secondary"
+                  target="_blank"
+                  >GitHub</a
+                >
+                <a href="/" class="btn btn-sm btn-secondary">Live Demo</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Task Manager -->
+          <article class="project-card">
+            <div class="project-image">
+              <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                <rect width="400" height="300" fill="var(--color-surface)" />
+                <text
+                  x="50%"
+                  y="50%"
+                  text-anchor="middle"
+                  fill="var(--color-text-muted)"
+                  font-size="48"
+                >
+                  ✅
+                </text>
+              </svg>
+            </div>
+            <div class="project-content">
+              <h3 class="project-title">Task Management App</h3>
+              <p class="project-description">
+                A dynamic task manager with local storage persistence, featuring
+                CRUD operations, filtering, and a clean user interface.
+              </p>
+              <div class="project-tech">
+                <span class="tag-sm">JavaScript</span>
+                <span class="tag-sm">LocalStorage</span>
+                <span class="tag-sm">CSS Grid</span>
+                <span class="tag-sm">ES6+</span>
+              </div>
+              <div class="project-links">
+                <a
+                  href="project-detail.html?project=task-manager"
+                  class="btn btn-sm btn-primary"
+                  >View Details</a
+                >
+                <a
+                  href="https://github.com/RyanYarali/task-manager"
+                  class="btn btn-sm btn-secondary"
+                  target="_blank"
+                  >GitHub</a
+                >
+              </div>
+            </div>
+          </article>
+
+          <!-- Weather App -->
+          <article class="project-card">
+            <div class="project-image">
+              <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                <rect width="400" height="300" fill="var(--color-surface)" />
+                <text
+                  x="50%"
+                  y="50%"
+                  text-anchor="middle"
+                  fill="var(--color-text-muted)"
+                  font-size="48"
+                >
+                  🌤️
+                </text>
+              </svg>
+            </div>
+            <div class="project-content">
+              <h3 class="project-title">Weather Dashboard</h3>
+              <p class="project-description">
+                Real-time weather application using API integration,
+                asynchronous JavaScript, and responsive design principles.
+              </p>
+              <div class="project-tech">
+                <span class="tag-sm">JavaScript</span>
+                <span class="tag-sm">REST API</span>
+                <span class="tag-sm">Async/Await</span>
+                <span class="tag-sm">Flexbox</span>
+              </div>
+              <div class="project-links">
+                <a
+                  href="project-detail.html?project=weather-app"
+                  class="btn btn-sm btn-primary"
+                  >View Details</a
+                >
+                <a
+                  href="https://github.com/RyanYarali/weather-dashboard"
+                  class="btn btn-sm btn-secondary"
+                  target="_blank"
+                  >GitHub</a
+                >
+              </div>
+            </div>
+          </article>
+
+          <!-- Algorithm Visualizer -->
+          <article class="project-card">
+            <div class="project-image">
+              <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                <rect width="400" height="300" fill="var(--color-surface)" />
+                <text
+                  x="50%"
+                  y="50%"
+                  text-anchor="middle"
+                  fill="var(--color-text-muted)"
+                  font-size="48"
+                >
+                  📊
+                </text>
+              </svg>
+            </div>
+            <div class="project-content">
+              <h3 class="project-title">Sorting Algorithm Visualizer</h3>
+              <p class="project-description">
+                Interactive visualization tool for common sorting algorithms
+                like bubble sort, merge sort, and quick sort with step-by-step
+                animation.
+              </p>
+              <div class="project-tech">
+                <span class="tag-sm">JavaScript</span>
+                <span class="tag-sm">Canvas API</span>
+                <span class="tag-sm">Algorithms</span>
+                <span class="tag-sm">Animation</span>
+              </div>
+              <div class="project-links">
+                <a
+                  href="project-detail.html?project=algorithm-visualizer"
+                  class="btn btn-sm btn-primary"
+                  >View Details</a
+                >
+                <a
+                  href="https://github.com/RyanYarali/algo-visualizer"
+                  class="btn btn-sm btn-secondary"
+                  target="_blank"
+                  >GitHub</a
+                >
+              </div>
+            </div>
+          </article>
+
+          <!-- Expense Tracker -->
+          <article class="project-card">
+            <div class="project-image">
+              <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                <rect width="400" height="300" fill="var(--color-surface)" />
+                <text
+                  x="50%"
+                  y="50%"
+                  text-anchor="middle"
+                  fill="var(--color-text-muted)"
+                  font-size="48"
+                >
+                  💰
+                </text>
+              </svg>
+            </div>
+            <div class="project-content">
+              <h3 class="project-title">Personal Expense Tracker</h3>
+              <p class="project-description">
+                Budget management application with data visualization, category
+                tracking, and export functionality using localStorage.
+              </p>
+              <div class="project-tech">
+                <span class="tag-sm">JavaScript</span>
+                <span class="tag-sm">Chart.js</span>
+                <span class="tag-sm">LocalStorage</span>
+                <span class="tag-sm">CSV Export</span>
+              </div>
+              <div class="project-links">
+                <a
+                  href="project-detail. html?project=expense-tracker"
+                  class="btn btn-sm btn-primary"
+                  >View Details</a
+                >
+                <a
+                  href="https://github.com/RyanYarali/expense-tracker"
+                  class="btn btn-sm btn-secondary"
+                  target="_blank"
+                  >GitHub</a
+                >
+              </div>
+            </div>
+          </article>
+
+          <!-- Quiz App -->
+          <article class="project-card">
+            <div class="project-image">
+              <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                <rect width="400" height="300" fill="var(--color-surface)" />
+                <text
+                  x="50%"
+                  y="50%"
+                  text-anchor="middle"
+                  fill="var(--color-text-muted)"
+                  font-size="48"
+                >
+                  🎯
+                </text>
+              </svg>
+            </div>
+            <div class="project-content">
+              <h3 class="project-title">Interactive Quiz Application</h3>
+              <p class="project-description">
+                Dynamic quiz app with multiple categories, timed questions,
+                score tracking, and result analytics using vanilla JavaScript.
+              </p>
+              <div class="project-tech">
+                <span class="tag-sm">JavaScript</span>
+                <span class="tag-sm">JSON</span>
+                <span class="tag-sm">State Management</span>
+                <span class="tag-sm">Timers</span>
+              </div>
+              <div class="project-links">
+                <a
+                  href="project-detail. html?project=quiz-app"
+                  class="btn btn-sm btn-primary"
+                  >View Details</a
+                >
+                <a
+                  href="https://github.com/RyanYarali/quiz-app"
+                  class="btn btn-sm btn-secondary"
+                  target="_blank"
+                  >GitHub</a
+                >
+              </div>
+            </div>
+          </article>
         </div>
+      </div>
     </section>
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 Ryan Yarali. All rights reserved.</p>
-            <p class="footer-tech">Built with HTML, CSS, and JavaScript</p>
-        </div>
+      <div class="container">
+        <p>&copy; 2025 Ryan Yarali. All rights reserved.</p>
+        <p class="footer-tech">Built with HTML, CSS, and JavaScript</p>
+      </div>
     </footer>
 
     <script src="assets/js/theme.js"></script>
     <script src="assets/js/main.js"></script>
-</body>
+  </body>
 </html>
