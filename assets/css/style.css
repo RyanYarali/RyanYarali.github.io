@@ -159,6 +159,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  padding-top: 1%;
   gap: 0.25rem;
   align-items: center;
 }
@@ -1120,6 +1121,50 @@
   min-height: 150px;
 }
 
+/* Error Messages */
+.error-message {
+  display: block;
+  font-size: 0.875rem;
+  color: #f87171;
+  margin-top: 0.375rem;
+  min-height: 1.25rem;
+}
+
+.form-group input[aria-invalid="true"],
+.form-group select[aria-invalid="true"],
+.form-group textarea[aria-invalid="true"] {
+  border-color: #f87171;
+}
+
+/* Form Status */
+.form-status {
+  margin-top: 1rem;
+  padding: 0;
+  border-radius: 0.5rem;
+  font-size: 0.9375rem;
+  text-align: center;
+  transition: all 200ms ease;
+}
+
+.form-status.success {
+  padding: 1rem;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #4ade80;
+}
+
+.form-status.error {
+  padding: 1rem;
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  color: #f87171;
+}
+
+/* Full Width Button */
+.btn-full {
+  width: 100%;
+}
+
 .social-links {
   display: flex;
   justify-content: center;
@@ -1251,6 +1296,143 @@
   color: #a5b4fc;
 }
 
+/* ==================== Project Header ==================== */
+.project-header {
+  padding: 8rem 0 3rem;
+  background: radial-gradient(
+      circle at 20% 50%,
+      rgba(129, 140, 248, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(244, 114, 182, 0.1) 0%,
+      transparent 50%
+    ),
+    #0a0a0a;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .project-header {
+    padding: 10rem 0 4rem;
+  }
+}
+
+.project-header h1 {
+  font-size: 2rem;
+  margin: 1rem 0 0.75rem;
+  background: linear-gradient(135deg, #818cf8 0%, #f472b6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+  line-height: 1.1;
+  font-family: "Space Grotesk", sans-serif;
+}
+
+@media (min-width: 768px) {
+  .project-header h1 {
+    font-size: 3rem;
+    margin: 1.5rem 0 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .project-header h1 {
+    font-size: 3.5rem;
+  }
+}
+
+.project-header > .container > p {
+  font-size: 1.125rem;
+  color: #d4d4d4;
+  margin-bottom: 1.5rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 768px) {
+  .project-header > .container > p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+  }
+}
+
+.project-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .project-meta {
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+}
+
+/* ==================== Case Study ==================== */
+.case-study {
+  max-width: 900px;
+}
+
+.case-study-section {
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .case-study-section {
+    margin-bottom: 4rem;
+  }
+}
+
+.case-study-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.25rem;
+  color: #fafafa;
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+}
+
+@media (min-width: 768px) {
+  .case-study-section h2 {
+    font-size: 1.875rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.case-study-section p {
+  color: #d4d4d4;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.case-study-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.case-study-section li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: #d4d4d4;
+  line-height: 1.7;
+}
+
+.case-study-section li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: #818cf8;
+  font-weight: bold;
+}
+
 /* ==================== Tech Details ==================== */
 .tech-details {
   display: grid;
@@ -1377,8 +1559,7 @@ html[data-theme="light"] .mobile-toggle:hover {
 
 html[data-theme="light"] .nav-links {
   background: #ffffff;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  padding-top: 1%;
 }
 
 /* Hero Light */
@@ -1609,6 +1790,28 @@ html[data-theme="light"] .form-group textarea:focus {
   box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.1);
 }
 
+html[data-theme="light"] .form-group input[aria-invalid="true"],
+html[data-theme="light"] .form-group select[aria-invalid="true"],
+html[data-theme="light"] .form-group textarea[aria-invalid="true"] {
+  border-color: #ef4444;
+}
+
+html[data-theme="light"] .error-message {
+  color: #ef4444;
+}
+
+html[data-theme="light"] .form-status.success {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #16a34a;
+}
+
+html[data-theme="light"] .form-status.error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #dc2626;
+}
+
 html[data-theme="light"] .social-links a {
   background: #ffffff;
   border: 1px solid #e2e8f0;
@@ -1661,4 +1864,44 @@ html[data-theme="light"] .tech-detail h3 {
 
 html[data-theme="light"] .tech-detail p {
   color: #475569;
+}
+/* Project Header Light */
+html[data-theme="light"] .project-header {
+  background: radial-gradient(
+      circle at 20% 50%,
+      rgba(129, 140, 248, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(244, 114, 182, 0.1) 0%,
+      transparent 50%
+    ),
+    #f8fafc;
+}
+
+html[data-theme="light"] .project-header > .container > p {
+  color: #475569;
+}
+
+/* Case Study Light */
+html[data-theme="light"] .case-study-section h2 {
+  color: #0f172a;
+}
+
+html[data-theme="light"] .case-study-section p {
+  color: #475569;
+}
+
+html[data-theme="light"] .case-study-section li {
+  color: #475569;
+}
+
+/* Back Link Light */
+html[data-theme="light"] .back-link {
+  color: #6366f1;
+}
+
+html[data-theme="light"] .back-link:hover {
+  color: #4f46e5;
 }
