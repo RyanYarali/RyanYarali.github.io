@@ -114,5 +114,33 @@
 
   window.addEventListener("scroll", debouncedActiveLink, { passive: true });
 
+  // ==================== Image Fallback Handler ====================
+  const profileImage = document.querySelector(".hero-image-placeholder img");
+
+  if (profileImage) {
+    profileImage.addEventListener("error", function () {
+      // Create fallback placeholder
+      const fallback = document.createElement("div");
+      fallback.style.cssText = `
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, rgba(129, 140, 248, 0.2), rgba(244, 114, 182, 0.2));
+        border-radius: 50%;
+        font-size: 6rem;
+      `;
+      fallback.textContent = "👨‍💻";
+      fallback.setAttribute(
+        "aria-label",
+        "Ryan Yarali - Profile Photo Placeholder"
+      );
+
+      this.parentElement.replaceChild(fallback, this);
+      console.log("⚠️ Profile image failed to load, using fallback");
+    });
+  }
+
   console.log("✅ Portfolio loaded successfully");
 })();

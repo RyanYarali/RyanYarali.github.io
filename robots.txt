@@ -1,0 +1,17 @@
+# robots.txt for Ryan Yarali Portfolio
+# https://ryanyarali.com
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://ryanyarali.com/sitemap.xml
+
+# Disallow any test or theme files
+Disallow: /test-theme.html
+
+# Allow all assets
+Allow: /assets/
+
+# Crawl delay (optional, adjust as needed)
+Crawl-delay: 1
