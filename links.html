@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Bebas+Neue&display=swap"
       rel="stylesheet"
     />
 
@@ -47,7 +47,7 @@
 
       body {
         margin: 0;
-        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-family: "JetBrains Mono", monospace;
         background: #0a0a0a;
         color: #ffffff;
         min-height: 100vh;
@@ -108,12 +108,28 @@
       h1 {
         font-size: 32px;
         font-weight: 700;
-        font-family: "Space Grotesk", sans-serif;
+        font-family: "JetBrains Mono", monospace;
         margin: 0 0 8px;
         background: linear-gradient(135deg, #818cf8, #f472b6);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
+      }
+
+      .typing-cursor {
+        animation: blink 1s infinite;
+        margin-left: 2px;
+      }
+
+      @keyframes blink {
+        0%, 50% { opacity: 1; }
+        51%, 100% { opacity: 0; }
+      }
+
+      #typing-name-links {
+            font-family: "Righteous", sans-serif;
+            font-weight: 400;
+            letter-spacing: 0.02em;
       }
 
       .bio {
@@ -352,7 +368,7 @@
         <div class="profile-img">
           <img src="assets/profile-photo.jpg" alt="Ryan Yarali" />
         </div>
-        <h1>Ryan Yarali</h1>
+        <h1><span id="typing-name-links"></span><span class="typing-cursor">|</span></h1>
         <p class="bio">Computer Systems Technology @ BCIT</p>
       </div>
       <div class="socials">
@@ -403,5 +419,30 @@
     </div>
 
     <script src="assets/js/theme.js"></script>
+    <script>
+      // Typing animation
+      function typeWriter(element, text, speed = 150) {
+        let i = 0;
+        element.textContent = '';
+        
+        function type() {
+          if (i < text.length) {
+            element.textContent += text.charAt(i);
+            i++;
+            setTimeout(type, speed);
+          }
+        }
+        
+        type();
+      }
+
+      // Delay to let site load first
+      setTimeout(() => {
+        const typingNameLinks = document.getElementById('typing-name-links');
+        if (typingNameLinks) {
+          typeWriter(typingNameLinks, 'Ryan Yarali', 150);
+        }
+      }, 500);
+    </script>
   </body>
 </html>

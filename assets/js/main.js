@@ -168,5 +168,36 @@
     });
   }
 
+  // ==================== Typing Animation ====================
+  function typeWriter(element, text, speed = 100) {
+    let i = 0;
+    element.textContent = '';
+    
+    function type() {
+      if (i < text.length) {
+        element.textContent += text.charAt(i);
+        i++;
+        setTimeout(type, speed);
+      }
+    }
+    
+    type();
+  }
+
+  // Delay typing animations to let site load first
+  setTimeout(() => {
+    // Hero title typing
+    const typingName = document.getElementById('typing-name');
+    if (typingName) {
+      typeWriter(typingName, 'Ryan Yarali', 150);
+    }
+
+    // Logo typing
+    const logoTyping = document.querySelector('.logo-typing');
+    if (logoTyping) {
+      typeWriter(logoTyping, 'Ryan Yarali', 150);
+    }
+  }, 500);
+
   console.log("✅ Portfolio loaded successfully");
 })();
