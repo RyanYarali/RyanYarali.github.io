@@ -142,5 +142,31 @@
     });
   }
 
+  // ==================== Back to Top Button ====================
+  const backToTopBtn = document.getElementById("back-to-top");
+
+  if (backToTopBtn) {
+    // Show/hide button on scroll
+    function toggleBackToTop() {
+      if (window.pageYOffset > 400) {
+        backToTopBtn.classList.add("visible");
+      } else {
+        backToTopBtn.classList.remove("visible");
+      }
+    }
+
+    window.addEventListener("scroll", debounce(toggleBackToTop, 100), {
+      passive: true,
+    });
+
+    // Scroll to top when clicked
+    backToTopBtn.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    });
+  }
+
   console.log("✅ Portfolio loaded successfully");
 })();
