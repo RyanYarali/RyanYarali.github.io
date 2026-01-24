@@ -210,8 +210,6 @@ MIT License - feel free to use this as a template for your own portfolio!
 
 **Ryan Yarali**
 - GitHub: [@RyanYarali](https://github.com/RyanYarali)
-- LinkedIn: [Ryan Yarali](https://linkedin.com/in/ryanyarali)
-- Email: ryan.yarali@example.com
 
 ## 🙏 Acknowledgments
 
@@ -220,5 +218,6 @@ MIT License - feel free to use this as a template for your own portfolio!
 - System fonts for optimal loading
 
 ---
+
 
 **Built with ❤️ using HTML, CSS, and JavaScript**
