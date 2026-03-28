@@ -159,7 +159,7 @@
       if (response.ok) {
         showStatus(
           "success",
-          "Thank you!  Your message has been sent successfully.  I'll get back to you soon."
+          "Thank you! Your message has been sent successfully. I'll get back to you soon.",
         );
         form.reset();
       } else {
@@ -169,7 +169,7 @@
       console.error("Form submission error:", error);
       showStatus(
         "error",
-        "Oops! There was a problem sending your message. Please try again or email me directly."
+        "Oops! There was a problem sending your message. Please try again or email me directly.",
       );
     } finally {
       // Re-enable submit button
@@ -177,6 +177,4 @@
       submitButton.textContent = originalButtonText;
     }
   });
-
-  console.log("📧 Contact form initialized");
 })();

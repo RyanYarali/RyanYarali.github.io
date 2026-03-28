@@ -1,20 +1,12 @@
 /* ==================== Typography System ==================== */
 
-/* Base */
 body {
-  font-family: "JetBrains Mono", monospace;
   font-size: 16px;
-  line-height: 1.6;
+  line-height: var(--line-height-normal);
+  color: var(--color-text);
+  background-color: var(--color-background);
 }
 
-/* Default Dark Theme Colors */
-html[data-theme="dark"] body,
-body {
-  color: #fafafa;
-  background-color: #0a0a0a;
-}
-
-/* Headings */
 h1,
 h2,
 h3,
@@ -23,9 +15,9 @@ h5,
 h6 {
   font-family: "JetBrains Mono", monospace;
   font-weight: 700;
-  line-height: 1.2;
-  margin: 0 0 1rem 0;
-  color: #fafafa;
+  line-height: var(--line-height-tight);
+  margin: 0 0 1rem;
+  color: var(--color-text);
 }
 
 h1 {
@@ -54,7 +46,6 @@ h6 {
   font-size: 1rem;
 }
 
-/* Tablet & Desktop */
 @media (min-width: 768px) {
   h1 {
     font-size: 3rem;
@@ -83,12 +74,15 @@ h6 {
   }
 }
 
-/* Paragraphs */
 p {
-  margin: 0 0 1rem 0;
-  color: #d4d4d4;
-  line-height: 1.75;
+  margin: 0 0 1rem;
+  color: var(--color-text-muted);
+  line-height: var(--line-height-relaxed);
   font-size: 0.9375rem;
+}
+
+p:last-child {
+  margin-bottom: 0;
 }
 
 @media (min-width: 768px) {
@@ -103,15 +97,20 @@ p {
   }
 }
 
-p:last-child {
-  margin-bottom: 0;
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color 200ms ease;
 }
 
-/* Text Utilities */
+a:hover {
+  color: var(--color-primary-strong);
+}
+
 strong,
 b {
   font-weight: 600;
-  color: #fafafa;
+  color: var(--color-text);
 }
 
 em,
@@ -123,49 +122,35 @@ small {
   font-size: 0.875rem;
 }
 
-/* Code */
 code {
   font-family: "JetBrains Mono", "SF Mono", Monaco, Consolas, monospace;
   font-size: 0.875em;
   padding: 0.125rem 0.375rem;
-  background-color: #262626;
+  background-color: var(--color-surface-2);
   border-radius: 0.25rem;
-  color: #818cf8;
+  color: var(--color-primary);
 }
 
 pre {
-  background-color: #171717;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.5rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
   padding: 1rem;
   overflow-x: auto;
-  margin: 0 0 1rem 0;
+  margin: 0 0 1rem;
 }
 
 pre code {
   background: none;
   padding: 0;
   border-radius: 0;
-  font-size: 0.875rem;
 }
 
-/* Links */
-a {
-  color: #818cf8;
-  text-decoration: none;
-  transition: color 200ms ease;
-}
-
-a:hover {
-  color: #a5b4fc;
-}
-
-/* Lists */
 ul,
 ol {
-  margin: 0 0 1rem 0;
+  margin: 0 0 1rem;
   padding-left: 1.5rem;
-  color: #d4d4d4;
+  color: var(--color-text-muted);
 }
 
 li {
