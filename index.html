@@ -64,75 +64,7 @@
   </head>
   <body>
     <!-- Navigation -->
-    <nav class="navbar">
-      <div class="nav-container">
-        <a href="#hero" class="logo">
-          <span class="logo-text"><span class="logo-typing"></span></span>
-          <span class="logo-subtitle">Portfolio</span>
-        </a>
-
-        <ul class="nav-links" id="nav-links">
-          <li><a href="#about" class="nav-link">About</a></li>
-          <li><a href="#skills" class="nav-link">Skills</a></li>
-          <li><a href="#projects" class="nav-link">Projects</a></li>
-          <li><a href="#learning" class="nav-link">Learning</a></li>
-          <li><a href="#contact" class="nav-link">Contact</a></li>
-        </ul>
-
-        <div class="nav-actions">
-          <button
-            class="theme-toggle"
-            id="theme-toggle"
-            aria-label="Toggle dark and light mode"
-            title="Switch theme (follows system preference)"
-          >
-            <svg
-              class="sun-icon"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <circle cx="12" cy="12" r="5"></circle>
-              <line x1="12" y1="1" x2="12" y2="3"></line>
-              <line x1="12" y1="21" x2="12" y2="23"></line>
-              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-              <line x1="1" y1="12" x2="3" y2="12"></line>
-              <line x1="21" y1="12" x2="23" y2="12"></line>
-              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-            </svg>
-            <svg
-              class="moon-icon"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-            </svg>
-          </button>
-          <button
-            class="mobile-toggle"
-            id="mobile-toggle"
-            aria-label="Toggle menu"
-          >
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
-        </div>
-      </div>
-    </nav>
+    <div id="site-navbar" data-nav-context="home"></div>
 
     <!-- Hero Section -->
     <header class="hero" id="hero">
@@ -192,56 +124,77 @@
     <!-- Skills Section -->
     <section class="section skills" id="skills">
       <div class="container">
-        <h2 class="section-title">Skills & Technologies</h2>
+        <div class="skills-minimal">
+          <header class="skills-minimal-header">
+            <h2 class="section-title">Skills & Technologies</h2>
+          </header>
 
-        <div class="skills-grid">
-          <div class="skill-category">
-            <h3 class="skill-category-title">Programming Languages</h3>
-            <div class="skill-tags">
-              <span class="tag">JavaScript</span>
-              <span class="tag">Python</span>
-              <span class="tag">Java</span>
-              <span class="tag">HTML5</span>
-              <span class="tag">CSS3</span>
-              <span class="tag">SQL</span>
-            </div>
-          </div>
+          <div class="skills-minimal-rows" aria-label="Skills and technologies">
+            <article class="skills-minimal-row">
+              <h3 class="skills-minimal-label">Languages</h3>
+              <ul
+                class="skills-minimal-list"
+                aria-label="Programming languages"
+              >
+                <li>JavaScript</li>
+                <li>Python</li>
+                <li>Java</li>
+                <li>HTML5</li>
+                <li>CSS3</li>
+                <li>SQL</li>
+              </ul>
+            </article>
 
-          <div class="skill-category">
-            <h3 class="skill-category-title">Web Development</h3>
-            <div class="skill-tags">
-              <span class="tag">React</span>
-              <span class="tag">Node.js</span>
-              <span class="tag">Express</span>
-              <span class="tag">REST APIs</span>
-              <span class="tag">Responsive Design</span>
-              <span class="tag">Web Accessibility</span>
-            </div>
-          </div>
+            <article class="skills-minimal-row">
+              <h3 class="skills-minimal-label">Frontend</h3>
+              <ul class="skills-minimal-list" aria-label="Frontend skills">
+                <li>React</li>
+                <li>Responsive design</li>
+                <li>Accessibility fundamentals</li>
+              </ul>
+            </article>
 
-          <div class="skill-category">
-            <h3 class="skill-category-title">Databases & Systems</h3>
-            <div class="skill-tags">
-              <span class="tag">MySQL</span>
-              <span class="tag">PostgreSQL</span>
-              <span class="tag">MongoDB</span>
-              <span class="tag">Database Design</span>
-              <span class="tag">Linux/Unix</span>
-              <span class="tag">Networking</span>
-              <span class="tag">System Analysis</span>
-            </div>
-          </div>
+            <article class="skills-minimal-row">
+              <h3 class="skills-minimal-label">Backend</h3>
+              <ul class="skills-minimal-list" aria-label="Backend skills">
+                <li>Node.js</li>
+                <li>Express</li>
+                <li>REST API development</li>
+              </ul>
+            </article>
 
-          <div class="skill-category">
-            <h3 class="skill-category-title">Tools & Practices</h3>
-            <div class="skill-tags">
-              <span class="tag">Git & GitHub</span>
-              <span class="tag">VS Code</span>
-              <span class="tag">Agile/Scrum</span>
-              <span class="tag">Testing & Debugging</span>
-              <span class="tag">Data Structures</span>
-              <span class="tag">OOP</span>
-            </div>
+            <article class="skills-minimal-row">
+              <h3 class="skills-minimal-label">Databases</h3>
+              <ul
+                class="skills-minimal-list"
+                aria-label="Database technologies"
+              >
+                <li>MySQL</li>
+                <li>PostgreSQL</li>
+                <li>MongoDB</li>
+              </ul>
+            </article>
+
+            <article class="skills-minimal-row">
+              <h3 class="skills-minimal-label">Systems</h3>
+              <ul class="skills-minimal-list" aria-label="Systems skills">
+                <li>Linux/Unix</li>
+                <li>Networking fundamentals</li>
+                <li>System analysis</li>
+              </ul>
+            </article>
+
+            <article class="skills-minimal-row">
+              <h3 class="skills-minimal-label">Workflow</h3>
+              <ul class="skills-minimal-list" aria-label="Workflow and tools">
+                <li>Git/GitHub</li>
+                <li>Agile/Scrum</li>
+                <li>Testing and debugging</li>
+                <li>OOP</li>
+                <li>Data structures</li>
+                <li>VS Code</li>
+              </ul>
+            </article>
           </div>
         </div>
       </div>
@@ -276,6 +229,13 @@
               <h3>Computer Systems Technology Diploma</h3>
               <span class="education-school"
                 >British Columbia Institute of Technology (BCIT)</span
+              >
+              <a
+                class="education-program-link"
+                href="https://www.bcit.ca/programs/computer-systems-technology-diploma-full-time-5500dipma/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >View Program Details</a
               >
               <span class="education-period"
                 >September 2025 - April 2027 (Expected)</span
@@ -386,6 +346,7 @@
     </footer>
 
     <!-- Scripts -->
+    <script src="assets/js/navbar.js"></script>
     <script src="assets/js/theme.js"></script>
     <script src="assets/js/projects.js"></script>
     <script src="assets/js/form.js"></script>

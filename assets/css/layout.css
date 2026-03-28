@@ -10,6 +10,12 @@
   letter-spacing: 0.02em;
 }
 
+.logo-typing-static {
+  font-family: "Righteous", sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
 .logo-typing::after {
   content: "|";
   margin-left: 2px;
