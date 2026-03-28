@@ -7,3 +7,30 @@
 @import url("./layout.css");
 @import url("./components.css");
 @import url("./pages.css");
+
+/* Reduce motion on hover interactions. Keep hover states but remove animated feel. */
+@media (hover: hover) {
+  a,
+  .btn,
+  .nav-link,
+  .mobile-toggle,
+  .mobile-toggle span,
+  .theme-toggle,
+  .skill-category,
+  .project-card,
+  .project-card-image img {
+    transition: none !important;
+  }
+
+  .theme-toggle:hover,
+  .theme-toggle:active,
+  .skill-category:hover,
+  .project-card:hover,
+  .project-card:hover .project-card-image img {
+    transform: none !important;
+  }
+
+  .project-card:hover {
+    box-shadow: none !important;
+  }
+}
