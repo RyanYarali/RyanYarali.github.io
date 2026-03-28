@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
@@ -61,7 +61,6 @@
           <li><a href="index.html#skills" class="nav-link">Skills</a></li>
           <li><a href="index.html#projects" class="nav-link">Projects</a></li>
           <li><a href="index.html#learning" class="nav-link">Learning</a></li>
-          <li><a href="links.html" class="nav-link">Links</a></li>
           <li><a href="index.html#contact" class="nav-link">Contact</a></li>
         </ul>
 
@@ -69,10 +68,43 @@
           <button
             class="theme-toggle"
             id="theme-toggle"
-            aria-label="Toggle theme"
+            aria-label="Toggle dark and light mode"
+            title="Switch theme (follows system preference)"
           >
-            <span class="sun-icon">☀️</span>
-            <span class="moon-icon">🌙</span>
+            <svg
+              class="sun-icon"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg
+              class="moon-icon"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
           </button>
           <button
             class="mobile-toggle"
@@ -100,7 +132,24 @@
     <!-- Projects Grid -->
     <section class="section">
       <div class="container">
-        <div class="projects-grid">
+        <div
+          class="coming-soon-container"
+          style="text-align: center; padding: 80px 20px"
+        >
+          <h2 style="font-size: 2.5rem; margin-bottom: 20px">🚀 Coming Soon</h2>
+          <p
+            style="
+              font-size: 1.1rem;
+              color: var(--color-text-muted);
+              margin-bottom: 30px;
+            "
+          >
+            Our project showcase is currently under development. Check back soon
+            for detailed case studies and live demos!
+          </p>
+          <a href="index.html#projects" class="btn btn-primary">Back to Home</a>
+        </div>
+        <div class="projects-grid" style="display: none">
           <!-- Portfolio Website -->
           <article class="project-card">
             <div class="project-image">
