@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="TaskMate - Academic Task Management Web App | Portfolio Case Study by Ryan Yarali"
+    />
+
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://ryanyarali.com/projects/taskmate.html"
+    />
+    <meta
+      property="og:title"
+      content="TaskMate — Academic Task Management | Ryan Yarali"
+    />
+    <meta
+      property="og:description"
+      content="Mobile-friendly Firebase web app for consolidating academic tasks."
+    />
+
+    <title>TaskMate — Academic Task Management | Ryan Yarali</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Righteous&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../assets/css/reset.css" />
+    <link rel="stylesheet" href="../assets/css/typography.css" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>"
+    />
+
+    <style>
+      body {
+        padding-top: 5.5rem;
+      }
+
+      .project-hero {
+        padding: 4rem 0;
+        border-bottom: 1px solid var(--color-border);
+      }
+
+      .back-link {
+        display: inline-block;
+        color: var(--color-text-muted);
+        text-decoration: none;
+        margin-bottom: 1.5rem;
+        font-size: 0.9rem;
+        transition: color var(--transition-base);
+      }
+
+      .back-link:hover {
+        color: var(--color-primary);
+      }
+
+      .project-hero h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .project-hero p {
+        color: var(--color-text-muted);
+        font-size: 1.125rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .project-links {
+        display: flex;
+        gap: 0.75rem;
+      }
+
+      .project-content {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 3rem 0;
+      }
+
+      .project-section {
+        margin-bottom: 3rem;
+      }
+
+      .project-section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        color: var(--color-text);
+      }
+
+      .project-section p {
+        color: var(--color-text-muted);
+        line-height: 1.8;
+        margin-bottom: 0.75rem;
+      }
+
+      .project-section ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .project-section li {
+        color: var(--color-text-muted);
+        line-height: 1.8;
+        margin-bottom: 0.5rem;
+        padding-left: 1.5rem;
+        position: relative;
+      }
+
+      .project-section li:before {
+        content: "▸";
+        position: absolute;
+        left: 0;
+        color: var(--color-primary);
+      }
+
+      .tech-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .tech-item {
+        display: inline-block;
+        padding: 0.375rem 0.75rem;
+        background: color-mix(in srgb, var(--color-primary) 12%, transparent);
+        border: 1px solid
+          color-mix(in srgb, var(--color-primary) 30%, transparent);
+        border-radius: 0.5rem;
+        font-size: 0.85rem;
+        color: var(--color-text-muted);
+      }
+
+      .screenshots-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+      }
+
+      .screenshots-grid figure {
+        margin: 0;
+        text-align: center;
+      }
+
+      .screenshots-grid img {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        border-radius: 0.5rem;
+        border: 1px solid var(--color-border);
+        display: block;
+        margin: 0 auto 0.75rem;
+      }
+
+      .screenshots-grid figcaption {
+        font-size: 0.875rem;
+        color: var(--color-text-muted);
+      }
+
+      .project-footer {
+        display: flex;
+        gap: 1rem;
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--color-border);
+      }
+
+      @media (max-width: 600px) {
+        body {
+          padding-top: 4.75rem;
+        }
+
+        .project-hero h1 {
+          font-size: 1.875rem;
+        }
+
+        .project-footer {
+          flex-direction: column;
+        }
+
+        .project-footer .btn {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="../index.html" class="logo">
+          <span class="logo-text">Ryan Yarali</span>
+          <span class="logo-subtitle">Portfolio</span>
+        </a>
+
+        <ul class="nav-links" id="nav-links">
+          <li><a href="../index.html#about" class="nav-link">About</a></li>
+          <li><a href="../index.html#skills" class="nav-link">Skills</a></li>
+          <li><a href="../projects.html" class="nav-link">Projects</a></li>
+          <li>
+            <a href="../index.html#learning" class="nav-link">Learning</a>
+          </li>
+          <li><a href="../index.html#contact" class="nav-link">Contact</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <button
+            class="theme-toggle"
+            id="theme-toggle"
+            aria-label="Toggle dark and light mode"
+          >
+            <svg
+              class="sun-icon"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg
+              class="moon-icon"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+          <button
+            class="mobile-toggle"
+            id="mobile-toggle"
+            aria-label="Toggle menu"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="project-hero">
+      <div class="container">
+        <a href="../projects.html" class="back-link">← Projects</a>
+        <h1>TaskMate</h1>
+        <p>Academic Task Management Web App</p>
+        <div class="project-links">
+          <a
+            href="https://github.com/RyanYarali/1800_202530_DTC09.git"
+            class="btn btn-secondary"
+            target="_blank"
+            rel="noopener noreferrer"
+            >View on GitHub</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="container">
+        <div class="project-content">
+          <div class="project-section">
+            <h2>Overview</h2>
+            <p>
+              TaskMate is a fully functional, student-focused mobile-friendly
+              web application built to consolidate academic task management into
+              one clean, unified experience. Students can track pending
+              assignments, mark tasks as complete, organize by course and
+              priority, collaborate with groups, and get answers through a
+              built-in FAQ system — all from any device through the browser.
+            </p>
+            <p>
+              The project was built as part of BCIT's Design Thinking &
+              Communication course (COMM 1800, Team DTC 09), following the full
+              Design Thinking framework from problem identification through to a
+              working, deployed prototype.
+            </p>
+          </div>
+
+          <div class="project-section">
+            <h2>Problem Statement</h2>
+            <h3>Target Users</h3>
+            <ul>
+              <li>Undergraduate, high school, and graduate students</li>
+              <li>Typically managing 4–6 courses simultaneously</li>
+            </ul>
+            <h3>The Challenge</h3>
+            <ul>
+              <li>
+                Academic tasks and deadlines are scattered across multiple
+                disconnected apps
+              </li>
+              <li>
+                Students forget deadlines, lose motivation, and experience
+                increased stress
+              </li>
+              <li>
+                Existing tools are too complex or don't integrate scheduling
+                with tasks
+              </li>
+            </ul>
+            <h3>Our Solution</h3>
+            <p>
+              TaskMate provides a unified, intuitive platform that consolidates
+              all academic tasks in one place with real-time updates, smart
+              filtering, and collaborative features designed specifically for
+              students.
+            </p>
+          </div>
+
+          <div class="project-section">
+            <h2>Application Screens</h2>
+            <p>
+              TaskMate is built around five core screens, each designed for a
+              specific user need:
+            </p>
+
+            <div class="screenshots-grid">
+              <figure>
+                <img src="../assets/TaskMate1.png" alt="Home Dashboard" />
+                <figcaption>
+                  <strong>Screen 1: Home Dashboard</strong><br />Personalized
+                  welcome with today's tasks
+                </figcaption>
+              </figure>
+              <figure>
+                <img src="../assets/TaskMate2.png" alt="Pending Tasks" />
+                <figcaption>
+                  <strong>Screen 2: Pending Tasks</strong><br />All incomplete
+                  tasks sorted by due date
+                </figcaption>
+              </figure>
+              <figure>
+                <img src="../assets/TaskMate3.png" alt="Completed Tasks" />
+                <figcaption>
+                  <strong>Screen 3: Completed Tasks</strong><br />Progress
+                  history and achievements
+                </figcaption>
+              </figure>
+              <figure>
+                <img src="../assets/TaskMate4.png" alt="Task Detail" />
+                <figcaption>
+                  <strong>Screen 4: Task Details</strong><br />Priority badges
+                  and course context
+                </figcaption>
+              </figure>
+              <figure>
+                <img src="../assets/TaskMate5.png" alt="FAQ & Help" />
+                <figcaption>
+                  <strong>Screen 5: FAQ & Help</strong><br />Categorized Q&A
+                  with expandable answers
+                </figcaption>
+              </figure>
+            </div>
+
+            <h3>Screen-by-Screen Breakdown</h3>
+
+            <h4>Home Dashboard (Screen 1)</h4>
+            <p>
+              The home screen greets users by name (e.g., "Welcome, Fish Liu!")
+              with the motivational tagline: "Stay focused. Stay productive. One
+              task at a time."
+            </p>
+            <p><strong>Key UI Elements:</strong></p>
+            <ul>
+              <li>Hamburger menu (top-left) for navigation settings</li>
+              <li>User profile icon (top-right)</li>
+              <li>"Add New Task" button (primary CTA — dark red)</li>
+              <li>"View All Tasks" button (secondary CTA)</li>
+              <li>
+                "Today's Tasks" section — shows tasks due today or celebration
+                emoji when clear
+              </li>
+              <li>
+                Bottom navigation bar with 5 tabs: Home | Groups | Add | To Do |
+                Done
+              </li>
+            </ul>
+
+            <h4>Pending Tasks / To Do (Screen 2)</h4>
+            <p>
+              The To Do view displays all incomplete tasks sorted
+              chronologically by due date.
+            </p>
+            <p><strong>Each task card shows:</strong></p>
+            <ul>
+              <li>Course name (e.g., COMP1510, Math, 1800)</li>
+              <li>Task name (e.g., Term Project, Submission)</li>
+              <li>Priority level: High / Medium / Low</li>
+              <li>Empty circle on the right to mark as complete</li>
+            </ul>
+            <p>
+              Filter controls allow users to narrow by Course or Priority for
+              quick access to relevant tasks.
+            </p>
+
+            <h4>Completed Tasks / Done (Screen 3)</h4>
+            <p>
+              The Done view mirrors the To Do layout but displays completed
+              tasks with a filled dark-red checkmark. Tasks are grouped by
+              completion date, acting as a progress tracker and motivation tool
+              — students can see everything they've accomplished over the term.
+            </p>
+
+            <h4>Task Card Detail (Screen 4)</h4>
+            <p>A focused view of task information when expanded, showing:</p>
+            <ul>
+              <li>Task name</li>
+              <li>Priority badge (color-coded)</li>
+              <li>Course identifier</li>
+              <li>Category / Course section</li>
+              <li>Due date status</li>
+            </ul>
+
+            <h4>FAQ / Help Page (Screen 5)</h4>
+            <p>
+              A fully built FAQ section with categorized, expandable questions.
+              Categories include: All | Account | Tasks | Groups | Notifications
+              | Privacy | Technical. Users can filter by category and expand
+              accordion-style items to reveal answers inline. This confirms the
+              app has real collaboration and group task management features.
+            </p>
+          </div>
+
+          <div class="project-section">
+            <h2>Key Features</h2>
+            <ul>
+              <li>
+                <strong>Personalized Dashboard</strong> — User-specific welcome
+                and customized task views based on enrolled courses
+              </li>
+              <li>
+                <strong>Today's Tasks Widget</strong> — Quick glance at urgent
+                tasks with priority badges on home screen
+              </li>
+              <li>
+                <strong>Pending & Completion Tracking</strong> — Separate views
+                for To Do and Done tasks with filtering
+              </li>
+              <li>
+                <strong>Group Collaboration</strong> — Shared group tasks and
+                collaborative assignment management
+              </li>
+              <li>
+                <strong>Smart Filtering</strong> — Filter tasks by course,
+                priority level, or due date
+              </li>
+              <li>
+                <strong>Firebase Authentication</strong> — Secure email and
+                password sign-in with encryption
+              </li>
+              <li>
+                <strong>Built-in FAQ & Help</strong> — Comprehensive,
+                categorized help system with searchable answers
+              </li>
+              <li>
+                <strong>Progress Motivation</strong> — Celebration emojis and
+                done-list history reinforce accomplishment
+              </li>
+            </ul>
+          </div>
+
+          <div class="project-section">
+            <h2>Technology Stack</h2>
+
+            <h3>Frontend</h3>
+            <div class="tech-list">
+              <span class="tech-item">HTML5</span>
+              <span class="tech-item">CSS3</span>
+              <span class="tech-item">JavaScript</span>
+              <span class="tech-item">Mobile-First Design</span>
+              <span class="tech-item">Responsive Web App</span>
+            </div>
+
+            <h3>Backend & Authentication</h3>
+            <div class="tech-list">
+              <span class="tech-item">Firebase Authentication</span>
+              <span class="tech-item">Email & Password Sign-in</span>
+              <span class="tech-item">Secure Session Management</span>
+            </div>
+
+            <h3>Database & Hosting</h3>
+            <div class="tech-list">
+              <span class="tech-item">Firebase Firestore</span>
+              <span class="tech-item">Real-time Data Sync</span>
+              <span class="tech-item">Firebase Hosting</span>
+            </div>
+          </div>
+
+          <div class="project-section">
+            <h2>Design Approach</h2>
+
+            <h3>Color Palette</h3>
+            <ul>
+              <li>
+                <strong>Primary:</strong> Deep maroon / dark red (header, active
+                nav, primary buttons)
+              </li>
+              <li>
+                <strong>Accent:</strong> Warm red / orange-red (priority badges,
+                active tab icons)
+              </li>
+              <li><strong>Background:</strong> Light grey / off-white</li>
+              <li><strong>Cards:</strong> White with soft shadow</li>
+            </ul>
+
+            <h3>Navigation Pattern</h3>
+            <ul>
+              <li>
+                Bottom tab bar (5 tabs) — standard mobile UX pattern for easy
+                thumb reach
+              </li>
+              <li>Active tab highlighted in dark red with label</li>
+              <li>Hamburger menu for secondary settings/navigation</li>
+            </ul>
+
+            <h3>Priority Indicators</h3>
+            <ul>
+              <li>
+                <strong>High:</strong> Red/orange pill badge for immediate
+                visibility
+              </li>
+              <li><strong>Medium:</strong> Neutral styling</li>
+              <li><strong>Low:</strong> Lighter, de-emphasized styling</li>
+            </ul>
+          </div>
+
+          <div class="project-section">
+            <h2>Learning Outcomes</h2>
+            <ul>
+              <li>
+                Applied Design Thinking methodology from problem scoping through
+                prototyping
+              </li>
+              <li>
+                Built a full-stack web application with Firebase real-time
+                database and authentication
+              </li>
+              <li>
+                Designed for mobile-first UX with intuitive navigation and
+                accessibility
+              </li>
+              <li>
+                Collaborated as a team to deliver a production-ready application
+                within course constraints
+              </li>
+              <li>
+                Implemented filtering, state management, and dynamic UI
+                rendering with vanilla JavaScript
+              </li>
+            </ul>
+          </div>
+
+          <div class="project-footer">
+            <a href="../projects.html" class="btn btn-secondary"
+              >← All Projects</a
+            >
+            <a href="../index.html#contact" class="btn btn-primary"
+              >Get In Touch</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <p>&copy; 2025 Ryan Yarali. All rights reserved.</p>
+        <p class="footer-tech">Built with HTML, CSS, and JavaScript</p>
+      </div>
+    </footer>
+
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/main.js"></script>
+  </body>
+</html>
