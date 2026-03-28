@@ -199,15 +199,25 @@
       container.innerHTML = `
                 <section class="section">
                     <div class="container">
-                        <div style="text-align: center; padding: var(--spacing-4xl) 0;">
+                        <div class="project-placeholder">
                             <h1>Project Not Found</h1>
-                            <p style="margin:  var(--spacing-lg) 0;">The project you're looking for doesn't exist.</p>
-                            <a href="projects. html" class="btn btn-primary">View All Projects</a>
+                            <p class="project-placeholder-text">The project you're looking for doesn't exist.</p>
+                            <a href="projects.html" class="btn btn-primary">View All Projects</a>
                         </div>
                     </div>
                 </section>
             `;
       return;
+    }
+
+    function renderSection(title, content) {
+      if (!content) return "";
+      return `
+                <div class="case-study-section">
+                    <h2>${title}</h2>
+                    ${content}
+                </div>
+            `;
     }
 
     // Update page title
@@ -221,9 +231,7 @@
                     <h1>${project.title}</h1>
                     <p>${project.tagline}</p>
                     <div class="project-meta">
-                        ${project.tech
-                          .map((tech) => `<span class="tag">${tech}</span>`)
-                          .join("")}
+                        ${project.tech.map((tech) => `<span class="tag">${tech}</span>`).join("")}
                     </div>
                     <div class="project-meta">
                         ${
@@ -242,73 +250,14 @@
 
             <section class="section project-detail">
                 <div class="container case-study">
-                    ${
-                      project.problem
-                        ? `
-                        <div class="case-study-section">
-                            <h2>🎯 Problem Statement</h2>
-                            ${project.problem}
-                        </div>
-                    `
-                        : ""
-                    }
+                    ${renderSection("🎯 Problem Statement", project.problem)}
+                    ${renderSection("📋 Requirements & Constraints", project.requirements)}
+                    ${renderSection("💡 Approach & Technical Decisions", project.approach)}
+                    ${renderSection("🚧 Challenges & Solutions", project.challenges)}
+                    ${renderSection("📚 What I Learned", project.learned)}
+                    ${renderSection("🚀 Future Improvements", project.improvements)}
 
-                    ${
-                      project.requirements
-                        ? `
-                        <div class="case-study-section">
-                            <h2>📋 Requirements & Constraints</h2>
-                            ${project.requirements}
-                        </div>
-                    `
-                        : ""
-                    }
-
-                    ${
-                      project.approach
-                        ? `
-                        <div class="case-study-section">
-                            <h2>💡 Approach & Technical Decisions</h2>
-                            ${project.approach}
-                        </div>
-                    `
-                        : ""
-                    }
-
-                    ${
-                      project.challenges
-                        ? `
-                        <div class="case-study-section">
-                            <h2>🚧 Challenges & Solutions</h2>
-                            ${project.challenges}
-                        </div>
-                    `
-                        : ""
-                    }
-
-                    ${
-                      project.learned
-                        ? `
-                        <div class="case-study-section">
-                            <h2>📚 What I Learned</h2>
-                            ${project.learned}
-                        </div>
-                    `
-                        : ""
-                    }
-
-                    ${
-                      project.improvements
-                        ? `
-                        <div class="case-study-section">
-                            <h2>🚀 Future Improvements</h2>
-                            ${project.improvements}
-                        </div>
-                    `
-                        : ""
-                    }
-
-                    <div style="text-align: center; margin-top: var(--spacing-3xl); padding-top: var(--spacing-3xl); border-top: 1px solid var(--color-border);">
+                    <div class="project-placeholder-actions projects-section-cta section-divider-actions">
                         <a href="projects.html" class="btn btn-secondary">View All Projects</a>
                         <a href="index.html#contact" class="btn btn-primary">Get In Touch</a>
                     </div>
@@ -320,6 +269,4 @@
   // Initialize
   const projectId = getProjectId();
   renderProject(projectId);
-
-  console.log(`📁 Project detail loaded:  ${projectId}`);
 })();

@@ -34,35 +34,34 @@
     });
   }
 
+  // Mark document as JS-enabled so CSS can safely apply scroll-reveal states.
+  document.documentElement.classList.add("js-ready");
+
   // ==================== Intersection Observer for Animations ====================
-  const observerOptions = {
-    threshold: 0.1,
-    rootMargin: "0px 0px -100px 0px",
-  };
+  const animateElements = document.querySelectorAll(".skill-category");
 
-  const observer = new IntersectionObserver(function (entries) {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("fade-in");
-        observer.unobserve(entry.target);
-      }
+  if ("IntersectionObserver" in window) {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: "0px 0px -100px 0px",
+    };
+
+    const observer = new IntersectionObserver(function (entries) {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("fade-in");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    animateElements.forEach((el) => {
+      observer.observe(el);
     });
-  }, observerOptions);
-
-  // Observe elements for animation
-  const animateElements = document.querySelectorAll(
-    ".project-card, .skill-category, .tech-detail, .learning-list li"
-  );
-  animateElements.forEach((el) => {
-    observer.observe(el);
-  });
-
-  // Add fade-in animation CSS dynamically
-  if (!document.getElementById("dynamic-animations")) {
-    const style = document.createElement("style");
-    style.id = "dynamic-animations";
-    style.textContent = `.project-card, .skill-category, .tech-detail, .learning-list li { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; } .fade-in { opacity: 1 !important; transform: translateY(0) !important; }`;
-    document.head.appendChild(style);
+  } else {
+    animateElements.forEach((el) => {
+      el.classList.add("fade-in");
+    });
   }
 
   // ==================== Active Navigation Link ====================
@@ -87,10 +86,6 @@
       }
     });
   }
-
-  window.addEventListener("scroll", setActiveNavLink, { passive: true });
-
-  // Active link styling is handled in CSS
 
   // ==================== Performance:  Debounce Function ====================
   function debounce(func, wait = 20, immediate = true) {
@@ -134,11 +129,10 @@
       fallback.textContent = "👨‍💻";
       fallback.setAttribute(
         "aria-label",
-        "Ryan Yarali - Profile Photo Placeholder"
+        "Ryan Yarali - Profile Photo Placeholder",
       );
 
       this.parentElement.replaceChild(fallback, this);
-      console.log("⚠️ Profile image failed to load, using fallback");
     });
   }
 
@@ -171,8 +165,8 @@
   // ==================== Typing Animation ====================
   function typeWriter(element, text, speed = 100) {
     let i = 0;
-    element.textContent = '';
-    
+    element.textContent = "";
+
     function type() {
       if (i < text.length) {
         element.textContent += text.charAt(i);
@@ -180,24 +174,22 @@
         setTimeout(type, speed);
       }
     }
-    
+
     type();
   }
 
   // Delay typing animations to let site load first
   setTimeout(() => {
     // Hero title typing
-    const typingName = document.getElementById('typing-name');
+    const typingName = document.getElementById("typing-name");
     if (typingName) {
-      typeWriter(typingName, 'Ryan Yarali', 150);
+      typeWriter(typingName, "Ryan Yarali", 150);
     }
 
     // Logo typing
-    const logoTyping = document.querySelector('.logo-typing');
+    const logoTyping = document.querySelector(".logo-typing");
     if (logoTyping) {
-      typeWriter(logoTyping, 'Ryan Yarali', 150);
+      typeWriter(logoTyping, "Ryan Yarali", 150);
     }
   }, 500);
-
-  console.log("✅ Portfolio loaded successfully");
 })();
