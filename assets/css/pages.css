@@ -191,29 +191,87 @@
   margin: 0 auto;
 }
 
-.skills-grid {
+.skills-minimal {
+  padding: 0.25rem 0;
+}
+
+.skills-minimal-header {
+  margin-bottom: 0.85rem;
+}
+
+.skills-minimal-header .section-title {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.skills-minimal-rows {
   display: grid;
-  gap: 1.5rem;
   grid-template-columns: 1fr;
+  gap: 1rem;
 }
 
-@media (min-width: 640px) {
-  .skills-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.skills-minimal-row {
+  border: 1px solid color-mix(in srgb, var(--color-border) 72%, transparent);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.1rem;
+  background: color-mix(in srgb, var(--color-background) 70%, transparent);
 }
 
-@media (min-width: 1024px) {
-  .skills-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-  }
+.skills-minimal-label {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
 }
 
-.skill-category-title {
-  font-size: 1.125rem;
-  margin-bottom: 1rem;
+.skills-minimal-list {
+  list-style: none;
+  margin: 0.45rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.7rem;
+}
+
+.skills-minimal-list li {
+  font-size: 0.9125rem;
+  line-height: 1.4;
   color: var(--color-text);
+  white-space: normal;
+}
+
+.skills-minimal-list li::after {
+  content: "";
+  margin-left: 0;
+}
+
+.skills-minimal-list li:last-child::after {
+  content: "";
+  margin-left: 0;
+}
+
+@media (min-width: 768px) {
+  .skills-minimal-rows {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .skills-minimal-row {
+    padding: 1.1rem 1.2rem;
+  }
+
+  .skills-minimal-list li {
+    font-size: 0.95rem;
+  }
+}
+
+@media (min-width: 1100px) {
+  .skills-minimal-rows {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.1rem;
+  }
 }
 
 .education-header {
@@ -242,6 +300,19 @@
   color: var(--color-text);
   font-weight: 600;
   margin-bottom: 0.5rem;
+}
+
+.education-program-link {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  font-size: 0.9375rem;
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.education-program-link:hover {
+  color: var(--color-text);
 }
 
 .education-period {
