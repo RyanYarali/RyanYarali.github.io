@@ -1,15 +1,15 @@
 /**
- * Theme Toggle - Dark/Light Mode
- * Persists user preference in localStorage
+ * Theme Toggle - Dark/Light Mode with System Preference
+ * Starts with system preference, allows manual toggle, and persists user choice
  */
 
 (function () {
   "use strict";
 
-  const STORAGE_KEY = "portfolio-theme";
+  const STORAGE_KEY = "portfolio-theme-override";
   const themeToggle = document.getElementById("theme-toggle");
 
-  // Get initial theme from localStorage or system preference
+  // Get initial theme from user override or system preference
   function getInitialTheme() {
     const storedTheme = localStorage.getItem(STORAGE_KEY);
 
@@ -50,25 +50,16 @@
     themeToggle.addEventListener("click", toggleTheme);
   }
 
-  // Listen for system theme changes
+  // Listen for system theme changes (only if user hasn't manually set preference)
   if (window.matchMedia) {
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-
-    mediaQuery.addEventListener("change", (e) => {
-      // Only apply if user hasn't manually set a preference
+    const darkModePreference = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    );
+    darkModePreference.addEventListener("change", (e) => {
+      // Only apply system change if user hasn't set a manual preference
       if (!localStorage.getItem(STORAGE_KEY)) {
         applyTheme(e.matches ? "dark" : "light");
       }
     });
   }
-
-  // Add keyboard shortcut (Ctrl/Cmd + Shift + D)
-  document.addEventListener("keydown", (e) => {
-    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === "D") {
-      e.preventDefault();
-      toggleTheme();
-    }
-  });
-
-  console.log(`🎨 Theme initialized:  ${initialTheme}`);
 })();
