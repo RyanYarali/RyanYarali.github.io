@@ -46,8 +46,8 @@
           <ul class="nav-links" id="nav-links">
             <li><a href="${aboutHref}" class="nav-link">About</a></li>
             <li><a href="${skillsHref}" class="nav-link">Skills</a></li>
-            <li><a href="${projectsHref}" class="nav-link">Projects</a></li>
             <li><a href="${learningHref}" class="nav-link">Learning</a></li>
+            <li><a href="${projectsHref}" class="nav-link">Projects</a></li>
             <li><a href="${contactHref}" class="nav-link">Contact</a></li>
           </ul>
 
