@@ -10,26 +10,32 @@
   const mobileToggle = document.getElementById("mobile-toggle");
   const navLinks = document.getElementById("nav-links");
 
+  function closeMobileMenu() {
+    if (mobileToggle) mobileToggle.classList.remove("active");
+    if (navLinks) navLinks.classList.remove("active");
+  }
+
+  function toggleMobileMenu() {
+    if (!mobileToggle || !navLinks) return;
+    const isOpen = navLinks.classList.toggle("active");
+    mobileToggle.classList.toggle("active", isOpen);
+  }
+
   if (mobileToggle && navLinks) {
-    mobileToggle.addEventListener("click", function () {
-      this.classList.toggle("active");
-      navLinks.classList.toggle("active");
-    });
+    mobileToggle.addEventListener("click", toggleMobileMenu);
 
     // Close mobile menu when clicking on a link
     const navItems = navLinks.querySelectorAll("a");
     navItems.forEach((item) => {
       item.addEventListener("click", () => {
-        mobileToggle.classList.remove("active");
-        navLinks.classList.remove("active");
+        closeMobileMenu();
       });
     });
 
     // Close mobile menu when clicking outside
     document.addEventListener("click", (e) => {
       if (!mobileToggle.contains(e.target) && !navLinks.contains(e.target)) {
-        mobileToggle.classList.remove("active");
-        navLinks.classList.remove("active");
+        closeMobileMenu();
       }
     });
   }
@@ -66,7 +72,7 @@
 
   // ==================== Active Navigation Link ====================
   function setActiveNavLink() {
-    const sections = document.querySelectorAll("section[id]");
+    const sections = document.querySelectorAll("header[id], section[id]");
     const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
 
     let current = "";
@@ -108,6 +114,7 @@
   const debouncedActiveLink = debounce(setActiveNavLink);
 
   window.addEventListener("scroll", debouncedActiveLink, { passive: true });
+  setActiveNavLink();
 
   // ==================== Image Fallback Handler ====================
   const profileImage = document.querySelector(".hero-image-placeholder img");
@@ -122,11 +129,14 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(135deg, rgba(129, 140, 248, 0.2), rgba(244, 114, 182, 0.2));
-        border-radius: 50%;
-        font-size: 6rem;
+        background: linear-gradient(135deg, rgba(124, 110, 230, 0.28), rgba(106, 91, 212, 0.14));
+        border-radius: 1.5rem;
+        border: 1px solid rgba(124, 110, 230, 0.34);
+        font-size: 2.2rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
       `;
-      fallback.textContent = "👨‍💻";
+      fallback.textContent = "RY";
       fallback.setAttribute(
         "aria-label",
         "Ryan Yarali - Profile Photo Placeholder",

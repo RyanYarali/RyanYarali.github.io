@@ -5,17 +5,80 @@
   align-items: center;
   padding: 8rem 0 4rem;
   background: var(--color-background);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero::before,
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Layered grid effect for the first section background */
+.hero::before {
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--color-primary) 34%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-primary) 30%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 42px 42px;
+  opacity: 0.62;
+  z-index: -2;
+}
+
+.hero::after {
+  background:
+    radial-gradient(
+      70% 56% at 10% 8%,
+      color-mix(in srgb, var(--color-primary) 32%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      35% 30% at 78% 22%,
+      color-mix(in srgb, var(--color-primary) 16%, transparent),
+      transparent 80%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-background) 4%, transparent) 0%,
+      var(--color-background) 90%
+    );
+  opacity: 0.8;
+  z-index: -1;
+}
+
+.hero > .container {
+  position: relative;
+  z-index: 1;
 }
 
 @media (min-width: 768px) {
   .hero {
     padding: 9rem 0 6rem;
   }
+
+  .hero::before {
+    background-size: 50px 50px;
+  }
 }
 
 @media (min-width: 1024px) {
   .hero {
     padding: 10rem 0 6rem;
+  }
+
+  .hero::before {
+    background-size: 58px 58px;
   }
 }
 
@@ -132,7 +195,7 @@
 .hero-image-placeholder {
   width: 100%;
   height: 100%;
-  border-radius: 1.5rem;
+  border-radius: var(--radius-xl);
   overflow: hidden;
   background: var(--color-surface);
   border: 2px solid var(--color-border);
@@ -154,6 +217,30 @@
   padding-bottom: 1rem;
 }
 
+.about .section-title,
+.projects .section-title,
+.skills .section-title,
+.learning .section-title {
+  text-align: left;
+}
+
+.about .section-title::after,
+.projects .section-title::after,
+.skills .section-title::after,
+.learning .section-title::after {
+  left: 0;
+  transform: none;
+}
+
+.projects .projects-section-cta {
+  text-align: left;
+}
+
+.about-content {
+  margin: 0;
+  max-width: 62ch;
+}
+
 .section-title::after {
   content: "";
   position: absolute;
@@ -163,7 +250,7 @@
   width: 60px;
   height: 4px;
   background: var(--color-primary);
-  border-radius: 2px;
+  border-radius: 9999px;
 }
 
 .section-intro {
@@ -174,21 +261,118 @@
   color: var(--color-text-muted);
 }
 
-.about,
 .projects,
 .learning {
   background-color: var(--color-background);
 }
 
+.about,
 .skills,
 .contact,
 .page-header {
   background-color: var(--color-surface);
 }
 
-.about-content {
-  max-width: 768px;
-  margin: 0 auto;
+.about,
+.projects,
+.learning,
+.skills,
+.contact {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+/* Subtle recurring section textures to carry the visual language site-wide */
+.about::before,
+.projects::before,
+.skills::before,
+.learning::before,
+.contact::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.about::before,
+.projects::before {
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--color-primary) 16%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-primary) 12%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 88px 88px;
+  opacity: 0.26;
+}
+
+.skills::before,
+.learning::before,
+.contact::before {
+  background: radial-gradient(
+      circle at 16% 18%,
+      color-mix(in srgb, var(--color-primary) 11%, transparent) 0,
+      color-mix(in srgb, var(--color-primary) 11%, transparent) 1px,
+      transparent 1.5px
+    )
+    0 0 / 36px 36px;
+  opacity: 0.3;
+}
+
+html[data-theme="dark"] .about::before,
+html[data-theme="dark"] .projects::before {
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--color-primary) 24%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-primary) 20%, transparent) 1px,
+      transparent 1px
+    );
+  opacity: 0.34;
+}
+
+html[data-theme="dark"] .skills::before,
+html[data-theme="dark"] .learning::before,
+html[data-theme="dark"] .contact::before {
+  background: radial-gradient(
+      circle at 16% 18%,
+      color-mix(in srgb, var(--color-primary) 17%, transparent) 0,
+      color-mix(in srgb, var(--color-primary) 17%, transparent) 1px,
+      transparent 1.5px
+    )
+    0 0 / 36px 36px;
+  opacity: 0.38;
+}
+
+html[data-theme="light"] .about::before,
+html[data-theme="light"] .projects::before {
+  opacity: 0.2;
+}
+
+html[data-theme="light"] .skills::before,
+html[data-theme="light"] .learning::before,
+html[data-theme="light"] .contact::before {
+  opacity: 0.24;
+}
+
+.about > .container,
+.projects > .container,
+.learning > .container,
+.skills > .container,
+.contact > .container {
+  position: relative;
+  z-index: 1;
 }
 
 .skills-minimal {
@@ -212,7 +396,7 @@
 
 .skills-minimal-row {
   border: 1px solid color-mix(in srgb, var(--color-border) 72%, transparent);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   padding: 1rem 1.1rem;
   background: color-mix(in srgb, var(--color-background) 70%, transparent);
 }
@@ -271,6 +455,11 @@
   .skills-minimal-rows {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.1rem;
+  }
+
+  .about::before,
+  .projects::before {
+    background-size: 100px 100px;
   }
 }
 
@@ -336,6 +525,160 @@
 }
 
 /* ==================== Project Pages ==================== */
+.project-detail-page {
+  padding-top: 5.5rem;
+}
+
+.project-detail-page .project-hero {
+  padding: 4rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.project-detail-page .back-link {
+  display: inline-block;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  transition: color 160ms ease;
+}
+
+.project-detail-page .back-link:hover {
+  color: var(--color-primary);
+}
+
+.project-detail-page .project-hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.project-detail-page .project-hero p {
+  color: var(--color-text-muted);
+  font-size: 1.125rem;
+  margin-bottom: 1.5rem;
+}
+
+.project-detail-page .project-links {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.project-detail-page .project-content {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 3rem 0;
+}
+
+.project-detail-page .project-section {
+  margin-bottom: 3rem;
+}
+
+.project-detail-page .project-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--color-text);
+}
+
+.project-detail-page .project-section p {
+  color: var(--color-text-muted);
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.project-detail-page .project-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.project-detail-page .project-section li {
+  color: var(--color-text-muted);
+  line-height: 1.8;
+  margin-bottom: 0.5rem;
+  padding-left: 1.25rem;
+  position: relative;
+}
+
+.project-detail-page .project-section li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.78em;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-primary) 90%, white 10%);
+}
+
+.project-detail-page .tech-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.project-detail-page .tech-item {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  background: color-mix(in srgb, var(--color-primary) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 30%, transparent);
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.project-detail-page .project-footer {
+  display: flex;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.taskmate-page .screenshots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.taskmate-page .screenshots-grid figure {
+  margin: 0;
+  text-align: center;
+}
+
+.taskmate-page .screenshots-grid img {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-border);
+  display: block;
+  margin: 0 auto 0.75rem;
+}
+
+.taskmate-page .screenshots-grid figcaption {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 600px) {
+  .project-detail-page {
+    padding-top: 4.75rem;
+  }
+
+  .project-detail-page .project-hero h1 {
+    font-size: 1.875rem;
+  }
+
+  .project-detail-page .project-footer {
+    flex-direction: column;
+  }
+
+  .project-detail-page .project-footer .btn {
+    width: 100%;
+  }
+}
+
 .project-header {
   background: var(--color-background);
 }
@@ -398,11 +741,14 @@
 }
 
 .case-study-section li::before {
-  content: "▸";
+  content: "";
   position: absolute;
   left: 0;
-  color: var(--color-primary);
-  font-weight: 700;
+  top: 0.78em;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-primary) 90%, white 10%);
 }
 
 /* ==================== Project Screenshots ==================== */
@@ -468,12 +814,12 @@
   background:
     radial-gradient(
       circle at 20% 50%,
-      rgba(129, 140, 248, 0.1) 0%,
+      color-mix(in srgb, var(--color-primary) 18%, transparent) 0%,
       transparent 50%
     ),
     radial-gradient(
       circle at 80% 80%,
-      rgba(244, 114, 182, 0.1) 0%,
+      color-mix(in srgb, var(--color-primary) 10%, transparent) 0%,
       transparent 50%
     ),
     var(--color-background);
@@ -485,9 +831,16 @@
 }
 
 .error-page-decoration {
-  font-size: 4rem;
+  width: 4rem;
+  height: 4rem;
+  margin: 0 auto;
   margin-bottom: 1rem;
-  animation: bounce 2s ease-in-out infinite;
+  color: var(--color-primary);
+}
+
+.error-page-decoration svg {
+  width: 100%;
+  height: 100%;
 }
 
 .error-page-code {
@@ -495,7 +848,7 @@
   font-weight: 800;
   line-height: 1;
   margin-bottom: 1rem;
-  background: linear-gradient(135deg, #818cf8, #f472b6);
+  background: linear-gradient(135deg, var(--color-primary), #b07df4);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -531,16 +884,6 @@
 
   .error-page-title {
     font-size: 2.5rem;
-  }
-}
-
-@keyframes bounce {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-20px);
   }
 }
 

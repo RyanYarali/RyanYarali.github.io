@@ -28,22 +28,42 @@
     return "light";
   }
 
+  function updateToggleA11y(theme) {
+    if (!themeToggle) return;
+
+    const isDark = theme === "dark";
+    themeToggle.setAttribute("aria-pressed", String(isDark));
+    themeToggle.setAttribute(
+      "aria-label",
+      isDark ? "Switch to light theme" : "Switch to dark theme",
+    );
+    themeToggle.setAttribute(
+      "title",
+      isDark ? "Switch to light theme" : "Switch to dark theme",
+    );
+  }
+
   // Apply theme to document
-  function applyTheme(theme) {
+  function applyTheme(theme, { persist = false } = {}) {
     document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem(STORAGE_KEY, theme);
+    updateToggleA11y(theme);
+
+    if (persist) {
+      localStorage.setItem(STORAGE_KEY, theme);
+    }
   }
 
   // Toggle theme
   function toggleTheme() {
     const currentTheme = document.documentElement.getAttribute("data-theme");
     const newTheme = currentTheme === "dark" ? "light" : "dark";
-    applyTheme(newTheme);
+    applyTheme(newTheme, { persist: true });
   }
 
   // Initialize theme
+  const storedTheme = localStorage.getItem(STORAGE_KEY);
   const initialTheme = getInitialTheme();
-  applyTheme(initialTheme);
+  applyTheme(initialTheme, { persist: Boolean(storedTheme) });
 
   // Add event listener to toggle button
   if (themeToggle) {

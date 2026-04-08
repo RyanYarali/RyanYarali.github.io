@@ -38,16 +38,17 @@
     return `
       <nav class="navbar">
         <div class="nav-container">
-          <a href="${homeHref}" class="logo">
+          <a href="${homeHref}" class="logo" aria-label="Go to home">
             ${logoText}
             <span class="logo-subtitle">Portfolio</span>
           </a>
 
           <ul class="nav-links" id="nav-links">
+            <li><a href="${homeHref}" class="nav-link">Home</a></li>
             <li><a href="${aboutHref}" class="nav-link">About</a></li>
+            <li><a href="${projectsHref}" class="nav-link">Projects</a></li>
             <li><a href="${skillsHref}" class="nav-link">Skills</a></li>
             <li><a href="${learningHref}" class="nav-link">Learning</a></li>
-            <li><a href="${projectsHref}" class="nav-link">Projects</a></li>
             <li><a href="${contactHref}" class="nav-link">Contact</a></li>
           </ul>
 
@@ -56,7 +57,7 @@
               class="theme-toggle"
               id="theme-toggle"
               aria-label="Toggle dark and light mode"
-              title="Switch theme (follows system preference)"
+              title="Toggle color theme"
             >
               <svg
                 class="sun-icon"
