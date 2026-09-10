@@ -1,7 +1,7 @@
 # ryanyarali.com
 
 Personal portfolio site for Ryan Yarali, a Computer Systems Technology student
-at BCIT. Built with plain HTML, CSS, and JavaScript — no framework, no build
+at BCIT. Built with plain HTML, CSS, and JavaScript. No framework, no build
 step, no dependencies to install.
 
 Live at [ryanyarali.com](https://ryanyarali.com), deployed from this repository
@@ -56,11 +56,11 @@ Everything is driven by CSS custom properties defined in
 overrides those same variables under `html[data-theme="dark"]`, so themes stay
 in sync by construction.
 
-- **Colour** — a single ink-navy accent on white, inverted to pale steel blue
+- **Colour:** a single ink-navy accent on white, inverted to pale steel blue
   on navy-black in dark mode.
-- **Type** — Source Serif 4 for headings and pull quotes, Inter for body and
+- **Type:** Source Serif 4 for headings and pull quotes, Inter for body and
   UI, both from Google Fonts.
-- **Theme** — a small inline script in each `<head>` sets `data-theme` before
+- **Theme:** a small inline script in each `<head>` sets `data-theme` before
   first paint so the correct theme renders immediately. `theme.js` then wires
   up the toggle and follows the system setting until the visitor overrides it.
 
@@ -97,4 +97,4 @@ They are development tooling and have no effect on the published site.
 
 ## License
 
-MIT — feel free to borrow from it.
+MIT. Feel free to borrow from it.

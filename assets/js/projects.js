@@ -38,7 +38,7 @@
       tagline:
         "A framework-free personal site with its own CSS design system, light and dark themes, and a small amount of scroll behaviour.",
       outcome:
-        "Built from a blank stylesheet — design tokens, theming, and layout written by hand rather than pulled from a template.",
+        "Built from a blank stylesheet: design tokens, theming, and layout written by hand rather than pulled from a template.",
       tech: ["HTML5", "CSS3", "Vanilla JavaScript"],
       image: "assets/ryan-port01.png",
       featured: true,
