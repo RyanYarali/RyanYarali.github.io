@@ -1,6 +1,6 @@
 /**
  * Projects Data and Rendering
- * Manages project cards and grid display for both projects page and home page
+ * Manages the editorial project list shown on the home page and projects page.
  */
 
 (function () {
@@ -8,100 +8,67 @@
 
   // ==================== Projects Data ====================
   const projectsData = {
-    portfolio: {
-      id: "portfolio",
-      title: "Personal Portfolio Website",
-      tagline:
-        "A fully responsive portfolio showcasing web development fundamentals",
-      outcome:
-        "Improved Lighthouse accessibility and SEO readiness across all pages",
-      tech: ["HTML5", "CSS3", "Vanilla JavaScript", "Responsive Design"],
-      image: "assets/ryan-port01.png",
-      featured: true,
-      url: "projects/portfolio.html",
-    },
     taskmate: {
       id: "taskmate",
-      title: "TaskMate: Academic Task Management",
+      title: "TaskMate",
       tagline:
-        "Mobile-friendly web app for consolidating academic tasks with Firebase",
+        "A mobile-friendly task manager built so students stop losing deadlines across five different apps.",
       outcome:
-        "Built and tested by a 9-person team to support real student workflow scenarios",
-      tech: ["HTML5", "CSS3", "JavaScript", "Firebase", "Mobile-First Design"],
+        "Shipped end-to-end with Firebase auth and Firestore, then tested by a 9-person class team against real course workloads.",
+      tech: ["HTML5", "CSS3", "JavaScript", "Firebase"],
       image: "assets/TaskMate6.png",
       featured: true,
       url: "projects/taskmate.html",
     },
+    portfolio: {
+      id: "portfolio",
+      title: "This Portfolio",
+      tagline:
+        "A hand-built, framework-free site: custom CSS design system, theme switching, and scroll-based motion.",
+      outcome:
+        "No React, no Tailwind, no template — every layout, animation, and color decision is original CSS.",
+      tech: ["HTML5", "CSS3", "Vanilla JavaScript"],
+      image: "assets/ryan-port01.png",
+      featured: true,
+      url: "projects/portfolio.html",
+    },
   };
 
-  // ==================== Render Project Card ====================
-  function renderProjectCard(project) {
+  // ==================== Render Project Row ====================
+  function renderProjectRow(project, index) {
+    const num = String(index + 1).padStart(2, "0");
+
     return `
-      <article class="project-card surface">
-        <div class="project-card-header">
-          ${
-            project.image
-              ? `<div class="project-card-image">
-                 <img src="${project.image}" alt="${project.title}" loading="lazy" />
-               </div>`
-              : `<div class="project-card-image placeholder">
-                 <div class="placeholder-icon">💻</div>
-               </div>`
-          }
-        </div>
-        <div class="project-card-content">
-          <h3 class="project-card-title">${project.title}</h3>
-          <p class="project-card-tagline">${project.tagline}</p>
-          ${project.outcome ? `<p class="project-card-outcome">${project.outcome}</p>` : ""}
-          <div class="project-card-tech">
+      <article class="project-row">
+        <a class="project-row-media" href="${project.url}" aria-label="Open ${project.title} case study">
+          <img src="${project.image}" alt="${project.title} interface screenshot" loading="lazy" />
+        </a>
+        <div class="project-row-body">
+          <span class="project-row-index mono">${num}</span>
+          <h3 class="project-row-title"><a href="${project.url}">${project.title}</a></h3>
+          <p class="project-row-tagline">${project.tagline}</p>
+          ${project.outcome ? `<p class="project-row-outcome">${project.outcome}</p>` : ""}
+          <div class="project-row-tech">
             ${project.tech.map((t) => `<span class="tech-tag">${t}</span>`).join("")}
           </div>
-        </div>
-        <div class="project-card-footer">
-          <a
-            href="${project.url}"
-            class="btn btn-secondary"
-          >
-            View Project
+          <a href="${project.url}" class="project-row-cta">
+            View case study
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
           </a>
         </div>
       </article>
     `;
   }
 
-  // ==================== Render Minimal Featured Item ====================
-  function renderFeaturedProjectItem(project) {
-    const compactTagline =
-      project.tagline.length > 78
-        ? `${project.tagline.slice(0, 75).trim()}...`
-        : project.tagline;
-
-    return `
-      <article class="featured-project-item">
-        <a class="featured-project-thumb" href="${project.url}" aria-label="Open ${project.title}">
-          ${
-            project.image
-              ? `<img src="${project.image}" alt="${project.title}" loading="lazy" />`
-              : `<span class="featured-project-fallback" aria-hidden="true">Project</span>`
-          }
-        </a>
-        <div class="featured-project-body">
-          <h3 class="featured-project-title">
-            <a href="${project.url}">${project.title}</a>
-          </h3>
-          <p class="featured-project-tagline">${compactTagline}</p>
-        </div>
-        <a href="${project.url}" class="featured-project-cta">View</a>
-      </article>
-    `;
-  }
-
-  // ==================== Render Projects Grid ====================
+  // ==================== Render Projects List ====================
   window.renderProjectsGrid = function (containerId, options = {}) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    const { featured = false, limit = null, minimal = false } = options;
+    const { featured = false, limit = null } = options;
 
     let projects = Object.values(projectsData);
 
@@ -119,38 +86,25 @@
       return;
     }
 
-    if (minimal) {
-      const list = projects
-        .map((project) => renderFeaturedProjectItem(project))
-        .join("");
-      container.innerHTML = `<div class="featured-projects-list">${list}</div>`;
-      return;
-    }
+    const rows = projects
+      .map((project, index) => renderProjectRow(project, index))
+      .join("");
 
-    const grid = projects.map((project) => renderProjectCard(project)).join("");
-    container.innerHTML = `<div class="projects-grid">${grid}</div>`;
+    container.innerHTML = `<div class="project-rows reveal-group">${rows}</div>`;
   };
 
-  // ==================== Export Projects Data ====================
   window.projectsData = projectsData;
 
-  // ==================== Auto-render on DOM ready ====================
   document.addEventListener("DOMContentLoaded", function () {
-    // Auto-render projects grid on projects.html
     const projectsGrid = document.getElementById("projects-grid");
     if (projectsGrid) {
       window.renderProjectsGrid("projects-grid");
     }
 
-    // Auto-render featured projects on index.html
     const featuredProjectsContainer =
       document.getElementById("featured-projects");
     if (featuredProjectsContainer) {
-      window.renderProjectsGrid("featured-projects", {
-        featured: true,
-        limit: 3,
-        minimal: true,
-      });
+      window.renderProjectsGrid("featured-projects", { featured: true });
     }
   });
 })();

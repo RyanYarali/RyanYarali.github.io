@@ -169,7 +169,7 @@
       console.error("Form submission error:", error);
       showStatus(
         "error",
-        "Oops! There was a problem sending your message. Please try again or email me directly.",
+        "Message didn't send. Please try again in a moment.",
       );
     } finally {
       // Re-enable submit button
