@@ -35,11 +35,8 @@
       <nav class="navbar">
         <div class="nav-container">
           <a href="${homeHref}" class="logo" aria-label="Go to home">
-            <span class="logo-mark" aria-hidden="true">RY</span>
-            <span class="logo-text">
-              <span class="logo-name">Ryan Yarali</span>
-              <span class="logo-subtitle">Software &amp; Systems</span>
-            </span>
+            <span class="logo-name">Ryan Yarali</span>
+            <span class="logo-subtitle">Computer Systems Technology</span>
           </a>
 
           <ul class="nav-links" id="nav-links">

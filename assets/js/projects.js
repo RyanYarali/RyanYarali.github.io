@@ -24,9 +24,9 @@
       id: "portfolio",
       title: "This Portfolio",
       tagline:
-        "A hand-built, framework-free site: custom CSS design system, theme switching, and scroll-based motion.",
+        "A framework-free personal site with its own CSS design system, light and dark themes, and a small amount of scroll behaviour.",
       outcome:
-        "No React, no Tailwind, no template — every layout, animation, and color decision is original CSS.",
+        "Built from a blank stylesheet — design tokens, theming, and layout written by hand rather than pulled from a template.",
       tech: ["HTML5", "CSS3", "Vanilla JavaScript"],
       image: "assets/ryan-port01.png",
       featured: true,
@@ -44,7 +44,7 @@
           <img src="${project.image}" alt="${project.title} interface screenshot" loading="lazy" />
         </a>
         <div class="project-row-body">
-          <span class="project-row-index mono">${num}</span>
+          <span class="project-row-index">${num}</span>
           <h3 class="project-row-title"><a href="${project.url}">${project.title}</a></h3>
           <p class="project-row-tagline">${project.tagline}</p>
           ${project.outcome ? `<p class="project-row-outcome">${project.outcome}</p>` : ""}
