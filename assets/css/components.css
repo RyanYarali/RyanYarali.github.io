@@ -300,6 +300,17 @@ html:not([data-theme="dark"]) .moon-icon {
   transform: scale(1.02);
 }
 
+.project-row-media-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-style: italic;
+  color: var(--color-text-subtle);
+  background: var(--color-surface);
+}
+
 .project-row-index {
   display: block;
   font-family: var(--font-display);
