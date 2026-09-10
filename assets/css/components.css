@@ -287,10 +287,12 @@ html:not([data-theme="dark"]) .moon-icon {
   background: var(--color-surface);
 }
 
+/* Screenshots vary in aspect ratio; contain keeps headlines from being
+   cropped out of the frame. */
 .project-row-media img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   transition: transform 0.9s var(--ease);
 }
 
