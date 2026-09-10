@@ -225,6 +225,14 @@
 .education-school {
   display: block;
   color: var(--color-text-muted);
+  margin-bottom: 0.35rem;
+}
+
+.education-option {
+  display: block;
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--color-text);
   margin-bottom: 0.85rem;
 }
 
