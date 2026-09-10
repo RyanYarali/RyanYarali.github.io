@@ -24,7 +24,6 @@
   if (mobileToggle && navLinks) {
     mobileToggle.addEventListener("click", toggleMobileMenu);
 
-    // Close mobile menu when clicking on a link
     const navItems = navLinks.querySelectorAll("a");
     navItems.forEach((item) => {
       item.addEventListener("click", () => {
@@ -32,7 +31,6 @@
       });
     });
 
-    // Close mobile menu when clicking outside
     document.addEventListener("click", (e) => {
       if (!mobileToggle.contains(e.target) && !navLinks.contains(e.target)) {
         closeMobileMenu();
@@ -43,32 +41,48 @@
   // Mark document as JS-enabled so CSS can safely apply scroll-reveal states.
   document.documentElement.classList.add("js-ready");
 
-  // ==================== Intersection Observer for Animations ====================
-  const animateElements = document.querySelectorAll(".skill-category");
-
-  if ("IntersectionObserver" in window) {
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: "0px 0px -100px 0px",
-    };
-
-    const observer = new IntersectionObserver(function (entries) {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("fade-in");
-          observer.unobserve(entry.target);
-        }
+  // ==================== Scroll Reveal ====================
+  function initScrollReveal() {
+    document.querySelectorAll(".reveal-group").forEach((group) => {
+      Array.from(group.children).forEach((child, index) => {
+        child.classList.add("reveal");
+        child.style.setProperty("--reveal-index", index);
       });
-    }, observerOptions);
+    });
 
-    animateElements.forEach((el) => {
-      observer.observe(el);
-    });
-  } else {
-    animateElements.forEach((el) => {
-      el.classList.add("fade-in");
-    });
+    const revealElements = document.querySelectorAll(".reveal");
+
+    if (!("IntersectionObserver" in window) || revealElements.length === 0) {
+      revealElements.forEach((el) => el.classList.add("in-view"));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0, rootMargin: "0px 0px -40px 0px" },
+    );
+
+    revealElements.forEach((el) => observer.observe(el));
+
+    // Safety net: a very fast scroll (or flick gesture) can skip the frame
+    // where an element crosses the intersection threshold. Nothing should
+    // stay permanently invisible, so force-reveal anything left behind.
+    setTimeout(() => {
+      revealElements.forEach((el) => el.classList.add("in-view"));
+      observer.disconnect();
+    }, 2500);
   }
+
+  // Run after DOMContentLoaded so content injected by other scripts
+  // (e.g. the project list) is present before elements are observed.
+  document.addEventListener("DOMContentLoaded", initScrollReveal);
 
   // ==================== Active Navigation Link ====================
   function setActiveNavLink() {
@@ -79,8 +93,7 @@
 
     sections.forEach((section) => {
       const sectionTop = section.offsetTop;
-      const sectionHeight = section.clientHeight;
-      if (window.pageYOffset >= sectionTop - 100) {
+      if (window.pageYOffset >= sectionTop - 120) {
         current = section.getAttribute("id");
       }
     });
@@ -93,7 +106,7 @@
     });
   }
 
-  // ==================== Performance:  Debounce Function ====================
+  // ==================== Performance: Debounce Function ====================
   function debounce(func, wait = 20, immediate = true) {
     let timeout;
     return function () {
@@ -110,7 +123,6 @@
     };
   }
 
-  // Apply debounce to scroll events
   const debouncedActiveLink = debounce(setActiveNavLink);
 
   window.addEventListener("scroll", debouncedActiveLink, { passive: true });
@@ -121,7 +133,6 @@
 
   if (profileImage) {
     profileImage.addEventListener("error", function () {
-      // Create fallback placeholder
       const fallback = document.createElement("div");
       fallback.style.cssText = `
         width: 100%;
@@ -129,11 +140,11 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(135deg, rgba(124, 110, 230, 0.28), rgba(106, 91, 212, 0.14));
-        border-radius: 1.5rem;
-        border: 1px solid rgba(124, 110, 230, 0.34);
-        font-size: 2.2rem;
+        background: var(--color-surface-2);
+        font-family: var(--font-mono);
+        font-size: 2rem;
         font-weight: 700;
+        color: var(--color-accent);
         letter-spacing: 0.04em;
       `;
       fallback.textContent = "RY";
@@ -150,7 +161,6 @@
   const backToTopBtn = document.getElementById("back-to-top");
 
   if (backToTopBtn) {
-    // Show/hide button on scroll
     function toggleBackToTop() {
       if (window.pageYOffset > 400) {
         backToTopBtn.classList.add("visible");
@@ -163,7 +173,6 @@
       passive: true,
     });
 
-    // Scroll to top when clicked
     backToTopBtn.addEventListener("click", () => {
       window.scrollTo({
         top: 0,
@@ -171,35 +180,4 @@
       });
     });
   }
-
-  // ==================== Typing Animation ====================
-  function typeWriter(element, text, speed = 100) {
-    let i = 0;
-    element.textContent = "";
-
-    function type() {
-      if (i < text.length) {
-        element.textContent += text.charAt(i);
-        i++;
-        setTimeout(type, speed);
-      }
-    }
-
-    type();
-  }
-
-  // Delay typing animations to let site load first
-  setTimeout(() => {
-    // Hero title typing
-    const typingName = document.getElementById("typing-name");
-    if (typingName) {
-      typeWriter(typingName, "Ryan Yarali", 150);
-    }
-
-    // Logo typing
-    const logoTyping = document.querySelector(".logo-typing");
-    if (logoTyping) {
-      typeWriter(logoTyping, "Ryan Yarali", 150);
-    }
-  }, 500);
 })();

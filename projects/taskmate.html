@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="TaskMate - Academic Task Management Web App | Portfolio Case Study by Ryan Yarali"
+      content="TaskMate - Academic Task Management Web App | Case study by Ryan Yarali"
     />
 
     <meta property="og:type" content="website" />
@@ -27,7 +27,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Righteous&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
 
@@ -35,342 +35,343 @@
     <link rel="stylesheet" href="../assets/css/typography.css" />
     <link rel="stylesheet" href="../assets/css/style.css" />
 
-    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=2" />
+    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=3" />
   </head>
   <body class="project-detail-page taskmate-page">
+    <a href="#main" class="skip-link">Skip to content</a>
+
     <div id="site-navbar" data-nav-context="project"></div>
 
-    <div class="project-hero">
-      <div class="container">
-        <a href="../projects.html" class="back-link">← Projects</a>
-        <h1>TaskMate</h1>
-        <p>Academic Task Management Web App</p>
-        <div class="project-links">
-          <a
-            href="https://github.com/RyanYarali/1800_202530_DTC09.git"
-            class="btn btn-secondary"
-            target="_blank"
-            rel="noopener noreferrer"
-            >View on GitHub</a
-          >
-        </div>
-      </div>
-    </div>
-
-    <section class="section">
-      <div class="container">
-        <div class="project-content">
-          <div class="project-section">
-            <h2>Overview</h2>
-            <p>
-              TaskMate is a fully functional, student-focused mobile-friendly
-              web application built to consolidate academic task management into
-              one clean, unified experience. Students can track pending
-              assignments, mark tasks as complete, organize by course and
-              priority, collaborate with groups, and get answers through a
-              built-in FAQ system — all from any device through the browser.
-            </p>
-            <p>
-              The project was built as part of BCIT's Design Thinking &
-              Communication course (COMM 1800, Team DTC 09), following the full
-              Design Thinking framework from problem identification through to a
-              working, deployed prototype.
-            </p>
-          </div>
-
-          <div class="project-section">
-            <h2>Problem Statement</h2>
-            <h3>Target Users</h3>
-            <ul>
-              <li>Undergraduate, high school, and graduate students</li>
-              <li>Typically managing 4–6 courses simultaneously</li>
-            </ul>
-            <h3>The Challenge</h3>
-            <ul>
-              <li>
-                Academic tasks and deadlines are scattered across multiple
-                disconnected apps
-              </li>
-              <li>
-                Students forget deadlines, lose motivation, and experience
-                increased stress
-              </li>
-              <li>
-                Existing tools are too complex or don't integrate scheduling
-                with tasks
-              </li>
-            </ul>
-            <h3>Our Solution</h3>
-            <p>
-              TaskMate provides a unified, intuitive platform that consolidates
-              all academic tasks in one place with real-time updates, smart
-              filtering, and collaborative features designed specifically for
-              students.
-            </p>
-          </div>
-
-          <div class="project-section">
-            <h2>Application Screens</h2>
-            <p>
-              TaskMate is built around five core screens, each designed for a
-              specific user need:
-            </p>
-
-            <div class="screenshots-grid">
-              <figure>
-                <img src="../assets/TaskMate1.png" alt="Home Dashboard" />
-                <figcaption>
-                  <strong>Screen 1: Home Dashboard</strong><br />Personalized
-                  welcome with today's tasks
-                </figcaption>
-              </figure>
-              <figure>
-                <img src="../assets/TaskMate2.png" alt="Pending Tasks" />
-                <figcaption>
-                  <strong>Screen 2: Pending Tasks</strong><br />All incomplete
-                  tasks sorted by due date
-                </figcaption>
-              </figure>
-              <figure>
-                <img src="../assets/TaskMate3.png" alt="Completed Tasks" />
-                <figcaption>
-                  <strong>Screen 3: Completed Tasks</strong><br />Progress
-                  history and achievements
-                </figcaption>
-              </figure>
-              <figure>
-                <img src="../assets/TaskMate4.png" alt="Task Detail" />
-                <figcaption>
-                  <strong>Screen 4: Task Details</strong><br />Priority badges
-                  and course context
-                </figcaption>
-              </figure>
-              <figure>
-                <img src="../assets/TaskMate5.png" alt="FAQ & Help" />
-                <figcaption>
-                  <strong>Screen 5: FAQ & Help</strong><br />Categorized Q&A
-                  with expandable answers
-                </figcaption>
-              </figure>
-            </div>
-
-            <h3>Screen-by-Screen Breakdown</h3>
-
-            <h4>Home Dashboard (Screen 1)</h4>
-            <p>
-              The home screen greets users by name (e.g., "Welcome, Fish Liu!")
-              with the motivational tagline: "Stay focused. Stay productive. One
-              task at a time."
-            </p>
-            <p><strong>Key UI Elements:</strong></p>
-            <ul>
-              <li>Hamburger menu (top-left) for navigation settings</li>
-              <li>User profile icon (top-right)</li>
-              <li>"Add New Task" button (primary CTA — dark red)</li>
-              <li>"View All Tasks" button (secondary CTA)</li>
-              <li>
-                "Today's Tasks" section — shows tasks due today or celebration
-                emoji when clear
-              </li>
-              <li>
-                Bottom navigation bar with 5 tabs: Home | Groups | Add | To Do |
-                Done
-              </li>
-            </ul>
-
-            <h4>Pending Tasks / To Do (Screen 2)</h4>
-            <p>
-              The To Do view displays all incomplete tasks sorted
-              chronologically by due date.
-            </p>
-            <p><strong>Each task card shows:</strong></p>
-            <ul>
-              <li>Course name (e.g., COMP1510, Math, 1800)</li>
-              <li>Task name (e.g., Term Project, Submission)</li>
-              <li>Priority level: High / Medium / Low</li>
-              <li>Empty circle on the right to mark as complete</li>
-            </ul>
-            <p>
-              Filter controls allow users to narrow by Course or Priority for
-              quick access to relevant tasks.
-            </p>
-
-            <h4>Completed Tasks / Done (Screen 3)</h4>
-            <p>
-              The Done view mirrors the To Do layout but displays completed
-              tasks with a filled dark-red checkmark. Tasks are grouped by
-              completion date, acting as a progress tracker and motivation tool
-              — students can see everything they've accomplished over the term.
-            </p>
-
-            <h4>Task Card Detail (Screen 4)</h4>
-            <p>A focused view of task information when expanded, showing:</p>
-            <ul>
-              <li>Task name</li>
-              <li>Priority badge (color-coded)</li>
-              <li>Course identifier</li>
-              <li>Category / Course section</li>
-              <li>Due date status</li>
-            </ul>
-
-            <h4>FAQ / Help Page (Screen 5)</h4>
-            <p>
-              A fully built FAQ section with categorized, expandable questions.
-              Categories include: All | Account | Tasks | Groups | Notifications
-              | Privacy | Technical. Users can filter by category and expand
-              accordion-style items to reveal answers inline. This confirms the
-              app has real collaboration and group task management features.
-            </p>
-          </div>
-
-          <div class="project-section">
-            <h2>Key Features</h2>
-            <ul>
-              <li>
-                <strong>Personalized Dashboard</strong> — User-specific welcome
-                and customized task views based on enrolled courses
-              </li>
-              <li>
-                <strong>Today's Tasks Widget</strong> — Quick glance at urgent
-                tasks with priority badges on home screen
-              </li>
-              <li>
-                <strong>Pending & Completion Tracking</strong> — Separate views
-                for To Do and Done tasks with filtering
-              </li>
-              <li>
-                <strong>Group Collaboration</strong> — Shared group tasks and
-                collaborative assignment management
-              </li>
-              <li>
-                <strong>Smart Filtering</strong> — Filter tasks by course,
-                priority level, or due date
-              </li>
-              <li>
-                <strong>Firebase Authentication</strong> — Secure email and
-                password sign-in with encryption
-              </li>
-              <li>
-                <strong>Built-in FAQ & Help</strong> — Comprehensive,
-                categorized help system with searchable answers
-              </li>
-              <li>
-                <strong>Progress Motivation</strong> — Celebration emojis and
-                done-list history reinforce accomplishment
-              </li>
-            </ul>
-          </div>
-
-          <div class="project-section">
-            <h2>Technology Stack</h2>
-
-            <h3>Frontend</h3>
-            <div class="tech-list">
-              <span class="tech-item">HTML5</span>
-              <span class="tech-item">CSS3</span>
-              <span class="tech-item">JavaScript</span>
-              <span class="tech-item">Mobile-First Design</span>
-              <span class="tech-item">Responsive Web App</span>
-            </div>
-
-            <h3>Backend & Authentication</h3>
-            <div class="tech-list">
-              <span class="tech-item">Firebase Authentication</span>
-              <span class="tech-item">Email & Password Sign-in</span>
-              <span class="tech-item">Secure Session Management</span>
-            </div>
-
-            <h3>Database & Hosting</h3>
-            <div class="tech-list">
-              <span class="tech-item">Firebase Firestore</span>
-              <span class="tech-item">Real-time Data Sync</span>
-              <span class="tech-item">Firebase Hosting</span>
-            </div>
-          </div>
-
-          <div class="project-section">
-            <h2>Design Approach</h2>
-
-            <h3>Color Palette</h3>
-            <ul>
-              <li>
-                <strong>Primary:</strong> Deep maroon / dark red (header, active
-                nav, primary buttons)
-              </li>
-              <li>
-                <strong>Accent:</strong> Warm red / orange-red (priority badges,
-                active tab icons)
-              </li>
-              <li><strong>Background:</strong> Light grey / off-white</li>
-              <li><strong>Cards:</strong> White with soft shadow</li>
-            </ul>
-
-            <h3>Navigation Pattern</h3>
-            <ul>
-              <li>
-                Bottom tab bar (5 tabs) — standard mobile UX pattern for easy
-                thumb reach
-              </li>
-              <li>Active tab highlighted in dark red with label</li>
-              <li>Hamburger menu for secondary settings/navigation</li>
-            </ul>
-
-            <h3>Priority Indicators</h3>
-            <ul>
-              <li>
-                <strong>High:</strong> Red/orange pill badge for immediate
-                visibility
-              </li>
-              <li><strong>Medium:</strong> Neutral styling</li>
-              <li><strong>Low:</strong> Lighter, de-emphasized styling</li>
-            </ul>
-          </div>
-
-          <div class="project-section">
-            <h2>Learning Outcomes</h2>
-            <ul>
-              <li>
-                Applied Design Thinking methodology from problem scoping through
-                prototyping
-              </li>
-              <li>
-                Built a full-stack web application with Firebase real-time
-                database and authentication
-              </li>
-              <li>
-                Designed for mobile-first UX with intuitive navigation and
-                accessibility
-              </li>
-              <li>
-                Collaborated as a team to deliver a production-ready application
-                within course constraints
-              </li>
-              <li>
-                Implemented filtering, state management, and dynamic UI
-                rendering with vanilla JavaScript
-              </li>
-            </ul>
-          </div>
-
-          <div class="project-footer">
-            <a href="../projects.html" class="btn btn-secondary"
-              >← All Projects</a
-            >
-            <a href="../index.html#contact" class="btn btn-primary"
-              >Get In Touch</a
+    <main id="main">
+      <div class="project-hero">
+        <div class="container">
+          <a href="../projects.html" class="back-link">&larr; Projects</a>
+          <h1>TaskMate</h1>
+          <p>Academic task management web app</p>
+          <div class="project-links">
+            <a
+              href="https://github.com/RyanYarali/1800_202530_DTC09.git"
+              class="btn btn-secondary"
+              target="_blank"
+              rel="noopener noreferrer"
+              >View on GitHub</a
             >
           </div>
         </div>
       </div>
-    </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="project-content">
+            <div class="project-section">
+              <h2>Overview</h2>
+              <p>
+                TaskMate is a mobile-friendly web application built to
+                consolidate academic task management into one place.
+                Students can track pending assignments, mark tasks
+                complete, organize by course and priority, collaborate with
+                groups, and get answers through a built-in FAQ — all from
+                any device through the browser.
+              </p>
+              <p>
+                The project was built as part of BCIT's Design Thinking &amp;
+                Communication course (COMM 1800, Team DTC 09), following the
+                full design-thinking framework from problem identification
+                through to a working, deployed prototype.
+              </p>
+            </div>
+
+            <div class="project-section">
+              <h2>Problem statement</h2>
+              <h3>Target users</h3>
+              <ul>
+                <li>Undergraduate, high school, and graduate students</li>
+                <li>Typically managing 4–6 courses simultaneously</li>
+              </ul>
+              <h3>The challenge</h3>
+              <ul>
+                <li>
+                  Academic tasks and deadlines are scattered across multiple
+                  disconnected apps
+                </li>
+                <li>
+                  Students miss deadlines and lose motivation as a result
+                </li>
+                <li>
+                  Existing tools are too complex or don't integrate
+                  scheduling with tasks
+                </li>
+              </ul>
+              <h3>Our solution</h3>
+              <p>
+                TaskMate provides a unified platform that consolidates
+                academic tasks in one place, with real-time updates, filtering,
+                and collaborative features built for students specifically.
+              </p>
+            </div>
+
+            <div class="project-section">
+              <h2>Application screens</h2>
+              <p>
+                TaskMate is built around five core screens, each designed
+                for a specific user need:
+              </p>
+
+              <div class="screenshots-grid">
+                <figure>
+                  <img src="../assets/TaskMate1.png" alt="Home dashboard screen" />
+                  <figcaption>
+                    <strong>Screen 1: Home dashboard</strong><br />Personalized
+                    welcome with today's tasks
+                  </figcaption>
+                </figure>
+                <figure>
+                  <img src="../assets/TaskMate2.png" alt="Pending tasks screen" />
+                  <figcaption>
+                    <strong>Screen 2: Pending tasks</strong><br />All
+                    incomplete tasks sorted by due date
+                  </figcaption>
+                </figure>
+                <figure>
+                  <img src="../assets/TaskMate3.png" alt="Completed tasks screen" />
+                  <figcaption>
+                    <strong>Screen 3: Completed tasks</strong><br />Progress
+                    history and completion tracking
+                  </figcaption>
+                </figure>
+                <figure>
+                  <img src="../assets/TaskMate4.png" alt="Task detail screen" />
+                  <figcaption>
+                    <strong>Screen 4: Task details</strong><br />Priority
+                    badges and course context
+                  </figcaption>
+                </figure>
+                <figure>
+                  <img src="../assets/TaskMate5.png" alt="FAQ and help screen" />
+                  <figcaption>
+                    <strong>Screen 5: FAQ &amp; help</strong><br />Categorized
+                    Q&amp;A with expandable answers
+                  </figcaption>
+                </figure>
+              </div>
+
+              <h3>Screen-by-screen breakdown</h3>
+
+              <h4>Home dashboard (screen 1)</h4>
+              <p>
+                The home screen greets users by name (e.g. "Welcome, Fish
+                Liu!") with the tagline: "Stay focused. Stay productive. One
+                task at a time."
+              </p>
+              <p><strong>Key UI elements:</strong></p>
+              <ul>
+                <li>Hamburger menu (top-left) for navigation settings</li>
+                <li>User profile icon (top-right)</li>
+                <li>"Add new task" button (primary CTA)</li>
+                <li>"View all tasks" button (secondary CTA)</li>
+                <li>
+                  "Today's tasks" section — shows tasks due today, or a
+                  celebration state when clear
+                </li>
+                <li>
+                  Bottom navigation bar with five tabs: Home, Groups, Add,
+                  To Do, Done
+                </li>
+              </ul>
+
+              <h4>Pending tasks / To Do (screen 2)</h4>
+              <p>
+                The To Do view displays all incomplete tasks sorted
+                chronologically by due date.
+              </p>
+              <p><strong>Each task card shows:</strong></p>
+              <ul>
+                <li>Course name (e.g. COMP1510, Math, 1800)</li>
+                <li>Task name (e.g. Term project, Submission)</li>
+                <li>Priority level: high / medium / low</li>
+                <li>An empty circle on the right to mark as complete</li>
+              </ul>
+              <p>
+                Filter controls let users narrow by course or priority for
+                quick access to relevant tasks.
+              </p>
+
+              <h4>Completed tasks / Done (screen 3)</h4>
+              <p>
+                The Done view mirrors the To Do layout but shows completed
+                tasks with a filled checkmark. Tasks are grouped by
+                completion date, acting as a progress tracker so students
+                can see what they've gotten through over the term.
+              </p>
+
+              <h4>Task card detail (screen 4)</h4>
+              <p>A focused view of task information when expanded, showing:</p>
+              <ul>
+                <li>Task name</li>
+                <li>Priority badge (color-coded)</li>
+                <li>Course identifier</li>
+                <li>Category / course section</li>
+                <li>Due date status</li>
+              </ul>
+
+              <h4>FAQ / help page (screen 5)</h4>
+              <p>
+                A categorized, expandable FAQ. Categories include: All,
+                Account, Tasks, Groups, Notifications, Privacy, Technical.
+                Users can filter by category and expand accordion-style
+                items to reveal answers inline — this is also where the
+                app's group and collaboration features are documented for
+                users.
+              </p>
+            </div>
+
+            <div class="project-section">
+              <h2>Key features</h2>
+              <ul>
+                <li>
+                  <strong>Personalized dashboard</strong> — user-specific
+                  welcome and task views based on enrolled courses
+                </li>
+                <li>
+                  <strong>Today's tasks widget</strong> — quick view of
+                  urgent tasks with priority badges on the home screen
+                </li>
+                <li>
+                  <strong>Pending &amp; completion tracking</strong> —
+                  separate To Do and Done views with filtering
+                </li>
+                <li>
+                  <strong>Group collaboration</strong> — shared group tasks
+                  and collaborative assignment management
+                </li>
+                <li>
+                  <strong>Filtering</strong> — by course, priority level, or
+                  due date
+                </li>
+                <li>
+                  <strong>Firebase authentication</strong> — email and
+                  password sign-in
+                </li>
+                <li>
+                  <strong>Built-in FAQ &amp; help</strong> — categorized help
+                  system with searchable answers
+                </li>
+              </ul>
+            </div>
+
+            <div class="project-section">
+              <h2>Technology stack</h2>
+
+              <h3>Frontend</h3>
+              <div class="tech-list">
+                <span class="tech-item">HTML5</span>
+                <span class="tech-item">CSS3</span>
+                <span class="tech-item">JavaScript</span>
+                <span class="tech-item">Mobile-first design</span>
+              </div>
+
+              <h3>Backend &amp; authentication</h3>
+              <div class="tech-list">
+                <span class="tech-item">Firebase authentication</span>
+                <span class="tech-item">Email &amp; password sign-in</span>
+              </div>
+
+              <h3>Database &amp; hosting</h3>
+              <div class="tech-list">
+                <span class="tech-item">Firebase Firestore</span>
+                <span class="tech-item">Real-time data sync</span>
+                <span class="tech-item">Firebase Hosting</span>
+              </div>
+            </div>
+
+            <div class="project-section">
+              <h2>Design approach</h2>
+
+              <h3>Color palette</h3>
+              <ul>
+                <li>
+                  <strong>Primary:</strong> deep maroon / dark red (header,
+                  active nav, primary buttons)
+                </li>
+                <li>
+                  <strong>Accent:</strong> warm red-orange (priority badges,
+                  active tab icons)
+                </li>
+                <li><strong>Background:</strong> light grey / off-white</li>
+                <li><strong>Cards:</strong> white with soft shadow</li>
+              </ul>
+
+              <h3>Navigation pattern</h3>
+              <ul>
+                <li>
+                  Bottom tab bar (5 tabs) — standard mobile pattern for
+                  thumb reach
+                </li>
+                <li>Active tab highlighted in dark red with label</li>
+                <li>Hamburger menu for secondary settings</li>
+              </ul>
+
+              <h3>Priority indicators</h3>
+              <ul>
+                <li>
+                  <strong>High:</strong> red/orange pill badge for immediate
+                  visibility
+                </li>
+                <li><strong>Medium:</strong> neutral styling</li>
+                <li><strong>Low:</strong> lighter, de-emphasized styling</li>
+              </ul>
+            </div>
+
+            <div class="project-section">
+              <h2>Learning outcomes</h2>
+              <ul>
+                <li>
+                  Applied design-thinking methodology from problem scoping
+                  through prototyping
+                </li>
+                <li>
+                  Built a full-stack web app with Firebase real-time
+                  database and authentication
+                </li>
+                <li>
+                  Designed for mobile-first UX with accessible navigation
+                </li>
+                <li>
+                  Collaborated as a team to deliver a working app within
+                  course constraints
+                </li>
+                <li>
+                  Implemented filtering and dynamic UI rendering with
+                  vanilla JavaScript
+                </li>
+              </ul>
+            </div>
+
+            <div class="project-footer">
+              <a href="../projects.html" class="btn btn-secondary"
+                >&larr; All projects</a
+              >
+              <a href="../index.html#contact" class="btn btn-primary"
+                >Get in touch</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
 
     <footer class="footer">
-      <div class="container">
-        <p>
-          &copy; 2026 <a href="../index.html">Ryan Yarali</a>. All rights
-          reserved.
-        </p>
-        <p class="footer-tech">Built with HTML, CSS, and JavaScript</p>
+      <div class="container footer-inner">
+        <div>
+          <p>&copy; 2026 <a href="../index.html">Ryan Yarali</a>. All rights reserved.</p>
+          <p class="footer-tech">Built with HTML, CSS, and JavaScript — no framework.</p>
+        </div>
+        <div class="footer-social">
+          <a href="https://github.com/RyanYarali" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.93.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.87-1.36-3.87-1.36-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.42-2.69 5.4-5.25 5.68.41.36.78 1.06.78 2.14 0 1.54-.01 2.79-.01 3.17 0 .3.2.66.79.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+            GitHub
+          </a>
+        </div>
       </div>
     </footer>
 

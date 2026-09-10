@@ -31,16 +31,15 @@
     const learningHref = isHome ? "#learning" : `${base}index.html#learning`;
     const contactHref = isHome ? "#contact" : `${base}index.html#contact`;
 
-    const logoText = isHome
-      ? '<span class="logo-text"><span class="logo-typing"></span></span>'
-      : '<span class="logo-text"><span class="logo-typing-static">Ryan Yarali</span></span>';
-
     return `
       <nav class="navbar">
         <div class="nav-container">
           <a href="${homeHref}" class="logo" aria-label="Go to home">
-            ${logoText}
-            <span class="logo-subtitle">Portfolio</span>
+            <span class="logo-mark" aria-hidden="true">RY</span>
+            <span class="logo-text">
+              <span class="logo-name">Ryan Yarali</span>
+              <span class="logo-subtitle">Software &amp; Systems</span>
+            </span>
           </a>
 
           <ul class="nav-links" id="nav-links">
@@ -61,12 +60,12 @@
             >
               <svg
                 class="sun-icon"
-                width="20"
-                height="20"
+                width="18"
+                height="18"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
+                stroke-width="1.75"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               >
@@ -82,12 +81,12 @@
               </svg>
               <svg
                 class="moon-icon"
-                width="20"
-                height="20"
+                width="18"
+                height="18"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
+                stroke-width="1.75"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               >

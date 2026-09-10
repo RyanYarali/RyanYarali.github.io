@@ -5,35 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="View all projects by Ryan Yarali - Computer Systems Technology Student and Software Developer"
+      content="Projects by Ryan Yarali - Computer Systems Technology student and web developer"
     />
 
     <!-- Open Graph / Social Media Meta Tags -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://ryanyarali.com/projects.html" />
-    <meta property="og:title" content="All Projects | Ryan Yarali" />
+    <meta property="og:title" content="Projects | Ryan Yarali" />
     <meta
       property="og:description"
-      content="View all projects by Ryan Yarali - Computer Systems Technology Student and Software Developer"
+      content="Projects by Ryan Yarali - Computer Systems Technology student and web developer"
     />
     <meta
       property="og:image"
       content="https://ryanyarali.com/assets/profile-photo.jpg"
     />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="All Projects | Ryan Yarali" />
+    <meta name="twitter:title" content="Projects | Ryan Yarali" />
     <meta
       name="twitter:description"
-      content="View all projects by Ryan Yarali - Computer Systems Technology Student and Software Developer"
+      content="Projects by Ryan Yarali - Computer Systems Technology student and web developer"
     />
 
-    <title>All Projects | Ryan Yarali</title>
+    <title>Projects | Ryan Yarali</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Righteous&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
 
@@ -41,41 +41,53 @@
     <link rel="stylesheet" href="assets/css/typography.css" />
     <link rel="stylesheet" href="assets/css/style.css" />
 
-    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=2" />
+    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=3" />
   </head>
   <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+
     <!-- Navigation -->
     <div id="site-navbar" data-nav-context="root"></div>
 
-    <!-- Page Header -->
-    <section class="page-header">
-      <div class="container">
-        <h1>All Projects</h1>
-        <p>
-          A collection of my work showcasing various skills and technologies
-        </p>
-      </div>
-    </section>
-
-    <!-- Projects Grid -->
-    <section class="section">
-      <div class="container">
-        <div id="projects-grid" class="projects-grid-container"></div>
-        <div class="text-center projects-section-cta">
-          <a href="index.html#projects" class="btn btn-secondary">
-            Back to Home
-          </a>
+    <main id="main">
+      <!-- Page Header -->
+      <section class="page-header">
+        <div class="container">
+          <p class="eyebrow">Selected work</p>
+          <h1>Projects</h1>
+          <p class="section-intro">
+            Two things I've built end-to-end so far, with the reasoning
+            behind each decision written up alongside the code.
+          </p>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <!-- Projects List -->
+      <section class="section">
+        <div class="container">
+          <div id="projects-grid"></div>
+          <div class="text-center projects-section-cta">
+            <a href="index.html#contact" class="btn btn-secondary">
+              Get in touch
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
 
     <!-- Footer -->
     <footer class="footer">
-      <div class="container">
-        <p>
-          &copy; 2026 <a href="index.html">Ryan Yarali</a>. All rights reserved.
-        </p>
-        <p class="footer-tech">Built with HTML, CSS, and JavaScript</p>
+      <div class="container footer-inner">
+        <div>
+          <p>&copy; 2026 <a href="index.html">Ryan Yarali</a>. All rights reserved.</p>
+          <p class="footer-tech">Built with HTML, CSS, and JavaScript — no framework.</p>
+        </div>
+        <div class="footer-social">
+          <a href="https://github.com/RyanYarali" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.93.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.87-1.36-3.87-1.36-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.42-2.69 5.4-5.25 5.68.41.36.78 1.06.78 2.14 0 1.54-.01 2.79-.01 3.17 0 .3.2.66.79.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+            GitHub
+          </a>
+        </div>
       </div>
     </footer>
 
