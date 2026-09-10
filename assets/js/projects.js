@@ -8,6 +8,18 @@
 
   // ==================== Projects Data ====================
   const projectsData = {
+    nooklook: {
+      id: "nooklook",
+      title: "Nook Look",
+      tagline:
+        "The full web presence for a Coquitlam portrait studio: four priced service lines, a booking pipeline, a filterable gallery, and local SEO. Built and launched solo.",
+      outcome:
+        "The client asked for WordPress, then asked for things WordPress does not do. Custom content types, hand-written structured data, and managed code snippets closed the gap with no recurring plugin cost.",
+      tech: ["WordPress", "Pods", "PHP", "Custom CSS/JS", "Local SEO"],
+      image: null,
+      featured: true,
+      url: "projects/nooklook.html",
+    },
     taskmate: {
       id: "taskmate",
       title: "TaskMate",
@@ -40,8 +52,12 @@
 
     return `
       <article class="project-row">
-        <a class="project-row-media" href="${project.url}" aria-label="Open ${project.title} case study">
-          <img src="${project.image}" alt="${project.title} interface screenshot" loading="lazy" />
+        <a class="project-row-media${project.image ? "" : " project-row-media-empty"}" href="${project.url}" aria-label="Open ${project.title} case study">
+          ${
+            project.image
+              ? `<img src="${project.image}" alt="${project.title} interface screenshot" loading="lazy" />`
+              : `<span>${project.title}</span>`
+          }
         </a>
         <div class="project-row-body">
           <span class="project-row-index">${num}</span>

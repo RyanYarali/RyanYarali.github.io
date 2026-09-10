@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("portfolio-theme-override");
+          var theme =
+            stored ||
+            (window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light");
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      })();
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Nook Look - a boutique photography studio website built solo on WordPress, with a custom design system, booking pipeline, and local SEO. Case study by Ryan Yarali."
+    />
+
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://ryanyarali.com/projects/nooklook.html"
+    />
+    <meta property="og:title" content="Nook Look | Ryan Yarali" />
+    <meta
+      property="og:description"
+      content="A boutique photography studio website built solo on WordPress, with a custom design system, booking pipeline, and local SEO."
+    />
+
+    <title>Nook Look — Photography Studio Website | Ryan Yarali</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400..600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../assets/css/reset.css" />
+    <link rel="stylesheet" href="../assets/css/typography.css" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+
+    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=4" />
+  </head>
+  <body class="project-detail-page nooklook-page">
+    <a href="#main" class="skip-link">Skip to content</a>
+
+    <div id="site-navbar" data-nav-context="project"></div>
+
+    <main id="main">
+      <div class="project-hero">
+        <div class="container">
+          <a href="../projects.html" class="back-link">&larr; Projects</a>
+          <h1>Nook Look</h1>
+          <p>Boutique photography studio, built and launched solo</p>
+          <div class="project-links">
+            <a
+              href="https://nooklook.ca"
+              class="btn btn-primary"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Visit the site</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <section class="section">
+        <div class="container">
+          <div class="project-content">
+            <div class="project-section">
+              <h2>Overview</h2>
+              <p>
+                Nook Look is a portrait photography studio in Coquitlam, BC,
+                covering newborn, maternity, birthday, and outdoor family
+                sessions across Greater Vancouver. The owners, Arefe and Pary,
+                needed a complete web presence from nothing: something that
+                could take bookings, show real work, and feel as unhurried as
+                the photography itself.
+              </p>
+              <p>
+                I built, styled, and launched the whole site on my own, and
+                stayed on afterwards as their ongoing web partner for design
+                refinement, content updates, and technical fixes as the studio
+                grew.
+              </p>
+            </div>
+
+            <div class="project-section">
+              <h2>The brief</h2>
+              <ul>
+                <li>
+                  Four session types, each with three pricing tiers
+                  (Essential, Signature, Luxury) and a shared add-ons list
+                </li>
+                <li>
+                  A warm, editorial design language, with nothing that read as
+                  templated
+                </li>
+                <li>
+                  Working booking and contact forms, a filterable gallery, and
+                  a Google-connected contact page
+                </li>
+                <li>
+                  Local SEO groundwork so the studio could rank in Coquitlam
+                  and Greater Vancouver from launch
+                </li>
+                <li>
+                  No recurring software cost beyond hosting: every tool had to
+                  be free-tier or already included
+                </li>
+                <li>
+                  An owner who could run promotions, popups, and pricing from
+                  the dashboard without touching code
+                </li>
+              </ul>
+            </div>
+
+            <div class="project-section">
+              <h2>Design system</h2>
+              <p>
+                I built the design direction and token set from scratch rather
+                than starting from a theme demo.
+              </p>
+
+              <div class="swatch-row" role="img" aria-label="Colour palette: dusty rose, blush pink, sage gray-green, cream, gold, charcoal">
+                <span class="swatch" style="--swatch: #c97b7b"><span>Dusty rose</span></span>
+                <span class="swatch" style="--swatch: #e8b4b8"><span>Blush</span></span>
+                <span class="swatch" style="--swatch: #9fa8a3"><span>Sage</span></span>
+                <span class="swatch" style="--swatch: #f5ede4"><span>Cream</span></span>
+                <span class="swatch" style="--swatch: #c9a24b"><span>Gold</span></span>
+                <span class="swatch" style="--swatch: #2b2b2b"><span>Charcoal</span></span>
+              </div>
+
+              <h3>Typography</h3>
+              <p>
+                Fraunces for headings, for the editorial feel; Work Sans for
+                body copy, for legibility at small sizes.
+              </p>
+
+              <h3>The curved signature</h3>
+              <p>
+                One rule carried across the whole site: pill-shaped navigation,
+                buttons, and badges; 16px radius on photo cards; 12px on form
+                fields. The gold divider lines and the typography stay sharp
+                and unrounded, as deliberate contrast against all that
+                softness.
+              </p>
+              <p>
+                The header is a floating pill that hides on scroll-down and
+                returns on scroll-up. Mobile gets a different pattern
+                entirely: a logo-only pill at the top, and a separate floating
+                pill navigation bar at the bottom with icons, positioned for
+                thumbs.
+              </p>
+            </div>
+
+            <div class="project-section">
+              <h2>Tech stack</h2>
+              <p>Every tool here is free-tier or included with hosting.</p>
+              <div class="tech-list">
+                <span class="tech-item">WordPress</span>
+                <span class="tech-item">Kadence + Kadence Blocks</span>
+                <span class="tech-item">Pods</span>
+                <span class="tech-item">Fluent Forms</span>
+                <span class="tech-item">WPCode</span>
+                <span class="tech-item">BeyondSEO</span>
+                <span class="tech-item">LiteSpeed Cache</span>
+                <span class="tech-item">ShortPixel</span>
+                <span class="tech-item">IONOS</span>
+              </div>
+
+              <h3>Why it is built this way</h3>
+              <p>
+                <strong>Pods</strong> provides the custom post types behind
+                Services, Packages, and Gallery Items, plus a client-editable
+                settings page. <strong>WPCode</strong> carries every piece of
+                custom CSS, PHP, and JS as a managed snippet rather than an
+                edit to theme files, so nothing is lost when the theme
+                updates. The <strong>LocalBusiness structured data</strong> is
+                hand-written JSON-LD rather than plugin output, because I
+                wanted exact control over what Google indexes.
+              </p>
+            </div>
+
+            <div class="project-section">
+              <h2>What I built</h2>
+
+              <h3>Session and pricing pages</h3>
+              <p>
+                Four dedicated session pages, each with a full
+                Essential/Signature/Luxury breakdown, a "Most Popular" tier
+                callout, and shared add-ons (prints, canvases, albums, extra
+                edited images). A Packages hub page puts all four side by side
+                for people comparing before they book.
+              </p>
+
+              <h3>Home page</h3>
+              <p>
+                An editorial split hero pairs a rounded charcoal text panel
+                with a full-bleed photograph, leading into a four-card
+                sessions grid and a studio introduction. The testimonials and
+                booking call-to-action are merged into a single dark card with
+                an auto-advancing review carousel, rather than left as two
+                disconnected stacked sections.
+              </p>
+
+              <h3>Gallery</h3>
+              <p>
+                A filterable portfolio across the four session types, built on
+                a custom Pods post type, fully alt-tagged, with every image run
+                through ShortPixel.
+              </p>
+
+              <h3>Booking and contact</h3>
+              <p>
+                A booking form capturing session type, date, and contact
+                details, plus a contact page with the real studio address and
+                phone, a live embedded Google Map, and a direct link to the
+                studio's Google reviews. The map uses a place-CID embed, which
+                avoids needing a paid Maps API key.
+              </p>
+
+              <h3>Client-editable promotions</h3>
+              <p>
+                The grand-opening discount popup and its matching booking-page
+                banner both read from one Pods-powered settings page. The
+                owners can change the headline, discount, message, button text
+                and link, or switch the whole thing off, without a developer.
+                This was the requirement that most clearly pushed past what
+                stock WordPress offers.
+              </p>
+
+              <h3>Legal and trust</h3>
+              <p>
+                A privacy policy covering form data, cookies, and third-party
+                embeds, including an explicit policy on photographing minors
+                only with guardian consent, which matters for this business in
+                particular.
+              </p>
+            </div>
+
+            <div class="project-section">
+              <h2>SEO and local search</h2>
+              <ul>
+                <li>
+                  Page-level titles and meta descriptions across every page,
+                  XML sitemap submitted, on-page scoring used to tighten copy
+                </li>
+                <li>
+                  Hand-authored LocalBusiness JSON-LD covering name, address,
+                  phone, price range, and social links, so Google has what it
+                  needs for map packs and knowledge panels
+                </li>
+                <li>
+                  A descriptive alt-text pass across the entire gallery,
+                  written for people rather than stuffed with keywords
+                </li>
+                <li>
+                  Performance tuning through LiteSpeed Cache: minification
+                  plus selective lazy-loading, with the hero image excluded
+                  from lazy-load specifically to protect its LCP
+                </li>
+              </ul>
+            </div>
+
+            <div class="project-section">
+              <h2>Working with the client</h2>
+              <p>
+                This was iterative rather than a single big reveal. Most of it
+                happened in tight feedback loops, often live and
+                screenshot-by-screenshot:
+              </p>
+              <ul>
+                <li>
+                  Rebuilt the mobile hero from scratch after the
+                  desktop-derived layout did not translate to a narrow screen,
+                  landing on a full-bleed photo with text overlay that tested
+                  better on an actual phone
+                </li>
+                <li>
+                  Went several rounds on the mobile header logo before it read
+                  as genuinely balanced, which meant tracking down a
+                  theme-level scaling transform that was quietly shrinking it
+                </li>
+                <li>
+                  Replaced the bottom navigation's active-page animation with
+                  a calmer flush highlight after the client found the original
+                  too busy
+                </li>
+                <li>
+                  Recategorised and recaptioned the gallery as real session
+                  photos arrived, replacing placeholders
+                </li>
+                <li>
+                  Ran a sitewide content correction pass on request, including
+                  removing every em dash across every page and template, and
+                  correcting the studio's description to a dedicated office
+                  rather than home-based
+                </li>
+              </ul>
+              <p>
+                Every change was checked live after saving rather than assumed,
+                and mobile fixes were verified against real device screenshots
+                instead of emulated previews. Enough of the bugs turned out to
+                be phantom grid columns, inline-block spacing quirks, and
+                theme-level transforms that only appeared on a real phone.
+              </p>
+            </div>
+
+            <div class="project-section">
+              <h2>Outcome</h2>
+              <ul>
+                <li>
+                  A custom design system implemented sitewide, with no
+                  page-builder templates
+                </li>
+                <li>
+                  Four complete priced service pages and a working booking
+                  pipeline
+                </li>
+                <li>An SEO-optimised gallery and local search presence</li>
+                <li>
+                  A promotional system the client runs independently, with no
+                  developer needed for day-to-day marketing
+                </li>
+                <li>Zero recurring software cost beyond hosting</li>
+              </ul>
+              <p>
+                The owners now handle content and promotions themselves. I
+                continue as their web partner for design iteration, new
+                features, and support as the business grows.
+              </p>
+            </div>
+
+            <div class="project-footer">
+              <a href="../projects.html" class="btn btn-secondary"
+                >&larr; All projects</a
+              >
+              <a href="../index.html#contact" class="btn btn-primary"
+                >Get in touch</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <div>
+          <p>&copy; 2026 <a href="../index.html">Ryan Yarali</a>. All rights reserved.</p>
+          <p class="footer-tech">Built with HTML, CSS, and JavaScript — no framework.</p>
+        </div>
+        <div class="footer-social">
+          <a href="https://github.com/RyanYarali" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.93.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.87-1.36-3.87-1.36-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.42-2.69 5.4-5.25 5.68.41.36.78 1.06.78 2.14 0 1.54-.01 2.79-.01 3.17 0 .3.2.66.79.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../assets/js/navbar.js"></script>
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/main.js"></script>
+  </body>
+</html>
