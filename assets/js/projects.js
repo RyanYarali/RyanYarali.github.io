@@ -28,7 +28,7 @@
       outcome:
         "Shipped end-to-end with Firebase auth and Firestore, then tested by a 9-person class team against real course workloads.",
       tech: ["HTML5", "CSS3", "JavaScript", "Firebase"],
-      image: "assets/TaskMate6.png",
+      image: "assets/TaskMate6.jpg",
       featured: true,
       url: "projects/taskmate.html",
     },
@@ -40,7 +40,7 @@
       outcome:
         "Built from a blank stylesheet: design tokens, theming, and layout written by hand rather than pulled from a template.",
       tech: ["HTML5", "CSS3", "Vanilla JavaScript"],
-      image: "assets/ryan-port01.png",
+      image: "assets/ryan-port01.jpg",
       featured: true,
       url: "projects/portfolio.html",
     },
