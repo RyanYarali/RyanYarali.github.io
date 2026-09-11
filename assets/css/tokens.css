@@ -20,7 +20,7 @@
 
   --color-text: #12192b;
   --color-text-muted: #4a5568;
-  --color-text-subtle: #7b8494;
+  --color-text-subtle: #666e7d;
 
   --color-border: rgba(18, 25, 43, 0.13);
   --color-border-strong: rgba(18, 25, 43, 0.28);
@@ -61,7 +61,7 @@ html[data-theme="dark"] {
 
   --color-text: #e8ecf3;
   --color-text-muted: #a3adbf;
-  --color-text-subtle: #6f7a8c;
+  --color-text-subtle: #828da0;
 
   --color-border: rgba(232, 236, 243, 0.13);
   --color-border-strong: rgba(232, 236, 243, 0.3);
