@@ -16,7 +16,7 @@
       outcome:
         "The client asked for WordPress, then asked for things WordPress does not do. Custom content types, hand-written structured data, and managed code snippets closed the gap with no recurring plugin cost.",
       tech: ["WordPress", "Pods", "PHP", "Custom CSS/JS", "Local SEO"],
-      image: null,
+      image: "assets/nl-hero.jpg",
       featured: true,
       url: "projects/nooklook.html",
     },

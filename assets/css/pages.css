@@ -407,6 +407,48 @@
   border-top: 1px solid var(--color-border);
 }
 
+.shots {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin: 1.75rem 0 0;
+}
+
+@media (min-width: 640px) {
+  .shots {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .shot-wide {
+    grid-column: 1 / -1;
+  }
+}
+
+.shot {
+  margin: 0;
+}
+
+.shot img {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+/* A portrait phone capture is roughly three times the height of the other
+   shots; left unconstrained it dominates the grid and strands its neighbour. */
+.shot-tall img {
+  max-width: 260px;
+}
+
+.shot figcaption {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--color-text-subtle);
+}
+
 .swatch-row {
   display: flex;
   flex-wrap: wrap;
