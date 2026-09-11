@@ -90,11 +90,6 @@ Validation and submission are handled client-side in `assets/js/form.js`.
 - Scroll-reveal animations fall back to visible content, and all motion is
   disabled under `prefers-reduced-motion`
 
-## Note on `.agents/` and `.claude/`
-
-These directories hold agent skill definitions installed into the repository.
-They are development tooling and have no effect on the published site.
-
 ## License
 
 MIT. Feel free to borrow from it.
