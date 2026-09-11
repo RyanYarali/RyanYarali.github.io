@@ -139,11 +139,4 @@ li:last-child {
   color: var(--color-text-subtle);
 }
 
-.serif-italic {
-  font-family: var(--font-display);
-  font-style: italic;
-}
 
-.tabular {
-  font-variant-numeric: tabular-nums;
-}
