@@ -8,6 +8,18 @@
 
   // ==================== Projects Data ====================
   const projectsData = {
+    nooklook: {
+      id: "nooklook",
+      title: "Nook Look",
+      tagline:
+        "The full web presence for a Coquitlam portrait studio: four priced service lines, a booking pipeline, a filterable gallery, and local SEO. Built and launched solo.",
+      outcome:
+        "The client asked for WordPress, then asked for things WordPress does not do. Custom content types, hand-written structured data, and managed code snippets closed the gap with no recurring plugin cost.",
+      tech: ["WordPress", "Pods", "PHP", "Custom CSS/JS", "Local SEO"],
+      image: "assets/nl-hero.jpg",
+      featured: true,
+      url: "projects/nooklook.html",
+    },
     taskmate: {
       id: "taskmate",
       title: "TaskMate",
@@ -24,9 +36,9 @@
       id: "portfolio",
       title: "This Portfolio",
       tagline:
-        "A hand-built, framework-free site: custom CSS design system, theme switching, and scroll-based motion.",
+        "A framework-free personal site with its own CSS design system, light and dark themes, and a small amount of scroll behaviour.",
       outcome:
-        "No React, no Tailwind, no template — every layout, animation, and color decision is original CSS.",
+        "Built from a blank stylesheet: design tokens, theming, and layout written by hand rather than pulled from a template.",
       tech: ["HTML5", "CSS3", "Vanilla JavaScript"],
       image: "assets/ryan-port01.png",
       featured: true,
@@ -40,11 +52,15 @@
 
     return `
       <article class="project-row">
-        <a class="project-row-media" href="${project.url}" aria-label="Open ${project.title} case study">
-          <img src="${project.image}" alt="${project.title} interface screenshot" loading="lazy" />
+        <a class="project-row-media${project.image ? "" : " project-row-media-empty"}" href="${project.url}" aria-label="Open ${project.title} case study">
+          ${
+            project.image
+              ? `<img src="${project.image}" alt="${project.title} interface screenshot" loading="lazy" />`
+              : `<span>${project.title}</span>`
+          }
         </a>
         <div class="project-row-body">
-          <span class="project-row-index mono">${num}</span>
+          <span class="project-row-index">${num}</span>
           <h3 class="project-row-title"><a href="${project.url}">${project.title}</a></h3>
           <p class="project-row-tagline">${project.tagline}</p>
           ${project.outcome ? `<p class="project-row-outcome">${project.outcome}</p>` : ""}

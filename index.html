@@ -1,6 +1,21 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
   <head>
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("portfolio-theme-override");
+          var theme =
+            stored ||
+            (window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light");
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
@@ -45,7 +60,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400..600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..600&display=swap"
       rel="stylesheet"
     />
 
@@ -55,7 +70,7 @@
     <link rel="stylesheet" href="assets/css/style.css" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=3" />
+    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=4" />
 
     <!-- Sitemap -->
     <link
@@ -83,11 +98,13 @@
               <h1 class="hero-title">
                 Ryan <span class="highlight">Yarali</span>
               </h1>
-              <p class="hero-subtitle mono">Term 2 · Full-Stack Web Development</p>
+              <p class="hero-subtitle">
+                Term 3 · Data Communications &amp; Internetworking
+              </p>
               <p class="hero-tagline">
-                I'm building full-stack web applications as part of BCIT's
-                Computer Systems Technology diploma — two shipped projects so
-                far, with more in progress each term.
+                Full-stack developer working through BCIT's Computer Systems
+                Technology diploma. I've launched a live client site as a
+                freelancer, and I build something new every term.
               </p>
 
               <div class="hero-cta">
@@ -116,15 +133,16 @@
           </div>
           <div class="about-content reveal">
             <p class="about-lede">
-              I'm a Computer Systems Technology student at BCIT, currently in
-              Term 2 of the diploma. My focus is full-stack development — how
-              a database schema, an API, and an interface fit together as one
-              system, rather than three separate problems.
+              I'm a Computer Systems Technology student at BCIT, now in Term 3
+              on the Data Communications &amp; Internetworking option. I work
+              across the stack, and the networking specialisation is teaching
+              me the layer underneath it: what actually happens between the
+              client and the server.
             </p>
             <p>
               BCIT's program is hands-on: every course ends in something
               built and defended, not just graded. That's shaped how I
-              work — I'd rather ship a smaller feature that's solid than a
+              work. I'd rather ship a smaller feature that's solid than a
               bigger one held together with guesses.
             </p>
           </div>
@@ -156,11 +174,14 @@
               <h3 class="skills-label">Languages</h3>
               <ul class="skills-list" aria-label="Programming languages">
                 <li>JavaScript</li>
+                <li>C</li>
+                <li>C++</li>
                 <li>Python</li>
                 <li>Java</li>
+                <li>PHP</li>
+                <li>SQL</li>
                 <li>HTML5</li>
                 <li>CSS3</li>
-                <li>SQL</li>
               </ul>
             </article>
 
@@ -179,6 +200,28 @@
                 <li>Node.js</li>
                 <li>Express</li>
                 <li>REST API design</li>
+                <li>WordPress</li>
+                <li>Pods</li>
+              </ul>
+            </article>
+
+            <article class="skills-row">
+              <h3 class="skills-label">SEO &amp; performance</h3>
+              <ul class="skills-list" aria-label="SEO and performance skills">
+                <li>On-page &amp; local SEO</li>
+                <li>Structured data (JSON-LD)</li>
+                <li>Core Web Vitals tuning</li>
+                <li>Image optimisation</li>
+              </ul>
+            </article>
+
+            <article class="skills-row">
+              <h3 class="skills-label">Networking</h3>
+              <ul class="skills-list" aria-label="Networking skills">
+                <li>TCP/IP</li>
+                <li>Socket programming</li>
+                <li>Network protocols</li>
+                <li>Packet analysis</li>
               </ul>
             </article>
 
@@ -195,7 +238,7 @@
               <h3 class="skills-label">Systems</h3>
               <ul class="skills-list" aria-label="Systems skills">
                 <li>Linux/Unix</li>
-                <li>Networking fundamentals</li>
+                <li>Systems programming</li>
                 <li>Systems analysis</li>
               </ul>
             </article>
@@ -233,6 +276,9 @@
                 <span class="education-school"
                   >British Columbia Institute of Technology (BCIT)</span
                 >
+                <span class="education-option"
+                  >Data Communications &amp; Internetworking option</span
+                >
                 <a
                   class="education-program-link"
                   href="https://www.bcit.ca/programs/computer-systems-technology-diploma-full-time-5500dipma/"
@@ -242,11 +288,11 @@
                 >
                 <div class="education-meta">
                   <span class="education-period"
-                    >Sept 2025 – Apr 2027 (expected)</span
+                    >Sept 2025 to Apr 2027 (expected)</span
                   >
                   <span class="status-indicator">
                     <span class="status-dot" aria-hidden="true"></span>
-                    Currently in Term 2
+                    Currently in Term 3
                   </span>
                 </div>
               </div>
@@ -265,7 +311,7 @@
                 <h2>Let's talk</h2>
                 <p class="section-intro">
                   I'm looking for internship, co-op, and junior developer
-                  roles. If something here is a fit, send a note — I read
+                  roles. If something here is a fit, send a note. I read
                   every message myself.
                 </p>
               </div>
@@ -365,7 +411,7 @@
       <div class="container footer-inner">
         <div>
           <p>&copy; 2026 <a href="index.html">Ryan Yarali</a>. All rights reserved.</p>
-          <p class="footer-tech">Built with HTML, CSS, and JavaScript — no framework.</p>
+          <p class="footer-tech">Built with HTML, CSS, and JavaScript. No framework.</p>
         </div>
         <div class="footer-social">
           <a href="https://github.com/RyanYarali" target="_blank" rel="noopener noreferrer">

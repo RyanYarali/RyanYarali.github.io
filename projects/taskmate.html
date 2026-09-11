@@ -1,6 +1,21 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
   <head>
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("portfolio-theme-override");
+          var theme =
+            stored ||
+            (window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light");
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
@@ -15,19 +30,19 @@
     />
     <meta
       property="og:title"
-      content="TaskMate — Academic Task Management | Ryan Yarali"
+      content="TaskMate: Academic Task Management | Ryan Yarali"
     />
     <meta
       property="og:description"
       content="Mobile-friendly Firebase web app for consolidating academic tasks."
     />
 
-    <title>TaskMate — Academic Task Management | Ryan Yarali</title>
+    <title>TaskMate: Academic Task Management | Ryan Yarali</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400..600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..600&display=swap"
       rel="stylesheet"
     />
 
@@ -35,7 +50,7 @@
     <link rel="stylesheet" href="../assets/css/typography.css" />
     <link rel="stylesheet" href="../assets/css/style.css" />
 
-    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=3" />
+    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=4" />
   </head>
   <body class="project-detail-page taskmate-page">
     <a href="#main" class="skip-link">Skip to content</a>
@@ -70,7 +85,7 @@
                 consolidate academic task management into one place.
                 Students can track pending assignments, mark tasks
                 complete, organize by course and priority, collaborate with
-                groups, and get answers through a built-in FAQ — all from
+                groups, and get answers through a built-in FAQ, all from
                 any device through the browser.
               </p>
               <p>
@@ -86,7 +101,7 @@
               <h3>Target users</h3>
               <ul>
                 <li>Undergraduate, high school, and graduate students</li>
-                <li>Typically managing 4–6 courses simultaneously</li>
+                <li>Typically managing 4 to 6 courses simultaneously</li>
               </ul>
               <h3>The challenge</h3>
               <ul>
@@ -170,7 +185,7 @@
                 <li>"Add new task" button (primary CTA)</li>
                 <li>"View all tasks" button (secondary CTA)</li>
                 <li>
-                  "Today's tasks" section — shows tasks due today, or a
+                  "Today's tasks" section, showing tasks due today or a
                   celebration state when clear
                 </li>
                 <li>
@@ -219,7 +234,7 @@
                 A categorized, expandable FAQ. Categories include: All,
                 Account, Tasks, Groups, Notifications, Privacy, Technical.
                 Users can filter by category and expand accordion-style
-                items to reveal answers inline — this is also where the
+                items to reveal answers inline. This is also where the
                 app's group and collaboration features are documented for
                 users.
               </p>
@@ -229,31 +244,31 @@
               <h2>Key features</h2>
               <ul>
                 <li>
-                  <strong>Personalized dashboard</strong> — user-specific
+                  <strong>Personalized dashboard:</strong> user-specific
                   welcome and task views based on enrolled courses
                 </li>
                 <li>
-                  <strong>Today's tasks widget</strong> — quick view of
+                  <strong>Today's tasks widget:</strong> quick view of
                   urgent tasks with priority badges on the home screen
                 </li>
                 <li>
-                  <strong>Pending &amp; completion tracking</strong> —
+                  <strong>Pending &amp; completion tracking:</strong>
                   separate To Do and Done views with filtering
                 </li>
                 <li>
-                  <strong>Group collaboration</strong> — shared group tasks
+                  <strong>Group collaboration:</strong> shared group tasks
                   and collaborative assignment management
                 </li>
                 <li>
-                  <strong>Filtering</strong> — by course, priority level, or
+                  <strong>Filtering:</strong> by course, priority level, or
                   due date
                 </li>
                 <li>
-                  <strong>Firebase authentication</strong> — email and
+                  <strong>Firebase authentication:</strong> email and
                   password sign-in
                 </li>
                 <li>
-                  <strong>Built-in FAQ &amp; help</strong> — categorized help
+                  <strong>Built-in FAQ &amp; help:</strong> categorized help
                   system with searchable answers
                 </li>
               </ul>
@@ -304,7 +319,7 @@
               <h3>Navigation pattern</h3>
               <ul>
                 <li>
-                  Bottom tab bar (5 tabs) — standard mobile pattern for
+                  Bottom tab bar (5 tabs), the standard mobile pattern for
                   thumb reach
                 </li>
                 <li>Active tab highlighted in dark red with label</li>
@@ -364,7 +379,7 @@
       <div class="container footer-inner">
         <div>
           <p>&copy; 2026 <a href="../index.html">Ryan Yarali</a>. All rights reserved.</p>
-          <p class="footer-tech">Built with HTML, CSS, and JavaScript — no framework.</p>
+          <p class="footer-tech">Built with HTML, CSS, and JavaScript. No framework.</p>
         </div>
         <div class="footer-social">
           <a href="https://github.com/RyanYarali" target="_blank" rel="noopener noreferrer">
