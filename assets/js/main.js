@@ -106,27 +106,32 @@
     });
   }
 
-  // ==================== Performance: Debounce Function ====================
-  function debounce(func, wait = 20, immediate = true) {
-    let timeout;
-    return function () {
-      const context = this,
-        args = arguments;
-      const later = function () {
-        timeout = null;
-        if (!immediate) func.apply(context, args);
-      };
-      const callNow = immediate && !timeout;
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-      if (callNow) func.apply(context, args);
-    };
+  // ==================== Scroll Handling ====================
+  const backToTopBtn = document.getElementById("back-to-top");
+
+  function toggleBackToTop() {
+    if (!backToTopBtn) return;
+    backToTopBtn.classList.toggle("visible", window.pageYOffset > 400);
   }
 
-  const debouncedActiveLink = debounce(setActiveNavLink);
+  // Throttle on animation frames rather than debouncing: the callback reads
+  // the scroll position when it runs, so the final position after a fast
+  // scroll is always reflected.
+  let scrollTicking = false;
 
-  window.addEventListener("scroll", debouncedActiveLink, { passive: true });
+  function onScroll() {
+    if (scrollTicking) return;
+    scrollTicking = true;
+    requestAnimationFrame(() => {
+      setActiveNavLink();
+      toggleBackToTop();
+      scrollTicking = false;
+    });
+  }
+
+  window.addEventListener("scroll", onScroll, { passive: true });
   setActiveNavLink();
+  toggleBackToTop();
 
   // ==================== Image Fallback Handler ====================
   const profileImage = document.querySelector(".hero-image-placeholder img");
@@ -141,11 +146,10 @@
         align-items: center;
         justify-content: center;
         background: var(--color-surface-2);
-        font-family: var(--font-mono);
+        font-family: var(--font-display);
         font-size: 2rem;
-        font-weight: 700;
-        color: var(--color-accent);
-        letter-spacing: 0.04em;
+        font-weight: 600;
+        color: var(--color-text-subtle);
       `;
       fallback.textContent = "RY";
       fallback.setAttribute(
@@ -158,21 +162,7 @@
   }
 
   // ==================== Back to Top Button ====================
-  const backToTopBtn = document.getElementById("back-to-top");
-
   if (backToTopBtn) {
-    function toggleBackToTop() {
-      if (window.pageYOffset > 400) {
-        backToTopBtn.classList.add("visible");
-      } else {
-        backToTopBtn.classList.remove("visible");
-      }
-    }
-
-    window.addEventListener("scroll", debounce(toggleBackToTop, 100), {
-      passive: true,
-    });
-
     backToTopBtn.addEventListener("click", () => {
       window.scrollTo({
         top: 0,

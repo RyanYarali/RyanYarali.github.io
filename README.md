@@ -1,223 +1,100 @@
-# Personal Portfolio Website
+# ryanyarali.com
 
-A professional, recruiter-ready portfolio website built with vanilla HTML, CSS, and JavaScript. This project demonstrates strong web development fundamentals without relying on frameworks or heavy libraries.
+Personal portfolio site for Ryan Yarali, a Computer Systems Technology student
+at BCIT. Built with plain HTML, CSS, and JavaScript. No framework, no build
+step, no dependencies to install.
 
-![Portfolio Preview](https://via.placeholder.com/1200x600/2563eb/ffffff?text=Ryan+Yarali+Portfolio)
+Live at [ryanyarali.com](https://ryanyarali.com), deployed from this repository
+via GitHub Pages.
 
-## 🎯 Purpose
+## Running locally
 
-This portfolio was created to: 
-- Showcase my projects and technical skills to potential employers
-- Demonstrate clean code architecture and thoughtful engineering decisions
-- Provide detailed case studies that highlight my problem-solving approach
-- Serve as a foundation that can be extended or migrated to React in the future
+There is nothing to build. Serve the directory with any static file server:
 
-## 🛠️ Tech Stack
-
-- **HTML5** - Semantic markup for accessibility and SEO
-- **CSS3** - Modern layout with Flexbox and Grid
-- **Vanilla JavaScript (ES6+)** - No frameworks or build tools required
-- **Formspree** - Contact form backend (easily replaceable)
-
-### Why Vanilla JavaScript? 
-
-This project intentionally avoids frameworks to: 
-1. Demonstrate strong fundamentals in core web technologies
-2. Ensure maximum performance with minimal overhead
-3. Prove ability to solve problems without abstractions
-4. Create a maintainable codebase that's easy to understand
-
-## 📁 Project Structure
-
-```
-portfolio/
-├── index.html              # Main homepage
-├── projects.html           # All projects page
-├── project-detail.html     # Dynamic project case studies
-├── assets/
-│   ├── css/
-│   │   ├── variables.css   # Design tokens (colors, spacing, typography)
-│   │   ├── reset.css       # CSS reset for consistency
-│   │   ├── typography.css  # Type system
-│   │   ├── components. css  # Reusable component styles
-│   │   └── style.css       # Main stylesheet
-│   ├── js/
-│   │   ├── main.js         # Core functionality (navigation, scroll, animations)
-│   │   ├── theme.js        # Dark/light mode toggle
-│   │   ├── form.js         # Contact form validation & submission
-│   │   └── project-detail.js # Dynamic project case study loader
-│   └── images/             # Image assets
-├── README.md
-└── . gitignore
-```
-
-## ✨ Features
-
-### Core Features
-- ✅ Fully responsive design (mobile, tablet, desktop)
-- ✅ Dark/light theme toggle with localStorage persistence
-- ✅ Smooth scrolling navigation
-- ✅ Animated project cards and sections
-- ✅ Client-side form validation
-- ✅ Dynamic project case study pages
-- ✅ SEO-optimized markup
-- ✅ Accessibility compliant (WCAG AA)
-
-### Technical Highlights
-- CSS Custom Properties for theming
-- Intersection Observer for scroll animations
-- Debounced scroll events for performance
-- Mobile-first responsive design
-- Semantic HTML5 elements
-- No build process required
-
-## 🚀 Getting Started
-
-### Prerequisites
-- A modern web browser
-- A text editor (VS Code, Sublime, etc.)
-- Optional: Local development server
-
-### Running Locally
-
-#### Option 1: Direct File Opening
-1. Clone the repository
 ```bash
-git clone https://github.com/RyanYarali/portfolio.git
-cd portfolio
+python3 -m http.server 8000
 ```
 
-2. Open `index.html` in your browser
-```bash
-open index.html  # macOS
-start index.html # Windows
-xdg-open index.html # Linux
+Then open <http://localhost:8000>. Opening `index.html` directly from the file
+system also works, though root-relative paths (`/favicon.svg`) will not
+resolve.
+
+## Structure
+
+```
+index.html            Home: hero, about, projects, skills, education, contact
+projects.html         Full project list
+projects/             Case studies
+  taskmate.html
+  portfolio.html
+404.html              Custom not-found page
+assets/
+  css/
+    style.css         Entry point; imports tokens, layout, components, pages
+    tokens.css        Design tokens: colour, type, spacing, radii, shadows
+    reset.css         Baseline reset and focus styles
+    typography.css    Type scale and text utilities
+    layout.css        Navigation, sections, footer, scroll reveal
+    components.css    Buttons, forms, tags, project rows, cards
+    pages.css         Page- and section-specific styles
+  js/
+    navbar.js         Renders the shared nav on every page
+    theme.js          Light/dark theme with system preference + persistence
+    projects.js       Project data and list rendering
+    form.js           Contact form validation and submission
+    main.js           Mobile menu, scroll reveal, active nav, back to top
+CNAME, robots.txt, sitemap.xml, favicon.svg
 ```
 
-#### Option 2: Local Development Server (Recommended)
+`reset.css`, `typography.css`, and `style.css` are linked from each page;
+`style.css` pulls in the remaining stylesheets with `@import`.
 
-Using Python:
-```bash
-# Python 3
-python -m http.server 8000
+## Design system
 
-# Navigate to http://localhost:8000
-```
+Everything is driven by CSS custom properties defined in
+`assets/css/tokens.css`. The light palette lives on `:root` and dark mode
+overrides those same variables under `html[data-theme="dark"]`, so themes stay
+in sync by construction.
 
-Using Node.js (with npx):
-```bash
-npx serve
+- **Colour:** a single ink-navy accent on white, inverted to pale steel blue
+  on navy-black in dark mode.
+- **Type:** Source Serif 4 for headings and pull quotes, Inter for body and
+  UI, both from Google Fonts.
+- **Theme:** a small inline script in each `<head>` sets `data-theme` before
+  first paint so the correct theme renders immediately. `theme.js` then wires
+  up the toggle and follows the system setting until the visitor overrides it.
 
-# Navigate to displayed URL
-```
+To change the palette or fonts, edit `tokens.css`; nothing else hardcodes a
+colour or font family.
 
-Using VS Code Live Server Extension:
-1. Install "Live Server" extension
-2. Right-click `index.html`
-3. Select "Open with Live Server"
+## Adding a project
 
-## 🎨 Customization
+1. Add an entry to `projectsData` in `assets/js/projects.js` (title, tagline,
+   outcome, tech, image, url).
+2. Create the case study page under `projects/`, using an existing one as the
+   template.
+3. Add the new URL to `sitemap.xml`.
 
-### Updating Colors
-Edit `assets/css/variables.css`:
-```css
-:root {
-    --color-primary: #2563eb;  /* Change primary color */
-    --color-background: #ffffff;
-    /* ...  more variables */
-}
-```
+Projects with `featured: true` also appear on the home page.
 
-### Adding Projects
-Edit `assets/js/project-detail.js` and add your project to the `projects` object:
-```javascript
-const projects = {
-    'your-project-id': {
-        title: 'Project Name',
-        tagline: 'Short description',
-        tech: ['HTML', 'CSS', 'JavaScript'],
-        // ... more fields
-    }
-};
-```
+## Contact form
 
-### Contact Form Setup
-1. Sign up at [Formspree. io](https://formspree.io)
-2. Create a new form
-3. Replace the form action in `index.html`:
-```html
-<form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-```
+The form posts to [Formspree](https://formspree.io). To point it at a
+different endpoint, change the `action` attribute on the form in `index.html`.
+Validation and submission are handled client-side in `assets/js/form.js`.
 
-## 📦 Deployment
+## Accessibility
 
-### Netlify (Recommended)
-1. Push code to GitHub
-2. Connect repository to Netlify
-3. Deploy with these settings:
-   - Build command: (leave empty)
-   - Publish directory:  `/`
+- Semantic landmarks, a skip-to-content link, and visible focus indicators
+- Labelled form fields with inline, non-blocking error messages
+- Scroll-reveal animations fall back to visible content, and all motion is
+  disabled under `prefers-reduced-motion`
 
-### GitHub Pages
-1. Push code to GitHub
-2. Go to repository Settings → Pages
-3. Select branch and root directory
-4. Save and visit your site
+## Note on `.agents/` and `.claude/`
 
-### Vercel
-1. Install Vercel CLI:  `npm i -g vercel`
-2. Run `vercel` in project directory
-3. Follow prompts
+These directories hold agent skill definitions installed into the repository.
+They are development tooling and have no effect on the published site.
 
-## 🔮 Future Enhancements
+## License
 
-### Planned Features
-- [ ] Blog section with markdown articles
-- [ ] Service worker for offline functionality
-- [ ] More advanced micro-interactions
-- [ ] Headless CMS integration (Contentful/Sanity)
-- [ ] React migration while maintaining current design
-
-### React Migration Path
-When ready to showcase framework knowledge:
-1. Keep current design system (CSS variables)
-2. Convert to React components
-3. Add React Router for navigation
-4. Implement context for theme management
-5. Maintain performance benchmarks
-
-## 📊 Performance
-
-- **Load Time:** < 1 second
-- **First Contentful Paint:** < 0.5 seconds
-- **Lighthouse Score:** 95+ across all categories
-- **Total Bundle Size:** < 50KB (excluding images)
-
-## ♿ Accessibility
-
-- Semantic HTML5 elements
-- Proper heading hierarchy
-- ARIA labels where needed
-- Keyboard navigation support
-- High contrast ratios (WCAG AA compliant)
-- Focus indicators for all interactive elements
-
-## 📄 License
-
-MIT License - feel free to use this as a template for your own portfolio!
-
-## 👤 Author
-
-**Ryan Yarali**
-- GitHub: [@RyanYarali](https://github.com/RyanYarali)
-
-## 🙏 Acknowledgments
-
-- Design inspiration from modern portfolio trends
-- Icon SVGs from inline code for performance
-- System fonts for optimal loading
-
----
-
-
-**Built with ❤️ using HTML, CSS, and JavaScript**
+MIT. Feel free to borrow from it.
