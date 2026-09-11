@@ -1,12 +1,8 @@
 /*
- * Style index
- * Keeps HTML includes simple while splitting styles by responsibility.
+ * Global overrides that must come last.
+ * Layer stylesheets are linked directly from each page so the browser can
+ * fetch them in parallel rather than discovering them through @import.
  */
-
-@import url("./tokens.css");
-@import url("./layout.css");
-@import url("./components.css");
-@import url("./pages.css");
 
 @media (prefers-reduced-motion: reduce) {
   *,
