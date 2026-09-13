@@ -17,17 +17,14 @@
   opacity: 0.9;
 }
 
-.navbar,
+/* main and the footer are static, so they need a position before z-index means
+   anything. The navbar, the back-to-top button and the dock are already
+   positioned and already carry their own z-index: naming them here would
+   overwrite `position: fixed` with `relative`, since this file loads last. */
 main,
-.footer,
-.back-to-top,
-.palette-dock {
+.footer {
   position: relative;
   z-index: 1;
-}
-
-.navbar {
-  z-index: var(--z-nav);
 }
 
 /* The hero borrows the body ground so the trace reads through it. Sections
@@ -236,6 +233,15 @@ html[data-theme="dark"] .palette-swatch {
     left: 1rem;
     bottom: 1rem;
   }
+
+  /* Open, the dock runs most of the width of a phone and would sit under the
+     back-to-top button. Nobody needs that button while picking a colour. */
+  html.is-palette-open .back-to-top {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
   .palette-swatch {
     width: 26px;
     height: 26px;
@@ -253,7 +259,7 @@ html[data-theme="dark"] .palette-swatch {
   top: 0;
   left: 0;
   right: 0;
-  height: 2px;
+  height: 3px;
   z-index: calc(var(--z-nav) + 1);
   pointer-events: none;
   background: var(--color-border);
@@ -288,7 +294,7 @@ html[data-theme="dark"] .palette-swatch {
   left: calc(var(--progress, 0) * 100%);
   width: 4px;
   height: 4px;
-  margin-left: -2px;
+  margin-left: -2.5px;
   border-radius: var(--radius-pill);
   background: var(--color-accent);
   opacity: calc(0.4 + var(--progress-glow) * 0.6);
