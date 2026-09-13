@@ -1,45 +1,57 @@
+/* ==================== Design Tokens ====================
+ * The colour tokens below are the Ocean palette, which is the default.
+ * palette.js can replace the colour block at runtime with any of the six
+ * palettes; everything downstream reads these variables and never a literal,
+ * so a palette swap is a single write and the whole site follows.
+ * ======================================================= */
+
 :root {
-  --font-display: "Source Serif 4", Georgia, "Times New Roman", serif;
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-display: "Familjen Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-sans: "Familjen Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
-  --line-height-tight: 1.12;
-  --line-height-snug: 1.4;
+  --line-height-tight: 1.06;
+  --line-height-snug: 1.35;
   --line-height-normal: 1.6;
-  --line-height-relaxed: 1.75;
+  --line-height-relaxed: 1.72;
 
-  --color-accent: #1b3a6b;
-  --color-accent-strong: #12294d;
-  --color-accent-soft: rgba(27, 58, 107, 0.07);
+  /* --- Ocean, light --- */
+  --color-accent: #1450c8;
+  --color-accent-strong: #0d3a96;
+  --color-accent-soft: rgba(20, 80, 200, 0.1);
   --color-on-accent: #ffffff;
 
-  --color-background: #ffffff;
-  --color-surface: #f7f8fa;
-  --color-surface-2: #eef1f5;
-  --color-overlay: rgba(255, 255, 255, 0.9);
+  --color-background: #fcfdfe;
+  --color-surface: #f5f8fc;
+  --color-surface-2: #e9eff8;
+  --color-overlay: rgba(252, 253, 254, 0.88);
 
-  --color-text: #12192b;
-  --color-text-muted: #4a5568;
-  --color-text-subtle: #666e7d;
+  --color-text: #121b21;
+  --color-text-muted: #4a5157;
+  --color-text-subtle: #5f666c;
 
-  --color-border: rgba(18, 25, 43, 0.13);
-  --color-border-strong: rgba(18, 25, 43, 0.28);
+  --color-border: rgba(18, 27, 33, 0.14);
+  --color-border-strong: rgba(18, 27, 33, 0.3);
 
   --color-danger: #a32b22;
   --color-success: #1f6b47;
 
-  --radius-sm: 2px;
-  --radius-md: 3px;
-  --radius-lg: 4px;
-  --radius-xl: 6px;
+  /* Softer geometry: the earlier 2-3px corners read cold and mechanical. */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 26px;
+  --radius-pill: 999px;
 
-  --shadow-sm: 0 1px 2px rgba(18, 25, 43, 0.06);
-  --shadow-md: 0 6px 20px rgba(18, 25, 43, 0.07);
-  --shadow-lg: 0 18px 44px rgba(18, 25, 43, 0.1);
+  --shadow-sm: 0 1px 2px rgba(18, 27, 33, 0.06);
+  --shadow-md: 0 6px 22px rgba(18, 27, 33, 0.08);
+  --shadow-lg: 0 18px 46px rgba(18, 27, 33, 0.12);
 
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
   --transition-base: 260ms var(--ease);
   --transition-fast: 160ms var(--ease);
+  --transition-palette: 420ms ease;
 
   --z-nav: 1000;
   --z-overlay: 1100;
@@ -49,27 +61,42 @@
 html[data-theme="dark"] {
   color-scheme: dark;
 
-  --color-accent: #9db8dd;
-  --color-accent-strong: #c0d3ee;
-  --color-accent-soft: rgba(157, 184, 221, 0.12);
-  --color-on-accent: #0d1320;
+  /* --- Ocean, dark --- */
+  --color-accent: #7db1f5;
+  --color-accent-strong: #a8cbfa;
+  --color-accent-soft: rgba(125, 177, 245, 0.1);
+  --color-on-accent: #0b111a;
 
-  --color-background: #0d1320;
-  --color-surface: #131b2b;
-  --color-surface-2: #1a2335;
-  --color-overlay: rgba(13, 19, 32, 0.9);
+  --color-background: #0d1015;
+  --color-surface: #14181f;
+  --color-surface-2: #1d242e;
+  --color-overlay: rgba(13, 16, 21, 0.88);
 
-  --color-text: #e8ecf3;
-  --color-text-muted: #a3adbf;
-  --color-text-subtle: #828da0;
+  --color-text: #e9eef4;
+  --color-text-muted: #a3adb8;
+  --color-text-subtle: #858f99;
 
-  --color-border: rgba(232, 236, 243, 0.13);
-  --color-border-strong: rgba(232, 236, 243, 0.3);
+  --color-border: rgba(233, 238, 244, 0.14);
+  --color-border-strong: rgba(233, 238, 244, 0.3);
 
   --color-danger: #e0827a;
   --color-success: #6fb894;
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
-  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 18px 44px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 6px 22px rgba(0, 0, 0, 0.42);
+  --shadow-lg: 0 18px 46px rgba(0, 0, 0, 0.55);
+}
+
+/* Colour changes are animated so a palette swap reads as one motion rather
+   than a flash. Structural properties are deliberately excluded. */
+body,
+.navbar,
+.surface-card,
+.project-accordion-item,
+.stat-tile,
+.palette-dock {
+  transition:
+    background-color var(--transition-palette),
+    border-color var(--transition-palette),
+    color var(--transition-palette);
 }

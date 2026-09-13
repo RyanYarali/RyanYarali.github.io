@@ -1,0 +1,721 @@
+/* ==================== Interactive layer ====================
+ * Ambient trace, palette dock, hero stat strip, project accordion,
+ * and the skills filter. Everything here reads the colour tokens, so it
+ * follows the palette and the theme without a single hard-coded colour.
+ * ============================================================ */
+
+/* ---------- ambient trace ----------
+ * One line whose amplitude tracks scroll velocity. Scroll is the input, not a
+ * cursor, so it behaves identically under touch. */
+#site-trace {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.9;
+}
+
+/* main and the footer are static, so they need a position before z-index means
+   anything. The navbar, the back-to-top button and the dock are already
+   positioned and already carry their own z-index: naming them here would
+   overwrite `position: fixed` with `relative`, since this file loads last. */
+main,
+.footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* The hero borrows the body ground so the trace reads through it. Sections
+   that set their own surface deliberately mask it, which gives the trace a
+   rhythm down the page instead of one flat wash. */
+.hero {
+  background: transparent;
+  min-height: auto;
+}
+
+/* ---------- palette dock ----------
+ * Closed, it is the light/dark button plus three coloured dots. The theme
+ * control is never hidden: it is used far more often than the palette, and it
+ * should not take a tap to become visible. Only the six swatches expand. */
+.palette-dock {
+  position: fixed;
+  left: 1.5rem;
+  bottom: 1.5rem;
+  z-index: var(--z-nav);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-overlay);
+  border: 1px solid var(--color-border);
+  backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-md);
+}
+
+/* --- light/dark, round like everything else in the dock --- */
+.theme-switch {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  padding: 0;
+  cursor: pointer;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  display: grid;
+  place-items: center;
+  color: var(--color-text-muted);
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    background-color var(--transition-palette);
+}
+
+.theme-switch:hover {
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
+}
+
+/* Both icons are stacked; the inactive one rotates out and shrinks away. */
+.theme-switch svg {
+  grid-area: 1 / 1;
+  width: 17px;
+  height: 17px;
+  transition:
+    transform 520ms var(--ease-out-expo),
+    opacity 260ms var(--ease);
+}
+
+.theme-switch-sun {
+  transform: rotate(0deg) scale(1);
+  opacity: 1;
+}
+
+.theme-switch-moon {
+  transform: rotate(-80deg) scale(0.4);
+  opacity: 0;
+}
+
+html[data-theme="dark"] .theme-switch-sun {
+  transform: rotate(80deg) scale(0.4);
+  opacity: 0;
+}
+
+html[data-theme="dark"] .theme-switch-moon {
+  transform: rotate(0deg) scale(1);
+  opacity: 1;
+}
+
+.palette-sep {
+  width: 1px;
+  height: 18px;
+  flex: 0 0 auto;
+  background: var(--color-border);
+}
+
+/* --- the trigger: three dots in three of the real palette accents --- */
+.palette-trigger {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 34px;
+  padding: 0 0.55rem;
+  flex: 0 0 auto;
+  border: 0;
+  background: transparent;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+}
+
+.palette-hint-dot {
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  transition:
+    transform 420ms var(--ease-out-expo),
+    opacity 260ms var(--ease),
+    background-color var(--transition-palette);
+}
+
+.palette-trigger:hover .palette-hint-dot {
+  transform: scale(1.25);
+}
+
+.palette-trigger:hover .palette-hint-dot:nth-child(2) {
+  transition-delay: 40ms;
+}
+
+.palette-trigger:hover .palette-hint-dot:nth-child(3) {
+  transition-delay: 80ms;
+}
+
+/* Open, the dots step back so the swatches are the thing being looked at. */
+.palette-dock.is-open .palette-hint-dot {
+  opacity: 0.3;
+  transform: scale(0.7);
+}
+
+/* The row clips its own overflow so the width can animate, which would also
+   clip a swatch that grows past 1x. The transparent padding gives that growth
+   somewhere to go, and the matching negative margin keeps the visible gap
+   between the trigger and the first swatch exactly where it was. */
+.palette-swatches {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 5px;
+  margin: -5px;
+  max-width: 0;
+  overflow: hidden;
+  transition: max-width 460ms var(--ease-out-expo);
+}
+
+.palette-dock.is-open .palette-swatches {
+  max-width: 210px;
+}
+
+.palette-swatch {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  padding: 0;
+  cursor: pointer;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--sw-light);
+  opacity: 0;
+  transform: scale(0.3);
+  transition:
+    opacity 260ms var(--ease),
+    transform 420ms var(--ease-out-expo),
+    box-shadow 240ms var(--ease);
+}
+
+html[data-theme="dark"] .palette-swatch {
+  background: var(--sw-dark);
+}
+
+.palette-dock.is-open .palette-swatch {
+  opacity: 1;
+  transform: scale(1);
+  /* each swatch trails the one before it */
+  transition-delay: calc(var(--sw-i) * 42ms);
+}
+
+.palette-swatch:hover {
+  transform: scale(1.22);
+}
+
+/* The selected mark has to live inside the swatch. The row clips its overflow
+   to animate its width, so a ring drawn outside the circle gets cut off. An
+   inset ring reads the same and cannot clip. */
+.palette-swatch[aria-pressed="true"] {
+  box-shadow: inset 0 0 0 3.5px var(--color-background);
+  transform: scale(1.1);
+}
+
+.palette-dock.is-open .palette-swatch[aria-pressed="true"] {
+  transform: scale(1.1);
+}
+
+.palette-swatch[aria-pressed="true"]:hover {
+  transform: scale(1.25);
+}
+
+@media (max-width: 640px) {
+  .palette-dock {
+    left: 1rem;
+    bottom: 1rem;
+  }
+
+  /* Open, the dock runs most of the width of a phone and would sit under the
+     back-to-top button. Nobody needs that button while picking a colour. */
+  html.is-palette-open .back-to-top {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .palette-swatch {
+    width: 26px;
+    height: 26px;
+  }
+  .palette-dock.is-open .palette-swatches {
+    max-width: 245px;
+  }
+}
+
+/* ---------- scroll rail ----------
+ * A vertical instrument on the right edge. A hairline across the top was
+ * invisible: nobody looks at the very top edge of a page, and 3px of it is
+ * nothing. Here it sits at eye level in dead space, and reports position, the
+ * section you are in, and how fast you are moving, all at once. */
+.scroll-rail {
+  position: fixed;
+  right: clamp(0.9rem, 2.4vw, 2rem);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: min(46vh, 320px);
+  z-index: var(--z-nav);
+  pointer-events: none;
+  border-radius: var(--radius-pill);
+  background: var(--color-border);
+  opacity: 0;
+  transition:
+    opacity 420ms var(--ease),
+    background-color var(--transition-palette);
+  --rail-speed: 0;
+}
+
+.scroll-rail.is-active {
+  opacity: 1;
+}
+
+.scroll-rail-fill {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--color-accent);
+  transform: scaleY(0);
+  transform-origin: top center;
+  opacity: 0.55;
+  transition: background-color var(--transition-palette);
+}
+
+/* The section marks. Past ones take the accent, the current one grows a stem
+   out to the side so it reads without needing a label. */
+.scroll-rail-ticks i {
+  position: absolute;
+  right: -2px;
+  width: 6px;
+  height: 1px;
+  background: var(--color-border-strong);
+  transition:
+    width 420ms var(--ease-out-expo),
+    height 300ms var(--ease),
+    background-color 300ms var(--ease);
+}
+
+.scroll-rail-ticks i.is-past {
+  background: var(--color-accent);
+}
+
+.scroll-rail-ticks i.is-current {
+  width: 12px;
+  height: 2px;
+  background: var(--color-accent);
+}
+
+/* The thumb stretches along the rail while the page is moving quickly. */
+.scroll-rail-thumb {
+  position: absolute;
+  left: 50%;
+  width: 9px;
+  height: calc(9px + var(--rail-speed) * 28px);
+  margin-left: -4.5px;
+  margin-top: calc((9px + var(--rail-speed) * 28px) / -2);
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  /* a ring of page ground so the thumb separates from the fill behind it */
+  box-shadow:
+    0 0 0 2px var(--color-background),
+    0 0 calc(var(--rail-speed) * 14px) var(--color-accent);
+  transition: background-color var(--transition-palette);
+}
+
+.scroll-rail-readout {
+  position: absolute;
+  right: calc(100% + 0.7rem);
+  transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  transition: color var(--transition-palette);
+}
+
+/* On a phone the readout would sit over the content, and the rail hugs the
+   edge the way a native scrollbar does. */
+@media (max-width: 700px) {
+  .scroll-rail {
+    right: 0.5rem;
+    height: min(38vh, 230px);
+  }
+
+  .scroll-rail-readout {
+    display: none;
+  }
+
+  .scroll-rail-ticks i {
+    width: 5px;
+  }
+
+  .scroll-rail-ticks i.is-current {
+    width: 9px;
+  }
+}
+
+/* ---------- hero stat strip ---------- */
+/* The 1px grid gap is the rule between tiles, so the column count has to divide
+   the tiles exactly: an auto-fit grid leaves the odd cell empty and that empty
+   cell shows as a block of rule colour. One column, then three. */
+.hero-stats {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1px;
+  margin-top: 2.75rem;
+  background: var(--color-border);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.stat-tile {
+  background: var(--color-background);
+  padding: 0.85rem 1.1rem;
+  /* Stacked tiles read as rows on a phone, which keeps the strip short. */
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.stat-value {
+  flex: 0 0 auto;
+  min-width: 3.2ch;
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+}
+
+.stat-label {
+  font-size: 0.82rem;
+  line-height: 1.35;
+  color: var(--color-text-subtle);
+}
+
+@media (min-width: 640px) {
+  .hero-stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .stat-tile {
+    display: block;
+    padding: 1.05rem 1.1rem;
+  }
+
+  .stat-value {
+    display: block;
+    font-size: clamp(1.45rem, 2.6vw, 1.85rem);
+    margin-bottom: 0.15rem;
+  }
+
+  .stat-label {
+    display: block;
+    font-size: 0.78rem;
+  }
+}
+
+/* ---------- project accordion ----------
+ * Closed, a row is a single line: number, name, year, status. Tapping opens
+ * the detail underneath. A tap is the whole interaction, so touch and mouse
+ * behave the same. */
+.project-accordion {
+  border-top: 1px solid var(--color-border);
+}
+
+.project-accordion-item {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.project-accordion-head {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1.15rem 0.25rem;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  color: var(--color-text);
+  transition: padding-left 420ms var(--ease-out-expo);
+}
+
+.project-accordion-head:hover,
+.project-accordion-item.is-open .project-accordion-head {
+  padding-left: 0.85rem;
+}
+
+.project-accordion-num {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--color-text-subtle);
+}
+
+.project-accordion-name {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.7rem;
+  min-width: 0;
+}
+
+.project-accordion-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 2.4vw, 1.6rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0;
+  color: var(--color-text);
+}
+
+.project-accordion-kind {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.project-accordion-right {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.project-status {
+  font-family: var(--font-mono);
+  font-size: 0.63rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  padding: 0.28rem 0.6rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-subtle);
+  white-space: nowrap;
+}
+
+.project-status[data-status="live"] {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.project-accordion-sign {
+  position: relative;
+  width: 13px;
+  height: 13px;
+  flex: 0 0 auto;
+}
+
+.project-accordion-sign::before,
+.project-accordion-sign::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 13px;
+  height: 1.5px;
+  background: var(--color-text-muted);
+  transition: transform 420ms var(--ease-out-expo);
+}
+
+.project-accordion-sign::after {
+  transform: rotate(90deg);
+}
+
+.project-accordion-item.is-open .project-accordion-sign::after {
+  transform: rotate(0deg);
+}
+
+.project-accordion-panel {
+  height: 0;
+  overflow: hidden;
+}
+
+.project-accordion-panel-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  padding: 0 0.25rem 1.6rem;
+}
+
+@media (min-width: 760px) {
+  .project-accordion-panel-inner {
+    grid-template-columns: 260px 1fr;
+    gap: 1.75rem;
+    align-items: start;
+  }
+}
+
+.project-accordion-media {
+  display: block;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  aspect-ratio: 16 / 10;
+  max-width: 100%;
+}
+
+.project-accordion-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 700ms var(--ease-out-expo);
+}
+
+.project-accordion-media:hover img {
+  transform: scale(1.04);
+}
+
+.project-accordion-media canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.project-accordion-copy p {
+  margin: 0 0 0.8rem;
+  font-size: 0.95rem;
+}
+
+.project-accordion-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.9rem 0 1rem;
+}
+
+.project-accordion-tech span {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.62rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-subtle);
+}
+
+.project-accordion-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem 1.4rem;
+  align-items: center;
+}
+
+.project-accordion-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.project-accordion-link svg {
+  transition: transform 320ms var(--ease-out-expo);
+}
+
+.project-accordion-link:hover svg {
+  transform: translateX(4px);
+}
+
+.project-accordion-note {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--color-text-subtle);
+}
+
+/* ---------- skills filter ---------- */
+.skills-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 1.9rem;
+}
+
+.skills-filter-chip {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  padding: 0.46rem 0.9rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.skills-filter-chip:hover {
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
+}
+
+.skills-filter-chip[aria-pressed="true"] {
+  background: var(--color-text);
+  border-color: var(--color-text);
+  color: var(--color-background);
+}
+
+.skills-row {
+  transition:
+    opacity 380ms var(--ease),
+    transform 420ms var(--ease-out-expo);
+}
+
+.skills-row.is-dimmed {
+  opacity: 0.24;
+}
+
+.skills-row.is-match .skills-label {
+  color: var(--color-accent);
+}
+
+/* ---------- magnetic controls ---------- */
+.btn[data-magnetic] {
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .palette-swatches,
+  .palette-swatch,
+  .theme-switch svg,
+  .palette-hint-dot,
+  .project-accordion-panel {
+    transition: none !important;
+  }
+  .scroll-rail-thumb {
+    box-shadow: 0 0 0 2px var(--color-background);
+    height: 9px;
+    margin-top: -4.5px;
+  }
+  #site-trace {
+    opacity: 0.5;
+  }
+}

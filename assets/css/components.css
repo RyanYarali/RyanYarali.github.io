@@ -4,11 +4,11 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.8rem 1.75rem;
+  padding: 0.85rem 1.9rem;
   font-size: 0.9375rem;
   font-weight: 500;
   font-family: var(--font-sans);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-pill);
   text-align: center;
   border: 1px solid transparent;
   cursor: pointer;
@@ -46,49 +46,15 @@
   width: 100%;
 }
 
-.theme-toggle {
-  width: 2.25rem;
-  height: 2.25rem;
-  padding: 0;
-  border-radius: var(--radius-sm);
-  background: transparent;
-  border: 1px solid var(--color-border);
-  cursor: pointer;
-  color: var(--color-text-muted);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  transition:
-    border-color var(--transition-fast),
-    color var(--transition-fast);
-}
-
-.theme-toggle:hover {
-  border-color: var(--color-border-strong);
-  color: var(--color-text);
-}
-
-.sun-icon,
-.moon-icon {
-  position: absolute;
-}
-
-html[data-theme="dark"] .sun-icon {
-  display: none;
-}
-
-html:not([data-theme="dark"]) .moon-icon {
-  display: none;
-}
+/* The theme control moved into the palette dock; see interactive.css. */
 
 /* ==================== Tags & Labels ==================== */
 .tech-tag {
   display: inline-flex;
   align-items: center;
-  padding: 0.3rem 0.65rem;
+  padding: 0.35rem 0.8rem;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-pill);
   font-size: 0.75rem;
   font-weight: 450;
   letter-spacing: 0.02em;
@@ -115,7 +81,8 @@ html:not([data-theme="dark"]) .moon-icon {
 .surface-card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
 }
 
 .hero-cta,
@@ -144,14 +111,15 @@ html:not([data-theme="dark"]) .moon-icon {
 .form-group select,
 .form-group textarea {
   width: 100%;
-  padding: 0.7rem 0;
-  border: none;
-  border-bottom: 1px solid var(--color-border-strong);
-  border-radius: 0;
-  background: transparent;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-background);
   color: var(--color-text);
   font-size: 1rem;
-  transition: border-color var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .form-group select {
@@ -162,7 +130,8 @@ html:not([data-theme="dark"]) .moon-icon {
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: var(--color-text);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-soft);
 }
 
 .form-group textarea {
@@ -196,8 +165,9 @@ html:not([data-theme="dark"]) .moon-icon {
 
 .form-status.success,
 .form-status.error {
-  padding: 0.9rem 1.1rem;
-  border-left: 2px solid;
+  padding: 0.9rem 1.15rem;
+  border-left: 3px solid;
+  border-radius: var(--radius-md);
   background: var(--color-surface);
 }
 
@@ -223,9 +193,9 @@ html:not([data-theme="dark"]) .moon-icon {
 }
 
 .education-logo {
-  width: 60px;
-  height: 60px;
-  border-radius: var(--radius-sm);
+  width: 62px;
+  height: 62px;
+  border-radius: var(--radius-md);
   background: #ffffff;
   border: 1px solid var(--color-border);
   padding: 0.5rem;
@@ -241,149 +211,7 @@ html:not([data-theme="dark"]) .moon-icon {
   object-fit: contain;
 }
 
-/* ==================== Project Rows (editorial list) ==================== */
-.project-rows {
-  display: flex;
-  flex-direction: column;
-}
-
-.project-row {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-  padding: 3rem 0;
-  border-top: 1px solid var(--color-border);
-  align-items: center;
-}
-
-.project-rows > .project-row:first-child {
-  border-top: none;
-  padding-top: 0;
-}
-
-@media (min-width: 860px) {
-  .project-row {
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    padding: 4.5rem 0;
-  }
-
-  .project-row:nth-child(even) .project-row-media {
-    order: 2;
-  }
-
-  .project-row:nth-child(even) .project-row-body {
-    order: 1;
-  }
-}
-
-.project-row-media {
-  display: block;
-  position: relative;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  border: 1px solid var(--color-border);
-  aspect-ratio: 16 / 11;
-  background: var(--color-surface);
-}
-
-/* Screenshots vary in aspect ratio; contain keeps headlines from being
-   cropped out of the frame. */
-.project-row-media img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  transition: transform 0.9s var(--ease);
-}
-
-.project-row:hover .project-row-media img {
-  transform: scale(1.02);
-}
-
-.project-row-media-empty {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-style: italic;
-  color: var(--color-text-subtle);
-  background: var(--color-surface);
-}
-
-.project-row-index {
-  display: block;
-  font-family: var(--font-display);
-  font-size: 0.9375rem;
-  font-variant-numeric: tabular-nums;
-  color: var(--color-text-subtle);
-  margin-bottom: 0.85rem;
-}
-
-.project-row-title {
-  margin-bottom: 0.85rem;
-}
-
-.project-row-title a {
-  color: var(--color-text);
-}
-
-.project-row-title a:hover {
-  color: var(--color-accent);
-}
-
-.project-row-tagline {
-  margin-bottom: 1.15rem;
-}
-
-.project-row-outcome {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1.0625rem;
-  line-height: var(--line-height-snug);
-  color: var(--color-text);
-  margin-bottom: 1.5rem;
-  padding-left: 1.15rem;
-  border-left: 1px solid var(--color-border-strong);
-  max-width: 46ch;
-}
-
-.project-row-tech {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 1.75rem;
-}
-
-.project-row-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 500;
-  font-size: 0.9375rem;
-  color: var(--color-text);
-  padding-bottom: 0.2rem;
-  border-bottom: 1px solid var(--color-border-strong);
-  transition:
-    color var(--transition-fast),
-    border-color var(--transition-fast);
-}
-
-.project-row-cta svg {
-  width: 15px;
-  height: 15px;
-  transition: transform var(--transition-fast);
-}
-
-.project-row-cta:hover {
-  color: var(--color-accent);
-  border-color: var(--color-accent);
-}
-
-.project-row-cta:hover svg {
-  transform: translateX(3px);
-}
-
+/* The work list is an accordion now; see interactive.css. */
 .projects-section-cta {
   margin-top: 3rem;
 }
