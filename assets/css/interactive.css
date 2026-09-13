@@ -39,8 +39,9 @@ main,
 }
 
 /* ---------- palette dock ----------
- * Collapsed it is a single 40px dot showing the live accent. Opening it
- * springs the six swatches out one after another. */
+ * Closed, it is the light/dark button plus three coloured dots. The theme
+ * control is never hidden: it is used far more often than the palette, and it
+ * should not take a tap to become visible. Only the six swatches expand. */
 .palette-dock {
   position: fixed;
   left: 1.5rem;
@@ -48,8 +49,8 @@ main,
   z-index: var(--z-nav);
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.25rem;
+  gap: 0.4rem;
+  padding: 0.3rem;
   border-radius: var(--radius-pill);
   background: var(--color-overlay);
   border: 1px solid var(--color-border);
@@ -57,50 +58,129 @@ main,
   box-shadow: var(--shadow-md);
 }
 
-.palette-trigger {
+/* --- light/dark, round like everything else in the dock --- */
+.theme-switch {
+  position: relative;
   width: 34px;
   height: 34px;
   flex: 0 0 auto;
   padding: 0;
-  border: 0;
-  border-radius: var(--radius-pill);
-  background: transparent;
   cursor: pointer;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
   display: grid;
   place-items: center;
+  color: var(--color-text-muted);
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    background-color var(--transition-palette);
 }
 
-.palette-trigger-dot {
-  width: 16px;
-  height: 16px;
+.theme-switch:hover {
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
+}
+
+/* Both icons are stacked; the inactive one rotates out and shrinks away. */
+.theme-switch svg {
+  grid-area: 1 / 1;
+  width: 17px;
+  height: 17px;
+  transition:
+    transform 520ms var(--ease-out-expo),
+    opacity 260ms var(--ease);
+}
+
+.theme-switch-sun {
+  transform: rotate(0deg) scale(1);
+  opacity: 1;
+}
+
+.theme-switch-moon {
+  transform: rotate(-80deg) scale(0.4);
+  opacity: 0;
+}
+
+html[data-theme="dark"] .theme-switch-sun {
+  transform: rotate(80deg) scale(0.4);
+  opacity: 0;
+}
+
+html[data-theme="dark"] .theme-switch-moon {
+  transform: rotate(0deg) scale(1);
+  opacity: 1;
+}
+
+.palette-sep {
+  width: 1px;
+  height: 18px;
+  flex: 0 0 auto;
+  background: var(--color-border);
+}
+
+/* --- the trigger: three dots in three of the real palette accents --- */
+.palette-trigger {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 34px;
+  padding: 0 0.55rem;
+  flex: 0 0 auto;
+  border: 0;
+  background: transparent;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+}
+
+.palette-hint-dot {
+  display: block;
+  width: 7px;
+  height: 7px;
   border-radius: var(--radius-pill);
   background: var(--color-accent);
-  box-shadow: 0 0 0 3px var(--color-accent-soft);
   transition:
-    transform 320ms var(--ease-out-expo),
-    background-color var(--transition-palette),
-    box-shadow var(--transition-palette);
+    transform 420ms var(--ease-out-expo),
+    opacity 260ms var(--ease),
+    background-color var(--transition-palette);
 }
 
-.palette-trigger:hover .palette-trigger-dot {
-  transform: scale(1.18);
+.palette-trigger:hover .palette-hint-dot {
+  transform: scale(1.25);
 }
 
-.palette-dock.is-open .palette-trigger-dot {
-  transform: scale(0.62);
+.palette-trigger:hover .palette-hint-dot:nth-child(2) {
+  transition-delay: 40ms;
 }
 
+.palette-trigger:hover .palette-hint-dot:nth-child(3) {
+  transition-delay: 80ms;
+}
+
+/* Open, the dots step back so the swatches are the thing being looked at. */
+.palette-dock.is-open .palette-hint-dot {
+  opacity: 0.3;
+  transform: scale(0.7);
+}
+
+/* The row clips its own overflow so the width can animate, which would also
+   clip a swatch that grows past 1x. The transparent padding gives that growth
+   somewhere to go, and the matching negative margin keeps the visible gap
+   between the trigger and the first swatch exactly where it was. */
 .palette-swatches {
   display: flex;
   align-items: center;
   gap: 0.35rem;
+  padding: 5px;
+  margin: -5px;
   max-width: 0;
   overflow: hidden;
   transition: max-width 460ms var(--ease-out-expo);
 }
 
 .palette-dock.is-open .palette-swatches {
-  max-width: 200px;
+  max-width: 210px;
 }
 
 .palette-swatch {
@@ -135,95 +215,20 @@ html[data-theme="dark"] .palette-swatch {
   transform: scale(1.22);
 }
 
+/* The selected mark has to live inside the swatch. The row clips its overflow
+   to animate its width, so a ring drawn outside the circle gets cut off. An
+   inset ring reads the same and cannot clip. */
 .palette-swatch[aria-pressed="true"] {
-  box-shadow:
-    0 0 0 2px var(--color-background),
-    0 0 0 4px var(--color-text);
+  box-shadow: inset 0 0 0 3.5px var(--color-background);
+  transform: scale(1.1);
 }
 
-.palette-sep {
-  width: 1px;
-  height: 20px;
-  flex: 0 0 auto;
-  background: var(--color-border);
-  max-width: 0;
-  overflow: hidden;
-  transition: max-width 460ms var(--ease-out-expo);
+.palette-dock.is-open .palette-swatch[aria-pressed="true"] {
+  transform: scale(1.1);
 }
 
-.palette-dock.is-open .palette-sep {
-  max-width: 1px;
-}
-
-/* A two-state track. The knob sits over whichever icon is active, and the
-   inactive icon stays visible at low contrast so the choice is legible. */
-.theme-switch {
-  position: relative;
-  width: 46px;
-  height: 26px;
-  flex: 0 0 auto;
-  padding: 0;
-  cursor: pointer;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-pill);
-  background: var(--color-surface-2);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 0;
-  margin-inline: 0;
-  overflow: hidden;
-  opacity: 0;
-  transition:
-    max-width 460ms var(--ease-out-expo),
-    opacity 260ms var(--ease),
-    background-color var(--transition-palette),
-    border-color var(--transition-palette);
-}
-
-.palette-dock.is-open .theme-switch {
-  max-width: 46px;
-  opacity: 1;
-  padding: 0 5px;
-  transition-delay: 250ms, 250ms, 0ms, 0ms;
-}
-
-.theme-switch-knob {
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 18px;
-  height: 18px;
-  border-radius: var(--radius-pill);
-  background: var(--color-accent);
-  transition:
-    transform 420ms var(--ease-out-expo),
-    background-color var(--transition-palette);
-}
-
-html[data-theme="dark"] .theme-switch-knob {
-  transform: translateX(20px);
-}
-
-.theme-switch svg {
-  position: relative;
-  width: 13px;
-  height: 13px;
-  flex: 0 0 auto;
-  color: var(--color-text-subtle);
-  transition: color 320ms var(--ease);
-}
-
-.theme-switch .theme-switch-sun {
-  color: var(--color-on-accent);
-}
-
-html[data-theme="dark"] .theme-switch .theme-switch-sun {
-  color: var(--color-text-subtle);
-}
-
-html[data-theme="dark"] .theme-switch .theme-switch-moon {
-  color: var(--color-on-accent);
+.palette-swatch[aria-pressed="true"]:hover {
+  transform: scale(1.25);
 }
 
 @media (max-width: 640px) {
@@ -236,7 +241,7 @@ html[data-theme="dark"] .theme-switch .theme-switch-moon {
     height: 26px;
   }
   .palette-dock.is-open .palette-swatches {
-    max-width: 300px;
+    max-width: 245px;
   }
 }
 
@@ -631,8 +636,8 @@ html[data-theme="dark"] .theme-switch .theme-switch-moon {
 @media (prefers-reduced-motion: reduce) {
   .palette-swatches,
   .palette-swatch,
-  .theme-switch,
-  .theme-switch-knob,
+  .theme-switch svg,
+  .palette-hint-dot,
   .project-accordion-panel {
     transition: none !important;
   }

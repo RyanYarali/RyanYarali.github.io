@@ -114,6 +114,8 @@
     dock.className = "palette-dock";
     dock.id = "palette-dock";
 
+    // Three dots in three of the real palette accents. Closed, that already
+    // says "there are colours behind this" without a label.
     var toggle = document.createElement("button");
     toggle.type = "button";
     toggle.className = "palette-trigger";
@@ -121,7 +123,10 @@
     toggle.setAttribute("aria-controls", "palette-swatches");
     toggle.setAttribute("aria-label", "Change site colour");
     toggle.setAttribute("title", "Change site colour");
-    toggle.innerHTML = '<span class="palette-trigger-dot" aria-hidden="true"></span>';
+    toggle.innerHTML =
+      '<span class="palette-hint-dot" aria-hidden="true"></span>' +
+      '<span class="palette-hint-dot" aria-hidden="true"></span>' +
+      '<span class="palette-hint-dot" aria-hidden="true"></span>';
 
     var list = document.createElement("div");
     list.className = "palette-swatches";
@@ -155,26 +160,26 @@
     sep.className = "palette-sep";
     sep.setAttribute("aria-hidden", "true");
 
-    // A two-state track: sun on one end, moon on the other, knob on the side
-    // that is currently active. theme.js picks the click up by delegation.
+    // Round, the same size as everything else in the dock, and never collapsed:
+    // light/dark is used far more than the palette and should not need a tap to
+    // become visible. The two icons swap with a rotation rather than a slide.
     var mode = document.createElement("button");
     mode.type = "button";
     mode.id = "theme-toggle";
     mode.className = "theme-switch";
     mode.innerHTML =
-      '<span class="theme-switch-knob" aria-hidden="true"></span>' +
-      '<svg class="theme-switch-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">' +
-      '<circle cx="12" cy="12" r="4.2"></circle>' +
-      '<path d="M12 2v2M12 20v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2 12h2M20 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"></path>' +
+      '<svg class="theme-switch-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true">' +
+      '<circle cx="12" cy="12" r="4.4"></circle>' +
+      '<path d="M12 1.6v2.2M12 20.2v2.2M4 4l1.6 1.6M18.4 18.4l1.6 1.6M1.6 12h2.2M20.2 12h2.2M4 20l1.6-1.6M18.4 5.6l1.6-1.6"></path>' +
       "</svg>" +
-      '<svg class="theme-switch-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<svg class="theme-switch-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
       '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>' +
       "</svg>";
 
+    dock.appendChild(mode);
+    dock.appendChild(sep);
     dock.appendChild(toggle);
     dock.appendChild(list);
-    dock.appendChild(sep);
-    dock.appendChild(mode);
     document.body.appendChild(dock);
 
     // theme.js ran before this element existed, so give it its labels now.
@@ -199,14 +204,23 @@
       }
     });
 
+    // Which palettes the three hint dots borrow their colours from.
+    var HINT = [1, 3, 2];
+
     function sync() {
       [].forEach.call(list.children, function (b, i) {
         b.setAttribute("aria-pressed", String(i === current));
       });
+
       var isDark =
         document.documentElement.getAttribute("data-theme") === "dark";
-      var p = PALETTES[current];
-      meta(isDark ? p.dark.bg : p.light.bg);
+      var variant = isDark ? "dark" : "light";
+
+      [].forEach.call(toggle.children, function (dot, i) {
+        dot.style.background = PALETTES[HINT[i]][variant].accent;
+      });
+
+      meta(PALETTES[current][variant].bg);
     }
 
     sync();
