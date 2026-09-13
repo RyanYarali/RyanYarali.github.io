@@ -25,7 +25,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400..600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
 
@@ -36,12 +36,17 @@
     <link rel="stylesheet" href="assets/css/layout.css" />
     <link rel="stylesheet" href="assets/css/components.css" />
     <link rel="stylesheet" href="assets/css/pages.css" />
+    <link rel="stylesheet" href="assets/css/interactive.css" />
     <link rel="stylesheet" href="assets/css/style.css" />
+
+    <!-- Palette tokens are written before first paint -->
+    <script src="assets/js/palette.js"></script>
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=4" />
   </head>
   <body>
+    <canvas id="site-trace" aria-hidden="true"></canvas>
     <!-- Navigation -->
     <div id="site-navbar" data-nav-context="root"></div>
 
@@ -66,5 +71,6 @@
     <script src="assets/js/navbar.js"></script>
     <script src="assets/js/theme.js"></script>
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/interactive.js"></script>
   </body>
 </html>
