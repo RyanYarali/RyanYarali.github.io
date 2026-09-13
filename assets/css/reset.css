@@ -25,6 +25,14 @@ img, picture, video, canvas, svg {
     max-width: 100%;
 }
 
+/* Every <img> carries width and height attributes so the browser can reserve
+   the box before the file arrives. Without height:auto those attributes fight
+   max-width and squash the image whenever the layout narrows it. Rules that
+   deliberately set a height (cover crops) are more specific and still win. */
+img {
+    height: auto;
+}
+
 input, button, textarea, select {
     font: inherit;
     color: inherit;

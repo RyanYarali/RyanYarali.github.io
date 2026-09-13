@@ -39,9 +39,7 @@ assets/
     interactive.css   Ambient trace, palette dock, stat strip, project accordion
     pages.css         Page- and section-specific styles
   js/
-    navbar.js         Renders the shared nav on every page
     theme.js          Light/dark theme with system preference + persistence
-    projects.js       Project data and accordion rendering
     palette.js        Six colour palettes and the palette dock
     form.js           Contact form validation and submission
     main.js           Mobile menu, scroll reveal, active nav, back to top
@@ -52,6 +50,23 @@ CNAME, robots.txt, sitemap.xml, favicon.svg
 Every stylesheet is linked directly from each page so the browser fetches them
 in parallel rather than discovering them through `@import`. `style.css` is
 loaded last and holds only global overrides.
+
+## SEO
+
+Markup that matters to a crawler is in the HTML, not generated at runtime: the
+navigation, so the internal link graph exists without JavaScript, and the work
+list, so the projects are readable by social link-preview bots and by anything
+that indexes before it renders.
+
+Each indexable page also carries a `rel="canonical"` (GitHub Pages serves the
+same content on the apex domain and on `*.github.io`, and at both `/` and
+`/index.html`), a description under 160 characters, Open Graph and Twitter card
+tags, and a JSON-LD block: `Person` plus `WebSite` and `ProfilePage` on the home
+page, `CollectionPage` on the project list, and `Article` on each case study.
+`404.html` carries `noindex, nofollow` and stays out of the sitemap.
+
+Every `<img>` has `width` and `height` so the browser reserves the box before
+the file lands, which keeps layout shift out of Core Web Vitals.
 
 ## Design system
 
@@ -92,13 +107,20 @@ respects `prefers-reduced-motion`.
 
 ## Adding a project
 
-1. Add an entry to `projectsData` in `assets/js/projects.js` (title, tagline,
-   outcome, tech, image, url).
-2. Create the case study page under `projects/`, using an existing one as the
-   template.
-3. Add the new URL to `sitemap.xml`.
+The work list is plain HTML, not generated. Copy an existing
+`.project-accordion-item` block and edit it in **both** `index.html` and
+`projects.html`, keeping the `id` on the panel unique per page and matching the
+`aria-controls` on its button.
 
-Projects with `featured: true` also appear on the home page.
+It used to be rendered from a data object in JavaScript. That cost more than it
+saved: with the markup generated at runtime, any crawler that does not execute
+JavaScript, which includes every social link-preview bot, saw a page with no
+projects on it at all. Four projects in two files is the cheaper trade.
+
+If a project has a screenshot, point the `<img>` at it and give it real `width`
+and `height` attributes. If it does not, leave the `<canvas data-art="...">` in
+place and `interactive.js` draws a figure seeded by that key.
+
 
 ## Contact form
 

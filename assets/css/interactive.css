@@ -208,6 +208,20 @@ html[data-theme="dark"] .palette-swatch {
   transition-delay: calc(var(--sw-i) * 42ms);
 }
 
+/* The dot stays 22px because a bigger one crowds the dock, but the target has
+   to clear 24px (WCAG 2.2 target size), so the hit area is pushed out past the
+   paint with a pseudo-element. */
+.palette-swatch::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+}
+
+.palette-swatch {
+  position: relative;
+}
+
 .palette-swatch:hover {
   transform: scale(1.22);
 }
@@ -335,8 +349,8 @@ html[data-theme="dark"] .palette-swatch {
   right: calc(100% + 0.7rem);
   transform: translateY(-50%);
   font-family: var(--font-mono);
-  font-size: 0.66rem;
-  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
   font-variant-numeric: tabular-nums;
   color: var(--color-text-muted);
   white-space: nowrap;
