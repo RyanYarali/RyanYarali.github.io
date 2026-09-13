@@ -70,8 +70,14 @@
   function write(index) {
     var p = PALETTES[index];
     if (!p) return;
+    // The selectors are doubled up on purpose. This <style> is not guaranteed to
+    // sit after tokens.css in document order (it does not when the page is
+    // embedded and the stylesheet links end up in the body), and at equal
+    // specificity the later rule wins. Doubling :root outranks tokens.css
+    // wherever the block lands, and the dark selector still outranks the light
+    // one within this block.
     styleEl().textContent =
-      rule(":root", p.light) + rule('html[data-theme="dark"]', p.dark);
+      rule(":root:root", p.light) + rule('html[data-theme="dark"]:root', p.dark);
     document.documentElement.setAttribute("data-palette", p.id);
   }
 
@@ -145,9 +151,34 @@
       list.appendChild(b);
     });
 
+    var sep = document.createElement("span");
+    sep.className = "palette-sep";
+    sep.setAttribute("aria-hidden", "true");
+
+    // A two-state track: sun on one end, moon on the other, knob on the side
+    // that is currently active. theme.js picks the click up by delegation.
+    var mode = document.createElement("button");
+    mode.type = "button";
+    mode.id = "theme-toggle";
+    mode.className = "theme-switch";
+    mode.innerHTML =
+      '<span class="theme-switch-knob" aria-hidden="true"></span>' +
+      '<svg class="theme-switch-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">' +
+      '<circle cx="12" cy="12" r="4.2"></circle>' +
+      '<path d="M12 2v2M12 20v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2 12h2M20 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"></path>' +
+      "</svg>" +
+      '<svg class="theme-switch-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>' +
+      "</svg>";
+
     dock.appendChild(toggle);
     dock.appendChild(list);
+    dock.appendChild(sep);
+    dock.appendChild(mode);
     document.body.appendChild(dock);
+
+    // theme.js ran before this element existed, so give it its labels now.
+    if (window.siteTheme) window.siteTheme.syncControl(window.siteTheme.current());
 
     var open = false;
     function setOpen(next) {

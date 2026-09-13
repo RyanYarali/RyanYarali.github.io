@@ -93,6 +93,55 @@
     }
   }
 
+  // ==================== Scroll progress ====================
+  // A hairline across the very top: the fill is how far down the page you are,
+  // and the leading edge brightens with scroll speed, so it reads as the same
+  // instrument as the ambient trace rather than a second unrelated widget.
+
+  function initProgress() {
+    var rail = document.createElement("div");
+    rail.className = "scroll-progress";
+    rail.setAttribute("aria-hidden", "true");
+    rail.innerHTML = '<span class="scroll-progress-fill"></span>';
+    document.body.appendChild(rail);
+
+    var fill = rail.firstChild;
+    var lastY = window.scrollY;
+    var glow = 0;
+    var ticking = false;
+
+    function update() {
+      ticking = false;
+
+      var y = window.scrollY;
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var k = max > 0 ? Math.min(1, Math.max(0, y / max)) : 0;
+
+      fill.style.transform = "scaleX(" + k + ")";
+      rail.style.setProperty("--progress", k.toFixed(4));
+
+      var speed = Math.min(1, Math.abs(y - lastY) / 30);
+      lastY = y;
+      glow += (speed - glow) * 0.3;
+      rail.style.setProperty("--progress-glow", glow.toFixed(3));
+
+      // Hide the rail at the very top: there is nothing to report yet.
+      rail.classList.toggle("is-active", k > 0.005);
+    }
+
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(update);
+      },
+      { passive: true },
+    );
+    window.addEventListener("resize", update, { passive: true });
+    update();
+  }
+
   // ==================== Hero counters ====================
 
   function initCounters() {
@@ -340,6 +389,7 @@
 
   function boot() {
     initTrace();
+    initProgress();
     initCounters();
     initAccordion();
     initSkillsFilter();

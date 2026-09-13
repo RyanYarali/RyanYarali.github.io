@@ -1,85 +1,85 @@
 /**
- * Theme Toggle - Dark/Light Mode with System Preference
- * Starts with system preference, allows manual toggle, and persists user choice
+ * Theme: light/dark with system preference
+ * ----------------------------------------
+ * Starts from the system setting, allows a manual override, and persists it.
+ *
+ * The toggle button lives in the palette dock, which palette.js builds on
+ * DOMContentLoaded, so this script cannot bind to it directly at parse time.
+ * It listens on the document instead and exposes window.siteTheme, which means
+ * the control can move anywhere in the markup without touching this file.
  */
 
 (function () {
   "use strict";
 
-  const STORAGE_KEY = "portfolio-theme-override";
-  const themeToggle = document.getElementById("theme-toggle");
+  var STORAGE_KEY = "portfolio-theme-override";
 
-  // Get initial theme from user override or system preference
-  function getInitialTheme() {
-    const storedTheme = localStorage.getItem(STORAGE_KEY);
-
-    if (storedTheme) {
-      return storedTheme;
-    }
-
-    // Check system preference
-    if (
-      window.matchMedia &&
+  function systemTheme() {
+    return window.matchMedia &&
       window.matchMedia("(prefers-color-scheme: dark)").matches
-    ) {
-      return "dark";
-    }
+      ? "dark"
+      : "light";
+  }
 
-    return "light";
+  function current() {
+    return document.documentElement.getAttribute("data-theme") || systemTheme();
   }
 
   function updateToggleA11y(theme) {
-    if (!themeToggle) return;
+    var toggle = document.getElementById("theme-toggle");
+    if (!toggle) return;
 
-    const isDark = theme === "dark";
-    themeToggle.setAttribute("aria-pressed", String(isDark));
-    themeToggle.setAttribute(
-      "aria-label",
-      isDark ? "Switch to light theme" : "Switch to dark theme",
-    );
-    themeToggle.setAttribute(
-      "title",
-      isDark ? "Switch to light theme" : "Switch to dark theme",
-    );
+    var isDark = theme === "dark";
+    var label = isDark ? "Switch to light theme" : "Switch to dark theme";
+    toggle.setAttribute("aria-pressed", String(isDark));
+    toggle.setAttribute("aria-label", label);
+    toggle.setAttribute("title", label);
   }
 
-  // Apply theme to document
-  function applyTheme(theme, { persist = false } = {}) {
+  function applyTheme(theme, options) {
     document.documentElement.setAttribute("data-theme", theme);
     updateToggleA11y(theme);
 
-    if (persist) {
-      localStorage.setItem(STORAGE_KEY, theme);
+    if (options && options.persist) {
+      try {
+        localStorage.setItem(STORAGE_KEY, theme);
+      } catch (e) {}
     }
   }
 
-  // Toggle theme
   function toggleTheme() {
-    const currentTheme = document.documentElement.getAttribute("data-theme");
-    const newTheme = currentTheme === "dark" ? "light" : "dark";
-    applyTheme(newTheme, { persist: true });
+    applyTheme(current() === "dark" ? "light" : "dark", { persist: true });
   }
 
-  // Initialize theme
-  const storedTheme = localStorage.getItem(STORAGE_KEY);
-  const initialTheme = getInitialTheme();
-  applyTheme(initialTheme, { persist: Boolean(storedTheme) });
+  var storedTheme = null;
+  try {
+    storedTheme = localStorage.getItem(STORAGE_KEY);
+  } catch (e) {}
 
-  // Add event listener to toggle button
-  if (themeToggle) {
-    themeToggle.addEventListener("click", toggleTheme);
-  }
+  applyTheme(storedTheme || systemTheme(), { persist: Boolean(storedTheme) });
 
-  // Listen for system theme changes (only if user hasn't manually set preference)
+  // Delegated, so the button can be rendered at any point after this runs.
+  document.addEventListener("click", function (e) {
+    var hit = e.target.closest && e.target.closest("#theme-toggle");
+    if (hit) toggleTheme();
+  });
+
   if (window.matchMedia) {
-    const darkModePreference = window.matchMedia(
-      "(prefers-color-scheme: dark)",
-    );
-    darkModePreference.addEventListener("change", (e) => {
-      // Only apply system change if user hasn't set a manual preference
-      if (!localStorage.getItem(STORAGE_KEY)) {
-        applyTheme(e.matches ? "dark" : "light");
-      }
-    });
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", function (e) {
+        var override = null;
+        try {
+          override = localStorage.getItem(STORAGE_KEY);
+        } catch (err) {}
+        if (!override) applyTheme(e.matches ? "dark" : "light");
+      });
   }
+
+  window.siteTheme = {
+    toggle: toggleTheme,
+    apply: applyTheme,
+    current: current,
+    syncControl: updateToggleA11y,
+  };
 })();
