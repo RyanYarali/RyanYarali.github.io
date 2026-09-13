@@ -169,6 +169,8 @@ html.js-ready .reveal-group > * {
   transform: scaleX(1);
 }
 
+/* Only the mobile menu button lives here now, and it is hidden above 768px,
+   so the box collapses to nothing on desktop rather than leaving a gap. */
 .nav-actions {
   display: flex;
   align-items: center;
