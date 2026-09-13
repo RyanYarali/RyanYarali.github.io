@@ -189,6 +189,9 @@
     function setOpen(next) {
       open = next;
       dock.classList.toggle("is-open", open);
+      // The stylesheet uses this to get the back-to-top button out of the way
+      // on a phone, where the open dock reaches across most of the screen.
+      document.documentElement.classList.toggle("is-palette-open", open);
       toggle.setAttribute("aria-expanded", String(open));
     }
     toggle.addEventListener("click", function () {
