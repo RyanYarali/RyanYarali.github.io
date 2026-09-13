@@ -11,31 +11,35 @@
   --color-accent: #1b3a6b;
   --color-accent-strong: #12294d;
   --color-accent-soft: rgba(27, 58, 107, 0.07);
-  --color-on-accent: #ffffff;
+  --color-on-accent: #fdfbf7;
 
-  --color-background: #ffffff;
-  --color-surface: #f7f8fa;
-  --color-surface-2: #eef1f5;
-  --color-overlay: rgba(255, 255, 255, 0.9);
+  /* Warm neutrals: ivory and cream rather than white and blue-grey. */
+  --color-background: #fdfbf7;
+  --color-surface: #f5f0e8;
+  --color-surface-2: #ebe4d9;
+  --color-overlay: rgba(253, 251, 247, 0.9);
 
-  --color-text: #12192b;
-  --color-text-muted: #4a5568;
-  --color-text-subtle: #666e7d;
+  --color-text: #26231f;
+  --color-text-muted: #575049;
+  --color-text-subtle: #6f675d;
 
-  --color-border: rgba(18, 25, 43, 0.13);
-  --color-border-strong: rgba(18, 25, 43, 0.28);
+  --color-border: rgba(38, 35, 31, 0.1);
+  --color-border-strong: rgba(38, 35, 31, 0.22);
 
-  --color-danger: #a32b22;
-  --color-success: #1f6b47;
+  --color-danger: #a3392b;
+  --color-success: #2f6b4a;
 
-  --radius-sm: 2px;
-  --radius-md: 3px;
-  --radius-lg: 4px;
-  --radius-xl: 6px;
+  /* Generous corners. Tight radii read as severe. */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 26px;
+  --radius-pill: 999px;
 
-  --shadow-sm: 0 1px 2px rgba(18, 25, 43, 0.06);
-  --shadow-md: 0 6px 20px rgba(18, 25, 43, 0.07);
-  --shadow-lg: 0 18px 44px rgba(18, 25, 43, 0.1);
+  /* Warm-tinted shadows, so elevation reads soft rather than grey. */
+  --shadow-sm: 0 1px 3px rgba(58, 46, 32, 0.06);
+  --shadow-md: 0 6px 20px rgba(58, 46, 32, 0.07);
+  --shadow-lg: 0 18px 44px rgba(58, 46, 32, 0.1);
 
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   --transition-base: 260ms var(--ease);
@@ -49,27 +53,27 @@
 html[data-theme="dark"] {
   color-scheme: dark;
 
-  --color-accent: #9db8dd;
-  --color-accent-strong: #c0d3ee;
-  --color-accent-soft: rgba(157, 184, 221, 0.12);
-  --color-on-accent: #0d1320;
+  --color-accent: #a8c0dd;
+  --color-accent-strong: #c4d5ec;
+  --color-accent-soft: rgba(168, 192, 221, 0.12);
+  --color-on-accent: #1a1714;
 
-  --color-background: #0d1320;
-  --color-surface: #131b2b;
-  --color-surface-2: #1a2335;
-  --color-overlay: rgba(13, 19, 32, 0.9);
+  --color-background: #1a1714;
+  --color-surface: #231f1b;
+  --color-surface-2: #2c2722;
+  --color-overlay: rgba(26, 23, 20, 0.9);
 
-  --color-text: #e8ecf3;
-  --color-text-muted: #a3adbf;
-  --color-text-subtle: #828da0;
+  --color-text: #f0ebe3;
+  --color-text-muted: #b3aa9e;
+  --color-text-subtle: #948a7d;
 
-  --color-border: rgba(232, 236, 243, 0.13);
-  --color-border-strong: rgba(232, 236, 243, 0.3);
+  --color-border: rgba(240, 235, 227, 0.11);
+  --color-border-strong: rgba(240, 235, 227, 0.24);
 
-  --color-danger: #e0827a;
-  --color-success: #6fb894;
+  --color-danger: #e08b7a;
+  --color-success: #7fba96;
 
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
-  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 18px 44px rgba(0, 0, 0, 0.5);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.34);
+  --shadow-lg: 0 18px 44px rgba(0, 0, 0, 0.44);
 }

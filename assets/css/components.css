@@ -4,11 +4,11 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.8rem 1.75rem;
+  padding: 0.85rem 1.9rem;
   font-size: 0.9375rem;
   font-weight: 500;
   font-family: var(--font-sans);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-pill);
   text-align: center;
   border: 1px solid transparent;
   cursor: pointer;
@@ -47,10 +47,10 @@
 }
 
 .theme-toggle {
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 2.35rem;
+  height: 2.35rem;
   padding: 0;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-pill);
   background: transparent;
   border: 1px solid var(--color-border);
   cursor: pointer;
@@ -86,9 +86,9 @@ html:not([data-theme="dark"]) .moon-icon {
 .tech-tag {
   display: inline-flex;
   align-items: center;
-  padding: 0.3rem 0.65rem;
+  padding: 0.35rem 0.8rem;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-pill);
   font-size: 0.75rem;
   font-weight: 450;
   letter-spacing: 0.02em;
@@ -115,7 +115,8 @@ html:not([data-theme="dark"]) .moon-icon {
 .surface-card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
 }
 
 .hero-cta,
@@ -144,14 +145,15 @@ html:not([data-theme="dark"]) .moon-icon {
 .form-group select,
 .form-group textarea {
   width: 100%;
-  padding: 0.7rem 0;
-  border: none;
-  border-bottom: 1px solid var(--color-border-strong);
-  border-radius: 0;
-  background: transparent;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-background);
   color: var(--color-text);
   font-size: 1rem;
-  transition: border-color var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .form-group select {
@@ -162,7 +164,8 @@ html:not([data-theme="dark"]) .moon-icon {
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: var(--color-text);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-soft);
 }
 
 .form-group textarea {
@@ -196,8 +199,9 @@ html:not([data-theme="dark"]) .moon-icon {
 
 .form-status.success,
 .form-status.error {
-  padding: 0.9rem 1.1rem;
-  border-left: 2px solid;
+  padding: 0.9rem 1.15rem;
+  border-left: 3px solid;
+  border-radius: var(--radius-md);
   background: var(--color-surface);
 }
 
@@ -223,9 +227,9 @@ html:not([data-theme="dark"]) .moon-icon {
 }
 
 .education-logo {
-  width: 60px;
-  height: 60px;
-  border-radius: var(--radius-sm);
+  width: 62px;
+  height: 62px;
+  border-radius: var(--radius-md);
   background: #ffffff;
   border: 1px solid var(--color-border);
   padding: 0.5rem;
@@ -280,9 +284,10 @@ html:not([data-theme="dark"]) .moon-icon {
 .project-row-media {
   display: block;
   position: relative;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
   aspect-ratio: 16 / 11;
   background: var(--color-surface);
 }
@@ -343,8 +348,8 @@ html:not([data-theme="dark"]) .moon-icon {
   line-height: var(--line-height-snug);
   color: var(--color-text);
   margin-bottom: 1.5rem;
-  padding-left: 1.15rem;
-  border-left: 1px solid var(--color-border-strong);
+  padding-left: 1.25rem;
+  border-left: 2px solid var(--color-accent-soft);
   max-width: 46ch;
 }
 
