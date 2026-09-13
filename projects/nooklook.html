@@ -17,10 +17,11 @@
       })();
     </script>
     <meta charset="UTF-8" />
+    <link rel="canonical" href="https://ryanyarali.com/projects/nooklook.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Nook Look - a boutique photography studio website built solo on WordPress, with a custom design system, booking pipeline, and local SEO. Case study by Ryan Yarali."
+      content="How a Coquitlam portrait studio got four priced service lines, a booking pipeline, a filterable gallery, and local SEO on WordPress, built and launched solo."
     />
 
     <meta property="og:type" content="website" />
@@ -31,7 +32,7 @@
     <meta property="og:title" content="Nook Look | Ryan Yarali" />
     <meta
       property="og:description"
-      content="A boutique photography studio website built solo on WordPress, with a custom design system, booking pipeline, and local SEO."
+      content="How a Coquitlam portrait studio got four priced service lines, a booking pipeline, a filterable gallery, and local SEO on WordPress, built and launched solo."
     />
 
     <meta
@@ -68,12 +69,61 @@
     <script src="../assets/js/palette.js"></script>
 
     <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=4" />
+    <!-- Structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "Nook Look: photography studio website",
+        "url": "https://ryanyarali.com/projects/nooklook.html",
+        "description": "Case study: building and launching a Coquitlam portrait studio's website solo on WordPress.",
+        "image": "https://ryanyarali.com/assets/nl-hero.jpg",
+        "author": {
+          "@id": "https://ryanyarali.com/#ryan"
+        },
+        "publisher": {
+          "@id": "https://ryanyarali.com/#ryan"
+        },
+        "isPartOf": {
+          "@id": "https://ryanyarali.com/#site"
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://ryanyarali.com/projects/nooklook.html"
+        }
+      }
+    </script>
   </head>
   <body class="project-detail-page nooklook-page">
     <canvas id="site-trace" aria-hidden="true"></canvas>
     <a href="#main" class="skip-link">Skip to content</a>
 
-    <div id="site-navbar" data-nav-context="project"></div>
+        <nav class="navbar">
+      <div class="nav-container">
+        <a href="../index.html" class="logo" aria-label="Ryan Yarali, home">
+          <span class="logo-name">Ryan Yarali</span>
+          <span class="logo-subtitle">Computer Systems Technology</span>
+        </a>
+
+        <ul class="nav-links" id="nav-links">
+          <li><a href="../index.html" class="nav-link">Home</a></li>
+          <li><a href="../index.html#about" class="nav-link">About</a></li>
+          <li><a href="../projects.html" class="nav-link" aria-current="page">Projects</a></li>
+          <li><a href="../index.html#skills" class="nav-link">Skills</a></li>
+          <li><a href="../index.html#learning" class="nav-link">Learning</a></li>
+          <li><a href="../index.html#contact" class="nav-link">Contact</a></li>
+        </ul>
+
+        <!-- The theme switch lives in the palette dock, next to the colours. -->
+        <div class="nav-actions">
+          <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
 
     <main id="main">
       <div class="project-hero">
@@ -122,7 +172,7 @@
                     src="../assets/nl-hero.jpg"
                     alt="Nook Look home page: a dark charcoal text panel reading 'Warm, unhurried portraits' beside a full-height maternity photograph, under a floating pill navigation bar"
                     loading="lazy"
-                  />
+                  / width="1400" height="776" />
                   <figcaption>
                     The editorial split hero, with the floating pill nav above
                     it.
@@ -133,7 +183,7 @@
                     src="../assets/nl-prices.jpg"
                     alt="Newborn photography pricing page showing Essential, Signature, and Luxury tiers side by side, with a Most Popular badge on Signature"
                     loading="lazy"
-                  />
+                  / width="680" height="568" />
                   <figcaption>
                     Three tiers per session type. Add-ons collapse behind a
                     disclosure so the columns stay comparable.
@@ -144,7 +194,7 @@
                     src="../assets/nl-gallery.jpg"
                     alt="Gallery page with filter pills for All, Newborn, Maternity, Birthday, and Outdoor above a grid of session photographs"
                     loading="lazy"
-                  />
+                  / width="680" height="480" />
                   <figcaption>
                     The gallery, filtered by session type off a custom Pods
                     post type.
@@ -155,7 +205,7 @@
                     src="../assets/nl-mobile.jpg"
                     alt="Mobile view showing a logo-only header pill at the top and a separate floating bottom navigation bar with icons"
                     loading="lazy"
-                  />
+                  / width="520" height="1138" />
                   <figcaption>
                     Mobile runs a different pattern: logo pill up top, icon bar
                     within thumb reach.
@@ -166,7 +216,7 @@
                     src="../assets/nl-offer.jpg"
                     alt="Grand Opening Offer popup with a gold 15% off badge and a dusty rose call-to-action button"
                     loading="lazy"
-                  />
+                  / width="680" height="584" />
                   <figcaption>
                     The promo popup. Every word, the percentage, and the on/off
                     switch are client-editable.
@@ -453,8 +503,6 @@
         </div>
       </div>
     </footer>
-
-    <script src="../assets/js/navbar.js"></script>
     <script src="../assets/js/theme.js"></script>
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/interactive.js"></script>
