@@ -93,40 +93,94 @@
     }
   }
 
-  // ==================== Scroll progress ====================
-  // A hairline across the very top: the fill is how far down the page you are,
-  // and the leading edge brightens with scroll speed, so it reads as the same
-  // instrument as the ambient trace rather than a second unrelated widget.
+  // ==================== Scroll rail ====================
+  // A vertical instrument on the right edge rather than a hairline at the top,
+  // where it was too easy to miss. It reports three things at once: how far down
+  // the page you are, which section you are in, and how fast you are moving.
 
-  function initProgress() {
+  function initScrollRail() {
+    var sections = [].slice.call(
+      document.querySelectorAll("main section[id], main header[id]"),
+    );
+
     var rail = document.createElement("div");
-    rail.className = "scroll-progress";
+    rail.className = "scroll-rail";
     rail.setAttribute("aria-hidden", "true");
-    rail.innerHTML = '<span class="scroll-progress-fill"></span>';
+    rail.innerHTML =
+      '<span class="scroll-rail-fill"></span>' +
+      '<span class="scroll-rail-ticks"></span>' +
+      '<span class="scroll-rail-thumb"></span>' +
+      '<span class="scroll-rail-readout">0%</span>';
     document.body.appendChild(rail);
 
-    var fill = rail.firstChild;
+    var fill = rail.querySelector(".scroll-rail-fill");
+    var ticksBox = rail.querySelector(".scroll-rail-ticks");
+    var thumb = rail.querySelector(".scroll-rail-thumb");
+    var readout = rail.querySelector(".scroll-rail-readout");
+
+    // One tick per section, placed where that section starts. Below three
+    // sections the ticks say nothing useful, so the rail runs without them.
+    var ticks = [];
+    if (sections.length >= 3) {
+      sections.forEach(function (section) {
+        var tick = document.createElement("i");
+        tick.title = section.id;
+        ticksBox.appendChild(tick);
+        ticks.push({ el: tick, section: section });
+      });
+    }
+
     var lastY = window.scrollY;
-    var glow = 0;
+    var stretch = 0;
     var ticking = false;
+
+    function place() {
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      if (max <= 0) return;
+      ticks.forEach(function (t) {
+        var k = Math.min(1, Math.max(0, t.section.offsetTop / max));
+        t.el.style.top = k * 100 + "%";
+      });
+    }
 
     function update() {
       ticking = false;
 
       var y = window.scrollY;
       var max = document.documentElement.scrollHeight - window.innerHeight;
-      var k = max > 0 ? Math.min(1, Math.max(0, y / max)) : 0;
 
-      fill.style.transform = "scaleX(" + k + ")";
-      rail.style.setProperty("--progress", k.toFixed(4));
+      if (max <= 40) {
+        rail.classList.remove("is-active");
+        return;
+      }
 
-      var speed = Math.min(1, Math.abs(y - lastY) / 30);
+      var k = Math.min(1, Math.max(0, y / max));
+      var pct = Math.round(k * 100);
+
+      fill.style.transform = "scaleY(" + k + ")";
+      thumb.style.top = k * 100 + "%";
+      readout.style.top = k * 100 + "%";
+      readout.textContent = pct + "%";
+
+      // The thumb stretches along the rail while the page is moving quickly,
+      // the same velocity signal the ambient trace reads.
+      var speed = Math.min(1, Math.abs(y - lastY) / 40);
       lastY = y;
-      glow += (speed - glow) * 0.3;
-      rail.style.setProperty("--progress-glow", glow.toFixed(3));
+      stretch += (speed - stretch) * 0.25;
+      rail.style.setProperty("--rail-speed", stretch.toFixed(3));
 
-      // Hide the rail at the very top: there is nothing to report yet.
-      rail.classList.toggle("is-active", k > 0.005);
+      // Mark the section the middle of the viewport is currently sitting in.
+      var mid = y + window.innerHeight * 0.4;
+      var activeIndex = -1;
+      ticks.forEach(function (t, i) {
+        if (t.section.offsetTop <= mid) activeIndex = i;
+      });
+      ticks.forEach(function (t, i) {
+        t.el.classList.toggle("is-past", i <= activeIndex);
+        t.el.classList.toggle("is-current", i === activeIndex);
+      });
+
+      rail.classList.add("is-active");
     }
 
     window.addEventListener(
@@ -138,8 +192,22 @@
       },
       { passive: true },
     );
-    window.addEventListener("resize", update, { passive: true });
+    window.addEventListener(
+      "resize",
+      function () {
+        place();
+        update();
+      },
+      { passive: true },
+    );
+
+    place();
     update();
+    // Sections settle after images and fonts land, so measure once more.
+    setTimeout(function () {
+      place();
+      update();
+    }, 900);
   }
 
   // ==================== Hero counters ====================
@@ -389,7 +457,7 @@
 
   function boot() {
     initTrace();
-    initProgress();
+    initScrollRail();
     initCounters();
     initAccordion();
     initSkillsFilter();

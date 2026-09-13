@@ -251,54 +251,117 @@ html[data-theme="dark"] .palette-swatch {
   }
 }
 
-/* ---------- scroll progress ----------
- * A hairline pinned to the top edge. The fill reports position; the leading
- * edge glows with scroll speed, the same signal the ambient trace reads. */
-.scroll-progress {
+/* ---------- scroll rail ----------
+ * A vertical instrument on the right edge. A hairline across the top was
+ * invisible: nobody looks at the very top edge of a page, and 3px of it is
+ * nothing. Here it sits at eye level in dead space, and reports position, the
+ * section you are in, and how fast you are moving, all at once. */
+.scroll-rail {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  z-index: calc(var(--z-nav) + 1);
+  right: clamp(0.9rem, 2.4vw, 2rem);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: min(46vh, 320px);
+  z-index: var(--z-nav);
   pointer-events: none;
+  border-radius: var(--radius-pill);
   background: var(--color-border);
   opacity: 0;
-  transition: opacity 320ms var(--ease);
-  --progress-glow: 0;
+  transition:
+    opacity 420ms var(--ease),
+    background-color var(--transition-palette);
+  --rail-speed: 0;
 }
 
-.scroll-progress.is-active {
+.scroll-rail.is-active {
   opacity: 1;
 }
 
-.scroll-progress-fill {
-  display: block;
-  height: 100%;
-  width: 100%;
-  transform: scaleX(0);
-  transform-origin: left center;
+.scroll-rail-fill {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
   background: var(--color-accent);
-  /* At rest the blur is zero, so the rail is a crisp hairline. It only blooms
-     while the page is actually moving. */
-  box-shadow: 0 0 calc(var(--progress-glow) * 10px) var(--color-accent);
+  transform: scaleY(0);
+  transform-origin: top center;
+  opacity: 0.55;
   transition: background-color var(--transition-palette);
 }
 
-/* The head of the bar: a small cap that rides the leading edge. It sits on the
-   rail rather than inside the fill, which is scaled and would squash it. */
-.scroll-progress::after {
-  content: "";
+/* The section marks. Past ones take the accent, the current one grows a stem
+   out to the side so it reads without needing a label. */
+.scroll-rail-ticks i {
   position: absolute;
-  top: -1px;
-  left: calc(var(--progress, 0) * 100%);
-  width: 4px;
-  height: 4px;
-  margin-left: -2.5px;
+  right: -2px;
+  width: 6px;
+  height: 1px;
+  background: var(--color-border-strong);
+  transition:
+    width 420ms var(--ease-out-expo),
+    height 300ms var(--ease),
+    background-color 300ms var(--ease);
+}
+
+.scroll-rail-ticks i.is-past {
+  background: var(--color-accent);
+}
+
+.scroll-rail-ticks i.is-current {
+  width: 12px;
+  height: 2px;
+  background: var(--color-accent);
+}
+
+/* The thumb stretches along the rail while the page is moving quickly. */
+.scroll-rail-thumb {
+  position: absolute;
+  left: 50%;
+  width: 9px;
+  height: calc(9px + var(--rail-speed) * 28px);
+  margin-left: -4.5px;
+  margin-top: calc((9px + var(--rail-speed) * 28px) / -2);
   border-radius: var(--radius-pill);
   background: var(--color-accent);
-  opacity: calc(0.4 + var(--progress-glow) * 0.6);
+  /* a ring of page ground so the thumb separates from the fill behind it */
+  box-shadow:
+    0 0 0 2px var(--color-background),
+    0 0 calc(var(--rail-speed) * 14px) var(--color-accent);
   transition: background-color var(--transition-palette);
+}
+
+.scroll-rail-readout {
+  position: absolute;
+  right: calc(100% + 0.7rem);
+  transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  transition: color var(--transition-palette);
+}
+
+/* On a phone the readout would sit over the content, and the rail hugs the
+   edge the way a native scrollbar does. */
+@media (max-width: 700px) {
+  .scroll-rail {
+    right: 0.5rem;
+    height: min(38vh, 230px);
+  }
+
+  .scroll-rail-readout {
+    display: none;
+  }
+
+  .scroll-rail-ticks i {
+    width: 5px;
+  }
+
+  .scroll-rail-ticks i.is-current {
+    width: 9px;
+  }
 }
 
 /* ---------- hero stat strip ---------- */
@@ -647,11 +710,10 @@ html[data-theme="dark"] .palette-swatch {
   .project-accordion-panel {
     transition: none !important;
   }
-  .scroll-progress-fill {
-    box-shadow: none;
-  }
-  .scroll-progress::after {
-    opacity: 0.6;
+  .scroll-rail-thumb {
+    box-shadow: 0 0 0 2px var(--color-background);
+    height: 9px;
+    margin-top: -4.5px;
   }
   #site-trace {
     opacity: 0.5;
