@@ -47,8 +47,8 @@
 }
 
 .hero-title .highlight {
-  font-style: italic;
-  font-weight: 400;
+  color: var(--color-accent);
+  transition: color var(--transition-palette);
 }
 
 .hero-subtitle {
