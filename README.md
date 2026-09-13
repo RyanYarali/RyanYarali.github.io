@@ -25,29 +25,33 @@ resolve.
 index.html            Home: hero, about, projects, skills, education, contact
 projects.html         Full project list
 projects/             Case studies
+  nooklook.html
   taskmate.html
-  portfolio.html
 404.html              Custom not-found page
 assets/
   css/
-    style.css         Entry point; imports tokens, layout, components, pages
+    style.css         Global overrides, loaded last
     tokens.css        Design tokens: colour, type, spacing, radii, shadows
     reset.css         Baseline reset and focus styles
     typography.css    Type scale and text utilities
     layout.css        Navigation, sections, footer, scroll reveal
-    components.css    Buttons, forms, tags, project rows, cards
+    components.css    Buttons, forms, tags, cards
+    interactive.css   Ambient trace, palette dock, stat strip, project accordion
     pages.css         Page- and section-specific styles
   js/
     navbar.js         Renders the shared nav on every page
     theme.js          Light/dark theme with system preference + persistence
-    projects.js       Project data and list rendering
+    projects.js       Project data and accordion rendering
+    palette.js        Six colour palettes and the palette dock
     form.js           Contact form validation and submission
     main.js           Mobile menu, scroll reveal, active nav, back to top
+    interactive.js    Ambient trace, counters, accordion, skills filter
 CNAME, robots.txt, sitemap.xml, favicon.svg
 ```
 
-`reset.css`, `typography.css`, and `style.css` are linked from each page;
-`style.css` pulls in the remaining stylesheets with `@import`.
+Every stylesheet is linked directly from each page so the browser fetches them
+in parallel rather than discovering them through `@import`. `style.css` is
+loaded last and holds only global overrides.
 
 ## Design system
 
@@ -56,16 +60,35 @@ Everything is driven by CSS custom properties defined in
 overrides those same variables under `html[data-theme="dark"]`, so themes stay
 in sync by construction.
 
-- **Colour:** a single ink-navy accent on white, inverted to pale steel blue
-  on navy-black in dark mode.
-- **Type:** Source Serif 4 for headings and pull quotes, Inter for body and
-  UI, both from Google Fonts.
+- **Colour:** six palettes (Ocean, Violet, Emerald, Crimson, Cyan, Magenta),
+  each with a light and a dark variant. Ocean is the default and lives in
+  `tokens.css`; `palette.js` carries the other five and swaps them at runtime by
+  writing one `<style>` block that redefines the same variables. All twelve
+  variants clear WCAG AA (4.5:1) for body, muted, and subtle text and for the
+  accent on both grounds.
+- **Type:** Familjen Grotesk for headings and UI, IBM Plex Mono for labels,
+  indices, and figures, both from Google Fonts.
 - **Theme:** a small inline script in each `<head>` sets `data-theme` before
-  first paint so the correct theme renders immediately. `theme.js` then wires
-  up the toggle and follows the system setting until the visitor overrides it.
+  first paint so the correct theme renders immediately, and `palette.js` is
+  loaded in the `<head>` for the same reason. `theme.js` then wires up the
+  toggle and follows the system setting until the visitor overrides it.
 
-To change the palette or fonts, edit `tokens.css`; nothing else hardcodes a
-colour or font family.
+To change the default palette or the fonts, edit `tokens.css`; to change the
+palette list, edit `palette.js`. Nothing else hardcodes a colour or font.
+
+## Interaction
+
+- **Ambient trace:** a canvas line whose amplitude tracks scroll velocity. The
+  input is scroll, not cursor position, so it behaves identically under touch.
+- **Project accordion:** one row per project, opened by a tap, one open at a
+  time. Rows without a screenshot draw a canvas figure seeded by the project
+  key and coloured from the live palette.
+- **Skills filter:** the category chips dim the rows that do not match.
+- **Magnetic buttons:** gated behind `(hover: hover) and (pointer: fine)`, so
+  they are purely additive and never a requirement.
+
+Everything except the magnetic buttons works on a phone, and everything
+respects `prefers-reduced-motion`.
 
 ## Adding a project
 
