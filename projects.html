@@ -17,10 +17,11 @@
       })();
     </script>
     <meta charset="UTF-8" />
+    <link rel="canonical" href="https://ryanyarali.com/projects.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Projects by Ryan Yarali: a live client website built on WordPress, plus full-stack coursework, each written up as a case study."
+      content="Client websites and coursework by Ryan Yarali: a WordPress studio site, a food truck site, a React and SQLite restaurant platform, and a Firebase task manager."
     />
 
     <!-- Open Graph / Social Media Meta Tags -->
@@ -29,7 +30,7 @@
     <meta property="og:title" content="Projects | Ryan Yarali" />
     <meta
       property="og:description"
-      content="Projects by Ryan Yarali: a live client website built on WordPress, plus full-stack coursework, each written up as a case study."
+      content="Client websites and coursework by Ryan Yarali: a WordPress studio site, a food truck site, a React and SQLite restaurant platform, and a Firebase task manager."
     />
     <meta
       property="og:image"
@@ -45,7 +46,7 @@
     <meta name="twitter:title" content="Projects | Ryan Yarali" />
     <meta
       name="twitter:description"
-      content="Projects by Ryan Yarali: a live client website built on WordPress, plus full-stack coursework, each written up as a case study."
+      content="Client websites and coursework by Ryan Yarali: a WordPress studio site, a food truck site, a React and SQLite restaurant platform, and a Firebase task manager."
     />
 
     <title>Projects | Ryan Yarali</title>
@@ -71,13 +72,123 @@
     <script src="assets/js/palette.js"></script>
 
     <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=4" />
+    <!-- Structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://ryanyarali.com/#ryan",
+            "name": "Ryan Yarali",
+            "url": "https://ryanyarali.com/",
+            "jobTitle": "Full-stack developer",
+            "sameAs": [
+              "https://github.com/RyanYarali",
+              "https://www.linkedin.com/in/ryan-yarali/"
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://ryanyarali.com/#site",
+            "url": "https://ryanyarali.com/",
+            "name": "Ryan Yarali",
+            "inLanguage": "en",
+            "publisher": {
+              "@id": "https://ryanyarali.com/#ryan"
+            }
+          },
+          {
+            "@type": "CollectionPage",
+            "@id": "https://ryanyarali.com/projects.html#page",
+            "url": "https://ryanyarali.com/projects.html",
+            "name": "Projects by Ryan Yarali",
+            "isPartOf": {
+              "@id": "https://ryanyarali.com/#site"
+            },
+            "about": {
+              "@id": "https://ryanyarali.com/#ryan"
+            },
+            "hasPart": [
+              {
+                "@type": "CreativeWork",
+                "name": "Nook Look",
+                "url": "https://ryanyarali.com/projects/nooklook.html",
+                "description": "Full web presence for a Coquitlam portrait studio: priced service lines, a booking pipeline, a filterable gallery, and local SEO.",
+                "author": {
+                  "@id": "https://ryanyarali.com/#ryan"
+                },
+                "keywords": "WordPress, Pods, PHP, Local SEO",
+                "sameAs": "https://nooklook.ca"
+              },
+              {
+                "@type": "CreativeWork",
+                "name": "Vanco Bab",
+                "url": "https://vancobab.ca",
+                "description": "Five-page site for a Persian kebab food truck in Vancouver, with catering packages and a vanilla JavaScript order builder.",
+                "author": {
+                  "@id": "https://ryanyarali.com/#ryan"
+                },
+                "keywords": "HTML5, CSS3, JavaScript, SEO",
+                "sameAs": "https://vancobab.ca"
+              },
+              {
+                "@type": "CreativeWork",
+                "name": "Termeh Cafe & Restaurant",
+                "url": "https://ryanyarali.com/projects.html#projects",
+                "description": "Bilingual restaurant site with a password-protected admin panel for menu, prices, hours and reservations.",
+                "author": {
+                  "@id": "https://ryanyarali.com/#ryan"
+                },
+                "keywords": "React, Vite, Node.js, Express, SQLite"
+              },
+              {
+                "@type": "CreativeWork",
+                "name": "TaskMate",
+                "url": "https://ryanyarali.com/projects/taskmate.html",
+                "description": "Task manager for students, built end to end with Firebase auth and Firestore.",
+                "author": {
+                  "@id": "https://ryanyarali.com/#ryan"
+                },
+                "keywords": "JavaScript, Firebase, Firestore"
+              }
+            ]
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <canvas id="site-trace" aria-hidden="true"></canvas>
     <a href="#main" class="skip-link">Skip to content</a>
 
     <!-- Navigation -->
-    <div id="site-navbar" data-nav-context="root"></div>
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="logo" aria-label="Ryan Yarali, home">
+          <span class="logo-name">Ryan Yarali</span>
+          <span class="logo-subtitle">Computer Systems Technology</span>
+        </a>
+
+        <ul class="nav-links" id="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="index.html#about" class="nav-link">About</a></li>
+          <li><a href="projects.html" class="nav-link" aria-current="page">Projects</a></li>
+          <li><a href="index.html#skills" class="nav-link">Skills</a></li>
+          <li><a href="index.html#learning" class="nav-link">Learning</a></li>
+          <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+        </ul>
+
+        <!-- The theme switch lives in the palette dock, next to the colours. -->
+        <div class="nav-actions">
+          <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
 
     <main id="main">
       <!-- Page Header -->
@@ -95,7 +206,251 @@
       <!-- Projects List -->
       <section class="section">
         <div class="container">
-          <div id="projects-grid"></div>
+          <div class="project-accordion reveal">
+            <div class="project-accordion-item">
+              <button class="project-accordion-head" type="button" aria-expanded="false" aria-controls="project-panel-nooklook">
+                <span class="project-accordion-num">
+                  01
+                </span>
+                <span class="project-accordion-name">
+                  <span class="project-accordion-title">
+                    Nook Look
+                  </span>
+                  <span class="project-accordion-kind">
+                    Client · 2026
+                  </span>
+                </span>
+                <span class="project-accordion-right">
+                  <span class="project-status" data-status="live">
+                    Live
+                  </span>
+                  <span class="project-accordion-sign" aria-hidden="true">
+                  </span>
+                </span>
+              </button>
+              <div class="project-accordion-panel" id="project-panel-nooklook">
+                <div class="project-accordion-panel-inner">
+                  <a class="project-accordion-media" href="projects/nooklook.html" aria-label="Open Nook Look">
+                    <img src="assets/nl-hero.jpg" alt="Nook Look interface screenshot" loading="lazy" decoding="async" width="1400" height="776">
+                  </a>
+                  <div class="project-accordion-copy">
+                    <p>
+                      The full web presence for a Coquitlam portrait studio: four priced service lines, a booking pipeline, a filterable gallery, and local SEO. Built and launched solo.
+                    </p>
+                    <p>
+                      The client asked for WordPress, then asked for things WordPress does not do. Custom content types, hand-written structured data, and managed code snippets closed the gap with no recurring plugin cost.
+                    </p>
+                    <div class="project-accordion-tech">
+                      <span>
+                        WordPress
+                      </span>
+                      <span>
+                        Pods
+                      </span>
+                      <span>
+                        PHP
+                      </span>
+                      <span>
+                        Custom CSS/JS
+                      </span>
+                      <span>
+                        Local SEO
+                      </span>
+                    </div>
+                    <div class="project-accordion-links">
+                      <a class="project-accordion-link" href="projects/nooklook.html">
+                        Read the case study
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                      </a>
+                      <a class="project-accordion-link" href="https://nooklook.ca" target="_blank" rel="noopener noreferrer">
+                        Visit the site
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="project-accordion-item">
+              <button class="project-accordion-head" type="button" aria-expanded="false" aria-controls="project-panel-vancobab">
+                <span class="project-accordion-num">
+                  02
+                </span>
+                <span class="project-accordion-name">
+                  <span class="project-accordion-title">
+                    Vanco Bab
+                  </span>
+                  <span class="project-accordion-kind">
+                    Client · 2026
+                  </span>
+                </span>
+                <span class="project-accordion-right">
+                  <span class="project-status" data-status="live">
+                    Live
+                  </span>
+                  <span class="project-accordion-sign" aria-hidden="true">
+                  </span>
+                </span>
+              </button>
+              <div class="project-accordion-panel" id="project-panel-vancobab">
+                <div class="project-accordion-panel-inner">
+                  <a class="project-accordion-media" href="https://vancobab.ca" target="_blank" rel="noopener noreferrer" aria-label="Open Vanco Bab">
+                    <canvas data-art="vancobab" aria-hidden="true">
+                    </canvas>
+                  </a>
+                  <div class="project-accordion-copy">
+                    <p>
+                      A five-page site for a Persian kebab food truck in Vancouver: the truck menu, catering packages, and an order builder customers use before they reach the window.
+                    </p>
+                    <p>
+                      The order builder is plain JavaScript with no backend and no payment step. It totals a customer's picks and hands them a summary to read at the counter, which is what a food truck actually needs. Catering pages re-point the brand accent from red to gold through a single data attribute, so one stylesheet carries two moods.
+                    </p>
+                    <div class="project-accordion-tech">
+                      <span>
+                        HTML5
+                      </span>
+                      <span>
+                        CSS3
+                      </span>
+                      <span>
+                        Vanilla JavaScript
+                      </span>
+                      <span>
+                        SEO
+                      </span>
+                    </div>
+                    <div class="project-accordion-links">
+                      <a class="project-accordion-link" href="https://vancobab.ca" target="_blank" rel="noopener noreferrer">
+                        Visit the site
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                      </a>
+                      <span class="project-accordion-note">Case study coming soon</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="project-accordion-item">
+              <button class="project-accordion-head" type="button" aria-expanded="false" aria-controls="project-panel-termeh">
+                <span class="project-accordion-num">
+                  03
+                </span>
+                <span class="project-accordion-name">
+                  <span class="project-accordion-title">
+                    Termeh Cafe &amp; Restaurant
+                  </span>
+                  <span class="project-accordion-kind">
+                    Client · 2026
+                  </span>
+                </span>
+                <span class="project-accordion-right">
+                  <span class="project-status" data-status="other">
+                    Coming soon
+                  </span>
+                  <span class="project-accordion-sign" aria-hidden="true">
+                  </span>
+                </span>
+              </button>
+              <div class="project-accordion-panel" id="project-panel-termeh">
+                <div class="project-accordion-panel-inner">
+                  <div class="project-accordion-media">
+                    <canvas data-art="termeh" aria-hidden="true">
+                    </canvas>
+                  </div>
+                  <div class="project-accordion-copy">
+                    <p>
+                      A bilingual restaurant site in English and Farsi, with a password-protected admin panel so the owner changes the menu, prices, hours, and reservations without touching code.
+                    </p>
+                    <p>
+                      React 19 on the front, Node, Express, and SQLite on the back. Role-based admin accounts, a reservation pipeline with email confirmations, photo uploads, and per-page SEO metadata. Launching once the domain is live.
+                    </p>
+                    <div class="project-accordion-tech">
+                      <span>
+                        React 19
+                      </span>
+                      <span>
+                        Vite
+                      </span>
+                      <span>
+                        Node.js
+                      </span>
+                      <span>
+                        Express
+                      </span>
+                      <span>
+                        SQLite
+                      </span>
+                      <span>
+                        i18n
+                      </span>
+                    </div>
+                    <div class="project-accordion-links">
+                      <span class="project-accordion-note">
+                        Launching soon
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="project-accordion-item">
+              <button class="project-accordion-head" type="button" aria-expanded="false" aria-controls="project-panel-taskmate">
+                <span class="project-accordion-num">
+                  04
+                </span>
+                <span class="project-accordion-name">
+                  <span class="project-accordion-title">
+                    TaskMate
+                  </span>
+                  <span class="project-accordion-kind">
+                    Coursework · 2025
+                  </span>
+                </span>
+                <span class="project-accordion-right">
+                  <span class="project-status" data-status="other">
+                    Shipped
+                  </span>
+                  <span class="project-accordion-sign" aria-hidden="true">
+                  </span>
+                </span>
+              </button>
+              <div class="project-accordion-panel" id="project-panel-taskmate">
+                <div class="project-accordion-panel-inner">
+                  <a class="project-accordion-media" href="projects/taskmate.html" aria-label="Open TaskMate">
+                    <img src="assets/TaskMate6.jpg" alt="TaskMate interface screenshot" loading="lazy" decoding="async" width="1000" height="508">
+                  </a>
+                  <div class="project-accordion-copy">
+                    <p>
+                      A mobile-friendly task manager built so students stop losing deadlines across five different apps.
+                    </p>
+                    <p>
+                      Shipped end-to-end with Firebase auth and Firestore, then tested by a 9-person class team against real course workloads.
+                    </p>
+                    <div class="project-accordion-tech">
+                      <span>
+                        HTML5
+                      </span>
+                      <span>
+                        CSS3
+                      </span>
+                      <span>
+                        JavaScript
+                      </span>
+                      <span>
+                        Firebase
+                      </span>
+                    </div>
+                    <div class="project-accordion-links">
+                      <a class="project-accordion-link" href="projects/taskmate.html">
+                        Read the case study
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="text-center projects-section-cta">
             <a href="index.html#contact" class="btn btn-secondary">
               Get in touch
@@ -117,13 +472,14 @@
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.93.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.87-1.36-3.87-1.36-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.42-2.69 5.4-5.25 5.68.41.36.78 1.06.78 2.14 0 1.54-.01 2.79-.01 3.17 0 .3.2.66.79.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
             GitHub
           </a>
+          <a href="https://www.linkedin.com/in/ryan-yarali/" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.55V9h3.57v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>
+            LinkedIn
+          </a>
         </div>
       </div>
     </footer>
-
-    <script src="assets/js/navbar.js"></script>
     <script src="assets/js/theme.js"></script>
-    <script src="assets/js/projects.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/interactive.js"></script>
   </body>

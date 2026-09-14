@@ -10,15 +10,22 @@
   const mobileToggle = document.getElementById("mobile-toggle");
   const navLinks = document.getElementById("nav-links");
 
+  function setMenuOpen(isOpen) {
+    if (!mobileToggle || !navLinks) return;
+    navLinks.classList.toggle("active", isOpen);
+    mobileToggle.classList.toggle("active", isOpen);
+    // The markup carries aria-expanded, so it has to track the real state
+    // rather than sit at "false" while the menu is open.
+    mobileToggle.setAttribute("aria-expanded", String(isOpen));
+  }
+
   function closeMobileMenu() {
-    if (mobileToggle) mobileToggle.classList.remove("active");
-    if (navLinks) navLinks.classList.remove("active");
+    setMenuOpen(false);
   }
 
   function toggleMobileMenu() {
     if (!mobileToggle || !navLinks) return;
-    const isOpen = navLinks.classList.toggle("active");
-    mobileToggle.classList.toggle("active", isOpen);
+    setMenuOpen(!navLinks.classList.contains("active"));
   }
 
   if (mobileToggle && navLinks) {
@@ -99,10 +106,12 @@
     });
 
     navLinks.forEach((link) => {
-      link.classList.remove("active");
-      if (link.getAttribute("href") === `#${current}`) {
-        link.classList.add("active");
-      }
+      const isCurrent = link.getAttribute("href") === `#${current}`;
+      link.classList.toggle("active", isCurrent);
+      // On the home page every nav link points at this same page, so
+      // aria-current marks the section in view rather than sitting on "Home".
+      if (isCurrent) link.setAttribute("aria-current", "true");
+      else link.removeAttribute("aria-current");
     });
   }
 
