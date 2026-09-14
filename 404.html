@@ -47,11 +47,37 @@
   </head>
   <body>
     <canvas id="site-trace" aria-hidden="true"></canvas>
+    <a href="#main" class="skip-link">Skip to content</a>
     <!-- Navigation -->
-    <div id="site-navbar" data-nav-context="root"></div>
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="logo" aria-label="Ryan Yarali, home">
+          <span class="logo-name">Ryan Yarali</span>
+          <span class="logo-subtitle">Computer Systems Technology</span>
+        </a>
+
+        <ul class="nav-links" id="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="index.html#about" class="nav-link">About</a></li>
+          <li><a href="projects.html" class="nav-link">Projects</a></li>
+          <li><a href="index.html#skills" class="nav-link">Skills</a></li>
+          <li><a href="index.html#learning" class="nav-link">Learning</a></li>
+          <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+        </ul>
+
+        <!-- The theme switch lives in the palette dock, next to the colours. -->
+        <div class="nav-actions">
+          <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
 
     <!-- Error Container -->
-    <div class="error-page-container">
+    <main id="main" class="error-page-container">
       <div class="error-page-content">
         <span class="error-page-code">404</span>
         <h1 class="error-page-title">Page not found</h1>
@@ -65,10 +91,9 @@
           <a href="index.html#contact" class="btn btn-secondary">Contact me</a>
         </div>
       </div>
-    </div>
+    </main>
 
     <!-- Scripts -->
-    <script src="assets/js/navbar.js"></script>
     <script src="assets/js/theme.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/interactive.js"></script>
