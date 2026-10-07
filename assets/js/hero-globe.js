@@ -389,6 +389,21 @@ export function mount(host, { reduced = false } = {}) {
     canvas.addEventListener("pointercancel", end);
   }
 
+  // ---- scroll spins it too, so a phone (no pointer to lean toward) still
+  // feels the globe answer to the hand
+  if (!reduced) {
+    let lastScroll = window.scrollY;
+    window.addEventListener(
+      "scroll",
+      () => {
+        const dy = window.scrollY - lastScroll;
+        lastScroll = window.scrollY;
+        spinVel = Math.max(-0.06, Math.min(0.06, spinVel + dy * 0.00025));
+      },
+      { passive: true },
+    );
+  }
+
   // ---- render loop
   const v = new THREE.Vector3();
   const camDir = new THREE.Vector3();

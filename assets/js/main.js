@@ -49,7 +49,88 @@
   document.documentElement.classList.add("js-ready");
 
   // ==================== Scroll Reveal ====================
+  // ==================== Heading entrances ====================
+  // When a section heading is revealed, its eyebrow decodes out of random
+  // characters (the same effect as the name in the hero) and the heading's
+  // words rise out of a mask, one after another. The text itself is never
+  // changed for long: the words are only wrapped, and the eyebrow is back to
+  // its real text within half a second.
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const GLYPHS = "01<>/#%&*+=ABCDEFxyz";
+
+  function wrapWords(heading) {
+    if (heading.dataset.words) return;
+    heading.dataset.words = "1";
+    let i = 0;
+    (function walk(node) {
+      Array.from(node.childNodes).forEach((n) => {
+        if (n.nodeType === 1) return walk(n);
+        if (n.nodeType !== 3 || !n.nodeValue.trim()) return;
+        const frag = document.createDocumentFragment();
+        n.nodeValue.split(/(\s+)/).forEach((part) => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) {
+            frag.appendChild(document.createTextNode(part));
+            return;
+          }
+          const outer = document.createElement("span");
+          outer.className = "hw";
+          const inner = document.createElement("span");
+          inner.textContent = part;
+          inner.style.setProperty("--i", i++);
+          outer.appendChild(inner);
+          frag.appendChild(outer);
+        });
+        n.parentNode.replaceChild(frag, n);
+      });
+    })(heading);
+  }
+
+  function decodeEyebrow(el) {
+    const text = el.textContent;
+    const total = text.replace(/\s/g, "").length;
+    if (!total) return;
+    el.setAttribute("aria-label", text.trim());
+    const start = performance.now();
+    const duration = 520;
+    (function tick(now) {
+      const p = Math.min(1, (now - start) / duration);
+      let index = 0;
+      let out = "";
+      for (const ch of text) {
+        if (/\s/.test(ch)) {
+          out += ch;
+          continue;
+        }
+        index++;
+        out += p >= index / total ? ch : GLYPHS[(Math.random() * GLYPHS.length) | 0];
+      }
+      el.textContent = out;
+      if (p < 1) requestAnimationFrame(tick);
+      else {
+        el.textContent = text;
+        el.removeAttribute("aria-label");
+      }
+    })(start);
+  }
+
+  function prepareHeadings() {
+    if (reducedMotion) return;
+    document
+      .querySelectorAll(".section-heading.reveal h2, .project-section.reveal > h2")
+      .forEach(wrapWords);
+  }
+
+  function show(el) {
+    if (el.classList.contains("in-view")) return;
+    el.classList.add("in-view");
+    if (reducedMotion) return;
+    const eyebrow = el.matches(".section-heading") && el.querySelector(".eyebrow");
+    if (eyebrow) decodeEyebrow(eyebrow);
+  }
+
   function initScrollReveal() {
+    prepareHeadings();
     document.querySelectorAll(".reveal-group").forEach((group) => {
       Array.from(group.children).forEach((child, index) => {
         child.classList.add("reveal");
@@ -60,7 +141,7 @@
     const revealElements = document.querySelectorAll(".reveal");
 
     if (!("IntersectionObserver" in window) || revealElements.length === 0) {
-      revealElements.forEach((el) => el.classList.add("in-view"));
+      revealElements.forEach(show);
       return;
     }
 
@@ -68,7 +149,7 @@
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add("in-view");
+            show(entry.target);
             observer.unobserve(entry.target);
           }
         });
@@ -91,7 +172,7 @@
       pending = pending.filter((el) => {
         if (el.classList.contains("in-view")) return false;
         if (el.getBoundingClientRect().top < limit) {
-          el.classList.add("in-view");
+          show(el);
           observer.unobserve(el);
           return false;
         }
@@ -116,7 +197,7 @@
   // On the home page the sections are sticky (story.js stacks them), and the
   // offsetTop of a stuck element reports where it is stuck, not where it sits
   // in the flow. This gives the flow position either way, for the nav, the
-  // spine and the stacking to share.
+  // route and the stacking to share.
   function naturalTop(el) {
     const parent = el.parentElement;
     if (parent && getComputedStyle(el).position === "sticky") {
@@ -140,7 +221,6 @@
 
     sections.forEach((section) => {
       const sectionTop = naturalTop(section);
-      // The same line the route spine uses, so the two always agree.
       if (window.pageYOffset + window.innerHeight * 0.4 >= sectionTop) {
         current = section.getAttribute("id");
       }
