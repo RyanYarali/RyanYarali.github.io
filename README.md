@@ -29,6 +29,7 @@ projects/             Case studies
   nooklook.html
   taskmate.html
 404.html              Custom not-found page
+projects/this-site.html  Case study of this site
 resume.html           Résumé placeholder until the PDF is added (noindex)
 assets/
   css/
@@ -55,6 +56,10 @@ assets/
   vendor/three/       three.js r186, the one third-party library (see its README)
 CNAME, robots.txt, sitemap.xml, favicon.svg
 ```
+
+Every local CSS and JS link carries a `?v=` date tag; bump it on every page
+when a CSS or JS file changes, because GitHub Pages lets browsers cache for
+ten minutes.
 
 Every stylesheet is linked directly from each page so the browser fetches them
 in parallel rather than discovering them through `@import`. `style.css` is
@@ -125,6 +130,11 @@ palette list, edit `palette.js`. Nothing else hardcodes a colour or font.
 - **Card to case study:** a card's image and its case study's cover share a
   `view-transition-name`, so in browsers with cross-document View
   Transitions the image morphs into the next page. Others just navigate.
+- **Skills:** two marquee rows, built at runtime from the skills list, drift
+  in opposite directions; the filter lifts matching rows to the top with a
+  FLIP animation.
+- **Contact:** sending draws the request as a packet travelling to the
+  inbox, and logs the real host, status code and round-trip time.
 - **About:** the lede lights up word by word as it is read, and the portrait
   tilts toward the pointer.
 - **Cursor ring:** follows the real pointer (which stays visible), wraps

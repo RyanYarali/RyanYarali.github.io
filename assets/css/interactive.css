@@ -590,7 +590,10 @@ html[data-theme="dark"] .palette-swatch {
     transform 420ms var(--ease-out-expo);
 }
 
-.skills-row.is-dimmed {
+/* Rows are also .reveal items, and "html.js-ready .reveal.in-view" sets them
+   to full opacity; the html prefix lifts this rule to the same weight so the
+   dimming still applies (this file loads after layout.css). */
+html .skills-rows .skills-row.is-dimmed {
   opacity: 0.24;
 }
 
