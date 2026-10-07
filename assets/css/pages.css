@@ -283,6 +283,10 @@
   gap: 1.75rem;
 }
 
+.contact-resume {
+  align-self: flex-start;
+}
+
 /* ==================== Project Detail Pages ==================== */
 .project-detail-page {
   padding-top: 5.5rem;

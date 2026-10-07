@@ -1,8 +1,9 @@
 /**
  * Interactive layer
  * -----------------
- * Ambient scroll trace, hero counters, the project accordion, the skills
- * filter, and magnetic buttons.
+ * Ambient scroll trace (only on pages without the winding route), hero
+ * counters, the project accordion, the skills filter, and
+ * magnetic buttons.
  *
  * Every effect here is driven by scroll or by a tap, never by cursor position
  * alone, so a phone gets the same site a desktop does. The one exception is the
@@ -20,6 +21,10 @@
   function initTrace() {
     var cv = document.getElementById("site-trace");
     if (!cv || !cv.getContext) return;
+    // Pages with the winding route (route.js) already have a line running
+    // through them; a second ambient one would only compete with it. This
+    // runs on DOMContentLoaded, after route.js has marked the page.
+    if (document.documentElement.classList.contains("has-route")) return;
 
     var ctx = cv.getContext("2d");
     var W = 0;
@@ -91,123 +96,6 @@
     } else {
       requestAnimationFrame(frame);
     }
-  }
-
-  // ==================== Scroll rail ====================
-  // A vertical instrument on the right edge rather than a hairline at the top,
-  // where it was too easy to miss. It reports three things at once: how far down
-  // the page you are, which section you are in, and how fast you are moving.
-
-  function initScrollRail() {
-    var sections = [].slice.call(
-      document.querySelectorAll("main section[id], main header[id]"),
-    );
-
-    var rail = document.createElement("div");
-    rail.className = "scroll-rail";
-    rail.setAttribute("aria-hidden", "true");
-    rail.innerHTML =
-      '<span class="scroll-rail-fill"></span>' +
-      '<span class="scroll-rail-ticks"></span>' +
-      '<span class="scroll-rail-thumb"></span>' +
-      '<span class="scroll-rail-readout">0%</span>';
-    document.body.appendChild(rail);
-
-    var fill = rail.querySelector(".scroll-rail-fill");
-    var ticksBox = rail.querySelector(".scroll-rail-ticks");
-    var thumb = rail.querySelector(".scroll-rail-thumb");
-    var readout = rail.querySelector(".scroll-rail-readout");
-
-    // One tick per section, placed where that section starts. Below three
-    // sections the ticks say nothing useful, so the rail runs without them.
-    var ticks = [];
-    if (sections.length >= 3) {
-      sections.forEach(function (section) {
-        var tick = document.createElement("i");
-        tick.title = section.id;
-        ticksBox.appendChild(tick);
-        ticks.push({ el: tick, section: section });
-      });
-    }
-
-    var lastY = window.scrollY;
-    var stretch = 0;
-    var ticking = false;
-
-    function place() {
-      var max = document.documentElement.scrollHeight - window.innerHeight;
-      if (max <= 0) return;
-      ticks.forEach(function (t) {
-        var k = Math.min(1, Math.max(0, t.section.offsetTop / max));
-        t.el.style.top = k * 100 + "%";
-      });
-    }
-
-    function update() {
-      ticking = false;
-
-      var y = window.scrollY;
-      var max = document.documentElement.scrollHeight - window.innerHeight;
-
-      if (max <= 40) {
-        rail.classList.remove("is-active");
-        return;
-      }
-
-      var k = Math.min(1, Math.max(0, y / max));
-      var pct = Math.round(k * 100);
-
-      fill.style.transform = "scaleY(" + k + ")";
-      thumb.style.top = k * 100 + "%";
-      readout.style.top = k * 100 + "%";
-      readout.textContent = pct + "%";
-
-      // The thumb stretches along the rail while the page is moving quickly,
-      // the same velocity signal the ambient trace reads.
-      var speed = Math.min(1, Math.abs(y - lastY) / 40);
-      lastY = y;
-      stretch += (speed - stretch) * 0.25;
-      rail.style.setProperty("--rail-speed", stretch.toFixed(3));
-
-      // Mark the section the middle of the viewport is currently sitting in.
-      var mid = y + window.innerHeight * 0.4;
-      var activeIndex = -1;
-      ticks.forEach(function (t, i) {
-        if (t.section.offsetTop <= mid) activeIndex = i;
-      });
-      ticks.forEach(function (t, i) {
-        t.el.classList.toggle("is-past", i <= activeIndex);
-        t.el.classList.toggle("is-current", i === activeIndex);
-      });
-
-      rail.classList.add("is-active");
-    }
-
-    window.addEventListener(
-      "scroll",
-      function () {
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(update);
-      },
-      { passive: true },
-    );
-    window.addEventListener(
-      "resize",
-      function () {
-        place();
-        update();
-      },
-      { passive: true },
-    );
-
-    place();
-    update();
-    // Sections settle after images and fonts land, so measure once more.
-    setTimeout(function () {
-      place();
-      update();
-    }, 900);
   }
 
   // ==================== Hero counters ====================
@@ -406,6 +294,11 @@
     var rows = document.querySelectorAll(".skills-row");
     if (!chips.length || !rows.length) return;
 
+    // Remember the authored order so "All" can put it back.
+    [].forEach.call(rows, function (row, n) {
+      row.dataset.order = n;
+    });
+
     [].forEach.call(chips, function (chip) {
       chip.addEventListener("click", function () {
         var key = chip.dataset.filter;
@@ -414,17 +307,39 @@
           other.setAttribute("aria-pressed", String(other === chip));
         });
 
-        [].forEach.call(rows, function (row, i) {
+        // Matching rows rise to the top and the rest settle below them,
+        // animated FLIP-style: measure, reorder, then play each row from
+        // where it was to where it now is. "All" restores the original order.
+        var list = [].slice.call(rows);
+        var first = list.map(function (row) {
+          return row.getBoundingClientRect().top;
+        });
+
+        list.forEach(function (row) {
           var match = key === "all" || row.dataset.skillGroup === key;
           row.classList.toggle("is-dimmed", !match);
           row.classList.toggle("is-match", match && key !== "all");
+        });
 
-          if (!reduced) {
-            row.style.transitionDelay = i * 22 + "ms";
-            setTimeout(function () {
-              row.style.transitionDelay = "";
-            }, 600);
-          }
+        var parent = list[0].parentNode;
+        var ordered = list
+          .slice()
+          .sort(function (a, b) {
+            return (a.classList.contains("is-dimmed") - b.classList.contains("is-dimmed")) ||
+              (+a.dataset.order - +b.dataset.order);
+          });
+        ordered.forEach(function (row) {
+          parent.appendChild(row);
+        });
+
+        if (reduced) return;
+        list.forEach(function (row, i) {
+          var dy = first[i] - row.getBoundingClientRect().top;
+          if (Math.abs(dy) < 1) return;
+          row.animate(
+            [{ transform: "translateY(" + dy + "px)" }, { transform: "none" }],
+            { duration: 560, easing: "cubic-bezier(.19,1,.22,1)" },
+          );
         });
       });
     });
@@ -457,7 +372,6 @@
 
   function boot() {
     initTrace();
-    initScrollRail();
     initCounters();
     initAccordion();
     initSkillsFilter();

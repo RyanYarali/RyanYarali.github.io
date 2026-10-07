@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("portfolio-theme-override");
+          var theme =
+            stored ||
+            (window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light");
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      })();
+    </script>
+    <link rel="canonical" href="https://ryanyarali.com/projects/this-site.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="How ryanyarali.com is built: a 3D network globe, scroll-stacked pages and real network timing, with no framework, no build step and every word in the HTML."
+    />
+
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://ryanyarali.com/projects/this-site.html"
+    />
+    <meta
+      property="og:title"
+      content="How this site is built | Ryan Yarali"
+    />
+    <meta
+      property="og:description"
+      content="How ryanyarali.com is built: a 3D network globe, scroll-stacked pages and real network timing, with no framework, no build step and every word in the HTML."
+    />
+
+    <meta
+      property="og:image"
+      content="https://ryanyarali.com/assets/og-card.jpg"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:image"
+      content="https://ryanyarali.com/assets/og-card.jpg"
+    />
+
+    <title>How this site is built | Ryan Yarali</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../assets/css/tokens.css?v=20261006" />
+    <link rel="stylesheet" href="../assets/css/reset.css?v=20261006" />
+    <link rel="stylesheet" href="../assets/css/typography.css?v=20261006" />
+    <link rel="stylesheet" href="../assets/css/layout.css?v=20261006" />
+    <link rel="stylesheet" href="../assets/css/components.css?v=20261006" />
+    <link rel="stylesheet" href="../assets/css/pages.css?v=20261006" />
+    <link rel="stylesheet" href="../assets/css/interactive.css?v=20261006" />
+    <link rel="stylesheet" href="../assets/css/motion.css?v=20261006" />
+    <link rel="stylesheet" href="../assets/css/style.css?v=20261006" />
+
+    <!-- Palette tokens are written before first paint -->
+    <script src="../assets/js/palette.js?v=20261006"></script>
+
+    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=4" />
+    <!-- Structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://ryanyarali.com/#ryan",
+            "name": "Ryan Yarali",
+            "url": "https://ryanyarali.com/",
+            "jobTitle": "Full-stack developer",
+            "sameAs": [
+              "https://github.com/RyanYarali",
+              "https://www.linkedin.com/in/ryan-yarali/"
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://ryanyarali.com/#site",
+            "url": "https://ryanyarali.com/",
+            "name": "Ryan Yarali",
+            "inLanguage": "en",
+            "publisher": {
+              "@id": "https://ryanyarali.com/#ryan"
+            }
+          },
+          {
+            "@type": "Article",
+            "headline": "How this site is built",
+            "url": "https://ryanyarali.com/projects/this-site.html",
+            "description": "Case study: the design and engineering of ryanyarali.com.",
+            "image": "https://ryanyarali.com/assets/site-hero.jpg",
+            "author": {
+              "@id": "https://ryanyarali.com/#ryan"
+            },
+            "publisher": {
+              "@id": "https://ryanyarali.com/#ryan"
+            },
+            "isPartOf": {
+              "@id": "https://ryanyarali.com/#site"
+            },
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://ryanyarali.com/projects/this-site.html"
+            }
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="project-detail-page">
+    <canvas id="site-trace" aria-hidden="true"></canvas>
+    <a href="#main" class="skip-link">Skip to content</a>
+
+        <nav class="navbar">
+      <div class="nav-container">
+        <a href="../index.html" class="logo" aria-label="Ryan Yarali, Computer Systems Technology, home">
+          <span class="logo-name">Ryan Yarali</span>
+          <span class="logo-subtitle">Computer Systems Technology</span>
+        </a>
+
+        <ul class="nav-links" id="nav-links">
+          <li><a href="../index.html" class="nav-link">Home</a></li>
+          <li><a href="../index.html#about" class="nav-link">About</a></li>
+          <li><a href="../projects.html" class="nav-link">Projects</a></li>
+          <li><a href="../index.html#skills" class="nav-link">Skills</a></li>
+          <li><a href="../index.html#learning" class="nav-link">Learning</a></li>
+          <li><a href="../index.html#contact" class="nav-link">Contact</a></li>
+        </ul>
+
+        <!-- The theme switch lives in the palette dock, next to the colours. -->
+        <div class="nav-actions">
+          <!-- Points at resume.html until the PDF exists; then swap the href for the PDF and add a download attribute. -->
+          <a href="../resume.html" class="nav-resume" data-magnetic>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"></path><polyline points="7 10 12 15 17 10"></polyline><path d="M5 21h14"></path></svg>
+            Résumé
+          </a>
+          <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <main id="main">
+      <div class="project-hero">
+        <div class="container">
+          <a href="../index.html" class="back-link">&larr; Home</a>
+          <h1>This site</h1>
+          <p>How ryanyarali.com is designed and built</p>
+          <div class="project-links">
+            <a
+              href="https://github.com/RyanYarali/RyanYarali.github.io"
+              class="btn btn-secondary"
+              target="_blank"
+              rel="noopener noreferrer"
+              >View the source</a
+            >
+          </div>
+          <figure class="case-cover">
+            <img
+              src="../assets/site-hero.jpg"
+              alt="The ryanyarali.com hero: the name in large type beside a glowing network globe whose labelled nodes are projects and tools"
+              width="1400"
+              height="788"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </figure>
+        </div>
+      </div>
+
+      <section class="section">
+        <div class="container">
+          <div class="project-content">
+            <div class="project-section reveal">
+              <h2>Overview</h2>
+              <p>
+                A portfolio is the one project every reviewer opens, so this
+                one is meant to show both halves of what I do: the design
+                and motion work people notice in the first ten seconds, and
+                the engineering underneath that they only notice if it is
+                missing.
+              </p>
+              <p>
+                It is plain HTML, CSS and JavaScript on GitHub Pages. There is
+                no framework and no build step, and the one library is
+                three.js for the globe. Every word on the site is in the HTML,
+                so it reads the same to a recruiter, a screen reader and a
+                search crawler.
+              </p>
+            </div>
+
+            <div class="project-section reveal">
+              <h2>The brief</h2>
+              <ul>
+                <li>
+                  Make people stop and look, without making anyone wait: the
+                  page has to be usable at once, by someone who will give it
+                  thirty seconds
+                </li>
+                <li>
+                  No framework and no build tooling; anything new has to work
+                  by linking one file from the HTML
+                </li>
+                <li>
+                  Readable without JavaScript, and fully indexable, including
+                  by link-preview bots that never run a script
+                </li>
+                <li>
+                  WCAG AA contrast in all six colour palettes, in light and
+                  dark, and a calm version of everything for visitors who ask
+                  their system for reduced motion
+                </li>
+                <li>
+                  Nothing on the page that is not true, including the numbers
+                </li>
+              </ul>
+            </div>
+
+            <div class="project-section reveal">
+              <h2>The idea</h2>
+              <p>
+                I study Data Communications and Cyber Security, so the site
+                is built around what happens between the client and the
+                server, and it uses real data wherever it shows any:
+              </p>
+              <ul>
+                <li>
+                  <strong>The intro</strong> prints the TCP handshake that
+                  opened the connection to the page, with the connection time
+                  read from the Navigation Timing API. When the browser reused
+                  a connection there is nothing to report, so the time is left
+                  off.
+                </li>
+                <li>
+                  <strong>The globe</strong> is a network whose labelled nodes
+                  are my projects and the tools they are built with. Every
+                  link is a real "built with" relationship, and packets run
+                  along the links.
+                </li>
+                <li>
+                  <strong>The route</strong> winds down the whole page like a
+                  timeline. It runs down one edge of a section, sweeps across
+                  the open space above the next heading, and lights each
+                  heading as a hop; on the home page it turns and runs
+                  sideways under the project gallery, and it ends at the
+                  contact form.
+                </li>
+                <li>
+                  <strong>Ping</strong> rides the head of the route: a small
+                  packet creature, since a ping is how one machine says
+                  hello and the answer is a pong. He says hello when you
+                  arrive, points at each section, carries the contact form's
+                  message to the inbox, and waves goodbye at the end.
+                </li>
+                <li>
+                  <strong>The contact form</strong> draws the request as a
+                  packet travelling to the inbox and logs the real host,
+                  status code and round-trip time of the request.
+                </li>
+              </ul>
+            </div>
+
+            <div class="project-section reveal">
+              <h2>Motion</h2>
+
+              <h3>The hero globe</h3>
+              <p>
+                A three.js scene with custom shaders: a sphere of points that
+                fade toward the limb, an atmosphere shell, and an opaque core
+                in the page colour so the far side is hidden like a real
+                planet's. Colours come from the live palette tokens, so the
+                globe changes with the theme and the six palettes. It leans
+                toward the pointer and can be spun by dragging.
+              </p>
+
+              <h3>Page-by-page stacking</h3>
+              <p>
+                Each section on the home page is sticky and slides over the
+                one before it, which sinks back and fades. Sections taller
+                than the screen scroll through first, then hold. All of it is
+                driven from scroll position and each section's place in the
+                flow, never by reading layout on every frame.
+              </p>
+
+              <h3>The work gallery</h3>
+              <p>
+                On a wide screen the projects section holds while vertical
+                scroll slides the cards sideways. On a phone the same cards
+                are a native swipe carousel. Clicking a case study's card
+                morphs its image into the case study's cover, using
+                cross-document View Transitions; browsers without them just
+                navigate.
+              </p>
+
+              <h3>Smaller details</h3>
+              <p>
+                The name decodes out of random characters, the About text
+                lights up word by word as it is read, the portrait tilts
+                toward the pointer, and a cursor ring follows the real
+                pointer, wrapping buttons and reading "View" over images.
+              </p>
+            </div>
+
+            <div class="project-section reveal">
+              <h2>Performance</h2>
+              <ul>
+                <li>
+                  three.js (about 190 KB compressed) loads only after the page
+                  has finished loading and the browser is idle. Until then, and
+                  for visitors without WebGL or with Data Saver on, a CSS
+                  poster stands in.
+                </li>
+                <li>
+                  The globe renders only while the hero is on screen, the tab
+                  is in front, and the hero is not covered by the sections
+                  stacked over it.
+                </li>
+                <li>
+                  Scroll effects share one measurement pass and one
+                  frame-throttled scroll handler, and animate only transform,
+                  opacity, clip-path and filter.
+                </li>
+              </ul>
+            </div>
+
+            <div class="project-section reveal">
+              <h2>Accessibility</h2>
+              <ul>
+                <li>
+                  Under reduced motion there is no intro, no stacking and no
+                  pinned gallery, and the globe is a still frame; the content
+                  and layout are otherwise the same.
+                </li>
+                <li>
+                  The cursor ring never replaces the system pointer, so
+                  custom pointer sizes and precise selection keep working.
+                </li>
+                <li>
+                  Decorative layers (the globe, the route, Ping, the marquee) are
+                  hidden from assistive technology; the same facts are in the
+                  page text.
+                </li>
+                <li>
+                  Tabbing to a gallery card that is off to the side scrolls the
+                  page to it, and the contact form's result is announced in a
+                  live region.
+                </li>
+              </ul>
+            </div>
+
+            <div class="project-section reveal">
+              <h2>What I left out</h2>
+              <p>
+                Some choices were about restraint. I dropped smooth-scroll
+                hijacking, which feels laggy on trackpads and fights keyboard
+                users. The intro is short and any input skips it, because
+                every recruiter is a first-time visitor. And the cursor adds
+                to the pointer rather than replacing it.
+              </p>
+            </div>
+
+            <div class="project-section reveal">
+              <h2>How it was made</h2>
+              <p>
+                I designed and built the redesign with Claude Code, an AI
+                coding assistant, as a pair programmer. I set the direction
+                and made the calls on this page, reviewed each stage in the
+                browser, and the code went through Lighthouse and Chrome
+                DevTools checks at every step.
+              </p>
+              <div class="tech-list">
+                <span class="tech-item">HTML</span>
+                <span class="tech-item">CSS custom properties</span>
+                <span class="tech-item">View Transitions</span>
+                <span class="tech-item">Vanilla JavaScript</span>
+                <span class="tech-item">three.js</span>
+                <span class="tech-item">GLSL shaders</span>
+                <span class="tech-item">Navigation Timing API</span>
+                <span class="tech-item">GitHub Pages</span>
+              </div>
+            </div>
+
+            <div class="project-footer">
+              <a href="../projects.html" class="btn btn-secondary"
+                >&larr; All projects</a
+              >
+              <a href="../index.html#contact" class="btn btn-primary"
+                >Get in touch</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <div>
+          <p>&copy; 2026 <a href="../index.html">Ryan Yarali</a>. All rights reserved.</p>
+          <p class="footer-tech">Built with HTML, CSS, and JavaScript. No framework. <a href="this-site.html">How it's built</a></p>
+        </div>
+        <div class="footer-social">
+          <a href="https://github.com/RyanYarali" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.93.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.87-1.36-3.87-1.36-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.42-2.69 5.4-5.25 5.68.41.36.78 1.06.78 2.14 0 1.54-.01 2.79-.01 3.17 0 .3.2.66.79.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+            GitHub
+          </a>
+          <a href="https://www.linkedin.com/in/ryan-yarali/" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.55V9h3.57v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>
+            LinkedIn
+          </a>
+        </div>
+      </div>
+    </footer>
+    <script src="../assets/js/theme.js?v=20261006"></script>
+    <script src="../assets/js/main.js?v=20261006"></script>
+    <script src="../assets/js/interactive.js?v=20261006"></script>
+    <script src="../assets/js/cursor.js?v=20261006"></script>
+    <script src="../assets/js/route.js?v=20261006"></script>
+    <script src="../assets/js/ping.js?v=20261006"></script>
+  </body>
+</html>
