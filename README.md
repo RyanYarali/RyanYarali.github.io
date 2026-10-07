@@ -55,7 +55,7 @@ assets/
     ping.js           Ping, the packet creature that rides the route
     story.js          Home page stacking, About word fill, portrait tilt
   vendor/three/       three.js r186, the one third-party library (see its README)
-CNAME, robots.txt, sitemap.xml, favicon.svg
+CNAME, robots.txt, sitemap.xml, llms.txt, favicon.svg
 ```
 
 Every local CSS and JS link carries a `?v=` date tag; bump it on every page
@@ -76,9 +76,34 @@ that indexes before it renders.
 Each indexable page also carries a `rel="canonical"` (GitHub Pages serves the
 same content on the apex domain and on `*.github.io`, and at both `/` and
 `/index.html`), a description under 160 characters, Open Graph and Twitter card
-tags, and a JSON-LD block: `Person` plus `WebSite` and `ProfilePage` on the home
-page, `CollectionPage` on the project list, and `Article` on each case study.
-`404.html` carries `noindex, nofollow` and stays out of the sitemap.
+tags (including `og:site_name`, `og:locale` and image alt text; case studies
+are `og:type` `article` with published and modified times), and a JSON-LD
+`@graph`. Nodes share stable `@id`s across pages so search engines and AI
+answer engines merge them into one entity:
+
+- `https://ryanyarali.com/#ryan`: the `Person` (full on the home page, a stub
+  elsewhere), with `alumniOf` and a dated `affiliation` role pointing at
+  `#bcit`, the `CollegeOrUniversity` node
+- `#site`: the `WebSite`; `/#page`: the home `ProfilePage`
+- each project: `projects/nooklook.html#project`, `projects/taskmate.html#project`,
+  `projects.html#vancobab`, `projects.html#termeh`, listed in an `ItemList` on
+  the home page and on `projects.html` (a `CollectionPage`)
+- each case study: a `WebPage` (`#page`), an `Article` (`#article`) about its
+  project, and a `BreadcrumbList` (`#breadcrumb`)
+
+When a project changes, update its node in every page that carries it (the
+home page, `projects.html`, and its case study), as with the HTML itself.
+
+`404.html` carries `noindex, nofollow` and stays out of the sitemap;
+`resume.html` is `noindex, follow` until the PDF exists. Both stay crawlable in
+`robots.txt`, since a crawler has to fetch a page to see its `noindex`.
+
+`robots.txt` allows everything and names the main AI search and assistant
+crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended and others)
+explicitly. `llms.txt` is a plain-Markdown summary of who Ryan is, his
+projects and links, following the [llms.txt](https://llmstxt.org) convention
+for language models; keep it in step with the site when the facts change.
+The sitemap lists each page's main image.
 
 Every `<img>` has `width` and `height` so the browser reserves the box before
 the file lands, which keeps layout shift out of Core Web Vitals.
@@ -161,7 +186,9 @@ respects `prefers-reduced-motion`.
 The work list is plain HTML, not generated. Copy an existing
 `.work-card` in `index.html` and an existing `.project-accordion-item` in
 `projects.html`, and edit **both**, keeping the `id` on the panel unique per page and matching the
-`aria-controls` on its button.
+`aria-controls` on its button. Then add the project's JSON-LD node to the
+`ItemList` on both pages (see SEO above), a line to `llms.txt`, and, for a
+new case study, a `sitemap.xml` entry.
 
 It used to be rendered from a data object in JavaScript. That cost more than it
 saved: with the markup generated at runtime, any crawler that does not execute
