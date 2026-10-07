@@ -1589,11 +1589,13 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
   text-transform: none;
   text-align: left;
   pointer-events: none;
-  opacity: 0;
-  transform: translate(-6px, 6px) scale(0.92);
+  /* It pops in by scale rather than fading, so its text is never shown
+     half-transparent (and low-contrast) over whatever is behind it. */
+  visibility: hidden;
+  transform: translate(-6px, 6px) scale(0.6);
   transform-origin: 0 100%;
   transition:
-    opacity 200ms var(--ease),
+    visibility 0s linear 320ms,
     transform 320ms var(--ease-out-expo),
     left 700ms var(--ease-out-expo),
     right 700ms var(--ease-out-expo),
@@ -1601,8 +1603,9 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
 }
 
 .ping-bubble.is-on {
-  opacity: 1;
+  visibility: visible;
   transform: none;
+  transition-delay: 0s;
 }
 
 .ping.is-flip .ping-bubble {
