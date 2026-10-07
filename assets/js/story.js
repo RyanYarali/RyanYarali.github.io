@@ -7,6 +7,7 @@
  *               back and fades toward the page colour, like turning pages
  *   word fill   the About lede lights up word by word as it is read
  *   tilt card   the portrait leans toward the pointer, with a light glare
+ *   gallery     the projects hold the screen while the cards slide sideways
  *
  * Everything here is progressive. Without this script, or under reduced
  * motion, the page is an ordinary scrolling document with the same content.
@@ -67,6 +68,122 @@
     var y = window.scrollY;
     updaters.forEach(function (fn) {
       fn(y);
+    });
+  }
+
+  // ==================== Work gallery ====================
+  // On a wide screen with motion allowed, the projects section holds the
+  // screen while vertical scroll slides the cards sideways. Everywhere else
+  // the same markup is a native swipe carousel, which only needs its counter
+  // and progress bar kept in step.
+
+  function initGallery() {
+    var work = document.getElementById("work");
+    var section = work && work.closest(".section");
+    if (!work || !section) return;
+
+    var viewport = work.querySelector(".work-viewport");
+    var track = work.querySelector(".work-track");
+    var cards = [].slice.call(track.children);
+    var media = cards.map(function (c) {
+      return c.querySelector(".work-media img, .work-media canvas");
+    });
+    var count = work.querySelector(".work-count-now");
+    var bar = work.querySelector(".work-progress span");
+    var n = cards.length;
+    var shownIndex = -1;
+
+    // Cards without a screenshot get the generated figure from interactive.js.
+    [].forEach.call(work.querySelectorAll("canvas[data-art]"), function (cv) {
+      cv.dataset.painted = "1";
+    });
+    function paintArt() {
+      if (window.repaintProjectArt) window.repaintProjectArt();
+    }
+
+    function setProgress(p) {
+      bar.style.transform = "scaleX(" + (1 / n + (1 - 1 / n) * p).toFixed(4) + ")";
+      var i = Math.min(n - 1, Math.round(p * (n - 1)));
+      if (i !== shownIndex) {
+        shownIndex = i;
+        count.textContent = String(i + 1).padStart(2, "0");
+      }
+    }
+
+    var wide = window.matchMedia("(min-width: 860px)");
+    var pinned = false;
+    var travel = 0;
+    var top = 0;
+    var height = 0;
+    var pinW = 0;
+    var x = 0;
+
+    function setPinned(on) {
+      pinned = on;
+      html.classList.toggle("work-pinned", on);
+      if (!on) {
+        html.classList.remove("work-active");
+        work.style.height = "";
+        track.style.transform = "";
+        media.forEach(function (m) {
+          if (m) m.style.transform = "";
+        });
+      }
+    }
+
+    measurers.push(function () {
+      setPinned(!reduced && wide.matches);
+      if (pinned) {
+        pinW = work.clientWidth;
+        travel = Math.max(0, track.scrollWidth - pinW);
+        height = vh + travel;
+        work.style.height = height + "px";
+        top = layout.top(section) + offsetWithin(work, section);
+      }
+      paintArt();
+    });
+
+    updaters.push(function (y) {
+      if (!pinned) return;
+      var p = travel ? clamp((y - top) / (height - vh), 0, 1) : 0;
+      x = -p * travel;
+      track.style.transform = "translate3d(" + x.toFixed(1) + "px,0,0)";
+      // Each screenshot drifts against its frame, a little slower than the
+      // card, by how far the card is from the middle of the screen.
+      for (var i = 0; i < n; i++) {
+        if (!media[i]) continue;
+        var c = cards[i];
+        var off = c.offsetLeft + c.offsetWidth / 2 + x - pinW / 2;
+        media[i].style.transform = "translate3d(" + (off * -0.05).toFixed(1) + "px,0,0)";
+      }
+      setProgress(p);
+      html.classList.toggle("work-active", y > top - vh * 0.5 && y < top + height - vh * 0.5);
+    });
+
+    // Carousel mode: follow the native sideways scroll.
+    viewport.addEventListener(
+      "scroll",
+      function () {
+        if (pinned) return;
+        var max = viewport.scrollWidth - viewport.clientWidth;
+        setProgress(max > 0 ? viewport.scrollLeft / max : 0);
+      },
+      { passive: true },
+    );
+
+    // Pinned mode: a keyboard user tabbing to a card that is off to the side
+    // gets the page scrolled to the point where that card is in view.
+    track.addEventListener("focusin", function (e) {
+      if (!pinned || !travel) return;
+      var card = e.target.closest(".work-card");
+      if (!card) return;
+      var edge = parseFloat(getComputedStyle(track).paddingLeft) || 0;
+      var p = clamp((card.offsetLeft - edge) / travel, 0, 1);
+      window.scrollTo({ top: top + p * (height - vh), behavior: "auto" });
+    });
+
+    wide.addEventListener("change", function () {
+      measureAll();
     });
   }
 
@@ -265,6 +382,9 @@
 
   // ==================== Boot ====================
 
+  // The gallery sets the projects section's height, so it measures before
+  // the stacking reads that height.
+  initGallery();
   initStack();
   initLede();
   initTilt();

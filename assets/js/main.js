@@ -78,13 +78,34 @@
 
     revealElements.forEach((el) => observer.observe(el));
 
-    // Safety net: a very fast scroll (or flick gesture) can skip the frame
-    // where an element crosses the intersection threshold. Nothing should
-    // stay permanently invisible, so force-reveal anything left behind.
-    setTimeout(() => {
-      revealElements.forEach((el) => el.classList.add("in-view"));
-      observer.disconnect();
-    }, 2500);
+    // Safety net: a very fast scroll (or a jump to an anchor) can carry an
+    // element past the viewport between two observer callbacks. Anything the
+    // reader has already scrolled to or past is revealed on the next frame,
+    // so nothing stays invisible, while content further down still gets its
+    // entrance when it arrives.
+    let pending = Array.from(revealElements);
+    let queued = false;
+    function catchUp() {
+      queued = false;
+      const limit = window.innerHeight;
+      pending = pending.filter((el) => {
+        if (el.classList.contains("in-view")) return false;
+        if (el.getBoundingClientRect().top < limit) {
+          el.classList.add("in-view");
+          observer.unobserve(el);
+          return false;
+        }
+        return true;
+      });
+      if (!pending.length) window.removeEventListener("scroll", onScrollCatchUp);
+    }
+    function onScrollCatchUp() {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(catchUp);
+    }
+    window.addEventListener("scroll", onScrollCatchUp, { passive: true });
+    window.addEventListener("load", onScrollCatchUp);
   }
 
   // Run after DOMContentLoaded so content injected by other scripts

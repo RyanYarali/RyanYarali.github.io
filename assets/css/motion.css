@@ -606,3 +606,378 @@ html.is-stacked main > .is-covered {
 .about-photo.is-tilting::after {
   opacity: 1;
 }
+
+/* ---------- work gallery ----------
+ * The default is a native swipe carousel, which is what phones, reduced
+ * motion and no-JS visitors get. On a wide screen story.js adds
+ * html.work-pinned: the section then holds the screen while vertical scroll
+ * slides the cards sideways. Card media share a 16:9 frame with the case
+ * study covers, so the image can morph straight into the next page. */
+.work-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.work-head .section-heading {
+  margin-bottom: 2.25rem;
+}
+
+.work-count {
+  margin: 0 0 2.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-subtle);
+  white-space: nowrap;
+}
+
+.work-count-now {
+  color: var(--color-accent);
+}
+
+/* The track lines up with the container's content edge, wherever that is. */
+.work-viewport {
+  --work-edge: max(1.5rem, calc((100vw - 1180px) / 2 + 1.5rem));
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--work-edge);
+  scrollbar-width: none;
+}
+
+.work-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .work-viewport {
+    --work-edge: max(2.5rem, calc((100vw - 1180px) / 2 + 2.5rem));
+  }
+}
+
+@media (min-width: 1024px) {
+  .work-viewport {
+    --work-edge: max(3.5rem, calc((100vw - 1180px) / 2 + 3.5rem));
+  }
+}
+
+.work-track {
+  display: flex;
+  gap: clamp(1.25rem, 3vw, 2.75rem);
+  width: max-content;
+  margin: 0;
+  padding: 0.5rem var(--work-edge) 1rem;
+  list-style: none;
+}
+
+.work-card {
+  flex: 0 0 auto;
+  width: min(84vw, 980px);
+  margin: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem;
+  align-content: start;
+  scroll-snap-align: start;
+}
+
+@media (min-width: 1100px) {
+  .work-card {
+    width: min(76vw, 1040px);
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: 2.5rem;
+    align-items: center;
+  }
+}
+
+.work-media {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+}
+
+.work-media img,
+.work-media canvas {
+  position: absolute;
+  top: 0;
+  left: -6%;
+  width: 112%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  will-change: transform;
+}
+
+.work-media img {
+  transition: scale 900ms var(--ease-out-expo);
+}
+
+.work-media:hover img {
+  scale: 1.04;
+}
+
+.work-body {
+  min-width: 0;
+  display: grid;
+  gap: 0.9rem;
+  align-content: start;
+}
+
+.work-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.9rem;
+  margin: 0;
+  max-width: none;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.work-num {
+  color: var(--color-accent);
+}
+
+.work-title {
+  margin: 0;
+  font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.work-copy {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.work-copy p {
+  margin: 0;
+  font-size: 0.975rem;
+}
+
+.work-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.15rem 0 0.35rem;
+  padding: 0;
+  list-style: none;
+}
+
+.work-tech li {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.62rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-subtle);
+}
+
+.work-progress {
+  position: relative;
+  height: 2px;
+  margin-top: 1.75rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-border);
+  overflow: hidden;
+}
+
+.work-progress span {
+  position: absolute;
+  inset: 0;
+  background: var(--color-accent);
+  transform-origin: left center;
+  transform: scaleX(0.25);
+}
+
+.work-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.work-all svg {
+  transition: transform 320ms var(--ease-out-expo);
+}
+
+.work-all:hover svg {
+  transform: translateX(4px);
+}
+
+/* --- pinned --- */
+html.work-pinned .projects {
+  padding-block: 0;
+}
+
+html.work-pinned .work {
+  position: relative;
+  /* story.js sets the height: one screen plus the sideways travel. */
+}
+
+html.work-pinned .work-pin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: grid;
+  /* The column is pinned to the screen width; without it the track, which is
+     several screens wide, would widen the column and drag the centred
+     heading off to the side with it. */
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  padding: 6.5rem 0 2.25rem;
+  overflow: hidden;
+}
+
+html.work-pinned .work-viewport {
+  min-width: 0;
+  overflow: visible;
+  scroll-snap-type: none;
+  display: flex;
+  align-items: center;
+}
+
+html.work-pinned .work-track {
+  will-change: transform;
+}
+
+html.work-pinned .work-head .section-heading {
+  margin-bottom: 1rem;
+}
+
+html.work-pinned .work-count {
+  margin-bottom: 1.15rem;
+}
+
+html.work-pinned .work-progress {
+  margin-top: 0.5rem;
+}
+
+/* The cards pass under the spine, so its label steps aside meanwhile. */
+html.work-active .spine-label {
+  opacity: 0 !important;
+}
+
+/* Short screens, and phones where a card is swiped sideways, keep the card
+   to its essentials. The full text is on the projects page and the case
+   studies. */
+@media (max-height: 860px) {
+  html.work-pinned .work-detail {
+    display: none;
+  }
+}
+
+@media (max-width: 699px) {
+  .work-detail {
+    display: none;
+  }
+}
+
+/* ---------- morph into a case study ----------
+ * Cross-document view transitions: a card's image and its case study's
+ * cover share a name, so the browser animates one into the other across
+ * the navigation. Browsers without support simply navigate. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+
+  [data-vt="nooklook"] {
+    view-transition-name: cover-nooklook;
+  }
+
+  [data-vt="taskmate"] {
+    view-transition-name: cover-taskmate;
+  }
+
+  ::view-transition-group(*) {
+    animation-duration: 700ms;
+    animation-timing-function: var(--ease-out-expo);
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 380ms;
+  }
+}
+
+/* ---------- case studies ---------- */
+.case-cover {
+  position: relative;
+  margin: 2.75rem 0 0;
+  aspect-ratio: 16 / 9;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+  box-shadow: var(--shadow-lg);
+}
+
+.case-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+/* The title block rises in on load. The cover does not get its own entrance:
+   arriving from the home page, it is already mid-morph. */
+@media (prefers-reduced-motion: no-preference) {
+  .project-detail-page .project-hero .container > :not(.case-cover) {
+    animation: case-rise 900ms var(--ease-out-expo) both;
+  }
+
+  .project-detail-page .project-hero .container > :nth-child(2) {
+    animation-delay: 60ms;
+  }
+
+  .project-detail-page .project-hero .container > :nth-child(3) {
+    animation-delay: 120ms;
+  }
+
+  .project-detail-page .project-hero .container > :nth-child(4) {
+    animation-delay: 180ms;
+  }
+}
+
+@keyframes case-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+/* Screenshots wipe open from the top as they scroll in. */
+html.js-ready .shot.reveal img,
+html.js-ready .screenshots-grid .reveal img {
+  clip-path: inset(0 0 100% 0 round var(--radius-lg));
+  transition: clip-path 1100ms var(--ease-out-expo) 120ms;
+}
+
+html.js-ready .shot.reveal.in-view img,
+html.js-ready .screenshots-grid .reveal.in-view img {
+  clip-path: inset(0 0 0 0 round var(--radius-lg));
+}

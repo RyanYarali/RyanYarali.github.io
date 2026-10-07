@@ -183,7 +183,7 @@
     <!-- Navigation -->
     <nav class="navbar">
       <div class="nav-container">
-        <a href="#hero" class="logo" aria-label="Ryan Yarali, home">
+        <a href="#hero" class="logo" aria-label="Ryan Yarali, Computer Systems Technology, home">
           <span class="logo-name">Ryan Yarali</span>
           <span class="logo-subtitle">Computer Systems Technology</span>
         </a>
@@ -308,255 +308,167 @@
 
       <!-- Projects Section -->
       <section class="section projects" id="projects">
-        <div class="container">
-          <div class="section-heading reveal">
-            <p class="eyebrow">Selected work</p>
-            <h2>What I've shipped</h2>
-          </div>
-
-          <div class="project-accordion reveal">
-            <div class="project-accordion-item">
-              <button class="project-accordion-head" type="button" aria-expanded="false" aria-controls="project-panel-nooklook">
-                <span class="project-accordion-num">
-                  01
-                </span>
-                <span class="project-accordion-name">
-                  <span class="project-accordion-title">
-                    Nook Look
-                  </span>
-                  <span class="project-accordion-kind">
-                    Client · 2026
-                  </span>
-                </span>
-                <span class="project-accordion-right">
-                  <span class="project-status" data-status="live">
-                    Live
-                  </span>
-                  <span class="project-accordion-sign" aria-hidden="true">
-                  </span>
-                </span>
-              </button>
-              <div class="project-accordion-panel" id="project-panel-nooklook">
-                <div class="project-accordion-panel-inner">
-                  <a class="project-accordion-media" href="projects/nooklook.html" aria-label="Open Nook Look">
-                    <img src="assets/nl-hero.jpg" alt="Nook Look interface screenshot" loading="lazy" decoding="async" width="1400" height="776">
-                  </a>
-                  <div class="project-accordion-copy">
+        <!-- Pinned horizontal gallery on wide screens with motion allowed
+             (story.js adds html.work-pinned); everywhere else it is a native
+             swipe carousel, and every card is plain HTML either way. -->
+        <div class="work" id="work">
+          <div class="work-pin">
+            <div class="container work-head">
+              <div class="section-heading reveal">
+                <p class="eyebrow">Selected work</p>
+                <h2>What I've shipped</h2>
+              </div>
+              <p class="work-count" aria-hidden="true">
+                <span class="work-count-now">01</span> / 04
+              </p>
+            </div>
+            <div class="work-viewport">
+              <ol class="work-track" aria-label="Projects">
+              <li class="work-card" id="work-nooklook">
+                <a class="work-media" href="projects/nooklook.html" data-vt="nooklook" aria-label="Read the Nook Look case study">
+                  <img src="assets/nl-hero.jpg" alt="Nook Look home page: a dark text panel beside a full-height maternity photograph" loading="lazy" decoding="async" width="1400" height="776" />
+                </a>
+                <div class="work-body">
+                  <p class="work-meta">
+                    <span class="work-num">01</span>
+                    <span>Client · 2026</span>
+                    <span class="project-status" data-status="live">Live</span>
+                  </p>
+                  <h3 class="work-title">Nook Look</h3>
+                  <div class="work-copy">
                     <p>
                       The full web presence for a Coquitlam portrait studio: four priced service lines, a booking pipeline, a filterable gallery, and local SEO. Built and launched solo.
                     </p>
-                    <p>
+                    <p class="work-detail">
                       The client asked for WordPress, then asked for things WordPress does not do. Custom content types, hand-written structured data, and managed code snippets closed the gap with no recurring plugin cost.
                     </p>
-                    <div class="project-accordion-tech">
-                      <span>
-                        WordPress
-                      </span>
-                      <span>
-                        Pods
-                      </span>
-                      <span>
-                        PHP
-                      </span>
-                      <span>
-                        Custom CSS/JS
-                      </span>
-                      <span>
-                        Local SEO
-                      </span>
-                    </div>
-                    <div class="project-accordion-links">
-                      <a class="project-accordion-link" href="projects/nooklook.html">
-                        Read the case study
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                      </a>
-                      <a class="project-accordion-link" href="https://nooklook.ca" target="_blank" rel="noopener noreferrer">
-                        Visit the site
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                      </a>
-                    </div>
+                  </div>
+                  <ul class="work-tech" aria-label="Built with">
+                      <li>WordPress</li>
+                      <li>Pods</li>
+                      <li>PHP</li>
+                      <li>Custom CSS/JS</li>
+                      <li>Local SEO</li>
+                  </ul>
+                  <div class="project-accordion-links">
+                    <a class="project-accordion-link" href="projects/nooklook.html">
+                      Read the case study
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </a>
+                    <a class="project-accordion-link" href="https://nooklook.ca" target="_blank" rel="noopener noreferrer">
+                      Visit the site
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </a>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div class="project-accordion-item">
-              <button class="project-accordion-head" type="button" aria-expanded="false" aria-controls="project-panel-vancobab">
-                <span class="project-accordion-num">
-                  02
-                </span>
-                <span class="project-accordion-name">
-                  <span class="project-accordion-title">
-                    Vanco Bab
-                  </span>
-                  <span class="project-accordion-kind">
-                    Client · 2026
-                  </span>
-                </span>
-                <span class="project-accordion-right">
-                  <span class="project-status" data-status="live">
-                    Live
-                  </span>
-                  <span class="project-accordion-sign" aria-hidden="true">
-                  </span>
-                </span>
-              </button>
-              <div class="project-accordion-panel" id="project-panel-vancobab">
-                <div class="project-accordion-panel-inner">
-                  <a class="project-accordion-media" href="https://vancobab.ca" target="_blank" rel="noopener noreferrer" aria-label="Open Vanco Bab">
-                    <canvas data-art="vancobab" aria-hidden="true">
-                    </canvas>
-                  </a>
-                  <div class="project-accordion-copy">
+              </li>
+              <li class="work-card" id="work-vancobab">
+                <a class="work-media" href="https://vancobab.ca" target="_blank" rel="noopener noreferrer" aria-label="Visit vancobab.ca">
+                  <img src="assets/vb-hero.jpg" alt="Vanco Bab home page: the headline 'Persian kebab, fresh off the grill' beside an ornate flame emblem" loading="lazy" decoding="async" width="1400" height="788" />
+                </a>
+                <div class="work-body">
+                  <p class="work-meta">
+                    <span class="work-num">02</span>
+                    <span>Client · 2026</span>
+                    <span class="project-status" data-status="live">Live</span>
+                  </p>
+                  <h3 class="work-title">Vanco Bab</h3>
+                  <div class="work-copy">
                     <p>
                       A five-page site for a Persian kebab food truck in Vancouver: the truck menu, catering packages, and an order builder customers use before they reach the window.
                     </p>
-                    <p>
+                    <p class="work-detail">
                       The order builder is plain JavaScript with no backend and no payment step. It totals a customer's picks and hands them a summary to read at the counter, which is what a food truck actually needs. Catering pages re-point the brand accent from red to gold through a single data attribute, so one stylesheet carries two moods.
                     </p>
-                    <div class="project-accordion-tech">
-                      <span>
-                        HTML5
-                      </span>
-                      <span>
-                        CSS3
-                      </span>
-                      <span>
-                        Vanilla JavaScript
-                      </span>
-                      <span>
-                        SEO
-                      </span>
-                    </div>
-                    <div class="project-accordion-links">
-                      <a class="project-accordion-link" href="https://vancobab.ca" target="_blank" rel="noopener noreferrer">
-                        Visit the site
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                      </a>
-                      <span class="project-accordion-note">Case study coming soon</span>
-                    </div>
+                  </div>
+                  <ul class="work-tech" aria-label="Built with">
+                      <li>HTML5</li>
+                      <li>CSS3</li>
+                      <li>Vanilla JavaScript</li>
+                      <li>SEO</li>
+                  </ul>
+                  <div class="project-accordion-links">
+                    <a class="project-accordion-link" href="https://vancobab.ca" target="_blank" rel="noopener noreferrer">
+                      Visit the site
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </a>
+                    <span class="project-accordion-note">Case study coming soon</span>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div class="project-accordion-item">
-              <button class="project-accordion-head" type="button" aria-expanded="false" aria-controls="project-panel-termeh">
-                <span class="project-accordion-num">
-                  03
-                </span>
-                <span class="project-accordion-name">
-                  <span class="project-accordion-title">
-                    Termeh Cafe &amp; Restaurant
-                  </span>
-                  <span class="project-accordion-kind">
-                    Client · 2026
-                  </span>
-                </span>
-                <span class="project-accordion-right">
-                  <span class="project-status" data-status="other">
-                    Coming soon
-                  </span>
-                  <span class="project-accordion-sign" aria-hidden="true">
-                  </span>
-                </span>
-              </button>
-              <div class="project-accordion-panel" id="project-panel-termeh">
-                <div class="project-accordion-panel-inner">
-                  <div class="project-accordion-media">
-                    <canvas data-art="termeh" aria-hidden="true">
-                    </canvas>
-                  </div>
-                  <div class="project-accordion-copy">
+              </li>
+              <li class="work-card" id="work-termeh">
+                <div class="work-media">
+                  <canvas data-art="termeh" aria-hidden="true"></canvas>
+                </div>
+                <div class="work-body">
+                  <p class="work-meta">
+                    <span class="work-num">03</span>
+                    <span>Client · 2026</span>
+                    <span class="project-status" data-status="other">Coming soon</span>
+                  </p>
+                  <h3 class="work-title">Termeh Cafe &amp; Restaurant</h3>
+                  <div class="work-copy">
                     <p>
                       A bilingual restaurant site in English and Farsi, with a password-protected admin panel so the owner changes the menu, prices, hours, and reservations without touching code.
                     </p>
-                    <p>
+                    <p class="work-detail">
                       React 19 on the front, Node, Express, and SQLite on the back. Role-based admin accounts, a reservation pipeline with email confirmations, photo uploads, and per-page SEO metadata. Launching once the domain is live.
                     </p>
-                    <div class="project-accordion-tech">
-                      <span>
-                        React 19
-                      </span>
-                      <span>
-                        Vite
-                      </span>
-                      <span>
-                        Node.js
-                      </span>
-                      <span>
-                        Express
-                      </span>
-                      <span>
-                        SQLite
-                      </span>
-                      <span>
-                        i18n
-                      </span>
-                    </div>
-                    <div class="project-accordion-links">
-                      <span class="project-accordion-note">
-                        Launching soon
-                      </span>
-                    </div>
+                  </div>
+                  <ul class="work-tech" aria-label="Built with">
+                      <li>React 19</li>
+                      <li>Vite</li>
+                      <li>Node.js</li>
+                      <li>Express</li>
+                      <li>SQLite</li>
+                      <li>i18n</li>
+                  </ul>
+                  <div class="project-accordion-links">
+                    <span class="project-accordion-note">Launching soon</span>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div class="project-accordion-item">
-              <button class="project-accordion-head" type="button" aria-expanded="false" aria-controls="project-panel-taskmate">
-                <span class="project-accordion-num">
-                  04
-                </span>
-                <span class="project-accordion-name">
-                  <span class="project-accordion-title">
-                    TaskMate
-                  </span>
-                  <span class="project-accordion-kind">
-                    Coursework · 2025
-                  </span>
-                </span>
-                <span class="project-accordion-right">
-                  <span class="project-status" data-status="other">
-                    Shipped
-                  </span>
-                  <span class="project-accordion-sign" aria-hidden="true">
-                  </span>
-                </span>
-              </button>
-              <div class="project-accordion-panel" id="project-panel-taskmate">
-                <div class="project-accordion-panel-inner">
-                  <a class="project-accordion-media" href="projects/taskmate.html" aria-label="Open TaskMate">
-                    <img src="assets/TaskMate6.jpg" alt="TaskMate interface screenshot" loading="lazy" decoding="async" width="1000" height="508">
-                  </a>
-                  <div class="project-accordion-copy">
+              </li>
+              <li class="work-card" id="work-taskmate">
+                <a class="work-media" href="projects/taskmate.html" data-vt="taskmate" aria-label="Read the TaskMate case study">
+                  <img src="assets/TaskMate6.jpg" alt="TaskMate dashboard listing a student's tasks by course" loading="lazy" decoding="async" width="1000" height="508" />
+                </a>
+                <div class="work-body">
+                  <p class="work-meta">
+                    <span class="work-num">04</span>
+                    <span>Coursework · 2025</span>
+                    <span class="project-status" data-status="other">Shipped</span>
+                  </p>
+                  <h3 class="work-title">TaskMate</h3>
+                  <div class="work-copy">
                     <p>
                       A mobile-friendly task manager built so students stop losing deadlines across five different apps.
                     </p>
-                    <p>
+                    <p class="work-detail">
                       Shipped end-to-end with Firebase auth and Firestore, then tested by a 9-person class team against real course workloads.
                     </p>
-                    <div class="project-accordion-tech">
-                      <span>
-                        HTML5
-                      </span>
-                      <span>
-                        CSS3
-                      </span>
-                      <span>
-                        JavaScript
-                      </span>
-                      <span>
-                        Firebase
-                      </span>
-                    </div>
-                    <div class="project-accordion-links">
-                      <a class="project-accordion-link" href="projects/taskmate.html">
-                        Read the case study
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                      </a>
-                    </div>
+                  </div>
+                  <ul class="work-tech" aria-label="Built with">
+                      <li>HTML5</li>
+                      <li>CSS3</li>
+                      <li>JavaScript</li>
+                      <li>Firebase</li>
+                  </ul>
+                  <div class="project-accordion-links">
+                    <a class="project-accordion-link" href="projects/taskmate.html">
+                      Read the case study
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </a>
                   </div>
                 </div>
-              </div>
+              </li>
+              </ol>
+            </div>
+            <div class="container">
+              <div class="work-progress" aria-hidden="true"><span></span></div>
+              <a class="work-all" href="projects.html">
+                All projects
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
             </div>
           </div>
         </div>
