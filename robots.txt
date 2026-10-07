@@ -1,7 +1,31 @@
-# robots.txt for Ryan Yarali Portfolio
-# https://ryanyarali.com
+# robots.txt for ryanyarali.com, the portfolio of Ryan Yarali
+#
+# Everything is open to crawlers, search engines and AI assistants alike.
+# resume.html and 404.html stay crawlable on purpose: they carry a
+# noindex meta tag, which a crawler can only see if it may fetch the page.
+#
+# A summary of the site for language models is at /llms.txt.
 
 User-agent: *
+Allow: /
+
+# AI search and assistant crawlers, named so the intent is explicit:
+# OpenAI, Anthropic, Perplexity, Google (Gemini), Apple, Common Crawl,
+# Meta, DuckDuckGo and Mistral.
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: CCBot
+User-agent: meta-externalagent
+User-agent: DuckAssistBot
+User-agent: MistralAI-User
 Allow: /
 
 Sitemap: https://ryanyarali.com/sitemap.xml

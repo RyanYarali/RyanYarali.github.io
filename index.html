@@ -32,39 +32,27 @@
     </script>
     <link rel="canonical" href="https://ryanyarali.com/" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Ryan Yarali, full-stack developer and BCIT Computer Systems Technology student in Coquitlam, BC. Three live client sites, case studies, and coursework."
-    />
+    <meta name="description" content="Ryan Yarali, full-stack developer and BCIT Computer Systems Technology student in Coquitlam, BC, open to internship, co-op and junior developer roles." />
     <meta name="author" content="Ryan Yarali" />
 
-    <!-- Open Graph / Social Media Meta Tags -->
+    <!-- Open Graph / social link previews -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Ryan Yarali" />
+    <meta property="og:locale" content="en_CA" />
     <meta property="og:url" content="https://ryanyarali.com/" />
-    <meta property="og:title" content="Ryan Yarali | CST Student @ BCIT" />
-    <meta
-      property="og:description"
-      content="Ryan Yarali, full-stack developer and BCIT Computer Systems Technology student in Coquitlam, BC. Three live client sites, case studies, and coursework."
-    />
-    <meta
-      property="og:image"
-      content="https://ryanyarali.com/assets/og-card.jpg"
-    />
+    <meta property="og:title" content="Ryan Yarali | Full-Stack Developer &amp; BCIT CST Student" />
+    <meta property="og:description" content="Ryan Yarali, full-stack developer and BCIT Computer Systems Technology student in Coquitlam, BC, open to internship, co-op and junior developer roles." />
+    <meta property="og:image" content="https://ryanyarali.com/assets/og-card.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Ryan Yarali, full-stack developer: Computer Systems Technology at BCIT, beside a portrait photo" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content="https://ryanyarali.com/" />
-    <meta name="twitter:title" content="Ryan Yarali | CST Student @ BCIT" />
-    <meta
-      name="twitter:description"
-      content="Ryan Yarali, full-stack developer and BCIT Computer Systems Technology student in Coquitlam, BC. Three live client sites, case studies, and coursework."
-    />
-    <meta
-      name="twitter:image"
-      content="https://ryanyarali.com/assets/og-card.jpg"
-    />
+    <meta name="twitter:title" content="Ryan Yarali | Full-Stack Developer &amp; BCIT CST Student" />
+    <meta name="twitter:description" content="Ryan Yarali, full-stack developer and BCIT Computer Systems Technology student in Coquitlam, BC, open to internship, co-op and junior developer roles." />
+    <meta name="twitter:image" content="https://ryanyarali.com/assets/og-card.jpg" />
+    <meta name="twitter:image:alt" content="Ryan Yarali, full-stack developer: Computer Systems Technology at BCIT, beside a portrait photo" />
 
-    <title>Ryan Yarali | CST Student @ BCIT</title>
+    <title>Ryan Yarali | Full-Stack Developer &amp; BCIT CST Student</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -107,29 +95,50 @@
             "@type": "Person",
             "@id": "https://ryanyarali.com/#ryan",
             "name": "Ryan Yarali",
+            "givenName": "Ryan",
+            "familyName": "Yarali",
             "url": "https://ryanyarali.com/",
-            "image": "https://ryanyarali.com/assets/profile-photo.jpg",
+            "image": {
+              "@type": "ImageObject",
+              "@id": "https://ryanyarali.com/#ryan-photo",
+              "url": "https://ryanyarali.com/assets/profile-photo.jpg",
+              "width": 760,
+              "height": 760,
+              "caption": "Ryan Yarali"
+            },
             "jobTitle": "Full-stack developer",
-            "description": "Full-stack developer and Computer Systems Technology student at BCIT, on the Data Communications and Cyber Security option.",
+            "description": "Full-stack developer and Computer Systems Technology diploma student at BCIT (British Columbia Institute of Technology), on the Data Communications and Cyber Security option, Sept 2025 to Apr 2027 (expected). Based in Coquitlam, Greater Vancouver, BC, Canada. Open to internship, co-op and junior developer roles.",
             "address": {
               "@type": "PostalAddress",
               "addressLocality": "Coquitlam",
               "addressRegion": "BC",
               "addressCountry": "CA"
             },
+            "homeLocation": {
+              "@type": "Place",
+              "name": "Coquitlam, Greater Vancouver, British Columbia, Canada"
+            },
+            "alumniOf": {
+              "@id": "https://ryanyarali.com/#bcit"
+            },
+            "affiliation": {
+              "@type": "OrganizationRole",
+              "affiliation": {
+                "@id": "https://ryanyarali.com/#bcit"
+              },
+              "roleName": "Student, Computer Systems Technology Diploma, Data Communications and Cyber Security option",
+              "startDate": "2025-09",
+              "endDate": "2027-04"
+            },
             "sameAs": [
               "https://github.com/RyanYarali",
               "https://www.linkedin.com/in/ryan-yarali/"
             ],
-            "alumniOf": {
-              "@type": "CollegeOrUniversity",
-              "name": "British Columbia Institute of Technology",
-              "sameAs": "https://www.bcit.ca/"
-            },
             "knowsAbout": [
               "Full-stack web development",
               "JavaScript",
               "Node.js",
+              "Express",
               "React",
               "PHP",
               "WordPress",
@@ -138,17 +147,46 @@
               "C",
               "C++",
               "SQL",
+              "MySQL",
+              "PostgreSQL",
+              "MongoDB",
+              "REST API design",
+              "Responsive design",
+              "Web accessibility",
               "TCP/IP",
               "Network protocols",
-              "Local SEO"
-            ]
+              "Socket programming",
+              "Packet analysis",
+              "Data communications",
+              "Cyber security",
+              "Linux",
+              "Local SEO",
+              "Structured data (JSON-LD)",
+              "Core Web Vitals"
+            ],
+            "mainEntityOfPage": {
+              "@id": "https://ryanyarali.com/#page"
+            }
+          },
+          {
+            "@type": "CollegeOrUniversity",
+            "@id": "https://ryanyarali.com/#bcit",
+            "name": "British Columbia Institute of Technology",
+            "alternateName": "BCIT",
+            "url": "https://www.bcit.ca/",
+            "sameAs": "https://en.wikipedia.org/wiki/British_Columbia_Institute_of_Technology"
           },
           {
             "@type": "WebSite",
             "@id": "https://ryanyarali.com/#site",
             "url": "https://ryanyarali.com/",
             "name": "Ryan Yarali",
+            "alternateName": "ryanyarali.com",
+            "description": "Portfolio of Ryan Yarali, full-stack developer and BCIT Computer Systems Technology student in Coquitlam, BC.",
             "inLanguage": "en",
+            "author": {
+              "@id": "https://ryanyarali.com/#ryan"
+            },
             "publisher": {
               "@id": "https://ryanyarali.com/#ryan"
             }
@@ -157,13 +195,107 @@
             "@type": "ProfilePage",
             "@id": "https://ryanyarali.com/#page",
             "url": "https://ryanyarali.com/",
-            "name": "Ryan Yarali, full-stack developer",
+            "name": "Ryan Yarali | Full-Stack Developer & BCIT CST Student",
+            "inLanguage": "en",
             "isPartOf": {
               "@id": "https://ryanyarali.com/#site"
             },
             "about": {
               "@id": "https://ryanyarali.com/#ryan"
-            }
+            },
+            "mainEntity": {
+              "@id": "https://ryanyarali.com/#ryan"
+            },
+            "primaryImageOfPage": {
+              "@id": "https://ryanyarali.com/#ryan-photo"
+            },
+            "dateCreated": "2025-12-20",
+            "dateModified": "2026-10-06"
+          },
+          {
+            "@type": "ItemList",
+            "@id": "https://ryanyarali.com/#work",
+            "name": "Selected work by Ryan Yarali",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "item": {
+                  "@type": "WebSite",
+                  "@id": "https://ryanyarali.com/projects/nooklook.html#project",
+                  "name": "Nook Look",
+                  "url": "https://nooklook.ca",
+                  "description": "Website for Nook Look, a portrait photography studio in Coquitlam, BC: four priced service lines, a booking pipeline, a filterable gallery and local SEO. Built and launched solo by Ryan Yarali on WordPress.",
+                  "image": "https://ryanyarali.com/assets/nl-hero.jpg",
+                  "creator": {
+                    "@id": "https://ryanyarali.com/#ryan"
+                  },
+                  "dateCreated": "2026",
+                  "keywords": "WordPress, Pods, PHP, custom CSS/JS, local SEO",
+                  "subjectOf": {
+                    "@id": "https://ryanyarali.com/projects/nooklook.html#article"
+                  }
+                }
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "item": {
+                  "@type": "WebSite",
+                  "@id": "https://ryanyarali.com/projects.html#vancobab",
+                  "name": "Vanco Bab",
+                  "url": "https://vancobab.ca",
+                  "description": "Five-page website for Vanco Bab, a Persian kebab food truck in Vancouver: the truck menu, catering packages, and a vanilla JavaScript order builder.",
+                  "image": "https://ryanyarali.com/assets/vb-hero.jpg",
+                  "creator": {
+                    "@id": "https://ryanyarali.com/#ryan"
+                  },
+                  "dateCreated": "2026",
+                  "keywords": "HTML5, CSS3, vanilla JavaScript, SEO"
+                }
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "item": {
+                  "@type": "WebSite",
+                  "@id": "https://ryanyarali.com/projects.html#termeh",
+                  "name": "Termeh Cafe & Restaurant",
+                  "description": "Bilingual English and Farsi restaurant website with a password-protected admin panel for the menu, prices, hours and reservations. React 19 front end; Node.js, Express and SQLite back end. Launching soon.",
+                  "inLanguage": [
+                    "en",
+                    "fa"
+                  ],
+                  "creativeWorkStatus": "Coming soon",
+                  "creator": {
+                    "@id": "https://ryanyarali.com/#ryan"
+                  },
+                  "dateCreated": "2026",
+                  "keywords": "React 19, Vite, Node.js, Express, SQLite, i18n"
+                }
+              },
+              {
+                "@type": "ListItem",
+                "position": 4,
+                "item": {
+                  "@type": "CreativeWork",
+                  "@id": "https://ryanyarali.com/projects/taskmate.html#project",
+                  "name": "TaskMate",
+                  "url": "https://ryanyarali.com/projects/taskmate.html",
+                  "description": "Mobile-friendly task manager for students, built end to end with Firebase Authentication and Firestore as BCIT coursework (COMM 1800, Team DTC 09) and tested by a nine-person class team.",
+                  "image": "https://ryanyarali.com/assets/TaskMate6.jpg",
+                  "contributor": {
+                    "@id": "https://ryanyarali.com/#ryan"
+                  },
+                  "dateCreated": "2025",
+                  "keywords": "HTML5, CSS3, JavaScript, Firebase, Firestore",
+                  "sameAs": "https://github.com/RyanYarali/1800_202530_DTC09",
+                  "subjectOf": {
+                    "@id": "https://ryanyarali.com/projects/taskmate.html#article"
+                  }
+                }
+              }
+            ]
           }
         ]
       }
@@ -234,8 +366,9 @@
                 Term 3 · Data Communications &amp; Cyber Security
               </p>
               <p class="hero-tagline hero-reveal">
-                Full-stack developer working through BCIT's Computer Systems
-                Technology diploma, building something new every term.
+                Full-stack developer in Coquitlam, BC, working through BCIT's
+                Computer Systems Technology diploma and building something new
+                every term.
               </p>
 
               <div class="hero-cta hero-reveal">
@@ -294,7 +427,7 @@
               <figure class="about-photo">
                 <img
                   src="assets/profile-photo.jpg"
-                  alt="Ryan Yarali"
+                  alt="Portrait of Ryan Yarali"
                   width="760"
                   height="760"
                   loading="lazy"
@@ -592,7 +725,7 @@
           <div class="education-card surface-card reveal">
             <div class="education-header">
               <div class="education-logo">
-                <img src="assets/BCIT_logo.png" alt="BCIT logo" width="128" height="116" />
+                <img src="assets/BCIT_logo.png" alt="British Columbia Institute of Technology (BCIT) logo" width="128" height="116" />
               </div>
               <div class="education-content">
                 <h3>Computer Systems Technology Diploma</h3>
@@ -633,9 +766,10 @@
                 <p class="eyebrow">Contact</p>
                 <h2>Let's talk</h2>
                 <p class="section-intro">
-                  I'm looking for internship, co-op, and junior developer
-                  roles. If something here is a fit, send a note. I read
-                  every message myself.
+                  I'm based in Coquitlam, in Greater Vancouver, and looking
+                  for internship, co-op, and junior developer roles. If
+                  something here is a fit, send a note. I read every message
+                  myself.
                 </p>
               </div>
               <div class="contact-availability">
@@ -750,11 +884,11 @@
           <p class="footer-tech">Built with HTML, CSS, and JavaScript. No framework. <a href="projects/this-site.html">How it's built</a></p>
         </div>
         <div class="footer-social">
-          <a href="https://github.com/RyanYarali" target="_blank" rel="noopener noreferrer">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.93.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.87-1.36-3.87-1.36-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.42-2.69 5.4-5.25 5.68.41.36.78 1.06.78 2.14 0 1.54-.01 2.79-.01 3.17 0 .3.2.66.79.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+          <a href="https://github.com/RyanYarali" target="_blank" rel="me noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.93.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.87-1.36-3.87-1.36-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.42-2.69 5.4-5.25 5.68.41.36.78 1.06.78 2.14 0 1.54-.01 2.79-.01 3.17 0 .3.2.66.79.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
             GitHub
           </a>
-          <a href="https://www.linkedin.com/in/ryan-yarali/" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.linkedin.com/in/ryan-yarali/" target="_blank" rel="me noopener noreferrer">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.55V9h3.57v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>
             LinkedIn
           </a>
