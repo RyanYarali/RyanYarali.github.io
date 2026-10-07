@@ -8,6 +8,7 @@
  *   word fill   the About lede lights up word by word as it is read
  *   tilt card   the portrait leans toward the pointer, with a light glare
  *   gallery     the projects hold the screen while the cards slide sideways
+ *   marquee     the skills drift past in two rows above the list
  *
  * Everything here is progressive. Without this script, or under reduced
  * motion, the page is an ordinary scrolling document with the same content.
@@ -380,6 +381,47 @@
     });
   }
 
+  // ==================== Skills marquee ====================
+  // Two rows of the skills drifting in opposite directions above the list.
+  // They are built from the list itself, so the page never carries a second
+  // copy of the text, and they are aria-hidden: the list is the content.
+
+  function initMarquee() {
+    var rows = [].slice.call(document.querySelectorAll(".skills-row"));
+    var heading = document.querySelector("#skills .section-heading");
+    if (!rows.length || !heading) return;
+
+    var names = function (from, to) {
+      var out = [];
+      rows.slice(from, to).forEach(function (row) {
+        [].forEach.call(row.querySelectorAll(".skills-list li"), function (li) {
+          out.push(li.textContent.trim());
+        });
+      });
+      return out;
+    };
+    var half = Math.ceil(rows.length / 2);
+
+    var box = document.createElement("div");
+    box.className = "marquee";
+    box.setAttribute("aria-hidden", "true");
+    [names(0, half), names(half)].forEach(function (list, i) {
+      var row = document.createElement("div");
+      row.className = "marquee-row" + (i ? " is-reverse" : "");
+      // Two identical halves, so sliding by exactly one half loops seamlessly.
+      var html = list
+        .map(function (n) {
+          return "<span>" + n.replace(/&/g, "&amp;").replace(/</g, "&lt;") + "</span><i></i>";
+        })
+        .join("");
+      row.innerHTML = '<div class="marquee-half">' + html + '</div><div class="marquee-half">' + html + "</div>";
+      // A steady speed whatever the row length.
+      row.style.setProperty("--marquee-duration", Math.max(24, list.length * 2.6) + "s");
+      box.appendChild(row);
+    });
+    heading.insertAdjacentElement("afterend", box);
+  }
+
   // ==================== Boot ====================
 
   // The gallery sets the projects section's height, so it measures before
@@ -388,6 +430,7 @@
   initStack();
   initLede();
   initTilt();
+  initMarquee();
 
   if (!updaters.length) return;
 

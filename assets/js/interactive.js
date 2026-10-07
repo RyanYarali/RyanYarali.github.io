@@ -293,6 +293,11 @@
     var rows = document.querySelectorAll(".skills-row");
     if (!chips.length || !rows.length) return;
 
+    // Remember the authored order so "All" can put it back.
+    [].forEach.call(rows, function (row, n) {
+      row.dataset.order = n;
+    });
+
     [].forEach.call(chips, function (chip) {
       chip.addEventListener("click", function () {
         var key = chip.dataset.filter;
@@ -301,17 +306,39 @@
           other.setAttribute("aria-pressed", String(other === chip));
         });
 
-        [].forEach.call(rows, function (row, i) {
+        // Matching rows rise to the top and the rest settle below them,
+        // animated FLIP-style: measure, reorder, then play each row from
+        // where it was to where it now is. "All" restores the original order.
+        var list = [].slice.call(rows);
+        var first = list.map(function (row) {
+          return row.getBoundingClientRect().top;
+        });
+
+        list.forEach(function (row) {
           var match = key === "all" || row.dataset.skillGroup === key;
           row.classList.toggle("is-dimmed", !match);
           row.classList.toggle("is-match", match && key !== "all");
+        });
 
-          if (!reduced) {
-            row.style.transitionDelay = i * 22 + "ms";
-            setTimeout(function () {
-              row.style.transitionDelay = "";
-            }, 600);
-          }
+        var parent = list[0].parentNode;
+        var ordered = list
+          .slice()
+          .sort(function (a, b) {
+            return (a.classList.contains("is-dimmed") - b.classList.contains("is-dimmed")) ||
+              (+a.dataset.order - +b.dataset.order);
+          });
+        ordered.forEach(function (row) {
+          parent.appendChild(row);
+        });
+
+        if (reduced) return;
+        list.forEach(function (row, i) {
+          var dy = first[i] - row.getBoundingClientRect().top;
+          if (Math.abs(dy) < 1) return;
+          row.animate(
+            [{ transform: "translateY(" + dy + "px)" }, { transform: "none" }],
+            { duration: 560, easing: "cubic-bezier(.19,1,.22,1)" },
+          );
         });
       });
     });

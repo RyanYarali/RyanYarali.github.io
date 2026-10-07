@@ -75,18 +75,18 @@
     />
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="assets/css/tokens.css" />
-    <link rel="stylesheet" href="assets/css/reset.css" />
-    <link rel="stylesheet" href="assets/css/typography.css" />
-    <link rel="stylesheet" href="assets/css/layout.css" />
-    <link rel="stylesheet" href="assets/css/components.css" />
-    <link rel="stylesheet" href="assets/css/pages.css" />
-    <link rel="stylesheet" href="assets/css/interactive.css" />
-    <link rel="stylesheet" href="assets/css/motion.css" />
-    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/tokens.css?v=20261006" />
+    <link rel="stylesheet" href="assets/css/reset.css?v=20261006" />
+    <link rel="stylesheet" href="assets/css/typography.css?v=20261006" />
+    <link rel="stylesheet" href="assets/css/layout.css?v=20261006" />
+    <link rel="stylesheet" href="assets/css/components.css?v=20261006" />
+    <link rel="stylesheet" href="assets/css/pages.css?v=20261006" />
+    <link rel="stylesheet" href="assets/css/interactive.css?v=20261006" />
+    <link rel="stylesheet" href="assets/css/motion.css?v=20261006" />
+    <link rel="stylesheet" href="assets/css/style.css?v=20261006" />
 
     <!-- Palette tokens are written before first paint -->
-    <script src="assets/js/palette.js"></script>
+    <script src="assets/js/palette.js?v=20261006"></script>
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=4" />
@@ -200,7 +200,7 @@
         <!-- The theme switch lives in the palette dock, next to the colours. -->
         <div class="nav-actions">
           <!-- Points at resume.html until the PDF exists; then swap the href for the PDF and add a download attribute. -->
-          <a href="resume.html" class="nav-resume">
+          <a href="resume.html" class="nav-resume" data-magnetic>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"></path><polyline points="7 10 12 15 17 10"></polyline><path d="M5 21h14"></path></svg>
             Résumé
           </a>
@@ -592,7 +592,7 @@
           <div class="education-card surface-card reveal">
             <div class="education-header">
               <div class="education-logo">
-                <img src="assets/BCIT_logo.png" alt="BCIT logo" / width="128" height="116" />
+                <img src="assets/BCIT_logo.png" alt="BCIT logo" width="128" height="116" />
               </div>
               <div class="education-content">
                 <h3>Computer Systems Technology Diploma</h3>
@@ -644,7 +644,7 @@
                   Open to opportunities
                 </span>
               </div>
-              <a href="resume.html" class="btn btn-secondary contact-resume">
+              <a href="resume.html" class="btn btn-secondary contact-resume" data-magnetic>
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"></path><polyline points="7 10 12 15 17 10"></polyline><path d="M5 21h14"></path></svg>
                 Download résumé
               </a>
@@ -710,7 +710,16 @@
                 Send message
               </button>
 
-              <div class="form-status" id="form-status"></div>
+              <!-- The request drawn as a packet on its way to the inbox. The
+                   figures in the log are the real ones from the request. -->
+              <div class="send-trace" id="send-trace" aria-hidden="true">
+                <span class="send-node">you</span>
+                <span class="send-line"><span class="send-packet"></span></span>
+                <span class="send-node">inbox</span>
+              </div>
+              <p class="send-log" id="send-log" aria-hidden="true"></p>
+
+              <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
             </form>
           </div>
         </div>
@@ -738,7 +747,7 @@
       <div class="container footer-inner">
         <div>
           <p>&copy; 2026 <a href="index.html">Ryan Yarali</a>. All rights reserved.</p>
-          <p class="footer-tech">Built with HTML, CSS, and JavaScript. No framework.</p>
+          <p class="footer-tech">Built with HTML, CSS, and JavaScript. No framework. <a href="projects/this-site.html">How it's built</a></p>
         </div>
         <div class="footer-social">
           <a href="https://github.com/RyanYarali" target="_blank" rel="noopener noreferrer">
@@ -754,13 +763,13 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="assets/js/theme.js"></script>
-    <script src="assets/js/form.js"></script>
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/interactive.js"></script>
-    <script src="assets/js/cursor.js"></script>
-    <script src="assets/js/spine.js"></script>
-    <script src="assets/js/story.js"></script>
-    <script src="assets/js/hero.js"></script>
+    <script src="assets/js/theme.js?v=20261006"></script>
+    <script src="assets/js/form.js?v=20261006"></script>
+    <script src="assets/js/main.js?v=20261006"></script>
+    <script src="assets/js/interactive.js?v=20261006"></script>
+    <script src="assets/js/cursor.js?v=20261006"></script>
+    <script src="assets/js/spine.js?v=20261006"></script>
+    <script src="assets/js/story.js?v=20261006"></script>
+    <script src="assets/js/hero.js?v=20261006"></script>
   </body>
 </html>

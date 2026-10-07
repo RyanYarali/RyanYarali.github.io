@@ -531,7 +531,7 @@ html.is-stacked main > .is-covered {
 /* Labels only where the margin can hold them without touching the content:
    the current hop always, any other on hover. The label sits in a scaled
    parent, so it is scaled back to keep a steady size. */
-@media (min-width: 1360px) {
+@media (min-width: 1440px) {
   .spine-hop.is-current .spine-label,
   .spine-hop:hover .spine-label {
     opacity: 1;
@@ -980,4 +980,221 @@ html.js-ready .screenshots-grid .reveal img {
 html.js-ready .shot.reveal.in-view img,
 html.js-ready .screenshots-grid .reveal.in-view img {
   clip-path: inset(0 0 0 0 round var(--radius-lg));
+}
+
+/* ---------- skills marquee ----------
+ * Built by story.js from the skills list. The second row runs the other way
+ * in outlined type. Hovering pauses both; reduced motion holds them still. */
+.marquee {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0 0 2.5rem;
+  overflow: hidden;
+  /* Fade out at both ends instead of cutting off. */
+  mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+}
+
+.marquee-row {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--marquee-duration, 30s) linear infinite;
+}
+
+.marquee-row.is-reverse {
+  animation-direction: reverse;
+}
+
+.marquee:hover .marquee-row {
+  animation-play-state: paused;
+}
+
+.marquee-half {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.marquee-half span {
+  padding: 0 1.1rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3.6vw, 2.75rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  white-space: nowrap;
+  color: var(--color-text);
+}
+
+.marquee-row.is-reverse span {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--color-text-subtle);
+}
+
+.marquee-half i {
+  width: 0.5rem;
+  height: 0.5rem;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-row {
+    animation: none;
+  }
+}
+
+/* ---------- send trace ---------- */
+.send-trace {
+  display: none;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.send-trace.is-sending,
+.send-trace.is-done,
+.send-trace.is-failed {
+  display: flex;
+}
+
+.send-node {
+  flex: 0 0 auto;
+  transition: color 300ms var(--ease);
+}
+
+.send-line {
+  position: relative;
+  flex: 1 1 auto;
+  height: 2px;
+  border-radius: var(--radius-pill);
+  background: var(--color-border);
+  container-type: inline-size;
+}
+
+/* The line fills behind the packet once it lands. */
+.send-line::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--color-accent);
+  transform-origin: left center;
+  transform: scaleX(0);
+}
+
+.send-packet {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 12px 2px var(--color-accent);
+}
+
+.send-trace.is-sending .send-packet {
+  animation: packet-fly 1.1s var(--ease) infinite;
+}
+
+.send-trace.is-done .send-packet {
+  animation: packet-land 520ms var(--ease-out-expo) forwards;
+}
+
+.send-trace.is-done .send-line::before {
+  animation: line-fill 520ms var(--ease-out-expo) forwards;
+}
+
+.send-trace.is-done .send-node:last-child {
+  color: var(--color-accent);
+}
+
+.send-trace.is-failed .send-packet {
+  background: var(--color-danger);
+  box-shadow: none;
+  animation: packet-drop 700ms var(--ease) forwards;
+}
+
+@keyframes packet-fly {
+  from {
+    transform: translateX(0) scale(0.6);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+    transform: translateX(15cqw) scale(1);
+  }
+  85% {
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100cqw) scale(0.6);
+    opacity: 0;
+  }
+}
+
+@keyframes packet-land {
+  from {
+    transform: translateX(40cqw);
+  }
+  to {
+    transform: translateX(100cqw) scale(1.4);
+  }
+}
+
+@keyframes line-fill {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes packet-drop {
+  from {
+    transform: translateX(45cqw);
+  }
+  to {
+    transform: translate(52cqw, 18px);
+    opacity: 0;
+  }
+}
+
+.send-log {
+  min-height: 1.2rem;
+  margin: 0.6rem 0 0;
+  max-width: none;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--color-text-subtle);
+}
+
+.send-log.is-failed {
+  color: var(--color-danger);
+}
+
+/* Under reduced motion the trace still reports, it just does not travel. */
+@media (prefers-reduced-motion: reduce) {
+  .send-trace.is-sending .send-packet {
+    animation: none;
+    transform: translateX(50cqw);
+  }
+  .send-trace.is-done .send-packet {
+    transform: translateX(100cqw);
+  }
+  .send-trace.is-done .send-line::before {
+    transform: scaleX(1);
+  }
 }

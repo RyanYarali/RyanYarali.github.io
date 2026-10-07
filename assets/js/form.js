@@ -98,6 +98,27 @@
     return isValid;
   }
 
+  // ==================== Send trace ====================
+  // The request drawn as a packet travelling from the sender to the inbox:
+  // it loops while the request is in flight, lands when it succeeds, and
+  // drops when it fails. The log line underneath shows the real host, status
+  // and round-trip time of the request. Both are aria-hidden; the status
+  // message below is what assistive technology announces.
+  const sendTrace = document.getElementById("send-trace");
+  const sendLog = document.getElementById("send-log");
+
+  function trace(state, log) {
+    if (!sendTrace) return;
+    sendTrace.classList.remove("is-sending", "is-done", "is-failed");
+    // Restart the landing animation when a second message is sent.
+    void sendTrace.offsetWidth;
+    sendTrace.classList.add("is-" + state);
+    if (sendLog) {
+      sendLog.textContent = log || "";
+      sendLog.classList.toggle("is-failed", state === "failed");
+    }
+  }
+
   // Show form status
   function showStatus(type, message) {
     formStatus.className = `form-status ${type}`;
@@ -144,6 +165,10 @@
     const originalButtonText = submitButton.textContent;
     submitButton.disabled = true;
     submitButton.textContent = "Sending...";
+    trace("sending");
+
+    const host = new URL(form.action).host;
+    const started = performance.now();
 
     try {
       // Submit to Formspree (or your chosen service)
@@ -155,18 +180,24 @@
           Accept: "application/json",
         },
       });
+      const ms = Math.round(performance.now() - started);
 
       if (response.ok) {
+        trace("done", `POST ${host} · ${response.status}${response.statusText ? " " + response.statusText : response.status === 200 ? " OK" : ""} · ${ms} ms`);
         showStatus(
           "success",
           "Thank you! Your message has been sent successfully. I'll get back to you soon.",
         );
         form.reset();
       } else {
+        trace("failed", `POST ${host} · ${response.status} · ${ms} ms`);
         throw new Error("Form submission failed");
       }
     } catch (error) {
       console.error("Form submission error:", error);
+      if (sendTrace && !sendTrace.classList.contains("is-failed")) {
+        trace("failed", `POST ${host} · no response`);
+      }
       showStatus(
         "error",
         "Message didn't send. Please try again in a moment.",
