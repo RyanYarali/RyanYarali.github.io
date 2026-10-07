@@ -178,13 +178,19 @@
     try {
       // Submit to Formspree (or your chosen service)
       const formData = new FormData(form);
+      // A stalled connection gives up after 15 seconds instead of leaving
+      // the button disabled (and Ping holding the envelope) for good.
+      const controller = "AbortController" in window ? new AbortController() : null;
+      const timeout = controller ? setTimeout(() => controller.abort(), 15000) : 0;
       const response = await fetch(form.action, {
         method: "POST",
         body: formData,
         headers: {
           Accept: "application/json",
         },
+        signal: controller ? controller.signal : undefined,
       });
+      clearTimeout(timeout);
       const ms = Math.round(performance.now() - started);
 
       if (response.ok) {

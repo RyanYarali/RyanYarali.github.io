@@ -430,7 +430,7 @@ html.is-stacked main > .is-covering {
  * story.js wraps each word of the About lede and sets its opacity from
  * scroll. The floor keeps every word readable before it lights up. */
 .about-lede.is-filling .w {
-  opacity: 0.2;
+  opacity: 0.5;
   transition: opacity 120ms linear;
 }
 
@@ -732,6 +732,11 @@ html.work-pinned .work-track {
 
 html.work-pinned .work-head .section-heading {
   margin-bottom: 1rem;
+}
+
+.work-note {
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
 }
 
 html.work-pinned .work-count {
@@ -1236,7 +1241,7 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
 
 @media (max-width: 700px) {
   .ping {
-    --s: 0.85;
+    --s: 0.72;
   }
 }
 
@@ -1248,6 +1253,10 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
   .ping.is-big {
     --s: 1.9;
   }
+}
+
+.ping.is-passive .ping-hit {
+  pointer-events: none;
 }
 
 .ping-hit {
@@ -1580,11 +1589,13 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
   text-transform: none;
   text-align: left;
   pointer-events: none;
-  opacity: 0;
-  transform: translate(-6px, 6px) scale(0.92);
+  /* It pops in by scale rather than fading, so its text is never shown
+     half-transparent (and low-contrast) over whatever is behind it. */
+  visibility: hidden;
+  transform: translate(-6px, 6px) scale(0.6);
   transform-origin: 0 100%;
   transition:
-    opacity 200ms var(--ease),
+    visibility 0s linear 320ms,
     transform 320ms var(--ease-out-expo),
     left 700ms var(--ease-out-expo),
     right 700ms var(--ease-out-expo),
@@ -1592,8 +1603,9 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
 }
 
 .ping-bubble.is-on {
-  opacity: 1;
+  visibility: visible;
   transform: none;
+  transition-delay: 0s;
 }
 
 .ping.is-flip .ping-bubble {
@@ -1607,6 +1619,20 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
   font-size: 1rem;
 }
 
+/* On a phone the goodbye happens in the clear space under the send button:
+   Ping on the left, his bubble beside him at the same height, so neither
+   covers the button. */
+@media (max-width: 700px) {
+  .ping.is-big .ping-bubble,
+  .ping.is-big.is-flip .ping-bubble {
+    left: calc(30px * var(--s));
+    right: auto;
+    bottom: calc(-4px * var(--s));
+    max-width: calc(100vw - 150px);
+    border-radius: 14px 14px 14px 4px;
+    transform-origin: 0 100%;
+  }
+}
 /* On a page without a route he stands beside the heading instead. */
 .ping.is-standalone {
   position: relative;
@@ -1645,4 +1671,80 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
   .ping.is-sleep .ping-zzz {
     opacity: 1;
   }
+}
+
+/* ---------- touch targets and small-screen guards ----------
+ * Project actions and footer links were mono caps about 18px tall; on a
+ * phone they get a full 44px row. */
+.project-accordion-link,
+.work-all {
+  min-height: 44px;
+}
+
+@media (max-width: 700px) {
+  .project-accordion-link,
+  .work-all {
+    font-size: 0.8rem;
+  }
+
+  .footer-social a {
+    min-height: 44px;
+  }
+
+  /* The palette dock and the back-to-top button sit over the bottom of the
+     screen; the footer leaves room for them so nothing is hidden under them. */
+  .footer {
+    padding-bottom: calc(2.75rem + 72px);
+  }
+}
+
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin: 0;
+}
+
+.contact-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: 500;
+  color: var(--color-text);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--color-accent);
+}
+
+.contact-links a:hover {
+  color: var(--color-accent);
+}
+
+/* Fixed decoration (Ping, the cursor ring) can sit a few pixels past the
+   edge; clip, unlike hidden, keeps sticky positioning working. */
+body {
+  overflow-x: clip;
+}
+
+/* Project labels on the globe link to the work, once they face the viewer. */
+.globe-label.is-link {
+  text-decoration: none;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.globe-label.is-link.is-shown {
+  pointer-events: auto;
+}
+
+.globe-label.is-link:hover {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+/* While pinned, "All projects" sits on the right: the palette dock holds
+   the bottom-left corner of the screen. */
+html.work-pinned .work-pin > .container:last-child {
+  text-align: right;
 }
