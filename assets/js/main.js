@@ -143,7 +143,7 @@
   toggleBackToTop();
 
   // ==================== Image Fallback Handler ====================
-  const profileImage = document.querySelector(".hero-image-placeholder img");
+  const profileImage = document.querySelector(".about-photo img");
 
   if (profileImage) {
     profileImage.addEventListener("error", function () {
