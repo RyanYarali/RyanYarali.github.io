@@ -335,11 +335,33 @@
     index(seg);
   }
 
+  // A rebuild (fonts landing, a section changing height, the window
+  // resizing) must not swallow a hop being reached: the new nodes start
+  // with the lit state the old ones had, so only a real crossing announces
+  // itself. The very first build announces nothing, so landing halfway
+  // down the page doesn't replay every hop above it.
+  var firstBuild = true;
+
   function build() {
+    var wasLit = {};
+    segs.forEach(function (s) {
+      s.nodes.forEach(function (n) {
+        wasLit[n.label] = n.lit;
+      });
+    });
     clear();
     if (isHome) buildHome();
     else buildCase();
-    update(true);
+    segs.forEach(function (s) {
+      s.nodes.forEach(function (n) {
+        if (wasLit[n.label]) {
+          n.lit = true;
+          n.g.classList.add("is-lit");
+        }
+      });
+    });
+    update(true, firstBuild);
+    firstBuild = false;
   }
 
   // ==================== Drawing ====================
@@ -352,7 +374,7 @@
     return isNaN(v) ? 0 : v;
   }
 
-  function update(force) {
+  function update(force, quiet) {
     var vh = window.innerHeight;
     var read = vh * READ;
     // Near the bottom the page runs out of scroll before the reading line
@@ -411,7 +433,7 @@
         if (lit !== node.lit) {
           node.lit = lit;
           node.g.classList.toggle("is-lit", lit || reduced);
-          if (!force) {
+          if (!quiet) {
             emit({
               type: node.terminal ? "end" : "hop",
               on: lit,
