@@ -37,6 +37,11 @@
      so it is the same in every palette and both themes. */
   --color-glare: rgba(255, 255, 255, 0.34);
 
+  /* Ping's eyes: always white with dark pupils, whatever the palette, so he
+     reads as the same character everywhere. */
+  --ping-eye: #ffffff;
+  --ping-ink: #0b111a;
+
   --color-danger: #a32b22;
   --color-success: #1f6b47;
 

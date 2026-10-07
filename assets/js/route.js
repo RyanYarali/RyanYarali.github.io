@@ -79,16 +79,34 @@
     return n;
   }
 
-  // ==================== The packet ====================
-  // One element for the whole page, fixed to the screen at the head of the
-  // line. While the page moves it carries the current chapter's name.
+  // ==================== The head of the line ====================
+  // route.js knows where the head of the line is; ping.js draws the creature
+  // that rides it. Subscribers hear where the head is whenever it moves, and
+  // when a hop or the end of the route is reached.
 
-  var tip = document.createElement("div");
-  tip.className = "route-tip";
-  tip.setAttribute("aria-hidden", "true");
-  tip.innerHTML = '<span class="route-tip-dot"></span><span class="route-tip-label"></span>';
-  var tipLabel = tip.lastChild;
-  document.body.appendChild(tip);
+  var listeners = [];
+  var head = { x: 0, y: 0, active: false, side: "L" };
+  var dir = 0;
+
+  function emit(e) {
+    for (var i = 0; i < listeners.length; i++) listeners[i](e);
+  }
+
+  window.siteRoute = {
+    subscribe: function (fn) {
+      listeners.push(fn);
+      fn({ type: "move", head: head });
+    },
+    // The screen position of the end of the route, for the contact form's
+    // packet to fly to.
+    endPoint: function () {
+      var last = segs[segs.length - 1];
+      var node = last && last.nodes[last.nodes.length - 1];
+      if (!node) return null;
+      var r = last.host.getBoundingClientRect();
+      return { x: r.left + node.x, y: r.top + node.y };
+    },
+  };
 
   // ==================== Building ====================
 
@@ -150,7 +168,7 @@
     g.appendChild(dot);
     g.appendChild(text);
     seg.svg.appendChild(g);
-    seg.nodes.push({ g: g, y: y, label: label, len: 0, lit: false });
+    seg.nodes.push({ g: g, x: x, y: y, side: side, label: label, terminal: !!terminal, len: 0, lit: false });
   }
 
   // Lengths along a path, sampled by height, so "how far down" can be turned
@@ -261,6 +279,7 @@
       }
 
       addNode(seg, x, ey, label, side, false);
+      seg.nodes[0].id = page.id;
       if (i === pages.length - 1) {
         addNode(seg, x, H - Math.min(80, H * 0.08), "End of route", side, true);
       }
@@ -310,6 +329,7 @@
     seg.ghost.setAttribute("d", d);
     stops.forEach(function (stop, i) {
       addNode(seg, stop.x, stop.y, pad(i + 1) + " · " + stop.label, stop.side, false);
+      seg.nodes[i].id = i === 0 ? "intro" : stop.label;
     });
     addNode(seg, x, endY, "End of route", side, true);
     index(seg);
@@ -319,14 +339,11 @@
     clear();
     if (isHome) buildHome();
     else buildCase();
-    current = null;
     update(true);
   }
 
   // ==================== Drawing ====================
 
-  var current = null;
-  var moving = 0;
   var lastY = window.scrollY;
 
   function galleryProgress() {
@@ -361,13 +378,11 @@
     var active = -1;
     for (var i = 0; i < segs.length; i++) if (rects[i].top <= read) active = i;
 
-    var currentLabel = null;
+    var moved = false;
     segs.forEach(function (s, i) {
       var local = read - rects[i].top;
       var len;
-      if (reduced) {
-        len = s.total;
-      } else if (local <= 0) {
+      if (local <= 0) {
         len = 0;
       } else if (s.kind === "gallery" && rects[i].top <= 1) {
         // Held on screen: the sideways run follows the cards.
@@ -383,52 +398,55 @@
         len = lenAtY(s, s.kind === "gallery" ? Math.min(local, s.barY) : local);
       }
       len = clamp(len, 0, s.total);
+      // Under reduced motion the line is simply drawn complete; the head
+      // still knows where the reader is.
+      var draw = reduced ? s.total : len;
 
-      if (force || Math.abs(len - s.drawn) > 0.25) {
-        s.drawn = len;
-        s.line.style.strokeDashoffset = (s.total - len).toFixed(1);
+      if (force || Math.abs(draw - s.drawn) > 0.25) {
+        s.drawn = draw;
+        s.line.style.strokeDashoffset = (s.total - draw).toFixed(1);
       }
       s.nodes.forEach(function (node) {
         var lit = len >= node.len - 1;
         if (lit !== node.lit) {
           node.lit = lit;
-          node.g.classList.toggle("is-lit", lit);
+          node.g.classList.toggle("is-lit", lit || reduced);
+          if (!force) {
+            emit({
+              type: node.terminal ? "end" : "hop",
+              on: lit,
+              id: node.id,
+              label: node.label,
+              side: node.side,
+              dir: dir,
+            });
+          }
         }
-        if (lit && !/^End/.test(node.label)) currentLabel = node.label;
+        if (reduced) node.g.classList.add("is-lit");
       });
 
-      if (i === active && !reduced) {
-        var pt = s.line.getPointAtLength(s.drawn);
-        var tx = rects[i].left + pt.x;
-        tip.style.transform = "translate3d(" + tx.toFixed(1) + "px," + (rects[i].top + pt.y).toFixed(1) + "px,0)";
-        // On the right-hand side the label opens toward the page instead.
-        tip.classList.toggle("is-flip", tx > window.innerWidth / 2);
+      if (i === active) {
+        var pt = s.line.getPointAtLength(len);
+        head.x = rects[i].left + pt.x;
+        head.y = rects[i].top + pt.y;
+        head.side = head.x > window.innerWidth / 2 ? "R" : "L";
+        moved = true;
       }
     });
 
-    tip.classList.toggle("is-on", active >= 0 && !reduced);
-    if (currentLabel !== current) {
-      current = currentLabel;
-      tipLabel.textContent = current || "";
-    }
+    head.active = active >= 0;
+    if (moved || force || !head.active) emit({ type: "move", head: head });
   }
 
   // ==================== Wiring ====================
 
   var ticking = false;
-  var idle = 0;
   window.addEventListener(
     "scroll",
     function () {
-      // While the page moves, the packet carries its label.
-      if (Math.abs(window.scrollY - lastY) > 1) {
-        lastY = window.scrollY;
-        tip.classList.add("is-moving");
-        clearTimeout(idle);
-        idle = setTimeout(function () {
-          tip.classList.remove("is-moving");
-        }, 900);
-      }
+      var dy = window.scrollY - lastY;
+      if (dy) dir = dy > 0 ? 1 : -1;
+      lastY = window.scrollY;
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(function () {

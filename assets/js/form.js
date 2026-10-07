@@ -107,7 +107,12 @@
   const sendTrace = document.getElementById("send-trace");
   const sendLog = document.getElementById("send-log");
 
-  function trace(state, log) {
+  function trace(state, log, detail) {
+    // Ping (ping.js) carries the message along the route; he hears about
+    // the request through these events.
+    document.dispatchEvent(
+      new CustomEvent("contact:" + (state === "done" ? "sent" : state), { detail: detail || {} }),
+    );
     if (!sendTrace) return;
     sendTrace.classList.remove("is-sending", "is-done", "is-failed");
     // Restart the landing animation when a second message is sent.
@@ -183,14 +188,18 @@
       const ms = Math.round(performance.now() - started);
 
       if (response.ok) {
-        trace("done", `POST ${host} · ${response.status}${response.statusText ? " " + response.statusText : response.status === 200 ? " OK" : ""} · ${ms} ms`);
+        trace(
+          "done",
+          `POST ${host} · ${response.status}${response.statusText ? " " + response.statusText : response.status === 200 ? " OK" : ""} · ${ms} ms`,
+          { status: response.status, ms },
+        );
         showStatus(
           "success",
           "Thank you! Your message has been sent successfully. I'll get back to you soon.",
         );
         form.reset();
       } else {
-        trace("failed", `POST ${host} · ${response.status} · ${ms} ms`);
+        trace("failed", `POST ${host} · ${response.status} · ${ms} ms`, { status: response.status, ms });
         throw new Error("Form submission failed");
       }
     } catch (error) {
