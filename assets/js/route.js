@@ -173,15 +173,72 @@
 
   // Lengths along a path, sampled by height, so "how far down" can be turned
   // into "how much line" with a binary search instead of geometry per frame.
+  //
+  // The table is computed here from the path's own pieces (straight runs and
+  // Bézier sweeps, which this file writes itself) rather than by asking the
+  // browser for points along it: getPointAtLength costs about half a
+  // millisecond a call on a long path, and sampling a page's route that way
+  // blocked the main thread for most of a second on every rebuild.
+  function samplePath(d) {
+    var t = d.replace(/,/g, " ").trim().split(/\s+/);
+    var xs = [];
+    var ys = [];
+    var x = 0;
+    var y = 0;
+    var i = 0;
+    var num = function () {
+      return parseFloat(t[i++]);
+    };
+    function push(px, py) {
+      xs.push(px);
+      ys.push(py);
+    }
+    while (i < t.length) {
+      var c = t[i++];
+      if (c === "M") {
+        x = num();
+        y = num();
+        push(x, y);
+      } else if (c === "L") {
+        x = num();
+        y = num();
+        push(x, y);
+      } else if (c === "C" || c === "Q") {
+        var cubic = c === "C";
+        var x1 = num(), y1 = num();
+        var x2 = cubic ? num() : 0, y2 = cubic ? num() : 0;
+        var x3 = num(), y3 = num();
+        for (var k = 1; k <= 24; k++) {
+          var s = k / 24, u = 1 - s;
+          if (cubic) {
+            push(
+              u * u * u * x + 3 * u * u * s * x1 + 3 * u * s * s * x2 + s * s * s * x3,
+              u * u * u * y + 3 * u * u * s * y1 + 3 * u * s * s * y2 + s * s * s * y3,
+            );
+          } else {
+            push(u * u * x + 2 * u * s * x1 + s * s * x3, u * u * y + 2 * u * s * y1 + s * s * y3);
+          }
+        }
+        x = x3;
+        y = y3;
+      }
+    }
+    var lens = new Float32Array(xs.length);
+    for (var j = 1; j < xs.length; j++) lens[j] = lens[j - 1] + Math.hypot(xs[j] - xs[j - 1], ys[j] - ys[j - 1]);
+    return { ys: Float32Array.from(ys), lens: lens };
+  }
+
   function index(seg) {
     var p = seg.line;
     var total = p.getTotalLength();
-    var n = Math.max(2, Math.ceil(total / 6));
-    var ys = new Float32Array(n + 1);
-    for (var k = 0; k <= n; k++) ys[k] = p.getPointAtLength((total * k) / n).y;
+    var s = samplePath(p.getAttribute("d"));
+    // Our polyline runs a hair short of the true curve length; scale it to
+    // the browser's total so the dash and the table agree exactly.
+    var k = s.lens[s.lens.length - 1] ? total / s.lens[s.lens.length - 1] : 1;
+    for (var j = 0; j < s.lens.length; j++) s.lens[j] *= k;
     seg.total = total;
-    seg.ys = ys;
-    seg.step = total / n;
+    seg.ys = s.ys;
+    seg.lens = s.lens;
     p.style.strokeDasharray = total + " " + total;
     seg.nodes.forEach(function (node) {
       node.len = lenAtY(seg, node.y);
@@ -190,6 +247,7 @@
 
   function lenAtY(seg, y) {
     var ys = seg.ys;
+    var lens = seg.lens;
     if (y <= ys[0]) return 0;
     var hi = ys.length - 1;
     if (y >= ys[hi]) return seg.total;
@@ -201,8 +259,9 @@
     }
     var span = ys[hi] - ys[lo];
     var f = span > 0 ? (y - ys[lo]) / span : 0;
-    return (lo + f) * seg.step;
+    return lens[lo] + (lens[hi] - lens[lo]) * f;
   }
+
 
   function measureLen(d) {
     var tmp = el("path");
@@ -374,8 +433,15 @@
     return isNaN(v) ? 0 : v;
   }
 
+  var lastUpdateY = window.scrollY;
+
   function update(force, quiet) {
     var vh = window.innerHeight;
+    // A jump of more than a screen and a half (a deep link, a nav click, the
+    // back-to-top button) passes hops without reaching them; it lights them
+    // without announcing each one.
+    if (Math.abs(window.scrollY - lastUpdateY) > vh * 1.5) quiet = true;
+    lastUpdateY = window.scrollY;
     var read = vh * READ;
     // Near the bottom the page runs out of scroll before the reading line
     // can reach the end of the route (the footer holds the last of the
@@ -479,12 +545,32 @@
     { passive: true },
   );
 
+  // Rebuild once per frame at most, and only when a host or the window has
+  // really changed width or height: fonts landing, images loading and
+  // ResizeObserver all ask, and most of the time nothing has moved. A
+  // height-only window change (a phone's toolbar sliding) doesn't move the
+  // route at all, since it is drawn in page coordinates.
   var queued = false;
+  var lastSig = "";
+  function signature() {
+    return (
+      window.innerWidth +
+      "|" +
+      (isHome ? pages : [main])
+        .map(function (p) {
+          return p.offsetWidth + "x" + p.offsetHeight;
+        })
+        .join(",")
+    );
+  }
   function rebuild() {
     if (queued) return;
     queued = true;
     requestAnimationFrame(function () {
       queued = false;
+      var sig = signature();
+      if (sig === lastSig) return;
+      lastSig = sig;
       build();
     });
   }
@@ -501,9 +587,11 @@
     var pinned = html.classList.contains("work-pinned");
     if (pinned !== wasPinned) {
       wasPinned = pinned;
+      lastSig = "";
       rebuild();
     }
   }).observe(html, { attributes: true, attributeFilter: ["class"] });
 
+  lastSig = signature();
   build();
 })();

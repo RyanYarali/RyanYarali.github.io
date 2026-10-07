@@ -512,10 +512,16 @@ export function mount(host, { reduced = false } = {}) {
     updateLabels();
   }
 
+  // One frame request at a time. Stopping cancels the pending frame, so a
+  // quick stop-and-start (switching tabs, the hero being covered and
+  // uncovered) can't leave a second loop running alongside the first.
+  let rafId = 0;
+
   function loop(now) {
+    rafId = 0;
     if (!running) return;
     render(now);
-    requestAnimationFrame(loop);
+    rafId = requestAnimationFrame(loop);
   }
 
   function setRunning(on) {
@@ -523,9 +529,11 @@ export function mount(host, { reduced = false } = {}) {
     if (on && !running) {
       running = true;
       last = performance.now();
-      requestAnimationFrame(loop);
+      if (!rafId) rafId = requestAnimationFrame(loop);
     } else if (!on) {
       running = false;
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = 0;
     }
   }
 
