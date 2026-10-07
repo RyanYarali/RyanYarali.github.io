@@ -262,7 +262,9 @@
         stick.push(s);
         p.style.setProperty("--stick-top", s + "px");
         // Sink toward the middle of the part that is actually on screen.
-        p.style.transformOrigin = "50% " + (h > vh ? h - vh / 2 : h / 2) + "px";
+        // Horizontally it sinks toward its own stretch of route (route.js
+        // sets --route-x), so the line stays put as the next card covers it.
+        p.style.transformOrigin = "var(--route-x, 50%) " + (h > vh ? h - vh / 2 : h / 2) + "px";
       });
     });
 
