@@ -338,6 +338,21 @@
   function update(force) {
     var vh = window.innerHeight;
     var read = vh * READ;
+    // Near the bottom the page runs out of scroll before the reading line
+    // can reach the end of the route (the footer holds the last of the
+    // screen), so over the last stretch the line slides down the screen to
+    // land on the end exactly when the page does.
+    var room = document.documentElement.scrollHeight - vh - window.scrollY;
+    var runway = vh * 0.6;
+    if (room < runway) {
+      var last = segs[segs.length - 1];
+      var endNode = last && last.nodes[last.nodes.length - 1];
+      if (endNode) {
+        var endScreen = last.host.getBoundingClientRect().top + endNode.y + 2;
+        var k = 1 - Math.max(0, room) / runway;
+        read += (Math.max(read, endScreen) - read) * k * k;
+      }
+    }
     var rects = segs.map(function (s) {
       return s.host.getBoundingClientRect();
     });
