@@ -213,14 +213,26 @@
   window.siteLayout = { top: naturalTop };
 
   // ==================== Active Navigation Link ====================
+  // Section positions are measured when the layout changes, not on every
+  // scroll frame (naturalTop reads computed style).
+  const navSections = Array.from(document.querySelectorAll("header[id], section[id]"));
+  let navTops = [];
+  function measureNav() {
+    navTops = navSections.map((s) => naturalTop(s));
+  }
+  window.addEventListener("load", measureNav);
+  window.addEventListener("resize", measureNav, { passive: true });
+  if ("ResizeObserver" in window) new ResizeObserver(measureNav).observe(document.body);
+
   function setActiveNavLink() {
-    const sections = document.querySelectorAll("header[id], section[id]");
+    const sections = navSections;
     const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+    if (navTops.length !== sections.length) measureNav();
 
     let current = "";
 
-    sections.forEach((section) => {
-      const sectionTop = naturalTop(section);
+    sections.forEach((section, i) => {
+      const sectionTop = navTops[i];
       if (window.pageYOffset + window.innerHeight * 0.4 >= sectionTop) {
         current = section.getAttribute("id");
       }

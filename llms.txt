@@ -1,0 +1,47 @@
+# Ryan Yarali
+
+> Ryan Yarali is a full-stack developer and a Computer Systems Technology (CST) diploma student at BCIT, the British Columbia Institute of Technology, on the Data Communications & Cyber Security option. He is based in Coquitlam, in Greater Vancouver, British Columbia, Canada, and is open to internship, co-op and junior developer roles. ryanyarali.com is his portfolio.
+
+Key facts:
+
+- Name: Ryan Yarali
+- Role: Full-stack developer
+- Education: Computer Systems Technology Diploma, British Columbia Institute of Technology (BCIT), Data Communications & Cyber Security option. Sept 2025 to Apr 2027 (expected); currently in Term 3.
+- Location: Coquitlam, Greater Vancouver, BC, Canada
+- Looking for: internship, co-op and junior developer roles
+- Work: 15+ projects shipped; four are shown publicly with the clients' permission (listed below), plus this site
+- Contact: the form at https://ryanyarali.com/#contact
+- GitHub: https://github.com/RyanYarali
+- LinkedIn: https://www.linkedin.com/in/ryan-yarali/
+
+Skills listed on the site:
+
+- Languages: JavaScript, C, C++, Python, Java, PHP, SQL, HTML5, CSS3
+- Frontend: React, responsive design, accessibility fundamentals
+- Backend: Node.js, Express, REST API design, WordPress, Pods
+- SEO and performance: on-page and local SEO, structured data (JSON-LD), Core Web Vitals tuning, image optimization
+- Networking: TCP/IP, socket programming, network protocols, packet analysis
+- Databases: MySQL, PostgreSQL, MongoDB
+- Systems: Linux/Unix, systems programming, systems analysis
+- Workflow: Git/GitHub, Agile/Scrum, testing and debugging, OOP, data structures
+
+## Projects
+
+- [Nook Look](https://ryanyarali.com/projects/nooklook.html): Client site, 2026, live at https://nooklook.ca. The full web presence for a Coquitlam portrait photography studio: four priced service lines, a booking pipeline, a filterable gallery, and local SEO, built and launched solo. WordPress, Pods, PHP, custom CSS/JS, hand-written LocalBusiness structured data.
+- [Vanco Bab](https://vancobab.ca): Client site, 2026, live. A five-page site for a Persian kebab food truck in Vancouver: the truck menu, catering packages, and an order builder written in plain JavaScript with no backend. HTML5, CSS3, vanilla JavaScript, SEO.
+- [Termeh Cafe & Restaurant](https://ryanyarali.com/projects.html): Client site, 2026, coming soon. A bilingual English and Farsi restaurant site with a password-protected admin panel for the menu, prices, hours and reservations. React 19 and Vite on the front end; Node.js, Express and SQLite on the back end.
+- [TaskMate](https://ryanyarali.com/projects/taskmate.html): BCIT coursework, 2025. A mobile-friendly task manager for students, built end to end with Firebase Authentication and Firestore as a team project in COMM 1800 (Team DTC 09) and tested by a nine-person class team. Source: https://github.com/RyanYarali/1800_202530_DTC09
+- [This site](https://ryanyarali.com/projects/this-site.html): ryanyarali.com itself. Plain HTML, CSS and JavaScript on GitHub Pages with no framework and no build step; a three.js network globe, scroll-driven motion, six colour palettes that meet WCAG AA, and every word in the HTML. Source: https://github.com/RyanYarali/RyanYarali.github.io
+
+## Pages
+
+- [Home](https://ryanyarali.com/): About, selected work, skills, education and contact
+- [Projects](https://ryanyarali.com/projects.html): All projects with descriptions and tech stacks
+- [Nook Look case study](https://ryanyarali.com/projects/nooklook.html): Brief, design system, stack, SEO and client process for the studio site
+- [TaskMate case study](https://ryanyarali.com/projects/taskmate.html): Problem, screens, features, stack and learning outcomes
+- [How this site is built](https://ryanyarali.com/projects/this-site.html): Design, motion, performance and accessibility of ryanyarali.com
+
+## Optional
+
+- [Résumé](https://ryanyarali.com/resume.html): Placeholder until the PDF is published; LinkedIn has the full background
+- [Sitemap](https://ryanyarali.com/sitemap.xml)

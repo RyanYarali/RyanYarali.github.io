@@ -155,12 +155,17 @@
   });
 
   // Scrolling moves content under a still pointer, so re-check what is there.
+  var scrollQueued = false;
   window.addEventListener(
     "scroll",
     function () {
-      if (!seen) return;
-      classify(document.elementFromPoint(px, py));
-      wake();
+      if (!seen || scrollQueued) return;
+      scrollQueued = true;
+      requestAnimationFrame(function () {
+        scrollQueued = false;
+        classify(document.elementFromPoint(px, py));
+        wake();
+      });
     },
     { passive: true },
   );

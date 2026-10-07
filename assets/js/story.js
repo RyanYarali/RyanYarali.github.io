@@ -53,6 +53,7 @@
 
   // Everything scroll-driven reads from one measurement pass and one
   // rAF-throttled scroll handler.
+  var deepLink = null;
   var measurers = [];
   var updaters = [];
   var vh = window.innerHeight;
@@ -113,7 +114,9 @@
       }
     }
 
-    var wide = window.matchMedia("(min-width: 860px)");
+    // Pinned only where a card fits on screen: a phone in landscape or a
+    // zoomed-in laptop gets the carousel instead of clipped cards.
+    var wide = window.matchMedia("(min-width: 860px) and (min-height: 700px)");
     var pinned = false;
     var travel = 0;
     var top = 0;
@@ -128,6 +131,10 @@
         c.style.transform = "";
         c.style.opacity = "";
       });
+      var pin = work.querySelector(".work-pin");
+      // The pin is the measured screen height rather than 100vh, which on
+      // iOS includes the toolbar and disagrees with innerHeight.
+      if (pin) pin.style.height = on ? vh + "px" : "";
       if (!on) {
         work.style.height = "";
         track.style.transform = "";
@@ -142,7 +149,9 @@
       if (pinned) {
         pinW = work.clientWidth;
         travel = Math.max(0, track.scrollWidth - pinW);
-        height = vh + travel;
+        // Three screens of scroll per four of sideways travel: long enough
+        // to read each card, short enough not to feel like a detour.
+        height = vh + travel * 0.75;
         work.style.height = height + "px";
         top = layout.top(section) + offsetWithin(work, section);
       }
@@ -286,7 +295,7 @@
     // In-page links to a stacked section: the browser would scroll to where
     // the section is stuck, so scroll to where it sits in the flow instead.
     function scrollToSection(target, smooth) {
-      window.scrollTo({ top: layout.top(target), behavior: smooth ? "smooth" : "auto" });
+      window.scrollTo({ top: layout.top(target), behavior: smooth ? "smooth" : "instant" });
     }
 
     document.addEventListener("click", function (e) {
@@ -306,10 +315,31 @@
     });
 
     // A deep link such as /#projects: correct the browser's initial jump.
-    window.addEventListener("load", function () {
+    // A deep link such as /#skills jumps straight there once the page is
+    // measured (not after every image has loaded), and again on load only if
+    // late images moved the section.
+    deepLink = function () {
       var id = decodeURIComponent(location.hash.slice(1));
       var target = id && document.getElementById(id);
-      if (target && pages.indexOf(target) > 0) scrollToSection(target, false);
+      if (!target || pages.indexOf(target) < 1) return;
+      var want = layout.top(target);
+      if (Math.abs(window.scrollY - want) > 4) scrollToSection(target, false);
+    };
+    window.addEventListener("load", function () {
+      if (deepLink) deepLink();
+    });
+
+    // Keyboard focus that lands inside a section another one has slid over
+    // brings it back into view instead of leaving it hidden underneath.
+    document.addEventListener("focusin", function (e) {
+      var page = pages.find(function (p) {
+        return p.contains(e.target);
+      });
+      if (!page) return;
+      var i = pages.indexOf(page);
+      if (!state[i] || state[i].cover <= 0.02) return;
+      var y = layout.top(page) + offsetWithin(e.target, page) - vh / 3;
+      window.scrollTo({ top: Math.max(0, y), behavior: "instant" });
     });
   }
 
@@ -360,7 +390,9 @@
     updaters.push(function (y) {
       var p = clamp((y - start) / (end - start), 0, 1);
       for (var i = 0; i < n; i++) {
-        var o = Math.round((0.2 + 0.8 * clamp(p * (n + 4) - i, 0, 1)) * 100) / 100;
+        // The floor stays readable (about 4:1 on the section ground); the
+        // fill is emphasis, not a gate on reading.
+        var o = Math.round((0.5 + 0.5 * clamp(p * (n + 4) - i, 0, 1)) * 100) / 100;
         if (o !== shown[i]) {
           shown[i] = o;
           words[i].style.opacity = o;
@@ -502,7 +534,42 @@
   pages.forEach(function (p) {
     ro.observe(p);
   });
-  window.addEventListener("resize", queueMeasure, { passive: true });
+  // A phone's toolbar sliding in and out changes the height by a little on
+  // every scroll; that is not worth re-laying the page. A width change (a
+  // rotation) is, and the reader keeps their place in the section they were
+  // reading.
+  var lastW = window.innerWidth;
+  var lastH = window.innerHeight;
+  window.addEventListener(
+    "resize",
+    function () {
+      var w = window.innerWidth;
+      var h = window.innerHeight;
+      if (w === lastW && Math.abs(h - lastH) < 150) return;
+      var anchor = null;
+      if (w !== lastW) {
+        var y = window.scrollY + h * 0.3;
+        for (var i = pages.length - 1; i >= 0; i--) {
+          var t = layout.top(pages[i]);
+          if (t <= y) {
+            anchor = { page: pages[i], ratio: (y - t) / Math.max(1, pages[i].offsetHeight) };
+            break;
+          }
+        }
+      }
+      lastW = w;
+      lastH = h;
+      requestAnimationFrame(function () {
+        measureAll();
+        if (anchor) {
+          var top = layout.top(anchor.page) + anchor.ratio * anchor.page.offsetHeight - h * 0.3;
+          window.scrollTo({ top: Math.max(0, top), behavior: "instant" });
+        }
+      });
+    },
+    { passive: true },
+  );
   window.addEventListener("load", queueMeasure);
   measureAll();
+  if (deepLink) deepLink();
 })();
