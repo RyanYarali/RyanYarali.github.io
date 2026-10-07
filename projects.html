@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8" />
     <script>
       (function () {
         try {
@@ -16,7 +17,6 @@
         }
       })();
     </script>
-    <meta charset="UTF-8" />
     <link rel="canonical" href="https://ryanyarali.com/projects.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
@@ -59,17 +59,18 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="assets/css/tokens.css" />
-    <link rel="stylesheet" href="assets/css/reset.css" />
-    <link rel="stylesheet" href="assets/css/typography.css" />
-    <link rel="stylesheet" href="assets/css/layout.css" />
-    <link rel="stylesheet" href="assets/css/components.css" />
-    <link rel="stylesheet" href="assets/css/pages.css" />
-    <link rel="stylesheet" href="assets/css/interactive.css" />
-    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/tokens.css?v=20261006" />
+    <link rel="stylesheet" href="assets/css/reset.css?v=20261006" />
+    <link rel="stylesheet" href="assets/css/typography.css?v=20261006" />
+    <link rel="stylesheet" href="assets/css/layout.css?v=20261006" />
+    <link rel="stylesheet" href="assets/css/components.css?v=20261006" />
+    <link rel="stylesheet" href="assets/css/pages.css?v=20261006" />
+    <link rel="stylesheet" href="assets/css/interactive.css?v=20261006" />
+    <link rel="stylesheet" href="assets/css/motion.css?v=20261006" />
+    <link rel="stylesheet" href="assets/css/style.css?v=20261006" />
 
     <!-- Palette tokens are written before first paint -->
-    <script src="assets/js/palette.js"></script>
+    <script src="assets/js/palette.js?v=20261006"></script>
 
     <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=4" />
     <!-- Structured data -->
@@ -165,7 +166,7 @@
     <!-- Navigation -->
     <nav class="navbar">
       <div class="nav-container">
-        <a href="index.html" class="logo" aria-label="Ryan Yarali, home">
+        <a href="index.html" class="logo" aria-label="Ryan Yarali, Computer Systems Technology, home">
           <span class="logo-name">Ryan Yarali</span>
           <span class="logo-subtitle">Computer Systems Technology</span>
         </a>
@@ -181,6 +182,11 @@
 
         <!-- The theme switch lives in the palette dock, next to the colours. -->
         <div class="nav-actions">
+          <!-- Points at resume.html until the PDF exists; then swap the href for the PDF and add a download attribute. -->
+          <a href="resume.html" class="nav-resume" data-magnetic>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"></path><polyline points="7 10 12 15 17 10"></polyline><path d="M5 21h14"></path></svg>
+            Résumé
+          </a>
           <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
             <span></span>
             <span></span>
@@ -194,7 +200,7 @@
       <!-- Page Header -->
       <section class="page-header">
         <div class="container">
-          <p class="eyebrow">Selected work</p>
+          <p class="eyebrow" data-ping-spot="projects">Selected work</p>
           <h1>Projects</h1>
           <p class="section-intro">
             Client work and coursework I've built end-to-end, with the
@@ -230,7 +236,7 @@
               </button>
               <div class="project-accordion-panel" id="project-panel-nooklook">
                 <div class="project-accordion-panel-inner">
-                  <a class="project-accordion-media" href="projects/nooklook.html" aria-label="Open Nook Look">
+                  <a class="project-accordion-media" href="projects/nooklook.html" data-vt="nooklook" aria-label="Open Nook Look">
                     <img src="assets/nl-hero.jpg" alt="Nook Look interface screenshot" loading="lazy" decoding="async" width="1400" height="776">
                   </a>
                   <div class="project-accordion-copy">
@@ -416,7 +422,7 @@
               </button>
               <div class="project-accordion-panel" id="project-panel-taskmate">
                 <div class="project-accordion-panel-inner">
-                  <a class="project-accordion-media" href="projects/taskmate.html" aria-label="Open TaskMate">
+                  <a class="project-accordion-media" href="projects/taskmate.html" data-vt="taskmate" aria-label="Open TaskMate">
                     <img src="assets/TaskMate6.jpg" alt="TaskMate interface screenshot" loading="lazy" decoding="async" width="1000" height="508">
                   </a>
                   <div class="project-accordion-copy">
@@ -465,7 +471,7 @@
       <div class="container footer-inner">
         <div>
           <p>&copy; 2026 <a href="index.html">Ryan Yarali</a>. All rights reserved.</p>
-          <p class="footer-tech">Built with HTML, CSS, and JavaScript. No framework.</p>
+          <p class="footer-tech">Built with HTML, CSS, and JavaScript. No framework. <a href="projects/this-site.html">How it's built</a></p>
         </div>
         <div class="footer-social">
           <a href="https://github.com/RyanYarali" target="_blank" rel="noopener noreferrer">
@@ -479,8 +485,10 @@
         </div>
       </div>
     </footer>
-    <script src="assets/js/theme.js"></script>
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/interactive.js"></script>
+    <script src="assets/js/theme.js?v=20261006"></script>
+    <script src="assets/js/main.js?v=20261006"></script>
+    <script src="assets/js/interactive.js?v=20261006"></script>
+    <script src="assets/js/cursor.js?v=20261006"></script>
+    <script src="assets/js/ping.js?v=20261006"></script>
   </body>
 </html>

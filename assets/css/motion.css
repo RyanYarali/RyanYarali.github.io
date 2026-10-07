@@ -1,0 +1,1648 @@
+/* ==================== Motion layer ====================
+ * The first-visit intro, the hero entrance, the 3D globe that stands behind
+ * the hero, and the cursor ring. Like the rest of the site, every colour here
+ * is a token, so all six palettes in both themes follow automatically.
+ *
+ * The page never depends on any of this: the intro and the hero entrance are
+ * switched on by a class the inline <head> script adds, and both carry a CSS
+ * failsafe that shows the content anyway if the script never runs.
+ * ======================================================= */
+
+/* ---------- intro ----------
+ * Shown on a first visit only. It holds nothing but a few lines of small mono
+ * text, so the hero name underneath stays the largest paint on the page. */
+.intro {
+  display: none;
+}
+
+html.intro-pending .intro {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  background: var(--color-background);
+  clip-path: inset(0 0 0 0);
+  /* Failsafe: if the script never runs, the overlay gets out of the way. */
+  animation: intro-failsafe 0s 3s forwards;
+}
+
+@keyframes intro-failsafe {
+  to {
+    visibility: hidden;
+  }
+}
+
+.intro-log {
+  display: grid;
+  gap: 0.45rem;
+  min-width: min(20rem, 80vw);
+  min-height: 7.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.intro-log .dir {
+  color: var(--color-text-subtle);
+}
+
+.intro-log .ok {
+  color: var(--color-accent);
+}
+
+.intro-hint {
+  position: absolute;
+  bottom: max(1.5rem, env(safe-area-inset-bottom, 0px));
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  max-width: none;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+/* ---------- hero ----------
+ * The photo moved to About; the globe now owns the right of the hero, so the
+ * text column runs on its own and the name gets to be properly large. */
+.hero {
+  overflow: clip;
+}
+
+.hero .container {
+  position: relative;
+  z-index: 1;
+  /* The container spans the full width over the globe; only the text column
+     takes the pointer, so the globe underneath can be dragged. */
+  pointer-events: none;
+}
+
+.hero-content {
+  pointer-events: auto;
+}
+
+.hero-layout {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 860px) {
+  .hero-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero-content {
+    max-width: 620px;
+  }
+}
+
+.hero-title {
+  font-size: clamp(3.4rem, 7.4vw, 7rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.96;
+  max-width: none;
+  white-space: nowrap;
+}
+
+/* Hidden until hero.js plays the entrance. The failsafe shows everything if
+   the script never gets that far. */
+html.hero-anim .hero-title,
+html.hero-anim .hero-reveal {
+  opacity: 0;
+  animation: hero-failsafe 0s 3s forwards;
+}
+
+@keyframes hero-failsafe {
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---------- globe ---------- */
+.hero-globe {
+  position: absolute;
+  z-index: 0;
+  /* On a phone the globe sits up behind the name, where large type stays
+     readable over it, and clear of the running text below. */
+  top: 1rem;
+  right: -46vw;
+  width: 104vw;
+  aspect-ratio: 1;
+  max-width: none;
+  pointer-events: none;
+  opacity: 0.42;
+}
+
+@media (min-width: 560px) {
+  .hero-globe {
+    right: -22vw;
+    width: 90vw;
+    opacity: 0.6;
+  }
+}
+
+@media (min-width: 860px) {
+  .hero-globe {
+    top: 50%;
+    right: max(-10vw, calc((100vw - 1180px) / 2 - 14vw));
+    width: min(52vw, 760px);
+    opacity: 1;
+    transform: translateY(-46%);
+  }
+}
+
+/* The poster is what everyone sees first, and all that a visitor without
+   WebGL ever sees: a soft glow and a ring drawn from the live accent. */
+.hero-globe-poster {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    color-mix(in srgb, var(--color-accent) 16%, transparent) 0%,
+    color-mix(in srgb, var(--color-accent) 6%, transparent) 42%,
+    transparent 64%
+  );
+  transition: opacity 1.2s var(--ease);
+}
+
+.hero-globe-poster::after {
+  content: "";
+  position: absolute;
+  inset: 19%;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 30%, transparent);
+}
+
+.hero-globe canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 0;
+  transition: opacity 900ms var(--ease);
+}
+
+.hero-globe.is-live canvas {
+  opacity: 1;
+}
+
+.hero-globe.is-live .hero-globe-poster {
+  opacity: 0;
+}
+
+@media (min-width: 860px) and (hover: hover) and (pointer: fine) {
+  .hero-globe canvas {
+    pointer-events: auto;
+    cursor: grab;
+    touch-action: none;
+  }
+
+  .hero-globe canvas:active {
+    cursor: grabbing;
+  }
+}
+
+/* Labels name the real nodes: the projects, and the tools they are built on.
+   They are decoration (the same facts are in the page text), so the globe is
+   aria-hidden and the labels only appear where there is room for them. */
+.globe-labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: none;
+}
+
+@media (min-width: 860px) {
+  .globe-labels {
+    display: block;
+  }
+}
+
+.globe-label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--color-background) 72%, transparent);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.globe-label.is-project {
+  color: var(--color-text);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 45%, transparent);
+}
+
+.globe-label.is-project::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+/* ---------- about photo ----------
+ * The portrait that used to sit in the hero. */
+.about-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2.5rem;
+  align-items: center;
+}
+
+@media (min-width: 860px) {
+  .about-layout {
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 4.5rem;
+  }
+}
+
+.about-photo {
+  margin: 0;
+  width: 100%;
+  max-width: 300px;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+  box-shadow: var(--shadow-md);
+}
+
+.about-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ---------- cursor ring ----------
+ * Follows the real pointer rather than replacing it, so precision, custom
+ * pointer sizes and text selection all keep working. Built by cursor.js only
+ * for a fine pointer with motion allowed.
+ *
+ * The ring changes width and height (not just scale) because it wraps
+ * rectangular buttons, and a non-uniform scale would stretch its border. It is
+ * a single fixed element with strict containment, so those changes never
+ * reach the layout of the page. */
+.cursor-ring {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 2100;
+  width: 36px;
+  height: 36px;
+  pointer-events: none;
+  contain: strict;
+  opacity: 0;
+  transition: opacity 200ms var(--ease);
+  will-change: transform, width, height;
+}
+
+.cursor-ring.is-visible {
+  opacity: 1;
+}
+
+.cursor-shape {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid color-mix(in srgb, var(--color-text) 55%, transparent);
+  background: transparent;
+  transition:
+    transform 300ms var(--ease-out-expo),
+    background-color 250ms var(--ease),
+    border-color 250ms var(--ease),
+    border-radius 300ms var(--ease);
+}
+
+.cursor-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-on-accent);
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity 200ms var(--ease),
+    transform 300ms var(--ease-out-expo);
+}
+
+.cursor-ring[data-mode="link"] .cursor-shape {
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+}
+
+.cursor-ring[data-mode="view"] .cursor-shape,
+.cursor-ring[data-mode="drag"] .cursor-shape {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+}
+
+.cursor-ring[data-mode="view"] .cursor-label,
+.cursor-ring[data-mode="drag"] .cursor-label {
+  opacity: 1;
+  transform: none;
+}
+
+.cursor-ring[data-mode="stick"] .cursor-shape {
+  border-color: var(--color-accent);
+}
+
+.cursor-ring[data-mode="text"] .cursor-shape {
+  transform: scale(0);
+}
+
+.cursor-ring.is-pressed .cursor-shape {
+  transform: scale(0.82);
+}
+
+/* ---------- stacking ----------
+ * story.js adds .is-stacked (never under reduced motion) and sets three
+ * custom properties on each section of the home page:
+ *   --stick-top  where it holds: 0, or negative for a section taller than
+ *                the screen, so it scrolls through before it holds
+ *   --cover      0 to 1, how far the next section has slid over it
+ * A covered section sinks back and fades toward the page colour. It stays
+ * visible to the accessibility tree and to focus even when fully covered, so
+ * Shift+Tab and heading navigation still reach it. */
+html.is-stacked main > .hero,
+html.is-stacked main > .section {
+  position: sticky;
+  top: var(--stick-top, 0px);
+  transform: scale(calc(1 - var(--cover, 0) * 0.07));
+}
+
+html.is-stacked main > .section {
+  border-top: 1px solid var(--color-border);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  box-shadow: var(--shadow-up);
+}
+
+/* Every page has to be opaque to cover the one beneath it, and alternating
+   grounds keep the edge between two pages visible. */
+html.is-stacked main > .projects,
+html.is-stacked main > .learning {
+  background-color: var(--color-background);
+}
+
+html.is-stacked main > .skills {
+  background-color: var(--color-surface);
+}
+
+html.is-stacked main > .hero::after,
+html.is-stacked main > .section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  border-radius: inherit;
+  background: var(--color-background);
+  opacity: calc(var(--cover, 0) * 0.62);
+  pointer-events: none;
+}
+
+html.is-stacked main > .is-covering {
+  will-change: transform;
+}
+
+
+/* ---------- word fill ----------
+ * story.js wraps each word of the About lede and sets its opacity from
+ * scroll. The floor keeps every word readable before it lights up. */
+.about-lede.is-filling .w {
+  opacity: 0.2;
+  transition: opacity 120ms linear;
+}
+
+.about-lede em {
+  font-style: normal;
+  color: var(--color-accent);
+}
+
+/* ---------- tilt card ---------- */
+.about-photo-wrap {
+  width: 100%;
+  max-width: 300px;
+}
+
+.about-photo {
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.about-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--gx, 50%) var(--gy, 30%),
+    var(--color-glare),
+    transparent 58%
+  );
+  mix-blend-mode: soft-light;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms var(--ease);
+}
+
+.about-photo.is-tilting::after {
+  opacity: 1;
+}
+
+/* ---------- work gallery ----------
+ * The default is a native swipe carousel, which is what phones, reduced
+ * motion and no-JS visitors get. On a wide screen story.js adds
+ * html.work-pinned: the section then holds the screen while vertical scroll
+ * slides the cards sideways. Card media share a 16:9 frame with the case
+ * study covers, so the image can morph straight into the next page. */
+.work-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.work-head .section-heading {
+  margin-bottom: 2.25rem;
+}
+
+.work-count {
+  margin: 0 0 2.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-subtle);
+  white-space: nowrap;
+}
+
+.work-count-now {
+  color: var(--color-accent);
+}
+
+/* The track lines up with the container's content edge, wherever that is. */
+.work-viewport {
+  --work-edge: max(1.5rem, calc((100vw - 1180px) / 2 + 1.5rem));
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--work-edge);
+  scrollbar-width: none;
+}
+
+.work-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .work-viewport {
+    --work-edge: max(2.5rem, calc((100vw - 1180px) / 2 + 2.5rem));
+  }
+}
+
+@media (min-width: 1024px) {
+  .work-viewport {
+    --work-edge: max(3.5rem, calc((100vw - 1180px) / 2 + 3.5rem));
+  }
+}
+
+.work-track {
+  display: flex;
+  gap: clamp(1.25rem, 3vw, 2.75rem);
+  width: max-content;
+  margin: 0;
+  padding: 0.5rem var(--work-edge) 1rem;
+  list-style: none;
+}
+
+.work-card {
+  flex: 0 0 auto;
+  width: min(84vw, 980px);
+  margin: 0;
+  /* Opaque in the section's own colour, so the route passes behind a card
+     rather than through its text as the cards slide over it. */
+  background: var(--color-background);
+  transform-origin: center 40%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem;
+  align-content: start;
+  scroll-snap-align: start;
+}
+
+@media (min-width: 1100px) {
+  .work-card {
+    width: min(76vw, 1040px);
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: 2.5rem;
+    align-items: center;
+  }
+}
+
+.work-media {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+}
+
+.work-media img,
+.work-media canvas {
+  position: absolute;
+  top: 0;
+  left: -6%;
+  width: 112%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  will-change: transform;
+}
+
+.work-media img {
+  transition: scale 900ms var(--ease-out-expo);
+}
+
+.work-media:hover img {
+  scale: 1.04;
+}
+
+.work-body {
+  min-width: 0;
+  display: grid;
+  gap: 0.9rem;
+  align-content: start;
+}
+
+.work-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.9rem;
+  margin: 0;
+  max-width: none;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.work-num {
+  color: var(--color-accent);
+}
+
+.work-title {
+  margin: 0;
+  font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.work-copy {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.work-copy p {
+  margin: 0;
+  font-size: 0.975rem;
+}
+
+.work-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.15rem 0 0.35rem;
+  padding: 0;
+  list-style: none;
+}
+
+.work-tech li {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.62rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-subtle);
+}
+
+.work-progress {
+  position: relative;
+  height: 2px;
+  margin-top: 1.75rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-border);
+  overflow: hidden;
+}
+
+.work-progress span {
+  position: absolute;
+  inset: 0;
+  background: var(--color-accent);
+  transform-origin: left center;
+  transform: scaleX(0.25);
+}
+
+.work-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.work-all svg {
+  transition: transform 320ms var(--ease-out-expo);
+}
+
+.work-all:hover svg {
+  transform: translateX(4px);
+}
+
+/* --- pinned --- */
+html.work-pinned .projects {
+  padding-block: 0;
+}
+
+html.work-pinned .work {
+  position: relative;
+  /* story.js sets the height: one screen plus the sideways travel. */
+}
+
+html.work-pinned .work-pin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: grid;
+  /* The column is pinned to the screen width; without it the track, which is
+     several screens wide, would widen the column and drag the centred
+     heading off to the side with it. */
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  padding: 6.5rem 0 2.25rem;
+  overflow: hidden;
+}
+
+html.work-pinned .work-viewport {
+  min-width: 0;
+  overflow: visible;
+  scroll-snap-type: none;
+  display: flex;
+  align-items: center;
+}
+
+html.work-pinned .work-track {
+  will-change: transform;
+}
+
+html.work-pinned .work-head .section-heading {
+  margin-bottom: 1rem;
+}
+
+html.work-pinned .work-count {
+  margin-bottom: 1.15rem;
+}
+
+html.work-pinned .work-progress {
+  margin-top: 0.5rem;
+}
+
+/* Short screens, and phones where a card is swiped sideways, keep the card
+   to its essentials. The full text is on the projects page and the case
+   studies. */
+@media (max-height: 860px) {
+  html.work-pinned .work-detail {
+    display: none;
+  }
+}
+
+@media (max-width: 699px) {
+  .work-detail {
+    display: none;
+  }
+}
+
+/* ---------- morph into a case study ----------
+ * Cross-document view transitions: a card's image and its case study's
+ * cover share a name, so the browser animates one into the other across
+ * the navigation. Browsers without support simply navigate. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+
+  [data-vt="nooklook"] {
+    view-transition-name: cover-nooklook;
+  }
+
+  [data-vt="taskmate"] {
+    view-transition-name: cover-taskmate;
+  }
+
+  ::view-transition-group(*) {
+    animation-duration: 700ms;
+    animation-timing-function: var(--ease-out-expo);
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 380ms;
+  }
+}
+
+/* ---------- case studies ---------- */
+.case-cover {
+  position: relative;
+  margin: 2.75rem 0 0;
+  aspect-ratio: 16 / 9;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+  box-shadow: var(--shadow-lg);
+}
+
+.case-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+/* The title block rises in on load. The cover does not get its own entrance:
+   arriving from the home page, it is already mid-morph. */
+@media (prefers-reduced-motion: no-preference) {
+  .project-detail-page .project-hero .container > :not(.case-cover) {
+    animation: case-rise 900ms var(--ease-out-expo) both;
+  }
+
+  .project-detail-page .project-hero .container > :nth-child(2) {
+    animation-delay: 60ms;
+  }
+
+  .project-detail-page .project-hero .container > :nth-child(3) {
+    animation-delay: 120ms;
+  }
+
+  .project-detail-page .project-hero .container > :nth-child(4) {
+    animation-delay: 180ms;
+  }
+}
+
+@keyframes case-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+/* Screenshots wipe open from the top as they scroll in. */
+html.js-ready .shot.reveal img,
+html.js-ready .screenshots-grid .reveal img {
+  clip-path: inset(0 0 100% 0 round var(--radius-lg));
+  transition: clip-path 1100ms var(--ease-out-expo) 120ms;
+}
+
+html.js-ready .shot.reveal.in-view img,
+html.js-ready .screenshots-grid .reveal.in-view img {
+  clip-path: inset(0 0 0 0 round var(--radius-lg));
+}
+
+/* ---------- skills marquee ----------
+ * Built by story.js from the skills list. The second row runs the other way
+ * in outlined type. Hovering pauses both; reduced motion holds them still. */
+.marquee {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0 0 2.5rem;
+  overflow: hidden;
+  /* Fade out at both ends instead of cutting off. */
+  mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+}
+
+.marquee-row {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--marquee-duration, 30s) linear infinite;
+}
+
+.marquee-row.is-reverse {
+  animation-direction: reverse;
+}
+
+.marquee:hover .marquee-row {
+  animation-play-state: paused;
+}
+
+.marquee-half {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.marquee-half span {
+  padding: 0 1.1rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3.6vw, 2.75rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  white-space: nowrap;
+  color: var(--color-text);
+}
+
+.marquee-row.is-reverse span {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--color-text-subtle);
+}
+
+.marquee-half i {
+  width: 0.5rem;
+  height: 0.5rem;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-row {
+    animation: none;
+  }
+}
+
+/* ---------- send trace ---------- */
+.send-trace {
+  display: none;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.send-trace.is-sending,
+.send-trace.is-done,
+.send-trace.is-failed {
+  display: flex;
+}
+
+.send-node {
+  flex: 0 0 auto;
+  transition: color 300ms var(--ease);
+}
+
+.send-line {
+  position: relative;
+  flex: 1 1 auto;
+  height: 2px;
+  border-radius: var(--radius-pill);
+  background: var(--color-border);
+  container-type: inline-size;
+}
+
+/* The line fills behind the packet once it lands. */
+.send-line::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--color-accent);
+  transform-origin: left center;
+  transform: scaleX(0);
+}
+
+.send-packet {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 12px 2px var(--color-accent);
+}
+
+.send-trace.is-sending .send-packet {
+  animation: packet-fly 1.1s var(--ease) infinite;
+}
+
+.send-trace.is-done .send-packet {
+  animation: packet-land 520ms var(--ease-out-expo) forwards;
+}
+
+.send-trace.is-done .send-line::before {
+  animation: line-fill 520ms var(--ease-out-expo) forwards;
+}
+
+.send-trace.is-done .send-node:last-child {
+  color: var(--color-accent);
+}
+
+.send-trace.is-failed .send-packet {
+  background: var(--color-danger);
+  box-shadow: none;
+  animation: packet-drop 700ms var(--ease) forwards;
+}
+
+@keyframes packet-fly {
+  from {
+    transform: translateX(0) scale(0.6);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+    transform: translateX(15cqw) scale(1);
+  }
+  85% {
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100cqw) scale(0.6);
+    opacity: 0;
+  }
+}
+
+@keyframes packet-land {
+  from {
+    transform: translateX(40cqw);
+  }
+  to {
+    transform: translateX(100cqw) scale(1.4);
+  }
+}
+
+@keyframes line-fill {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes packet-drop {
+  from {
+    transform: translateX(45cqw);
+  }
+  to {
+    transform: translate(52cqw, 18px);
+    opacity: 0;
+  }
+}
+
+.send-log {
+  min-height: 1.2rem;
+  margin: 0.6rem 0 0;
+  max-width: none;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--color-text-subtle);
+}
+
+.send-log.is-failed {
+  color: var(--color-danger);
+}
+
+/* Under reduced motion the trace still reports, it just does not travel. */
+@media (prefers-reduced-motion: reduce) {
+  .send-trace.is-sending .send-packet {
+    animation: none;
+    transform: translateX(50cqw);
+  }
+  .send-trace.is-done .send-packet {
+    transform: translateX(100cqw);
+  }
+  .send-trace.is-done .send-line::before {
+    transform: scaleX(1);
+  }
+}
+
+/* ---------- route ----------
+ * route.js draws a line that winds down the page through every heading.
+ * It sits behind the content (.route-above lifts the content over it) and
+ * every colour is a token, so it follows the palette and the theme. */
+.route-svg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.route-above {
+  position: relative;
+  z-index: 1;
+}
+
+.route-ghost {
+  fill: none;
+  stroke: var(--color-border-strong);
+  stroke-width: 1.5;
+  stroke-dasharray: 2 7;
+  stroke-linecap: round;
+}
+
+.route-line {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 2.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.route-node-ring {
+  fill: var(--color-background);
+  stroke: var(--color-border-strong);
+  stroke-width: 1.5;
+  transition:
+    stroke 400ms var(--ease),
+    fill 400ms var(--ease);
+}
+
+.route-node-dot {
+  fill: var(--color-border-strong);
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    fill 400ms var(--ease),
+    transform 600ms var(--ease-out-expo);
+}
+
+.route-node.is-lit .route-node-ring {
+  stroke: var(--color-accent);
+}
+
+.route-node.is-lit .route-node-dot {
+  fill: var(--color-accent);
+  transform: scale(1.35);
+}
+
+.route-node.is-end .route-node-ring {
+  stroke-dasharray: 3 3;
+}
+
+.route-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  fill: var(--color-text-subtle);
+  /* A halo in the page colour keeps the label legible where the dotted
+     route runs behind it. */
+  paint-order: stroke;
+  stroke: var(--color-background);
+  stroke-width: 5px;
+  stroke-linejoin: round;
+  opacity: 0;
+  transition:
+    opacity 400ms var(--ease),
+    fill 400ms var(--ease);
+}
+
+.route-node.is-lit .route-label {
+  fill: var(--color-accent);
+}
+
+/* Labels live in the margin, so they appear only where there is one. */
+@media (min-width: 1400px) {
+  .route-label {
+    opacity: 1;
+  }
+}
+
+/* The sideways stretch of the route under the pinned gallery is its
+   progress bar now. */
+html.has-route.work-pinned .work-progress {
+  visibility: hidden;
+}
+
+@media (max-width: 700px) {
+  .route-line {
+    stroke-width: 2.5;
+  }
+}
+
+/* ---------- heading entrances ----------
+ * main.js wraps each word of a section heading; when the heading is
+ * revealed, the words rise out of their masks one after another. Without
+ * JS the words are never wrapped, and under reduced motion they are left
+ * alone. */
+html.js-ready .hw {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+html.js-ready .hw > span {
+  display: inline-block;
+  transform: translateY(108%);
+  transition: transform 950ms var(--ease-out-expo);
+  transition-delay: calc(var(--i, 0) * 60ms + 120ms);
+}
+
+html.js-ready .in-view .hw > span {
+  transform: none;
+}
+
+/* The heading block itself no longer needs to slide; its words do. */
+html.js-ready .section-heading.reveal {
+  transform: none;
+}
+
+/* ---------- skills rows ----------
+ * Rows arrive from alternate sides instead of all rising the same way. */
+html.js-ready .skills-rows > .skills-row.reveal:nth-child(odd) {
+  transform: translateX(-28px);
+}
+
+html.js-ready .skills-rows > .skills-row.reveal:nth-child(even) {
+  transform: translateX(28px);
+}
+
+html.js-ready .skills-rows > .skills-row.reveal.in-view {
+  transform: none;
+}
+
+/* ---------- Ping ----------
+ * The packet creature that rides the route (ping.js). His body is the
+ * accent, his eyes are always white with dark pupils. --s is his scale:
+ * smaller on a phone, big for the goodbye. */
+.ping {
+  --s: 1;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 900;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  transition: opacity 300ms var(--ease);
+  will-change: transform;
+}
+
+.ping.is-on,
+.ping.is-standalone {
+  opacity: 1;
+}
+
+@media (max-width: 700px) {
+  .ping {
+    --s: 0.85;
+  }
+}
+
+.ping.is-big {
+  --s: 2.3;
+}
+
+@media (max-width: 700px) {
+  .ping.is-big {
+    --s: 1.9;
+  }
+}
+
+.ping-hit {
+  position: absolute;
+  left: -26px;
+  top: -30px;
+  width: 52px;
+  height: 56px;
+  cursor: pointer;
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ping-scale {
+  width: 100%;
+  height: 100%;
+  transform: scale(var(--s));
+  transform-origin: 50% 60%;
+  transition: transform 700ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ping-float {
+  width: 100%;
+  height: 100%;
+  animation: ping-bob 2.6s ease-in-out infinite;
+}
+
+.ping-squash {
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 85%;
+  transition: transform 160ms ease-out;
+}
+
+.ping svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--color-accent) 55%, transparent));
+}
+
+@keyframes ping-bob {
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+.ping-skin {
+  fill: var(--color-accent);
+  transition: fill var(--transition-palette);
+}
+
+.ping-shine {
+  fill: var(--ping-eye);
+  opacity: 0.35;
+}
+
+.ping-antenna {
+  transform-box: view-box;
+  transform-origin: 20px 12px;
+}
+
+.ping-antenna line {
+  stroke: var(--color-accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  transition: stroke var(--transition-palette);
+}
+
+.ping-antenna circle {
+  fill: var(--color-accent-strong);
+  transition: fill var(--transition-palette);
+}
+
+/* Arms hang behind the body; the hands are little round mitts. */
+.ping-arm {
+  transform-box: view-box;
+  transition: transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ping-arm line {
+  stroke: var(--color-accent);
+  stroke-width: 3.4;
+  stroke-linecap: round;
+  transition: stroke var(--transition-palette);
+}
+
+.ping-arm circle {
+  fill: var(--color-accent-strong);
+  transition: fill var(--transition-palette);
+}
+
+.ping-arm-l {
+  transform-origin: 8px 28px;
+  transform: rotate(28deg);
+}
+
+.ping-arm-r {
+  transform-origin: 32px 28px;
+  transform: rotate(-28deg);
+}
+
+.ping.pose-cheer .ping-arm-l,
+.ping.pose-carry .ping-arm-l {
+  transform: rotate(152deg);
+}
+
+.ping.pose-cheer .ping-arm-r,
+.ping.pose-carry .ping-arm-r {
+  transform: rotate(-152deg);
+}
+
+.ping.pose-point-r .ping-arm-r {
+  transform: rotate(-98deg);
+}
+
+.ping.pose-point-l .ping-arm-l {
+  transform: rotate(98deg);
+}
+
+.ping.pose-wave .ping-arm-r {
+  transform: rotate(-170deg);
+  animation: ping-wave 0.55s ease-in-out infinite alternate;
+}
+
+.ping.is-flip.pose-wave .ping-arm-r {
+  animation: none;
+  transform: rotate(-28deg);
+}
+
+.ping.is-flip.pose-wave .ping-arm-l {
+  transform: rotate(170deg);
+  animation: ping-wave-l 0.55s ease-in-out infinite alternate;
+}
+
+.ping.pose-droop .ping-arm-l {
+  transform: rotate(10deg);
+}
+
+.ping.pose-droop .ping-arm-r {
+  transform: rotate(-10deg);
+}
+
+@keyframes ping-wave {
+  from {
+    transform: rotate(-145deg);
+  }
+  to {
+    transform: rotate(-200deg);
+  }
+}
+
+@keyframes ping-wave-l {
+  from {
+    transform: rotate(145deg);
+  }
+  to {
+    transform: rotate(200deg);
+  }
+}
+
+.ping-eye {
+  fill: var(--ping-eye);
+}
+
+.ping-pupils {
+  fill: var(--ping-ink);
+  transition: transform 220ms var(--ease-out-expo);
+}
+
+.ping-eyes {
+  transform-box: view-box;
+  transform-origin: 20px 25px;
+  transition: transform 90ms ease-in;
+}
+
+.ping-eyes.is-blink {
+  transform: scaleY(0.08);
+}
+
+.ping-face path,
+.ping-mouth {
+  fill: none;
+  stroke: var(--ping-ink);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.ping-mouth-open {
+  fill: var(--ping-ink);
+}
+
+.ping-face,
+.ping-mouth-sad,
+.ping-mouth-open,
+.ping-envelope {
+  display: none;
+}
+
+.ping.is-happy .ping-eyes,
+.ping.is-sleep .ping-eyes,
+.ping.is-dizzy .ping-eyes {
+  display: none;
+}
+
+.ping.is-happy .ping-face-happy,
+.ping.is-sleep .ping-face-sleep,
+.ping.is-dizzy .ping-face-dizzy {
+  display: inline;
+}
+
+.ping.is-talking .ping-mouth-open,
+.ping.is-sad .ping-mouth-sad {
+  display: inline;
+}
+
+.ping.is-talking .ping-mouth-smile,
+.ping.is-sad .ping-mouth-smile {
+  display: none;
+}
+
+.ping.is-carrying .ping-envelope {
+  display: inline;
+}
+
+.ping-envelope rect {
+  fill: var(--color-surface-2);
+  stroke: var(--color-accent);
+  stroke-width: 1.6;
+}
+
+.ping-envelope path {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+.ping-face-dizzy g {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ping-spin 0.7s linear infinite;
+}
+
+@keyframes ping-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ping.is-hop .ping-float {
+  animation: ping-hop 540ms var(--ease-out-expo);
+}
+
+@keyframes ping-hop {
+  30% {
+    transform: translateY(-14px) scale(1.05, 0.95);
+  }
+  60% {
+    transform: translateY(0) scale(1.1, 0.9);
+  }
+  80% {
+    transform: scale(0.96, 1.04);
+  }
+}
+
+.ping.pose-wave .ping-antenna {
+  animation: ping-antenna 0.5s ease-in-out 3;
+}
+
+@keyframes ping-antenna {
+  25% {
+    transform: rotate(-20deg);
+  }
+  75% {
+    transform: rotate(20deg);
+  }
+}
+
+.ping-zzz {
+  position: absolute;
+  left: 10px;
+  top: -42px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-accent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ping.is-sleep .ping-zzz {
+  animation: ping-zzz 2.4s ease-in-out infinite;
+}
+
+@keyframes ping-zzz {
+  0% {
+    opacity: 0;
+    transform: translate(0, 6px) scale(0.7);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(14px, -18px) scale(1.15);
+  }
+}
+
+/* Speech: grows upward from beside him, on the side away from the edge. */
+.ping-bubble {
+  position: absolute;
+  bottom: calc(16px * var(--s));
+  left: calc(28px * var(--s));
+  width: max-content;
+  max-width: min(250px, 62vw);
+  padding: 0.55rem 0.8rem;
+  border-radius: 14px 14px 14px 4px;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border-strong);
+  box-shadow: var(--shadow-md);
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 500;
+  font-style: normal;
+  line-height: 1.35;
+  letter-spacing: normal;
+  text-transform: none;
+  text-align: left;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-6px, 6px) scale(0.92);
+  transform-origin: 0 100%;
+  transition:
+    opacity 200ms var(--ease),
+    transform 320ms var(--ease-out-expo),
+    left 700ms var(--ease-out-expo),
+    right 700ms var(--ease-out-expo),
+    bottom 700ms var(--ease-out-expo);
+}
+
+.ping-bubble.is-on {
+  opacity: 1;
+  transform: none;
+}
+
+.ping.is-flip .ping-bubble {
+  left: auto;
+  right: calc(28px * var(--s));
+  border-radius: 14px 14px 4px 14px;
+  transform-origin: 100% 100%;
+}
+
+.ping.is-big .ping-bubble {
+  font-size: 1rem;
+}
+
+/* On a page without a route he stands beside the heading instead. */
+.ping.is-standalone {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 56px;
+  margin-left: 0.75rem;
+  vertical-align: middle;
+}
+
+.ping.is-standalone .ping-hit {
+  left: 0;
+  top: 0;
+}
+
+.ping.is-standalone .ping-bubble {
+  left: 56px;
+  bottom: 30px;
+}
+
+.ping.is-standalone.is-flip .ping-bubble {
+  left: auto;
+  right: 56px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ping-float,
+  .ping.is-hop .ping-float,
+  .ping.pose-wave .ping-arm-r,
+  .ping.is-flip.pose-wave .ping-arm-l,
+  .ping.pose-wave .ping-antenna,
+  .ping-face-dizzy g,
+  .ping.is-sleep .ping-zzz {
+    animation: none;
+  }
+  .ping.is-sleep .ping-zzz {
+    opacity: 1;
+  }
+}

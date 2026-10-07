@@ -2,7 +2,8 @@
 
 Personal portfolio site for Ryan Yarali, a Computer Systems Technology student
 at BCIT. Built with plain HTML, CSS, and JavaScript. No framework, no build
-step, no dependencies to install.
+step, no dependencies to install. The one library, three.js for the hero
+globe, is vendored in `assets/vendor/`.
 
 Live at [ryanyarali.com](https://ryanyarali.com), deployed from this repository
 via GitHub Pages.
@@ -28,6 +29,8 @@ projects/             Case studies
   nooklook.html
   taskmate.html
 404.html              Custom not-found page
+projects/this-site.html  Case study of this site
+resume.html           Résumé placeholder until the PDF is added (noindex)
 assets/
   css/
     style.css         Global overrides, loaded last
@@ -37,6 +40,7 @@ assets/
     layout.css        Navigation, sections, footer, scroll reveal
     components.css    Buttons, forms, tags, cards
     interactive.css   Ambient trace, palette dock, stat strip, project accordion
+    motion.css        Intro, hero, globe, cursor, stacking, route, gallery
     pages.css         Page- and section-specific styles
   js/
     theme.js          Light/dark theme with system preference + persistence
@@ -44,8 +48,19 @@ assets/
     form.js           Contact form validation and submission
     main.js           Mobile menu, scroll reveal, active nav, back to top
     interactive.js    Ambient trace, counters, accordion, skills filter
+    hero.js           First-visit intro, hero entrance, lazy globe loader
+    hero-globe.js     The WebGL network globe (ES module, three.js)
+    cursor.js         Cursor ring that follows the real pointer
+    route.js          The winding route: a timeline line through every heading
+    ping.js           Ping, the packet creature that rides the route
+    story.js          Home page stacking, About word fill, portrait tilt
+  vendor/three/       three.js r186, the one third-party library (see its README)
 CNAME, robots.txt, sitemap.xml, favicon.svg
 ```
+
+Every local CSS and JS link carries a `?v=` date tag; bump it on every page
+when a CSS or JS file changes, because GitHub Pages lets browsers cache for
+ten minutes.
 
 Every stylesheet is linked directly from each page so the browser fetches them
 in parallel rather than discovering them through `@import`. `style.css` is
@@ -93,6 +108,42 @@ palette list, edit `palette.js`. Nothing else hardcodes a colour or font.
 
 ## Interaction
 
+- **Intro:** on a first visit, a TCP handshake prints before the page is
+  revealed (about 1.2s; any click, scroll or key skips it). The connection
+  time it shows is real, from the Navigation Timing API.
+- **Hero globe:** a three.js scene whose labelled nodes are the projects and
+  the tools they are built with, linked by their real relationships. It loads
+  after the page has finished loading, renders only while the hero is on
+  screen, follows the palette, and falls back to a CSS poster without WebGL
+  or with Data Saver on.
+- **Stacking:** on the home page each section slides up over the last,
+  which sinks back and fades toward the page colour. Sections taller than the
+  screen scroll through first, then hold. In-page links scroll to a section's
+  place in the flow, since a stuck section's own box is not where it lives.
+- **Route:** a line that winds down the page like a timeline: down one
+  edge of a section, across the open space above the next heading, and on.
+  A dotted line shows the road ahead; the solid line draws in behind a
+  packet that rides at the reading line, lighting each heading as a hop. On
+  the stacked home page each section carries its own stretch, so the line
+  moves with its card; under the pinned gallery it runs sideways with the
+  cards. Case studies weave between their sections. On phones the packet
+  carries the current hop's name while the page moves.
+- **Ping:** the packet at the head of the route is a little creature (a
+  ping says hello; the answer is a pong). Drawn in SVG from the palette
+  tokens, he blinks, looks the way the page moves, hops and points at each
+  heading with a line of his own, dozes off when nothing happens, reacts to
+  fast scrolling, taps, palette and theme changes, carries the contact
+  form's real request to the inbox, and grows big at the end of the route to
+  wave goodbye. Pages without a route (404, résumé, projects) have him
+  standing by the heading. He is aria-hidden, and holds still under reduced
+  motion.
+- **Headings:** eyebrows decode out of random characters and heading words
+  rise out of a mask as they are revealed.
+- **About:** the lede lights up word by word as it is read, and the portrait
+  tilts toward the pointer.
+- **Cursor ring:** follows the real pointer (which stays visible), wraps
+  buttons, and reads "View" or "Drag" over images and the globe. Fine
+  pointers only.
 - **Ambient trace:** a canvas line whose amplitude tracks scroll velocity. The
   input is scroll, not cursor position, so it behaves identically under touch.
 - **Project accordion:** one row per project, opened by a tap, one open at a
@@ -108,8 +159,8 @@ respects `prefers-reduced-motion`.
 ## Adding a project
 
 The work list is plain HTML, not generated. Copy an existing
-`.project-accordion-item` block and edit it in **both** `index.html` and
-`projects.html`, keeping the `id` on the panel unique per page and matching the
+`.work-card` in `index.html` and an existing `.project-accordion-item` in
+`projects.html`, and edit **both**, keeping the `id` on the panel unique per page and matching the
 `aria-controls` on its button.
 
 It used to be rendered from a data object in JavaScript. That cost more than it

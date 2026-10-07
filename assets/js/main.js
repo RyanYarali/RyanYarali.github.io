@@ -49,7 +49,88 @@
   document.documentElement.classList.add("js-ready");
 
   // ==================== Scroll Reveal ====================
+  // ==================== Heading entrances ====================
+  // When a section heading is revealed, its eyebrow decodes out of random
+  // characters (the same effect as the name in the hero) and the heading's
+  // words rise out of a mask, one after another. The text itself is never
+  // changed for long: the words are only wrapped, and the eyebrow is back to
+  // its real text within half a second.
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const GLYPHS = "01<>/#%&*+=ABCDEFxyz";
+
+  function wrapWords(heading) {
+    if (heading.dataset.words) return;
+    heading.dataset.words = "1";
+    let i = 0;
+    (function walk(node) {
+      Array.from(node.childNodes).forEach((n) => {
+        if (n.nodeType === 1) return walk(n);
+        if (n.nodeType !== 3 || !n.nodeValue.trim()) return;
+        const frag = document.createDocumentFragment();
+        n.nodeValue.split(/(\s+)/).forEach((part) => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) {
+            frag.appendChild(document.createTextNode(part));
+            return;
+          }
+          const outer = document.createElement("span");
+          outer.className = "hw";
+          const inner = document.createElement("span");
+          inner.textContent = part;
+          inner.style.setProperty("--i", i++);
+          outer.appendChild(inner);
+          frag.appendChild(outer);
+        });
+        n.parentNode.replaceChild(frag, n);
+      });
+    })(heading);
+  }
+
+  function decodeEyebrow(el) {
+    const text = el.textContent;
+    const total = text.replace(/\s/g, "").length;
+    if (!total) return;
+    el.setAttribute("aria-label", text.trim());
+    const start = performance.now();
+    const duration = 520;
+    (function tick(now) {
+      const p = Math.min(1, (now - start) / duration);
+      let index = 0;
+      let out = "";
+      for (const ch of text) {
+        if (/\s/.test(ch)) {
+          out += ch;
+          continue;
+        }
+        index++;
+        out += p >= index / total ? ch : GLYPHS[(Math.random() * GLYPHS.length) | 0];
+      }
+      el.textContent = out;
+      if (p < 1) requestAnimationFrame(tick);
+      else {
+        el.textContent = text;
+        el.removeAttribute("aria-label");
+      }
+    })(start);
+  }
+
+  function prepareHeadings() {
+    if (reducedMotion) return;
+    document
+      .querySelectorAll(".section-heading.reveal h2, .project-section.reveal > h2")
+      .forEach(wrapWords);
+  }
+
+  function show(el) {
+    if (el.classList.contains("in-view")) return;
+    el.classList.add("in-view");
+    if (reducedMotion) return;
+    const eyebrow = el.matches(".section-heading") && el.querySelector(".eyebrow");
+    if (eyebrow) decodeEyebrow(eyebrow);
+  }
+
   function initScrollReveal() {
+    prepareHeadings();
     document.querySelectorAll(".reveal-group").forEach((group) => {
       Array.from(group.children).forEach((child, index) => {
         child.classList.add("reveal");
@@ -60,7 +141,7 @@
     const revealElements = document.querySelectorAll(".reveal");
 
     if (!("IntersectionObserver" in window) || revealElements.length === 0) {
-      revealElements.forEach((el) => el.classList.add("in-view"));
+      revealElements.forEach(show);
       return;
     }
 
@@ -68,7 +149,7 @@
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add("in-view");
+            show(entry.target);
             observer.unobserve(entry.target);
           }
         });
@@ -78,18 +159,58 @@
 
     revealElements.forEach((el) => observer.observe(el));
 
-    // Safety net: a very fast scroll (or flick gesture) can skip the frame
-    // where an element crosses the intersection threshold. Nothing should
-    // stay permanently invisible, so force-reveal anything left behind.
-    setTimeout(() => {
-      revealElements.forEach((el) => el.classList.add("in-view"));
-      observer.disconnect();
-    }, 2500);
+    // Safety net: a very fast scroll (or a jump to an anchor) can carry an
+    // element past the viewport between two observer callbacks. Anything the
+    // reader has already scrolled to or past is revealed on the next frame,
+    // so nothing stays invisible, while content further down still gets its
+    // entrance when it arrives.
+    let pending = Array.from(revealElements);
+    let queued = false;
+    function catchUp() {
+      queued = false;
+      const limit = window.innerHeight;
+      pending = pending.filter((el) => {
+        if (el.classList.contains("in-view")) return false;
+        if (el.getBoundingClientRect().top < limit) {
+          show(el);
+          observer.unobserve(el);
+          return false;
+        }
+        return true;
+      });
+      if (!pending.length) window.removeEventListener("scroll", onScrollCatchUp);
+    }
+    function onScrollCatchUp() {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(catchUp);
+    }
+    window.addEventListener("scroll", onScrollCatchUp, { passive: true });
+    window.addEventListener("load", onScrollCatchUp);
   }
 
   // Run after DOMContentLoaded so content injected by other scripts
   // (e.g. the project list) is present before elements are observed.
   document.addEventListener("DOMContentLoaded", initScrollReveal);
+
+  // ==================== Layout helper ====================
+  // On the home page the sections are sticky (story.js stacks them), and the
+  // offsetTop of a stuck element reports where it is stuck, not where it sits
+  // in the flow. This gives the flow position either way, for the nav, the
+  // route and the stacking to share.
+  function naturalTop(el) {
+    const parent = el.parentElement;
+    if (parent && getComputedStyle(el).position === "sticky") {
+      let top = parent.getBoundingClientRect().top + window.scrollY;
+      for (let n = parent.firstElementChild; n && n !== el; n = n.nextElementSibling) {
+        top += n.offsetHeight;
+      }
+      return top;
+    }
+    return el.getBoundingClientRect().top + window.scrollY;
+  }
+
+  window.siteLayout = { top: naturalTop };
 
   // ==================== Active Navigation Link ====================
   function setActiveNavLink() {
@@ -99,8 +220,8 @@
     let current = "";
 
     sections.forEach((section) => {
-      const sectionTop = section.offsetTop;
-      if (window.pageYOffset >= sectionTop - 120) {
+      const sectionTop = naturalTop(section);
+      if (window.pageYOffset + window.innerHeight * 0.4 >= sectionTop) {
         current = section.getAttribute("id");
       }
     });
@@ -143,7 +264,7 @@
   toggleBackToTop();
 
   // ==================== Image Fallback Handler ====================
-  const profileImage = document.querySelector(".hero-image-placeholder img");
+  const profileImage = document.querySelector(".about-photo img");
 
   if (profileImage) {
     profileImage.addEventListener("error", function () {
