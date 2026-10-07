@@ -656,7 +656,10 @@
     else line = "Ping! Let's dig into " + pageTitle.trim() + ".";
     setPose("cheer", 700);
     setTimeout(function () {
-      say(line, { prio: 3, hold: 2800, pose: route ? "wave" : "point-r" });
+      // Priority 2, the same as a section's line: someone who starts
+      // scrolling straight away hears about the section they reach rather
+      // than the end of the greeting.
+      say(line, { prio: 2, hold: 2800, pose: route ? "wave" : "point-r" });
     }, reduced ? 0 : 450);
     var h = new Date().getHours();
     if (route && (h >= 23 || h < 5)) {
