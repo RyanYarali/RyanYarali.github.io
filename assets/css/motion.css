@@ -1607,6 +1607,20 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
   font-size: 1rem;
 }
 
+/* On a phone the goodbye happens in the clear space under the send button:
+   Ping on the left, his bubble beside him at the same height, so neither
+   covers the button. */
+@media (max-width: 700px) {
+  .ping.is-big .ping-bubble,
+  .ping.is-big.is-flip .ping-bubble {
+    left: calc(30px * var(--s));
+    right: auto;
+    bottom: calc(-4px * var(--s));
+    max-width: calc(100vw - 150px);
+    border-radius: 14px 14px 14px 4px;
+    transform-origin: 0 100%;
+  }
+}
 /* On a page without a route he stands beside the heading instead. */
 .ping.is-standalone {
   position: relative;

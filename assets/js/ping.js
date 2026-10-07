@@ -308,10 +308,19 @@
     if (!big) return { x: clamp(head.x, half, window.innerWidth - half), y: head.y };
     // Grown for the goodbye he steps in from the edge, so all of him is on
     // screen, and stands a little above the end of the route.
+    var phone = window.innerWidth <= 700;
     var step = Math.min(90, window.innerWidth * 0.14);
     var margin = Math.min(90, window.innerWidth * 0.2);
-    var sx = head.side === "L" ? head.x + step : head.x - step;
-    return { x: clamp(sx, margin, window.innerWidth - margin), y: head.y - 40 };
+    var sx = phone ? 70 : head.side === "L" ? head.x + step : head.x - step;
+    var sy = head.y - (phone ? 0 : 40);
+    // Never on top of the send button: same colour, and he'd bury it.
+    var btn = document.querySelector('#contact-form button[type="submit"]');
+    if (btn) {
+      var b = btn.getBoundingClientRect();
+      var reach = hit.offsetHeight * 0.6 * (phone ? 1.9 : 2.3);
+      if (b.bottom > sy - reach && b.top < sy + reach) sy = b.bottom + reach + 6;
+    }
+    return { x: clamp(sx, margin, window.innerWidth - margin), y: sy };
   }
 
   function render() {
@@ -510,6 +519,8 @@
     follow();
   }
 
+  var endTimer = 0;
+
   if (route) {
     route.subscribe(function (e) {
       if (e.type === "move") {
@@ -527,21 +538,27 @@
         return;
       }
       if (e.type === "end") {
+        // The bottom of a page can bounce (a phone's rubber-band scroll, the
+        // reading line settling), so a brief off-and-on at the end is ignored:
+        // he only shrinks after staying off the end for a moment, and says
+        // goodbye on each real arrival.
+        clearTimeout(endTimer);
         if (e.on) {
+          if (big) return;
           growBig(true);
-          setTimeout(function () {
+          endTimer = setTimeout(function () {
             happy(1800);
             say(isHome ? "Pong! Thanks for visiting. Bye for now!" : "Pong! That's the whole story. Bye for now!", {
               prio: 3,
               hold: 4200,
               pose: "wave",
-              cool: "bye",
-              coolMs: 8000,
             });
           }, 380);
         } else {
-          growBig(false);
-          setPose("");
+          endTimer = setTimeout(function () {
+            growBig(false);
+            setPose("");
+          }, 700);
         }
       }
     });
