@@ -68,9 +68,12 @@
 
   // A curve from the current point to (x1, y1) that leaves vertically and
   // arrives vertically, so a sweep joins the straight runs without a kink.
+  //
+  // The second handle is the longer one: the curve straightens into the hop
+  // early, so it comes down beside the heading's label rather than through it.
   function sweep(x0, y0, x1, y1) {
-    var k = (y1 - y0) * 0.55;
-    return " C " + x0 + " " + (y0 + k) + ", " + x1 + " " + (y1 - k) + ", " + x1 + " " + y1;
+    var dy = y1 - y0;
+    return " C " + x0 + " " + (y0 + dy * 0.32) + ", " + x1 + " " + (y1 - dy * 0.72) + ", " + x1 + " " + y1;
   }
 
   function el(name, cls) {
@@ -135,12 +138,18 @@
     var svg = el("svg", "route-svg");
     svg.setAttribute("aria-hidden", "true");
     var ghost = el("path", "route-ghost");
+    // The comet trail: two soft strokes that cover only the last stretch of
+    // line behind the head, wide and faint, then narrower and brighter.
+    var glow = el("path", "route-trail route-trail-wide");
+    var core = el("path", "route-trail route-trail-core");
     var line = el("path", "route-line");
     svg.appendChild(ghost);
+    svg.appendChild(glow);
+    svg.appendChild(core);
     svg.appendChild(line);
     host.insertBefore(svg, host.firstChild);
     liftContent(host, svg);
-    return { host: host, kind: kind, svg: svg, ghost: ghost, line: line, nodes: [], drawn: -1 };
+    return { host: host, kind: kind, svg: svg, ghost: ghost, line: line, trails: [glow, core], nodes: [], drawn: -1, trailOn: false };
   }
 
   function addNode(seg, x, y, label, side, terminal) {
@@ -164,9 +173,22 @@
     } else {
       text.setAttribute("x", x + 16);
     }
+    // A ripple and a small "ACK" for the moment the route reaches the hop:
+    // the reply that confirms a packet arrived.
+    var ripple = el("circle", "route-ripple");
+    ripple.setAttribute("cx", x);
+    ripple.setAttribute("cy", y);
+    ripple.setAttribute("r", 7);
+    var ack = el("text", "route-ack");
+    ack.textContent = "ACK ✓";
+    ack.setAttribute("y", y - 14);
+    ack.setAttribute("x", side === "L" ? x + 12 : x - 12);
+    if (side !== "L") ack.setAttribute("text-anchor", "end");
+    g.appendChild(ripple);
     g.appendChild(ring);
     g.appendChild(dot);
     g.appendChild(text);
+    if (!terminal) g.appendChild(ack);
     seg.svg.appendChild(g);
     seg.nodes.push({ g: g, x: x, y: y, side: side, label: label, terminal: !!terminal, len: 0, lit: false });
   }
@@ -230,6 +252,9 @@
 
   function index(seg) {
     var p = seg.line;
+    seg.trails.forEach(function (t) {
+      t.setAttribute("d", p.getAttribute("d"));
+    });
     var total = p.getTotalLength();
     var s = samplePath(p.getAttribute("d"));
     // Our polyline runs a hair short of the true curve length; scale it to
@@ -293,8 +318,17 @@
 
       var H = host.offsetHeight;
       var sides = sidesFor(host, galleryPin ? host.querySelector(".work-head") : null);
+      // The hop sits level with the section's heading, not the small label
+      // above it, which also stretches the sweep across the page over more
+      // scroll, so Ping glides across rather than darting. The hero starts at
+      // its eyebrow, the top of the route.
       var eyebrow = host.querySelector(".eyebrow");
-      var ey = eyebrow ? offsetWithin(eyebrow, host).y + eyebrow.offsetHeight / 2 : 40;
+      var heading = i === 0 ? null : host.querySelector("h2");
+      var ey = heading
+        ? offsetWithin(heading, host).y + Math.min(heading.offsetHeight / 2, 34)
+        : eyebrow
+          ? offsetWithin(eyebrow, host).y + eyebrow.offsetHeight / 2
+          : 40;
       var label = pad(++n) + " · " + labelText(page);
 
       // The first page starts at its own hop; every later one arrives where
@@ -326,6 +360,7 @@
         seg.lenB = measureLen(dB);
         seg.barY = by;
         exitX = x2;
+        page.style.setProperty("--route-x", x2 + "px");
         exitSide = other;
       } else {
         var last = i === pages.length - 1;
@@ -335,6 +370,10 @@
         seg.ghost.setAttribute("d", d);
         exitX = x;
         exitSide = side;
+        // A covered section sinks toward its own line (story.js reads this
+        // for its transform-origin), so its line doesn't slide sideways and
+        // meets the next section's line cleanly at the card's edge.
+        page.style.setProperty("--route-x", x + "px");
       }
 
       addNode(seg, x, ey, label, side, false);
@@ -372,7 +411,7 @@
         // next heading.
         var nextSide = side === "L" ? "R" : "L";
         var nx = sides[nextSide];
-        var turn = Math.max(prevY + 20, y - 110);
+        var turn = Math.max(prevY + 20, y - 170);
         d += " L " + x + " " + turn + sweep(x, turn, nx, y);
         side = nextSide;
         x = nx;
@@ -434,9 +473,16 @@
   }
 
   var lastUpdateY = window.scrollY;
+  var speed = 0;
+  var TRAIL = [220, 110];
 
   function update(force, quiet) {
     var vh = window.innerHeight;
+    // How fast the page is moving, smoothed: the line brightens and thickens
+    // a little with it (--route-speed, read by motion.css).
+    var v = Math.min(1, Math.abs(window.scrollY - lastUpdateY) / 60);
+    speed += (v - speed) * 0.3;
+    if (!reduced) html.style.setProperty("--route-speed", speed.toFixed(3));
     // A jump of more than a screen and a half (a deep link, a nav click, the
     // back-to-top button) passes hops without reaching them; it lights them
     // without announcing each one.
@@ -499,6 +545,11 @@
         if (lit !== node.lit) {
           node.lit = lit;
           node.g.classList.toggle("is-lit", lit || reduced);
+          if (!quiet && lit && !reduced) {
+            node.g.classList.remove("is-ack");
+            void node.g.getBoundingClientRect();
+            node.g.classList.add("is-ack");
+          }
           if (!quiet) {
             emit({
               type: node.terminal ? "end" : "hop",
@@ -512,6 +563,20 @@
         }
         if (reduced) node.g.classList.add("is-lit");
       });
+
+      // The comet trail follows the head on the segment it is riding.
+      var trail = i === active && !reduced && len > 0;
+      if (trail) {
+        s.trails.forEach(function (t, k) {
+          var T = Math.min(TRAIL[k], len);
+          t.style.strokeDasharray = T + " " + (s.total * 2 + T);
+          t.style.strokeDashoffset = (-(len - T)).toFixed(1);
+        });
+      }
+      if (trail !== s.trailOn) {
+        s.trailOn = trail;
+        s.svg.classList.toggle("has-trail", trail);
+      }
 
       if (i === active) {
         var pt = s.line.getPointAtLength(len);
@@ -529,12 +594,21 @@
   // ==================== Wiring ====================
 
   var ticking = false;
+  var movingTimer = 0;
   window.addEventListener(
     "scroll",
     function () {
       var dy = window.scrollY - lastY;
       if (dy) dir = dy > 0 ? 1 : -1;
       lastY = window.scrollY;
+      // The dotted road ahead flows only while the page moves.
+      html.classList.add("route-moving");
+      clearTimeout(movingTimer);
+      movingTimer = setTimeout(function () {
+        html.classList.remove("route-moving");
+        speed = 0;
+        html.style.setProperty("--route-speed", "0");
+      }, 260);
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(function () {

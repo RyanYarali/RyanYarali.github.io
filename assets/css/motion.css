@@ -425,6 +425,14 @@ html.is-stacked main > .is-covering {
   will-change: transform;
 }
 
+/* Fully covered, a section fades out: it would otherwise show as a strip
+   beside the section sinking over it (they sink toward their own line, not
+   their centre). Opacity, unlike visibility, keeps it in the focus order and
+   the accessibility tree, and story.js scrolls it back into view on focus. */
+html.is-stacked main > .is-covered {
+  opacity: 0;
+}
+
 
 /* ---------- word fill ----------
  * story.js wraps each word of the About lede and sets its opacity from
@@ -1097,9 +1105,98 @@ html.js-ready .screenshots-grid .reveal.in-view img {
 .route-line {
   fill: none;
   stroke: var(--color-accent);
-  stroke-width: 2.25;
+  /* A little thicker while the page moves fast (route.js sets the speed). */
+  stroke-width: calc(2.25px + var(--route-speed, 0) * 1.25px);
   stroke-linecap: round;
   stroke-linejoin: round;
+}
+
+/* The comet trail behind the head: only on the stretch being ridden. */
+.route-trail {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-linecap: round;
+  opacity: 0;
+  transition: opacity 300ms var(--ease);
+}
+
+.route-svg.has-trail .route-trail-wide {
+  stroke-width: 9;
+  opacity: calc(0.1 + var(--route-speed, 0) * 0.12);
+}
+
+.route-svg.has-trail .route-trail-core {
+  stroke-width: 4.5;
+  opacity: calc(0.22 + var(--route-speed, 0) * 0.18);
+}
+
+/* The dotted road ahead flows down the page while it moves. */
+html.route-moving .route-ghost {
+  animation: route-flow 0.9s linear infinite;
+}
+
+@keyframes route-flow {
+  to {
+    stroke-dashoffset: -18;
+  }
+}
+
+/* Reaching a hop: a ripple, and a small ACK that floats up and fades. */
+.route-ripple {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 1.5;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.route-node.is-ack .route-ripple {
+  animation: route-ripple 900ms var(--ease-out-expo);
+}
+
+@keyframes route-ripple {
+  from {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(3.4);
+  }
+}
+
+.route-ack {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  fill: var(--color-accent);
+  paint-order: stroke;
+  stroke: var(--color-background);
+  stroke-width: 4px;
+  opacity: 0;
+}
+
+.route-node.is-ack .route-ack {
+  animation: route-ack 1400ms var(--ease-out-expo);
+}
+
+@keyframes route-ack {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  20% {
+    opacity: 1;
+    transform: none;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
 }
 
 .route-node-ring {
@@ -1168,9 +1265,26 @@ html.has-route.work-pinned .work-progress {
   visibility: hidden;
 }
 
+/* Bolder on a phone, where the route runs along the edge of the screen. */
 @media (max-width: 700px) {
   .route-line {
-    stroke-width: 2.5;
+    stroke-width: calc(3px + var(--route-speed, 0) * 1.25px);
+  }
+
+  .route-svg.has-trail .route-trail-wide {
+    stroke-width: 11;
+  }
+
+  .route-ghost {
+    stroke-width: 2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.route-moving .route-ghost,
+  .route-node.is-ack .route-ripple,
+  .route-node.is-ack .route-ack {
+    animation: none;
   }
 }
 
