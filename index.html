@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8" />
     <script>
       (function () {
         try {
@@ -16,7 +17,19 @@
         }
       })();
     </script>
-    <meta charset="UTF-8" />
+    <script>
+      // Decides before first paint whether the hero animates, and whether this
+      // is a first visit that gets the intro. hero.js acts on these classes;
+      // motion.css shows the content anyway if it never runs.
+      (function () {
+        try {
+          if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+          var d = document.documentElement;
+          d.classList.add("hero-anim");
+          if (!localStorage.getItem("ry-intro-seen")) d.classList.add("intro-pending");
+        } catch (e) {}
+      })();
+    </script>
     <link rel="canonical" href="https://ryanyarali.com/" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
@@ -69,6 +82,7 @@
     <link rel="stylesheet" href="assets/css/components.css" />
     <link rel="stylesheet" href="assets/css/pages.css" />
     <link rel="stylesheet" href="assets/css/interactive.css" />
+    <link rel="stylesheet" href="assets/css/motion.css" />
     <link rel="stylesheet" href="assets/css/style.css" />
 
     <!-- Palette tokens are written before first paint -->
@@ -159,6 +173,13 @@
     <canvas id="site-trace" aria-hidden="true"></canvas>
     <a href="#main" class="skip-link">Skip to content</a>
 
+    <!-- First-visit intro. Decorative: the page underneath is complete and
+         reachable the whole time, and any input skips it. -->
+    <div class="intro" id="intro" aria-hidden="true">
+      <div class="intro-log" id="intro-log"></div>
+      <p class="intro-hint">Click or press any key to skip</p>
+    </div>
+
     <!-- Navigation -->
     <nav class="navbar">
       <div class="nav-container">
@@ -195,24 +216,29 @@
     <main id="main">
       <!-- Hero Section -->
       <header class="hero" id="hero">
+        <!-- The globe is drawn by hero-globe.js once the page has loaded; the
+             poster is what shows until then, and without WebGL. -->
+        <div class="hero-globe" id="hero-globe" aria-hidden="true">
+          <div class="hero-globe-poster"></div>
+        </div>
         <div class="container">
           <div class="hero-layout">
             <div class="hero-content">
-              <p class="eyebrow hero-greeting">
+              <p class="eyebrow hero-greeting hero-reveal">
                 Computer Systems Technology · BCIT
               </p>
               <h1 class="hero-title">
                 Ryan <span class="highlight">Yarali</span>
               </h1>
-              <p class="hero-subtitle">
+              <p class="hero-subtitle hero-reveal">
                 Term 3 · Data Communications &amp; Internetworking
               </p>
-              <p class="hero-tagline">
+              <p class="hero-tagline hero-reveal">
                 Full-stack developer working through BCIT's Computer Systems
                 Technology diploma, building something new every term.
               </p>
 
-              <div class="hero-cta">
+              <div class="hero-cta hero-reveal">
                 <a href="#projects" class="btn btn-primary" data-magnetic
                   >View projects</a
                 >
@@ -221,7 +247,7 @@
                 >
               </div>
 
-              <div class="hero-stats" aria-label="At a glance">
+              <div class="hero-stats hero-reveal" aria-label="At a glance">
                 <div class="stat-tile">
                   <span class="stat-value" data-count="15" data-suffix="+">0</span>
                   <span class="stat-label">Projects shipped for happy clients</span>
@@ -237,13 +263,6 @@
               </div>
             </div>
 
-            <div class="hero-image">
-              <div class="hero-image-wrapper">
-                <div class="hero-image-placeholder">
-                  <img src="assets/profile-photo.jpg" alt="Ryan Yarali" / width="760" height="760" />
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </header>
@@ -255,20 +274,32 @@
             <p class="eyebrow">About</p>
             <h2>A systems mindset, applied to the web</h2>
           </div>
-          <div class="about-content reveal">
-            <p class="about-lede">
-              I'm a Computer Systems Technology student at BCIT, now in Term 3
-              on the Data Communications &amp; Internetworking option. I work
-              across the stack, and the networking specialization is teaching
-              me the layer underneath it: what actually happens between the
-              client and the server.
-            </p>
-            <p>
-              BCIT's program is hands-on: every course ends in something
-              built and defended, not just graded. That's shaped how I
-              work. I'd rather ship a smaller feature that's solid than a
-              bigger one held together with guesses.
-            </p>
+          <div class="about-layout">
+            <div class="about-content reveal">
+              <p class="about-lede">
+                I'm a Computer Systems Technology student at BCIT, now in Term 3
+                on the Data Communications &amp; Internetworking option. I work
+                across the stack, and the networking specialization is teaching
+                me the layer underneath it: what actually happens between the
+                client and the server.
+              </p>
+              <p>
+                BCIT's program is hands-on: every course ends in something
+                built and defended, not just graded. That's shaped how I
+                work. I'd rather ship a smaller feature that's solid than a
+                bigger one held together with guesses.
+              </p>
+            </div>
+            <figure class="about-photo reveal">
+              <img
+                src="assets/profile-photo.jpg"
+                alt="Ryan Yarali"
+                width="760"
+                height="760"
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
           </div>
         </div>
       </section>
@@ -813,5 +844,7 @@
     <script src="assets/js/form.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/interactive.js"></script>
+    <script src="assets/js/cursor.js"></script>
+    <script src="assets/js/hero.js"></script>
   </body>
 </html>

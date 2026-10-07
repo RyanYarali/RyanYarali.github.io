@@ -376,6 +376,12 @@ html.js-ready .reveal-group > * {
   color: var(--color-text-muted);
 }
 
+/* A link inside a sentence needs more than colour to stand out from it. */
+.footer p a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .footer a:hover {
   color: var(--color-text);
 }

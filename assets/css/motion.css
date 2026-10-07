@@ -1,0 +1,370 @@
+/* ==================== Motion layer ====================
+ * The first-visit intro, the hero entrance, the 3D globe that stands behind
+ * the hero, and the cursor ring. Like the rest of the site, every colour here
+ * is a token, so all six palettes in both themes follow automatically.
+ *
+ * The page never depends on any of this: the intro and the hero entrance are
+ * switched on by a class the inline <head> script adds, and both carry a CSS
+ * failsafe that shows the content anyway if the script never runs.
+ * ======================================================= */
+
+/* ---------- intro ----------
+ * Shown on a first visit only. It holds nothing but a few lines of small mono
+ * text, so the hero name underneath stays the largest paint on the page. */
+.intro {
+  display: none;
+}
+
+html.intro-pending .intro {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  background: var(--color-background);
+  clip-path: inset(0 0 0 0);
+  /* Failsafe: if the script never runs, the overlay gets out of the way. */
+  animation: intro-failsafe 0s 3s forwards;
+}
+
+@keyframes intro-failsafe {
+  to {
+    visibility: hidden;
+  }
+}
+
+.intro-log {
+  display: grid;
+  gap: 0.45rem;
+  min-width: min(20rem, 80vw);
+  min-height: 7.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.intro-log .dir {
+  color: var(--color-text-subtle);
+}
+
+.intro-log .ok {
+  color: var(--color-accent);
+}
+
+.intro-hint {
+  position: absolute;
+  bottom: max(1.5rem, env(safe-area-inset-bottom, 0px));
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  max-width: none;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+/* ---------- hero ----------
+ * The photo moved to About; the globe now owns the right of the hero, so the
+ * text column runs on its own and the name gets to be properly large. */
+.hero {
+  overflow: clip;
+}
+
+.hero .container {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-layout {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 860px) {
+  .hero-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero-content {
+    max-width: 620px;
+  }
+}
+
+.hero-title {
+  font-size: clamp(3.4rem, 7.4vw, 7rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.96;
+  max-width: none;
+  white-space: nowrap;
+}
+
+/* Hidden until hero.js plays the entrance. The failsafe shows everything if
+   the script never gets that far. */
+html.hero-anim .hero-title,
+html.hero-anim .hero-reveal {
+  opacity: 0;
+  animation: hero-failsafe 0s 3s forwards;
+}
+
+@keyframes hero-failsafe {
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---------- globe ---------- */
+.hero-globe {
+  position: absolute;
+  z-index: 0;
+  /* On a phone the globe sits up behind the name, where large type stays
+     readable over it, and clear of the running text below. */
+  top: 1rem;
+  right: -46vw;
+  width: 104vw;
+  aspect-ratio: 1;
+  max-width: none;
+  pointer-events: none;
+  opacity: 0.42;
+}
+
+@media (min-width: 560px) {
+  .hero-globe {
+    right: -22vw;
+    width: 90vw;
+    opacity: 0.6;
+  }
+}
+
+@media (min-width: 860px) {
+  .hero-globe {
+    top: 50%;
+    right: max(-10vw, calc((100vw - 1180px) / 2 - 14vw));
+    width: min(52vw, 760px);
+    opacity: 1;
+    transform: translateY(-46%);
+  }
+}
+
+/* The poster is what everyone sees first, and all that a visitor without
+   WebGL ever sees: a soft glow and a ring drawn from the live accent. */
+.hero-globe-poster {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    color-mix(in srgb, var(--color-accent) 16%, transparent) 0%,
+    color-mix(in srgb, var(--color-accent) 6%, transparent) 42%,
+    transparent 64%
+  );
+  transition: opacity 1.2s var(--ease);
+}
+
+.hero-globe-poster::after {
+  content: "";
+  position: absolute;
+  inset: 19%;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 30%, transparent);
+}
+
+.hero-globe canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 0;
+  transition: opacity 900ms var(--ease);
+}
+
+.hero-globe.is-live canvas {
+  opacity: 1;
+}
+
+.hero-globe.is-live .hero-globe-poster {
+  opacity: 0;
+}
+
+@media (min-width: 860px) and (hover: hover) and (pointer: fine) {
+  .hero-globe canvas {
+    pointer-events: auto;
+    cursor: grab;
+    touch-action: none;
+  }
+
+  .hero-globe canvas:active {
+    cursor: grabbing;
+  }
+}
+
+/* Labels name the real nodes: the projects, and the tools they are built on.
+   They are decoration (the same facts are in the page text), so the globe is
+   aria-hidden and the labels only appear where there is room for them. */
+.globe-labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: none;
+}
+
+@media (min-width: 860px) {
+  .globe-labels {
+    display: block;
+  }
+}
+
+.globe-label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--color-background) 72%, transparent);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.globe-label.is-project {
+  color: var(--color-text);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 45%, transparent);
+}
+
+.globe-label.is-project::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+/* ---------- about photo ----------
+ * The portrait that used to sit in the hero. */
+.about-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2.5rem;
+  align-items: center;
+}
+
+@media (min-width: 860px) {
+  .about-layout {
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 4.5rem;
+  }
+}
+
+.about-photo {
+  margin: 0;
+  width: 100%;
+  max-width: 300px;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+  box-shadow: var(--shadow-md);
+}
+
+.about-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ---------- cursor ring ----------
+ * Follows the real pointer rather than replacing it, so precision, custom
+ * pointer sizes and text selection all keep working. Built by cursor.js only
+ * for a fine pointer with motion allowed.
+ *
+ * The ring changes width and height (not just scale) because it wraps
+ * rectangular buttons, and a non-uniform scale would stretch its border. It is
+ * a single fixed element with strict containment, so those changes never
+ * reach the layout of the page. */
+.cursor-ring {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 2100;
+  width: 36px;
+  height: 36px;
+  pointer-events: none;
+  contain: strict;
+  opacity: 0;
+  transition: opacity 200ms var(--ease);
+  will-change: transform, width, height;
+}
+
+.cursor-ring.is-visible {
+  opacity: 1;
+}
+
+.cursor-shape {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid color-mix(in srgb, var(--color-text) 55%, transparent);
+  background: transparent;
+  transition:
+    transform 300ms var(--ease-out-expo),
+    background-color 250ms var(--ease),
+    border-color 250ms var(--ease),
+    border-radius 300ms var(--ease);
+}
+
+.cursor-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-on-accent);
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity 200ms var(--ease),
+    transform 300ms var(--ease-out-expo);
+}
+
+.cursor-ring[data-mode="link"] .cursor-shape {
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+}
+
+.cursor-ring[data-mode="view"] .cursor-shape,
+.cursor-ring[data-mode="drag"] .cursor-shape {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+}
+
+.cursor-ring[data-mode="view"] .cursor-label,
+.cursor-ring[data-mode="drag"] .cursor-label {
+  opacity: 1;
+  transform: none;
+}
+
+.cursor-ring[data-mode="stick"] .cursor-shape {
+  border-color: var(--color-accent);
+}
+
+.cursor-ring[data-mode="text"] .cursor-shape {
+  transform: scale(0);
+}
+
+.cursor-ring.is-pressed .cursor-shape {
+  transform: scale(0.82);
+}

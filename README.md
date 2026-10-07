@@ -2,7 +2,8 @@
 
 Personal portfolio site for Ryan Yarali, a Computer Systems Technology student
 at BCIT. Built with plain HTML, CSS, and JavaScript. No framework, no build
-step, no dependencies to install.
+step, no dependencies to install. The one library, three.js for the hero
+globe, is vendored in `assets/vendor/`.
 
 Live at [ryanyarali.com](https://ryanyarali.com), deployed from this repository
 via GitHub Pages.
@@ -28,6 +29,7 @@ projects/             Case studies
   nooklook.html
   taskmate.html
 404.html              Custom not-found page
+resume.html           Résumé placeholder until the PDF is added (noindex)
 assets/
   css/
     style.css         Global overrides, loaded last
@@ -37,6 +39,7 @@ assets/
     layout.css        Navigation, sections, footer, scroll reveal
     components.css    Buttons, forms, tags, cards
     interactive.css   Ambient trace, palette dock, stat strip, project accordion
+    motion.css        Intro, hero entrance, hero globe, cursor ring
     pages.css         Page- and section-specific styles
   js/
     theme.js          Light/dark theme with system preference + persistence
@@ -44,6 +47,10 @@ assets/
     form.js           Contact form validation and submission
     main.js           Mobile menu, scroll reveal, active nav, back to top
     interactive.js    Ambient trace, counters, accordion, skills filter
+    hero.js           First-visit intro, hero entrance, lazy globe loader
+    hero-globe.js     The WebGL network globe (ES module, three.js)
+    cursor.js         Cursor ring that follows the real pointer
+  vendor/three/       three.js r186, the one third-party library (see its README)
 CNAME, robots.txt, sitemap.xml, favicon.svg
 ```
 
@@ -93,6 +100,17 @@ palette list, edit `palette.js`. Nothing else hardcodes a colour or font.
 
 ## Interaction
 
+- **Intro:** on a first visit, a TCP handshake prints before the page is
+  revealed (about 1.2s; any click, scroll or key skips it). The connection
+  time it shows is real, from the Navigation Timing API.
+- **Hero globe:** a three.js scene whose labelled nodes are the projects and
+  the tools they are built with, linked by their real relationships. It loads
+  after the page has finished loading, renders only while the hero is on
+  screen, follows the palette, and falls back to a CSS poster without WebGL
+  or with Data Saver on.
+- **Cursor ring:** follows the real pointer (which stays visible), wraps
+  buttons, and reads "View" or "Drag" over images and the globe. Fine
+  pointers only.
 - **Ambient trace:** a canvas line whose amplitude tracks scroll velocity. The
   input is scroll, not cursor position, so it behaves identically under touch.
 - **Project accordion:** one row per project, opened by a tap, one open at a
