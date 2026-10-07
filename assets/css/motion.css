@@ -1157,74 +1157,6 @@ html.js-ready .screenshots-grid .reveal.in-view img {
   }
 }
 
-/* The packet at the head of the line. */
-.route-tip {
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 900;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 300ms var(--ease);
-  will-change: transform;
-}
-
-.route-tip.is-on {
-  opacity: 1;
-}
-
-.route-tip-dot {
-  position: absolute;
-  left: -6px;
-  top: -6px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--color-accent);
-  box-shadow:
-    0 0 0 3px var(--color-background),
-    0 0 18px 4px var(--color-accent);
-}
-
-/* While the page moves, the packet carries the name of the current hop.
-   On a wide screen the labels are already in the margin, so it stays a dot. */
-.route-tip-label {
-  position: absolute;
-  top: 0;
-  left: 14px;
-  transform: translate(-6px, -50%);
-  padding: 0.3rem 0.6rem;
-  border-radius: var(--radius-pill);
-  background: var(--color-accent);
-  color: var(--color-on-accent);
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  opacity: 0;
-  transition:
-    opacity 250ms var(--ease),
-    transform 420ms var(--ease-out-expo);
-}
-
-.route-tip-label:empty {
-  display: none;
-}
-
-.route-tip.is-flip .route-tip-label {
-  left: auto;
-  right: 14px;
-  transform: translate(6px, -50%);
-}
-
-@media (max-width: 1399px) {
-  .route-tip.is-moving .route-tip-label {
-    opacity: 1;
-    transform: translate(0, -50%);
-  }
-}
-
 /* The sideways stretch of the route under the pinned gallery is its
    progress bar now. */
 html.has-route.work-pinned .work-progress {
@@ -1278,4 +1210,439 @@ html.js-ready .skills-rows > .skills-row.reveal:nth-child(even) {
 
 html.js-ready .skills-rows > .skills-row.reveal.in-view {
   transform: none;
+}
+
+/* ---------- Ping ----------
+ * The packet creature that rides the route (ping.js). His body is the
+ * accent, his eyes are always white with dark pupils. --s is his scale:
+ * smaller on a phone, big for the goodbye. */
+.ping {
+  --s: 1;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 900;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  transition: opacity 300ms var(--ease);
+  will-change: transform;
+}
+
+.ping.is-on,
+.ping.is-standalone {
+  opacity: 1;
+}
+
+@media (max-width: 700px) {
+  .ping {
+    --s: 0.85;
+  }
+}
+
+.ping.is-big {
+  --s: 2.3;
+}
+
+@media (max-width: 700px) {
+  .ping.is-big {
+    --s: 1.9;
+  }
+}
+
+.ping-hit {
+  position: absolute;
+  left: -26px;
+  top: -30px;
+  width: 52px;
+  height: 56px;
+  cursor: pointer;
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ping-scale {
+  width: 100%;
+  height: 100%;
+  transform: scale(var(--s));
+  transform-origin: 50% 60%;
+  transition: transform 700ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ping-float {
+  width: 100%;
+  height: 100%;
+  animation: ping-bob 2.6s ease-in-out infinite;
+}
+
+.ping-squash {
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 85%;
+  transition: transform 160ms ease-out;
+}
+
+.ping svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--color-accent) 55%, transparent));
+}
+
+@keyframes ping-bob {
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+.ping-skin {
+  fill: var(--color-accent);
+  transition: fill var(--transition-palette);
+}
+
+.ping-shine {
+  fill: var(--ping-eye);
+  opacity: 0.35;
+}
+
+.ping-antenna {
+  transform-box: view-box;
+  transform-origin: 20px 12px;
+}
+
+.ping-antenna line {
+  stroke: var(--color-accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  transition: stroke var(--transition-palette);
+}
+
+.ping-antenna circle {
+  fill: var(--color-accent-strong);
+  transition: fill var(--transition-palette);
+}
+
+/* Arms hang behind the body; the hands are little round mitts. */
+.ping-arm {
+  transform-box: view-box;
+  transition: transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ping-arm line {
+  stroke: var(--color-accent);
+  stroke-width: 3.4;
+  stroke-linecap: round;
+  transition: stroke var(--transition-palette);
+}
+
+.ping-arm circle {
+  fill: var(--color-accent-strong);
+  transition: fill var(--transition-palette);
+}
+
+.ping-arm-l {
+  transform-origin: 8px 28px;
+  transform: rotate(28deg);
+}
+
+.ping-arm-r {
+  transform-origin: 32px 28px;
+  transform: rotate(-28deg);
+}
+
+.ping.pose-cheer .ping-arm-l,
+.ping.pose-carry .ping-arm-l {
+  transform: rotate(152deg);
+}
+
+.ping.pose-cheer .ping-arm-r,
+.ping.pose-carry .ping-arm-r {
+  transform: rotate(-152deg);
+}
+
+.ping.pose-point-r .ping-arm-r {
+  transform: rotate(-98deg);
+}
+
+.ping.pose-point-l .ping-arm-l {
+  transform: rotate(98deg);
+}
+
+.ping.pose-wave .ping-arm-r {
+  transform: rotate(-170deg);
+  animation: ping-wave 0.55s ease-in-out infinite alternate;
+}
+
+.ping.is-flip.pose-wave .ping-arm-r {
+  animation: none;
+  transform: rotate(-28deg);
+}
+
+.ping.is-flip.pose-wave .ping-arm-l {
+  transform: rotate(170deg);
+  animation: ping-wave-l 0.55s ease-in-out infinite alternate;
+}
+
+.ping.pose-droop .ping-arm-l {
+  transform: rotate(10deg);
+}
+
+.ping.pose-droop .ping-arm-r {
+  transform: rotate(-10deg);
+}
+
+@keyframes ping-wave {
+  from {
+    transform: rotate(-145deg);
+  }
+  to {
+    transform: rotate(-200deg);
+  }
+}
+
+@keyframes ping-wave-l {
+  from {
+    transform: rotate(145deg);
+  }
+  to {
+    transform: rotate(200deg);
+  }
+}
+
+.ping-eye {
+  fill: var(--ping-eye);
+}
+
+.ping-pupils {
+  fill: var(--ping-ink);
+  transition: transform 220ms var(--ease-out-expo);
+}
+
+.ping-eyes {
+  transform-box: view-box;
+  transform-origin: 20px 25px;
+  transition: transform 90ms ease-in;
+}
+
+.ping-eyes.is-blink {
+  transform: scaleY(0.08);
+}
+
+.ping-face path,
+.ping-mouth {
+  fill: none;
+  stroke: var(--ping-ink);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.ping-mouth-open {
+  fill: var(--ping-ink);
+}
+
+.ping-face,
+.ping-mouth-sad,
+.ping-mouth-open,
+.ping-envelope {
+  display: none;
+}
+
+.ping.is-happy .ping-eyes,
+.ping.is-sleep .ping-eyes,
+.ping.is-dizzy .ping-eyes {
+  display: none;
+}
+
+.ping.is-happy .ping-face-happy,
+.ping.is-sleep .ping-face-sleep,
+.ping.is-dizzy .ping-face-dizzy {
+  display: inline;
+}
+
+.ping.is-talking .ping-mouth-open,
+.ping.is-sad .ping-mouth-sad {
+  display: inline;
+}
+
+.ping.is-talking .ping-mouth-smile,
+.ping.is-sad .ping-mouth-smile {
+  display: none;
+}
+
+.ping.is-carrying .ping-envelope {
+  display: inline;
+}
+
+.ping-envelope rect {
+  fill: var(--color-surface-2);
+  stroke: var(--color-accent);
+  stroke-width: 1.6;
+}
+
+.ping-envelope path {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+.ping-face-dizzy g {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ping-spin 0.7s linear infinite;
+}
+
+@keyframes ping-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ping.is-hop .ping-float {
+  animation: ping-hop 540ms var(--ease-out-expo);
+}
+
+@keyframes ping-hop {
+  30% {
+    transform: translateY(-14px) scale(1.05, 0.95);
+  }
+  60% {
+    transform: translateY(0) scale(1.1, 0.9);
+  }
+  80% {
+    transform: scale(0.96, 1.04);
+  }
+}
+
+.ping.pose-wave .ping-antenna {
+  animation: ping-antenna 0.5s ease-in-out 3;
+}
+
+@keyframes ping-antenna {
+  25% {
+    transform: rotate(-20deg);
+  }
+  75% {
+    transform: rotate(20deg);
+  }
+}
+
+.ping-zzz {
+  position: absolute;
+  left: 10px;
+  top: -42px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-accent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ping.is-sleep .ping-zzz {
+  animation: ping-zzz 2.4s ease-in-out infinite;
+}
+
+@keyframes ping-zzz {
+  0% {
+    opacity: 0;
+    transform: translate(0, 6px) scale(0.7);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(14px, -18px) scale(1.15);
+  }
+}
+
+/* Speech: grows upward from beside him, on the side away from the edge. */
+.ping-bubble {
+  position: absolute;
+  bottom: calc(16px * var(--s));
+  left: calc(28px * var(--s));
+  width: max-content;
+  max-width: min(250px, 62vw);
+  padding: 0.55rem 0.8rem;
+  border-radius: 14px 14px 14px 4px;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border-strong);
+  box-shadow: var(--shadow-md);
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 500;
+  font-style: normal;
+  line-height: 1.35;
+  letter-spacing: normal;
+  text-transform: none;
+  text-align: left;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-6px, 6px) scale(0.92);
+  transform-origin: 0 100%;
+  transition:
+    opacity 200ms var(--ease),
+    transform 320ms var(--ease-out-expo),
+    left 700ms var(--ease-out-expo),
+    right 700ms var(--ease-out-expo),
+    bottom 700ms var(--ease-out-expo);
+}
+
+.ping-bubble.is-on {
+  opacity: 1;
+  transform: none;
+}
+
+.ping.is-flip .ping-bubble {
+  left: auto;
+  right: calc(28px * var(--s));
+  border-radius: 14px 14px 4px 14px;
+  transform-origin: 100% 100%;
+}
+
+.ping.is-big .ping-bubble {
+  font-size: 1rem;
+}
+
+/* On a page without a route he stands beside the heading instead. */
+.ping.is-standalone {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 56px;
+  margin-left: 0.75rem;
+  vertical-align: middle;
+}
+
+.ping.is-standalone .ping-hit {
+  left: 0;
+  top: 0;
+}
+
+.ping.is-standalone .ping-bubble {
+  left: 56px;
+  bottom: 30px;
+}
+
+.ping.is-standalone.is-flip .ping-bubble {
+  left: auto;
+  right: 56px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ping-float,
+  .ping.is-hop .ping-float,
+  .ping.pose-wave .ping-arm-r,
+  .ping.is-flip.pose-wave .ping-arm-l,
+  .ping.pose-wave .ping-antenna,
+  .ping-face-dizzy g,
+  .ping.is-sleep .ping-zzz {
+    animation: none;
+  }
+  .ping.is-sleep .ping-zzz {
+    opacity: 1;
+  }
 }

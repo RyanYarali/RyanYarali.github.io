@@ -52,6 +52,7 @@ assets/
     hero-globe.js     The WebGL network globe (ES module, three.js)
     cursor.js         Cursor ring that follows the real pointer
     route.js          The winding route: a timeline line through every heading
+    ping.js           Ping, the packet creature that rides the route
     story.js          Home page stacking, About word fill, portrait tilt
   vendor/three/       three.js r186, the one third-party library (see its README)
 CNAME, robots.txt, sitemap.xml, favicon.svg
@@ -127,6 +128,15 @@ palette list, edit `palette.js`. Nothing else hardcodes a colour or font.
   moves with its card; under the pinned gallery it runs sideways with the
   cards. Case studies weave between their sections. On phones the packet
   carries the current hop's name while the page moves.
+- **Ping:** the packet at the head of the route is a little creature (a
+  ping says hello; the answer is a pong). Drawn in SVG from the palette
+  tokens, he blinks, looks the way the page moves, hops and points at each
+  heading with a line of his own, dozes off when nothing happens, reacts to
+  fast scrolling, taps, palette and theme changes, carries the contact
+  form's real request to the inbox, and grows big at the end of the route to
+  wave goodbye. Pages without a route (404, résumé, projects) have him
+  standing by the heading. He is aria-hidden, and holds still under reduced
+  motion.
 - **Headings:** eyebrows decode out of random characters and heading words
   rise out of a mask as they are revealed.
 - **About:** the lede lights up word by word as it is read, and the portrait
