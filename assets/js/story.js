@@ -102,9 +102,11 @@
       if (window.repaintProjectArt) window.repaintProjectArt();
     }
 
-    function setProgress(p) {
+    // The bar follows overall progress; the counter names the card that is
+    // actually nearest the middle of the screen, when the caller knows it.
+    function setProgress(p, nearest) {
       bar.style.transform = "scaleX(" + (1 / n + (1 - 1 / n) * p).toFixed(4) + ")";
-      var i = Math.min(n - 1, Math.round(p * (n - 1)));
+      var i = nearest != null ? nearest : Math.min(n - 1, Math.round(p * (n - 1)));
       if (i !== shownIndex) {
         shownIndex = i;
         count.textContent = String(i + 1).padStart(2, "0");
@@ -151,13 +153,18 @@
       track.style.transform = "translate3d(" + x.toFixed(1) + "px,0,0)";
       // Each screenshot drifts against its frame, a little slower than the
       // card, by how far the card is from the middle of the screen.
+      var nearest = 0;
+      var best = Infinity;
       for (var i = 0; i < n; i++) {
-        if (!media[i]) continue;
         var c = cards[i];
         var off = c.offsetLeft + c.offsetWidth / 2 + x - pinW / 2;
-        media[i].style.transform = "translate3d(" + (off * -0.05).toFixed(1) + "px,0,0)";
+        if (Math.abs(off) < best) {
+          best = Math.abs(off);
+          nearest = i;
+        }
+        if (media[i]) media[i].style.transform = "translate3d(" + (off * -0.05).toFixed(1) + "px,0,0)";
       }
-      setProgress(p);
+      setProgress(p, nearest);
       html.classList.toggle("work-active", y > top - vh * 0.5 && y < top + height - vh * 0.5);
     });
 
@@ -180,7 +187,7 @@
       if (!card) return;
       var edge = parseFloat(getComputedStyle(track).paddingLeft) || 0;
       var p = clamp((card.offsetLeft - edge) / travel, 0, 1);
-      window.scrollTo({ top: top + p * (height - vh), behavior: "auto" });
+      window.scrollTo({ top: top + p * (height - vh), behavior: "instant" });
     });
 
     wide.addEventListener("change", function () {
@@ -231,8 +238,8 @@
           pages[i].classList.toggle("is-covering", cover > 0 && cover < 1);
         }
 
-        // Fully covered sections stop painting, and the hero globe hears
-        // about it so it can stop rendering behind the page.
+        // The hero globe hears when the hero is fully covered, so it can
+        // stop rendering behind the page.
         var covered = cover >= 1;
         if (covered !== s.covered) {
           s.covered = covered;

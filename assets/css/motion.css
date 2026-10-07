@@ -76,6 +76,13 @@ html.intro-pending .intro {
 .hero .container {
   position: relative;
   z-index: 1;
+  /* The container spans the full width over the globe; only the text column
+     takes the pointer, so the globe underneath can be dragged. */
+  pointer-events: none;
+}
+
+.hero-content {
+  pointer-events: auto;
 }
 
 .hero-layout {
@@ -375,8 +382,9 @@ html.hero-anim .hero-reveal {
  *   --stick-top  where it holds: 0, or negative for a section taller than
  *                the screen, so it scrolls through before it holds
  *   --cover      0 to 1, how far the next section has slid over it
- * A covered section sinks back and fades toward the page colour, and once it
- * is fully covered it stops painting (.is-covered). */
+ * A covered section sinks back and fades toward the page colour. It stays
+ * visible to the accessibility tree and to focus even when fully covered, so
+ * Shift+Tab and heading navigation still reach it. */
 html.is-stacked main > .hero,
 html.is-stacked main > .section {
   position: sticky;
@@ -417,9 +425,6 @@ html.is-stacked main > .is-covering {
   will-change: transform;
 }
 
-html.is-stacked main > .is-covered {
-  visibility: hidden;
-}
 
 /* ---------- route spine ---------- */
 .spine {

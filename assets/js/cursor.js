@@ -136,12 +136,16 @@
     classify(e.target);
   });
 
-  document.documentElement.addEventListener("pointerleave", function () {
+  // Leaving the window drops any button the ring was wrapped around and
+  // stops the loop; a stuck ring would otherwise keep measuring forever.
+  function rest() {
     ring.classList.remove("is-visible");
-  });
-  window.addEventListener("blur", function () {
-    ring.classList.remove("is-visible");
-  });
+    setMode("default");
+    if (raf) cancelAnimationFrame(raf);
+    raf = 0;
+  }
+  document.documentElement.addEventListener("pointerleave", rest);
+  window.addEventListener("blur", rest);
 
   window.addEventListener("pointerdown", function () {
     ring.classList.add("is-pressed");
