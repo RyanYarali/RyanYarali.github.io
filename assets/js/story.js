@@ -142,7 +142,9 @@
       if (pinned) {
         pinW = work.clientWidth;
         travel = Math.max(0, track.scrollWidth - pinW);
-        height = vh + travel;
+        // Three screens of scroll per four of sideways travel: long enough
+        // to read each card, short enough not to feel like a detour.
+        height = vh + travel * 0.75;
         work.style.height = height + "px";
         top = layout.top(section) + offsetWithin(work, section);
       }

@@ -50,7 +50,7 @@
   var HOME = {
     about: "This is Ryan. Full-stack, and a proper networking nerd.",
     projects: "Real clients. Real live sites. Have a look!",
-    skills: "The toolbox. He actually uses all of it.",
+    skills: "The toolbox. Everything here shows up in his projects.",
     learning: "Term 3 at BCIT. Still levelling up.",
     contact: "Want to say hi? Write below. I'll deliver it myself.",
   };
@@ -64,14 +64,13 @@
     [/stack|tech/i, "Ooh, the good stuff."],
     [/what i built|features?/i, "Here's what he built."],
     [/seo|search/i, "Google likes this bit."],
-    [/client|working with/i, "Happy client, happy Ryan."],
+    [/client|working with/i, "Straight from the client."],
     [/outcome|result/i, "And how it turned out."],
     [/the idea/i, "My favourite part. It's about me!"],
     [/motion/i, "Watch me move!"],
     [/performance/i, "Fast. Like me."],
     [/accessib/i, "Everyone's welcome here."],
     [/left out/i, "Knowing when to stop."],
-    [/how it was made/i, "Made with care. And a little AI."],
     [/problem|challenge/i, "The tricky part."],
     [/team/i, "Teamwork!"],
     [/learn/i, "Lessons learned."],
@@ -304,7 +303,7 @@
 
   function target() {
     // On a phone the route hugs the screen edge; he stays wholly on screen.
-    var half = hit.offsetWidth * 0.5 * (window.innerWidth <= 700 ? 0.85 : 1) + 4;
+    var half = hit.offsetWidth * 0.5 * (window.innerWidth <= 700 ? 0.72 : 1) + 4;
     if (!big) return { x: clamp(head.x, half, window.innerWidth - half), y: head.y };
     // Grown for the goodbye he steps in from the edge, so all of him is on
     // screen, and stands a little above the end of the route.
@@ -326,6 +325,9 @@
   function render() {
     el.style.transform = "translate3d(" + x.toFixed(1) + "px," + y.toFixed(1) + "px,0)";
     el.classList.toggle("is-flip", x > window.innerWidth * 0.55);
+    // On a phone in the hero he stands at the edge of the main buttons; taps
+    // there belong to the buttons, not to him.
+    el.classList.toggle("is-passive", window.innerWidth <= 700 && window.scrollY < window.innerHeight * 0.8);
   }
 
   function follow() {
@@ -357,15 +359,16 @@
   var lastActive = performance.now();
   function wake() {
     lastActive = performance.now();
+    // Waking is silent, so it never pushes aside the line for the section
+    // the reader has just reached.
     if (mood === "sleep") {
       setMood("awake");
       hop();
-      say("Huh?! I'm up, I'm up.", { prio: 2, pose: "cheer", hold: 1400 });
     }
   }
 
   setInterval(function () {
-    if (mood === "awake" && !flying && !big && performance.now() - lastActive > 12000) {
+    if (mood === "awake" && !flying && !big && performance.now() - lastActive > 45000) {
       setMood("sleep");
       setPose("");
       bubble.classList.remove("is-on");
@@ -396,8 +399,11 @@
           look(0, 0);
         }, 140);
       }
-      if (Math.abs(dy) > 90) say("Whoa, slow down! I'm only 64 bytes.", { cool: "fast", coolMs: 20000, pose: "cheer" });
-      if (dy < 0) {
+      // No reactions while the hero is on screen: the bubble would sit on
+      // the two main buttons.
+      var inHero = window.scrollY < window.innerHeight * 0.8;
+      if (!inHero && Math.abs(dy) > 90) say("Whoa, slow down! I'm only 64 bytes.", { cool: "fast", coolMs: 20000, pose: "cheer" });
+      if (dy < 0 && !inHero) {
         upRun -= dy;
         if (upRun > 900) {
           upRun = 0;
@@ -668,15 +674,16 @@
     happy(1000);
     var line;
     if (!route) line = STANDALONE[spot.getAttribute("data-ping-spot")] || "Ping!";
-    else if (isHome) line = back ? "Ping! Welcome back. Missed you." : "Ping! I'm Ping. I'll show you around.";
+    else if (isHome) line = back ? "Ping! Welcome back." : "Ping! I'll show you around.";
     else if (/this site/i.test(pageTitle)) line = "Ping! This page is about how I was made. Kind of.";
     else line = "Ping! Let's dig into " + pageTitle.trim() + ".";
     setPose("cheer", 700);
     setTimeout(function () {
       // Priority 2, the same as a section's line: someone who starts
       // scrolling straight away hears about the section they reach rather
-      // than the end of the greeting.
-      say(line, { prio: 2, hold: 2800, pose: route ? "wave" : "point-r" });
+      // than the end of the greeting. Short on a phone, where it sits over
+      // the hero's buttons.
+      say(line, { prio: 2, hold: window.innerWidth <= 700 ? 1500 : 2800, pose: route ? "wave" : "point-r" });
     }, reduced ? 0 : 450);
     var h = new Date().getHours();
     if (route && (h >= 23 || h < 5)) {
