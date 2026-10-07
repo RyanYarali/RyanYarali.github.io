@@ -124,8 +124,11 @@
     function setPinned(on) {
       pinned = on;
       html.classList.toggle("work-pinned", on);
+      cards.forEach(function (c) {
+        c.style.transform = "";
+        c.style.opacity = "";
+      });
       if (!on) {
-        html.classList.remove("work-active");
         work.style.height = "";
         track.style.transform = "";
         media.forEach(function (m) {
@@ -144,6 +147,7 @@
         top = layout.top(section) + offsetWithin(work, section);
       }
       paintArt();
+      flow();
     });
 
     updaters.push(function (y) {
@@ -165,16 +169,44 @@
         if (media[i]) media[i].style.transform = "translate3d(" + (off * -0.05).toFixed(1) + "px,0,0)";
       }
       setProgress(p, nearest);
-      html.classList.toggle("work-active", y > top - vh * 0.5 && y < top + height - vh * 0.5);
+      // The route (route.js) runs its sideways stretch from this.
+      work.style.setProperty("--work-p", p.toFixed(4));
     });
 
-    // Carousel mode: follow the native sideways scroll.
+    // Carousel mode: follow the native sideways scroll. Cards away from the
+    // middle sink back and dim a little, so the one in front reads as the
+    // one being looked at, and each screenshot drifts against its frame.
+    function flow() {
+      if (pinned) return;
+      var max = viewport.scrollWidth - viewport.clientWidth;
+      var mid = viewport.scrollLeft + viewport.clientWidth / 2;
+      var nearest = 0;
+      var best = Infinity;
+      for (var i = 0; i < n; i++) {
+        var c = cards[i];
+        var off = c.offsetLeft + c.offsetWidth / 2 - mid;
+        if (Math.abs(off) < best) {
+          best = Math.abs(off);
+          nearest = i;
+        }
+        if (reduced) continue;
+        var d = clamp(Math.abs(off) / c.offsetWidth, 0, 1);
+        c.style.transform = "scale(" + (1 - d * 0.08).toFixed(4) + ")";
+        c.style.opacity = (1 - d * 0.45).toFixed(3);
+        if (media[i]) media[i].style.transform = "translate3d(" + (off * -0.06).toFixed(1) + "px,0,0)";
+      }
+      setProgress(max > 0 ? viewport.scrollLeft / max : 0, nearest);
+    }
+    var flowQueued = false;
     viewport.addEventListener(
       "scroll",
       function () {
-        if (pinned) return;
-        var max = viewport.scrollWidth - viewport.clientWidth;
-        setProgress(max > 0 ? viewport.scrollLeft / max : 0);
+        if (flowQueued) return;
+        flowQueued = true;
+        requestAnimationFrame(function () {
+          flowQueued = false;
+          flow();
+        });
       },
       { passive: true },
     );

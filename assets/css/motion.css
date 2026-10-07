@@ -426,147 +426,6 @@ html.is-stacked main > .is-covering {
 }
 
 
-/* ---------- route spine ---------- */
-.spine {
-  position: fixed;
-  left: clamp(0.85rem, 2.2vw, 2rem);
-  top: 50%;
-  z-index: var(--z-nav);
-  width: 2px;
-  height: min(56vh, 440px);
-  transform: translateY(-50%);
-  opacity: 0;
-  transition: opacity 420ms var(--ease);
-}
-
-.spine.is-active {
-  opacity: 1;
-}
-
-.spine-track,
-.spine-fill {
-  position: absolute;
-  inset: 0;
-  border-radius: var(--radius-pill);
-}
-
-.spine-track {
-  background: var(--color-border);
-}
-
-.spine-fill {
-  background: var(--color-accent);
-  transform-origin: top center;
-  transform: scaleY(0);
-}
-
-.spine-packet {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  width: 8px;
-  height: 8px;
-  border-radius: var(--radius-pill);
-  background: var(--color-accent);
-  box-shadow:
-    0 0 0 3px var(--color-background),
-    0 0 14px 2px var(--color-accent);
-  will-change: transform;
-}
-
-.spine-hop {
-  position: absolute;
-  left: 50%;
-  width: 9px;
-  height: 9px;
-  margin: -4.5px 0 0 -4.5px;
-  border-radius: var(--radius-pill);
-  border: 1.5px solid var(--color-border-strong);
-  background: var(--color-background);
-  cursor: pointer;
-  transition:
-    border-color 300ms var(--ease),
-    background-color 300ms var(--ease),
-    transform 420ms var(--ease-out-expo);
-}
-
-/* A bigger invisible target than the dot. */
-.spine-hop::before {
-  content: "";
-  position: absolute;
-  inset: -8px;
-}
-
-.spine-hop.is-past {
-  border-color: var(--color-accent);
-  background: var(--color-accent);
-}
-
-.spine-hop.is-current {
-  border-color: var(--color-accent);
-  background: var(--color-background);
-  transform: scale(1.35);
-}
-
-.spine-hop:hover {
-  transform: scale(1.5);
-}
-
-.spine-label {
-  position: absolute;
-  left: calc(100% + 0.75rem);
-  top: 50%;
-  transform: translate(-6px, -50%);
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  color: var(--color-text-muted);
-  padding: 0.2rem 0.5rem;
-  border-radius: var(--radius-pill);
-  background: color-mix(in srgb, var(--color-background) 80%, transparent);
-  opacity: 0;
-  pointer-events: none;
-  transition:
-    opacity 300ms var(--ease),
-    transform 420ms var(--ease-out-expo);
-}
-
-/* Labels only where the margin can hold them without touching the content:
-   the current hop always, any other on hover. The label sits in a scaled
-   parent, so it is scaled back to keep a steady size. */
-@media (min-width: 1440px) {
-  .spine-hop.is-current .spine-label,
-  .spine-hop:hover .spine-label {
-    opacity: 1;
-    transform: translate(0, -50%) scale(0.74);
-  }
-
-  .spine-hop:hover:not(.is-current) .spine-label {
-    transform: translate(0, -50%) scale(0.67);
-  }
-}
-
-/* On a phone the spine hugs the edge the way a native scrollbar does. */
-@media (max-width: 700px) {
-  .spine {
-    left: 0.4rem;
-    height: min(40vh, 260px);
-  }
-
-  .spine-hop {
-    width: 7px;
-    height: 7px;
-    margin: -3.5px 0 0 -3.5px;
-  }
-
-  .spine-packet {
-    width: 6px;
-    height: 6px;
-  }
-}
-
 /* ---------- word fill ----------
  * story.js wraps each word of the About lede and sets its opacity from
  * scroll. The floor keeps every word readable before it lights up. */
@@ -682,6 +541,10 @@ html.is-stacked main > .is-covering {
   flex: 0 0 auto;
   width: min(84vw, 980px);
   margin: 0;
+  /* Opaque in the section's own colour, so the route passes behind a card
+     rather than through its text as the cards slide over it. */
+  background: var(--color-background);
+  transform-origin: center 40%;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 1.5rem;
@@ -877,11 +740,6 @@ html.work-pinned .work-count {
 
 html.work-pinned .work-progress {
   margin-top: 0.5rem;
-}
-
-/* The cards pass under the spine, so its label steps aside meanwhile. */
-html.work-active .spine-label {
-  opacity: 0 !important;
 }
 
 /* Short screens, and phones where a card is swiped sideways, keep the card
@@ -1202,4 +1060,222 @@ html.js-ready .screenshots-grid .reveal.in-view img {
   .send-trace.is-done .send-line::before {
     transform: scaleX(1);
   }
+}
+
+/* ---------- route ----------
+ * route.js draws a line that winds down the page through every heading.
+ * It sits behind the content (.route-above lifts the content over it) and
+ * every colour is a token, so it follows the palette and the theme. */
+.route-svg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.route-above {
+  position: relative;
+  z-index: 1;
+}
+
+.route-ghost {
+  fill: none;
+  stroke: var(--color-border-strong);
+  stroke-width: 1.5;
+  stroke-dasharray: 2 7;
+  stroke-linecap: round;
+}
+
+.route-line {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 2.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.route-node-ring {
+  fill: var(--color-background);
+  stroke: var(--color-border-strong);
+  stroke-width: 1.5;
+  transition:
+    stroke 400ms var(--ease),
+    fill 400ms var(--ease);
+}
+
+.route-node-dot {
+  fill: var(--color-border-strong);
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    fill 400ms var(--ease),
+    transform 600ms var(--ease-out-expo);
+}
+
+.route-node.is-lit .route-node-ring {
+  stroke: var(--color-accent);
+}
+
+.route-node.is-lit .route-node-dot {
+  fill: var(--color-accent);
+  transform: scale(1.35);
+}
+
+.route-node.is-end .route-node-ring {
+  stroke-dasharray: 3 3;
+}
+
+.route-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  fill: var(--color-text-subtle);
+  /* A halo in the page colour keeps the label legible where the dotted
+     route runs behind it. */
+  paint-order: stroke;
+  stroke: var(--color-background);
+  stroke-width: 5px;
+  stroke-linejoin: round;
+  opacity: 0;
+  transition:
+    opacity 400ms var(--ease),
+    fill 400ms var(--ease);
+}
+
+.route-node.is-lit .route-label {
+  fill: var(--color-accent);
+}
+
+/* Labels live in the margin, so they appear only where there is one. */
+@media (min-width: 1400px) {
+  .route-label {
+    opacity: 1;
+  }
+}
+
+/* The packet at the head of the line. */
+.route-tip {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 900;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 300ms var(--ease);
+  will-change: transform;
+}
+
+.route-tip.is-on {
+  opacity: 1;
+}
+
+.route-tip-dot {
+  position: absolute;
+  left: -6px;
+  top: -6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow:
+    0 0 0 3px var(--color-background),
+    0 0 18px 4px var(--color-accent);
+}
+
+/* While the page moves, the packet carries the name of the current hop.
+   On a wide screen the labels are already in the margin, so it stays a dot. */
+.route-tip-label {
+  position: absolute;
+  top: 0;
+  left: 14px;
+  transform: translate(-6px, -50%);
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  transition:
+    opacity 250ms var(--ease),
+    transform 420ms var(--ease-out-expo);
+}
+
+.route-tip-label:empty {
+  display: none;
+}
+
+.route-tip.is-flip .route-tip-label {
+  left: auto;
+  right: 14px;
+  transform: translate(6px, -50%);
+}
+
+@media (max-width: 1399px) {
+  .route-tip.is-moving .route-tip-label {
+    opacity: 1;
+    transform: translate(0, -50%);
+  }
+}
+
+/* The sideways stretch of the route under the pinned gallery is its
+   progress bar now. */
+html.has-route.work-pinned .work-progress {
+  visibility: hidden;
+}
+
+@media (max-width: 700px) {
+  .route-line {
+    stroke-width: 2.5;
+  }
+}
+
+/* ---------- heading entrances ----------
+ * main.js wraps each word of a section heading; when the heading is
+ * revealed, the words rise out of their masks one after another. Without
+ * JS the words are never wrapped, and under reduced motion they are left
+ * alone. */
+html.js-ready .hw {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+html.js-ready .hw > span {
+  display: inline-block;
+  transform: translateY(108%);
+  transition: transform 950ms var(--ease-out-expo);
+  transition-delay: calc(var(--i, 0) * 60ms + 120ms);
+}
+
+html.js-ready .in-view .hw > span {
+  transform: none;
+}
+
+/* The heading block itself no longer needs to slide; its words do. */
+html.js-ready .section-heading.reveal {
+  transform: none;
+}
+
+/* ---------- skills rows ----------
+ * Rows arrive from alternate sides instead of all rising the same way. */
+html.js-ready .skills-rows > .skills-row.reveal:nth-child(odd) {
+  transform: translateX(-28px);
+}
+
+html.js-ready .skills-rows > .skills-row.reveal:nth-child(even) {
+  transform: translateX(28px);
+}
+
+html.js-ready .skills-rows > .skills-row.reveal.in-view {
+  transform: none;
 }

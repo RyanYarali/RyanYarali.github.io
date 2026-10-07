@@ -1,8 +1,8 @@
 /**
  * Interactive layer
  * -----------------
- * Ambient scroll trace (not on the home page, which has the globe and the
- * route spine), hero counters, the project accordion, the skills filter, and
+ * Ambient scroll trace (only on pages without the winding route), hero
+ * counters, the project accordion, the skills filter, and
  * magnetic buttons.
  *
  * Every effect here is driven by scroll or by a tap, never by cursor position
@@ -21,9 +21,10 @@
   function initTrace() {
     var cv = document.getElementById("site-trace");
     if (!cv || !cv.getContext) return;
-    // The home page has the globe and the route spine; a third ambient line
-    // there would only compete with them.
-    if (document.getElementById("hero-globe")) return;
+    // Pages with the winding route (route.js) already have a line running
+    // through them; a second ambient one would only compete with it. This
+    // runs on DOMContentLoaded, after route.js has marked the page.
+    if (document.documentElement.classList.contains("has-route")) return;
 
     var ctx = cv.getContext("2d");
     var W = 0;

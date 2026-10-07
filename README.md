@@ -40,7 +40,7 @@ assets/
     layout.css        Navigation, sections, footer, scroll reveal
     components.css    Buttons, forms, tags, cards
     interactive.css   Ambient trace, palette dock, stat strip, project accordion
-    motion.css        Intro, hero, globe, cursor, stacking, spine, tilt
+    motion.css        Intro, hero, globe, cursor, stacking, route, gallery
     pages.css         Page- and section-specific styles
   js/
     theme.js          Light/dark theme with system preference + persistence
@@ -51,7 +51,7 @@ assets/
     hero.js           First-visit intro, hero entrance, lazy globe loader
     hero-globe.js     The WebGL network globe (ES module, three.js)
     cursor.js         Cursor ring that follows the real pointer
-    spine.js          Route spine: scroll progress with a hop per section
+    route.js          The winding route: a timeline line through every heading
     story.js          Home page stacking, About word fill, portrait tilt
   vendor/three/       three.js r186, the one third-party library (see its README)
 CNAME, robots.txt, sitemap.xml, favicon.svg
@@ -119,22 +119,16 @@ palette list, edit `palette.js`. Nothing else hardcodes a colour or font.
   which sinks back and fades toward the page colour. Sections taller than the
   screen scroll through first, then hold. In-page links scroll to a section's
   place in the flow, since a stuck section's own box is not where it lives.
-- **Route spine:** a line down the left edge with a hop per section (per
-  heading on a case study), a packet on its leading edge, and a label on the
-  current hop where the margin is wide enough. It replaced the old scroll
-  rail.
-- **Work gallery:** on a wide screen the projects section holds while
-  vertical scroll slides the cards sideways, each screenshot drifting against
-  its frame. Phones, reduced motion and no-JS visitors get the same cards as a
-  native swipe carousel.
-- **Card to case study:** a card's image and its case study's cover share a
-  `view-transition-name`, so in browsers with cross-document View
-  Transitions the image morphs into the next page. Others just navigate.
-- **Skills:** two marquee rows, built at runtime from the skills list, drift
-  in opposite directions; the filter lifts matching rows to the top with a
-  FLIP animation.
-- **Contact:** sending draws the request as a packet travelling to the
-  inbox, and logs the real host, status code and round-trip time.
+- **Route:** a line that winds down the page like a timeline: down one
+  edge of a section, across the open space above the next heading, and on.
+  A dotted line shows the road ahead; the solid line draws in behind a
+  packet that rides at the reading line, lighting each heading as a hop. On
+  the stacked home page each section carries its own stretch, so the line
+  moves with its card; under the pinned gallery it runs sideways with the
+  cards. Case studies weave between their sections. On phones the packet
+  carries the current hop's name while the page moves.
+- **Headings:** eyebrows decode out of random characters and heading words
+  rise out of a mask as they are revealed.
 - **About:** the lede lights up word by word as it is read, and the portrait
   tilts toward the pointer.
 - **Cursor ring:** follows the real pointer (which stays visible), wraps
