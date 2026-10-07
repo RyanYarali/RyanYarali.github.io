@@ -118,6 +118,13 @@ palette list, edit `palette.js`. Nothing else hardcodes a colour or font.
   heading on a case study), a packet on its leading edge, and a label on the
   current hop where the margin is wide enough. It replaced the old scroll
   rail.
+- **Work gallery:** on a wide screen the projects section holds while
+  vertical scroll slides the cards sideways, each screenshot drifting against
+  its frame. Phones, reduced motion and no-JS visitors get the same cards as a
+  native swipe carousel.
+- **Card to case study:** a card's image and its case study's cover share a
+  `view-transition-name`, so in browsers with cross-document View
+  Transitions the image morphs into the next page. Others just navigate.
 - **About:** the lede lights up word by word as it is read, and the portrait
   tilts toward the pointer.
 - **Cursor ring:** follows the real pointer (which stays visible), wraps
@@ -138,8 +145,8 @@ respects `prefers-reduced-motion`.
 ## Adding a project
 
 The work list is plain HTML, not generated. Copy an existing
-`.project-accordion-item` block and edit it in **both** `index.html` and
-`projects.html`, keeping the `id` on the panel unique per page and matching the
+`.work-card` in `index.html` and an existing `.project-accordion-item` in
+`projects.html`, and edit **both**, keeping the `id` on the panel unique per page and matching the
 `aria-controls` on its button.
 
 It used to be rendered from a data object in JavaScript. That cost more than it

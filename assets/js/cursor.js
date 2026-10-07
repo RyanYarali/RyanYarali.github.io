@@ -22,7 +22,7 @@
   if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-  var VIEW = ".project-accordion-media, .shots img, .screenshots-grid img";
+  var VIEW = ".work-media, .project-accordion-media, .shots img, .screenshots-grid img, .case-cover";
   var TEXT = "input, textarea, select, [contenteditable]";
   var LINK = "a, button, [role='button'], label, summary";
   var LABELS = { view: "View", drag: "Drag" };
