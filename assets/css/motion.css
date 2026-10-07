@@ -368,3 +368,241 @@ html.hero-anim .hero-reveal {
 .cursor-ring.is-pressed .cursor-shape {
   transform: scale(0.82);
 }
+
+/* ---------- stacking ----------
+ * story.js adds .is-stacked (never under reduced motion) and sets three
+ * custom properties on each section of the home page:
+ *   --stick-top  where it holds: 0, or negative for a section taller than
+ *                the screen, so it scrolls through before it holds
+ *   --cover      0 to 1, how far the next section has slid over it
+ * A covered section sinks back and fades toward the page colour, and once it
+ * is fully covered it stops painting (.is-covered). */
+html.is-stacked main > .hero,
+html.is-stacked main > .section {
+  position: sticky;
+  top: var(--stick-top, 0px);
+  transform: scale(calc(1 - var(--cover, 0) * 0.07));
+}
+
+html.is-stacked main > .section {
+  border-top: 1px solid var(--color-border);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  box-shadow: var(--shadow-up);
+}
+
+/* Every page has to be opaque to cover the one beneath it, and alternating
+   grounds keep the edge between two pages visible. */
+html.is-stacked main > .projects,
+html.is-stacked main > .learning {
+  background-color: var(--color-background);
+}
+
+html.is-stacked main > .skills {
+  background-color: var(--color-surface);
+}
+
+html.is-stacked main > .hero::after,
+html.is-stacked main > .section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  border-radius: inherit;
+  background: var(--color-background);
+  opacity: calc(var(--cover, 0) * 0.62);
+  pointer-events: none;
+}
+
+html.is-stacked main > .is-covering {
+  will-change: transform;
+}
+
+html.is-stacked main > .is-covered {
+  visibility: hidden;
+}
+
+/* ---------- route spine ---------- */
+.spine {
+  position: fixed;
+  left: clamp(0.85rem, 2.2vw, 2rem);
+  top: 50%;
+  z-index: var(--z-nav);
+  width: 2px;
+  height: min(56vh, 440px);
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity 420ms var(--ease);
+}
+
+.spine.is-active {
+  opacity: 1;
+}
+
+.spine-track,
+.spine-fill {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-pill);
+}
+
+.spine-track {
+  background: var(--color-border);
+}
+
+.spine-fill {
+  background: var(--color-accent);
+  transform-origin: top center;
+  transform: scaleY(0);
+}
+
+.spine-packet {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  box-shadow:
+    0 0 0 3px var(--color-background),
+    0 0 14px 2px var(--color-accent);
+  will-change: transform;
+}
+
+.spine-hop {
+  position: absolute;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--color-border-strong);
+  background: var(--color-background);
+  cursor: pointer;
+  transition:
+    border-color 300ms var(--ease),
+    background-color 300ms var(--ease),
+    transform 420ms var(--ease-out-expo);
+}
+
+/* A bigger invisible target than the dot. */
+.spine-hop::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+}
+
+.spine-hop.is-past {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+}
+
+.spine-hop.is-current {
+  border-color: var(--color-accent);
+  background: var(--color-background);
+  transform: scale(1.35);
+}
+
+.spine-hop:hover {
+  transform: scale(1.5);
+}
+
+.spine-label {
+  position: absolute;
+  left: calc(100% + 0.75rem);
+  top: 50%;
+  transform: translate(-6px, -50%);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--color-text-muted);
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--color-background) 80%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 300ms var(--ease),
+    transform 420ms var(--ease-out-expo);
+}
+
+/* Labels only where the margin can hold them without touching the content:
+   the current hop always, any other on hover. The label sits in a scaled
+   parent, so it is scaled back to keep a steady size. */
+@media (min-width: 1360px) {
+  .spine-hop.is-current .spine-label,
+  .spine-hop:hover .spine-label {
+    opacity: 1;
+    transform: translate(0, -50%) scale(0.74);
+  }
+
+  .spine-hop:hover:not(.is-current) .spine-label {
+    transform: translate(0, -50%) scale(0.67);
+  }
+}
+
+/* On a phone the spine hugs the edge the way a native scrollbar does. */
+@media (max-width: 700px) {
+  .spine {
+    left: 0.4rem;
+    height: min(40vh, 260px);
+  }
+
+  .spine-hop {
+    width: 7px;
+    height: 7px;
+    margin: -3.5px 0 0 -3.5px;
+  }
+
+  .spine-packet {
+    width: 6px;
+    height: 6px;
+  }
+}
+
+/* ---------- word fill ----------
+ * story.js wraps each word of the About lede and sets its opacity from
+ * scroll. The floor keeps every word readable before it lights up. */
+.about-lede.is-filling .w {
+  opacity: 0.2;
+  transition: opacity 120ms linear;
+}
+
+.about-lede em {
+  font-style: normal;
+  color: var(--color-accent);
+}
+
+/* ---------- tilt card ---------- */
+.about-photo-wrap {
+  width: 100%;
+  max-width: 300px;
+}
+
+.about-photo {
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.about-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--gx, 50%) var(--gy, 30%),
+    var(--color-glare),
+    transparent 58%
+  );
+  mix-blend-mode: soft-light;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms var(--ease);
+}
+
+.about-photo.is-tilting::after {
+  opacity: 1;
+}

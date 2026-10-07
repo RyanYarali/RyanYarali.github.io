@@ -91,6 +91,25 @@
   // (e.g. the project list) is present before elements are observed.
   document.addEventListener("DOMContentLoaded", initScrollReveal);
 
+  // ==================== Layout helper ====================
+  // On the home page the sections are sticky (story.js stacks them), and the
+  // offsetTop of a stuck element reports where it is stuck, not where it sits
+  // in the flow. This gives the flow position either way, for the nav, the
+  // spine and the stacking to share.
+  function naturalTop(el) {
+    const parent = el.parentElement;
+    if (parent && getComputedStyle(el).position === "sticky") {
+      let top = parent.getBoundingClientRect().top + window.scrollY;
+      for (let n = parent.firstElementChild; n && n !== el; n = n.nextElementSibling) {
+        top += n.offsetHeight;
+      }
+      return top;
+    }
+    return el.getBoundingClientRect().top + window.scrollY;
+  }
+
+  window.siteLayout = { top: naturalTop };
+
   // ==================== Active Navigation Link ====================
   function setActiveNavLink() {
     const sections = document.querySelectorAll("header[id], section[id]");
@@ -99,8 +118,9 @@
     let current = "";
 
     sections.forEach((section) => {
-      const sectionTop = section.offsetTop;
-      if (window.pageYOffset >= sectionTop - 120) {
+      const sectionTop = naturalTop(section);
+      // The same line the route spine uses, so the two always agree.
+      if (window.pageYOffset + window.innerHeight * 0.4 >= sectionTop) {
         current = section.getAttribute("id");
       }
     });

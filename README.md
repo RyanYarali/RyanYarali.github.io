@@ -39,7 +39,7 @@ assets/
     layout.css        Navigation, sections, footer, scroll reveal
     components.css    Buttons, forms, tags, cards
     interactive.css   Ambient trace, palette dock, stat strip, project accordion
-    motion.css        Intro, hero entrance, hero globe, cursor ring
+    motion.css        Intro, hero, globe, cursor, stacking, spine, tilt
     pages.css         Page- and section-specific styles
   js/
     theme.js          Light/dark theme with system preference + persistence
@@ -50,6 +50,8 @@ assets/
     hero.js           First-visit intro, hero entrance, lazy globe loader
     hero-globe.js     The WebGL network globe (ES module, three.js)
     cursor.js         Cursor ring that follows the real pointer
+    spine.js          Route spine: scroll progress with a hop per section
+    story.js          Home page stacking, About word fill, portrait tilt
   vendor/three/       three.js r186, the one third-party library (see its README)
 CNAME, robots.txt, sitemap.xml, favicon.svg
 ```
@@ -108,6 +110,16 @@ palette list, edit `palette.js`. Nothing else hardcodes a colour or font.
   after the page has finished loading, renders only while the hero is on
   screen, follows the palette, and falls back to a CSS poster without WebGL
   or with Data Saver on.
+- **Stacking:** on the home page each section slides up over the last,
+  which sinks back and fades toward the page colour. Sections taller than the
+  screen scroll through first, then hold. In-page links scroll to a section's
+  place in the flow, since a stuck section's own box is not where it lives.
+- **Route spine:** a line down the left edge with a hop per section (per
+  heading on a case study), a packet on its leading edge, and a label on the
+  current hop where the margin is wide enough. It replaced the old scroll
+  rail.
+- **About:** the lede lights up word by word as it is read, and the portrait
+  tilts toward the pointer.
 - **Cursor ring:** follows the real pointer (which stays visible), wraps
   buttons, and reads "View" or "Drag" over images and the globe. Fine
   pointers only.

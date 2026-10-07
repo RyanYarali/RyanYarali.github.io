@@ -509,14 +509,21 @@ export function mount(host, { reduced = false } = {}) {
     });
   }
 
-  // Only spend frames while the hero is on screen and the tab is in front.
+  // Only spend frames while the hero is on screen, the tab is in front, and
+  // (on the stacked home page) the hero is not sitting fully covered under
+  // the sections that slid over it, which IntersectionObserver can't see.
   const hero = host.closest(".hero") || host;
+  let covered = hero.classList.contains("is-covered");
+  const sync = () => setRunning(visible && !covered && !document.hidden);
   new IntersectionObserver((entries) => {
     visible = entries[0].isIntersecting;
-    setRunning(visible && !document.hidden);
+    sync();
   }).observe(hero);
-  document.addEventListener("visibilitychange", () => {
-    setRunning(visible && !document.hidden);
+  document.addEventListener("visibilitychange", sync);
+  document.addEventListener("stack:covered", (e) => {
+    if (e.detail.el !== hero) return;
+    covered = e.detail.covered;
+    sync();
   });
 
   applyTokens();
