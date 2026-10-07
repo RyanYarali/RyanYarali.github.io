@@ -21,10 +21,10 @@ const R = 1;
 
 // lat/lon in degrees. Projects sit on the face that starts toward the camera.
 const NODES = [
-  { id: "nooklook", label: "Nook Look", project: true, lat: 22, lon: -32 },
-  { id: "vancobab", label: "Vanco Bab", project: true, lat: -14, lon: 24 },
+  { id: "nooklook", label: "Nook Look", project: true, lat: 22, lon: -32, href: "projects/nooklook.html" },
+  { id: "vancobab", label: "Vanco Bab", project: true, lat: -14, lon: 24, href: "https://vancobab.ca" },
   { id: "termeh", label: "Termeh Cafe", project: true, lat: 40, lon: 52 },
-  { id: "taskmate", label: "TaskMate", project: true, lat: -40, lon: -18 },
+  { id: "taskmate", label: "TaskMate", project: true, lat: -40, lon: -18, href: "projects/taskmate.html" },
   { id: "js", label: "JavaScript", lat: -6, lon: -72 },
   { id: "react", label: "React", lat: 54, lon: 8 },
   { id: "node", label: "Node.js", lat: 22, lon: 102 },
@@ -260,9 +260,20 @@ export function mount(host, { reduced = false } = {}) {
 
     let el = null;
     if (showLabels) {
-      el = document.createElement("span");
-      el.className = "globe-label" + (n.project ? " is-project" : "");
+      // A project with somewhere to go is a real link (the same links are
+      // in the page text; the globe stays out of the tab order).
+      el = document.createElement(n.href ? "a" : "span");
+      el.className = "globe-label" + (n.project ? " is-project" : "") + (n.href ? " is-link" : "");
       el.textContent = n.label;
+      if (n.href) {
+        el.href = n.href;
+        el.tabIndex = -1;
+        el.dataset.cursor = "view";
+        if (/^https?:/.test(n.href)) {
+          el.target = "_blank";
+          el.rel = "noopener noreferrer";
+        }
+      }
       labelLayer.appendChild(el);
     }
     byId[n.id] = { ...n, p, mesh, el, shown: -1 };
@@ -425,16 +436,21 @@ export function mount(host, { reduced = false } = {}) {
       if (o <= 0) {
         if (n.shown !== 0) {
           n.el.style.opacity = "0";
+          n.el.classList.remove("is-shown");
           n.shown = 0;
         }
         continue;
       }
       v.project(camera);
-      const x = ((v.x + 1) / 2) * W;
+      // Keep the whole label inside the globe's box, so a node near the
+      // right edge doesn't have its name cut off.
+      if (!n.w) n.w = n.el.offsetWidth;
+      const x = Math.min(((v.x + 1) / 2) * W, W - n.w - 18);
       const y = ((1 - v.y) / 2) * H;
       n.el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) translate(12px, -50%)`;
       if (n.shown !== o) {
         n.el.style.opacity = String(o);
+        n.el.classList.toggle("is-shown", o > 0.6);
         n.shown = o;
       }
     }

@@ -152,6 +152,13 @@
       localStorage.setItem(INTRO_KEY, "1");
     } catch (e) {}
 
+    // On a touch screen there is no key to press.
+    var hint = overlay.querySelector(".intro-hint");
+    var touch = window.matchMedia("(hover: none)").matches || navigator.maxTouchPoints > 0;
+    if (hint && touch && !window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      hint.textContent = "Tap anywhere to skip";
+    }
+
     var ms = connectTime();
     var lines = [
       '<span class="dir">→</span> SYN',
