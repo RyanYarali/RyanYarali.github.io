@@ -1,0 +1,1169 @@
+/* ==================== Bold layer ====================
+ * The 2026 bold-minimal pass: the skills grid and its pixel icons, the
+ * project preview, the terminal, and the page-level treatments for the
+ * projects page, the case studies, the contact section, the footer and the
+ * error page. Loaded after motion.css on every page, so it can restyle what
+ * came before without touching it. Every colour is a token.
+ * ===================================================== */
+
+/* ---------- skills grid ----------
+ * One cell per area on a ruled grid, like a spec sheet: the 1px gaps are
+ * the rules. Wide cells hold the longer lists, so every row is full at
+ * every width. */
+.skill-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1px;
+  margin-top: 2.5rem;
+  background: var(--color-border);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+@media (min-width: 620px) {
+  .skill-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .skill-tile.is-wide {
+    grid-column: span 2;
+  }
+}
+
+@media (min-width: 1000px) {
+  .skill-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.skill-tile {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 0.85rem;
+  min-width: 0;
+  padding: 1.5rem 1.5rem 1.75rem;
+  background: var(--color-surface);
+  transition: background-color 300ms var(--ease);
+}
+
+/* A faint pixel grid shows through when the tile is live. */
+.skill-tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(color-mix(in srgb, var(--color-accent) 22%, transparent) 1px, transparent 1.4px);
+  background-size: 12px 12px;
+  opacity: 0;
+  transition: opacity 400ms var(--ease);
+  pointer-events: none;
+}
+
+.skill-tile:hover,
+.skill-tile.is-live {
+  background: var(--color-surface-2);
+}
+
+.skill-tile:hover::before,
+.skill-tile.is-live::before {
+  opacity: 1;
+}
+
+.skill-tile-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.skill-icon {
+  display: block;
+  width: 44px;
+  height: 44px;
+}
+
+.skill-count {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--color-text-subtle);
+  font-variant-numeric: tabular-nums;
+  transition: color 300ms var(--ease);
+}
+
+.skill-tile:hover .skill-count,
+.skill-tile.is-live .skill-count {
+  color: var(--color-accent);
+}
+
+.skill-name {
+  position: relative;
+  margin: 0.25rem 0 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.skill-list {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.skill-list li {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.45;
+  color: var(--color-text-muted);
+  transition: color 300ms var(--ease);
+}
+
+.skill-list li:not(:last-child)::after {
+  content: "/";
+  margin: 0 0.55rem;
+  color: var(--color-border-strong);
+}
+
+.skill-tile:hover .skill-list li,
+.skill-tile.is-live .skill-list li {
+  color: var(--color-text);
+}
+
+/* The icons: accent, its highlight and shade, and the text colour. */
+.pi-a { fill: var(--color-accent); }
+.pi-h { fill: var(--px-hi); }
+.pi-l { fill: var(--px-lo); }
+.pi-k { fill: var(--color-text); }
+
+.skill-icon .pi-b {
+  display: none;
+}
+
+/* Live: the two frames alternate, like a sprite. */
+.skill-tile:hover .skill-icon .pi-a,
+.skill-tile.is-live .skill-icon .pi-a {
+  animation: pi-frame 0.9s steps(1) infinite;
+}
+
+.skill-tile:hover .skill-icon .pi-b,
+.skill-tile.is-live .skill-icon .pi-b {
+  display: inline;
+  animation: pi-frame 0.9s steps(1) infinite reverse;
+}
+
+@keyframes pi-frame {
+  50% {
+    visibility: hidden;
+  }
+}
+
+/* Revealed: the icon boots in pixel by pixel. */
+html.js-ready .skill-tile.reveal:not(.in-view) .skill-icon rect {
+  opacity: 0;
+}
+
+html.js-ready .skill-tile.in-view .skill-icon .pi-a rect {
+  animation: pi-boot 1ms steps(1) both;
+  animation-delay: calc(var(--d, 0ms) + var(--reveal-index, 0) * 90ms + 200ms);
+}
+
+@keyframes pi-boot {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---------- floating project preview ---------- */
+.float-preview {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 50;
+  width: min(360px, 30vw);
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  pointer-events: none;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  scale: 0.85;
+  transition:
+    opacity 260ms var(--ease),
+    scale 420ms var(--ease-out-expo);
+}
+
+.float-preview.is-on {
+  opacity: 1;
+  scale: 1;
+}
+
+.float-preview img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---------- terminal ----------
+ * A small terminal window over a dimmed page. The <dialog> handles focus
+ * and Escape; the list is a listbox driven from the input. */
+.term {
+  width: min(560px, calc(100vw - 32px));
+  max-height: min(520px, calc(100dvh - 64px));
+  margin: 12vh auto auto;
+  padding: 0;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.45),
+    0 0 0 1px color-mix(in srgb, var(--color-accent) 25%, transparent);
+  overflow: hidden;
+}
+
+.term[open] {
+  display: flex;
+  flex-direction: column;
+  animation: term-in 280ms var(--ease-out-expo);
+}
+
+@keyframes term-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+}
+
+.term::backdrop {
+  background: color-mix(in srgb, var(--color-background) 70%, transparent);
+  backdrop-filter: blur(4px);
+}
+
+.term-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-text-subtle);
+}
+
+.term-dots {
+  display: inline-flex;
+  gap: 0.35rem;
+}
+
+.term-dots i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--color-border-strong);
+}
+
+.term-dots i:first-child {
+  background: var(--color-accent);
+}
+
+.term-title {
+  flex: 1;
+}
+
+.term-close {
+  font: inherit;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.15rem 0.45rem;
+  cursor: pointer;
+}
+
+.term-close:hover,
+.term-close:focus-visible {
+  color: var(--color-text);
+  border-color: var(--color-accent);
+}
+
+.term-body {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0.9rem 0.9rem 0.6rem;
+  font-family: var(--font-mono);
+}
+
+.term-prompt {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.2rem 0.3rem 0.8rem;
+  border-bottom: 1px dashed var(--color-border);
+  color: var(--color-accent);
+  font-size: 1rem;
+}
+
+.term-input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  caret-color: var(--color-accent);
+}
+
+.term-input::placeholder {
+  color: var(--color-text-subtle);
+}
+
+.term-list {
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.term-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.term-list li[aria-selected="true"] {
+  background: var(--color-accent-soft);
+  box-shadow: inset 2px 0 0 var(--color-accent);
+}
+
+.term-cmd {
+  flex: 0 0 9.5rem;
+  color: var(--color-text);
+}
+
+.term-list li[aria-selected="true"] .term-cmd::before {
+  content: "> ";
+  color: var(--color-accent);
+}
+
+.term-desc {
+  min-width: 0;
+  color: var(--color-text-subtle);
+  font-size: 0.78rem;
+}
+
+.term-none {
+  color: var(--color-text-muted);
+  cursor: default;
+}
+
+.term-foot {
+  display: flex;
+  gap: 1.25rem;
+  margin: 0.5rem 0 0;
+  padding: 0.6rem 0.3rem 0.2rem;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.68rem;
+  color: var(--color-text-subtle);
+}
+
+@media (max-width: 560px) {
+  .term-cmd {
+    flex-basis: 7.5rem;
+  }
+
+  .term-desc {
+    display: none;
+  }
+
+  .term-foot {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-tile:hover .skill-icon .pi-a,
+  .skill-tile.is-live .skill-icon .pi-a,
+  html.js-ready .skill-tile.in-view .skill-icon .pi-a rect {
+    animation: none;
+  }
+
+  .skill-tile:hover .skill-icon .pi-b,
+  .skill-tile.is-live .skill-icon .pi-b {
+    display: none;
+  }
+
+  .term[open] {
+    animation: none;
+  }
+}
+
+/* ---------- contact ----------
+ * The heading goes big, and the form loses its boxes: each field is a line
+ * that draws itself in the accent from the left when it takes focus. */
+.contact-heading h2 {
+  font-size: clamp(3.25rem, 6.2vw, 6.25rem);
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+  margin-bottom: 1.5rem;
+}
+
+.contact-heading h2 .highlight {
+  color: var(--color-accent);
+}
+
+.contact-form .form-group input,
+.contact-form .form-group textarea {
+  padding: 0.75rem 0;
+  border: 0;
+  border-bottom: 1px solid var(--color-border-strong);
+  border-radius: 0;
+  background-color: transparent;
+  background-image: linear-gradient(var(--color-accent), var(--color-accent));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 2px;
+  font-size: 1.15rem;
+  transition: background-size 600ms var(--ease-out-expo);
+}
+
+.contact-form .form-group input:focus,
+.contact-form .form-group textarea:focus {
+  border-color: var(--color-border-strong);
+  box-shadow: none;
+  background-size: 100% 2px;
+}
+
+.contact-form .form-group textarea {
+  min-height: 140px;
+}
+
+.contact-form .form-group label {
+  margin-bottom: 0.15rem;
+  transition: color 300ms var(--ease);
+}
+
+.contact-form .form-group:focus-within label {
+  color: var(--color-accent);
+}
+
+/* ---------- footer ----------
+ * Links on one line, then the name set as large as the screen allows, low
+ * contrast, its lower edge cropped by the page. Its letters rise one after
+ * another as the footer scrolls in. */
+.footer {
+  overflow: hidden;
+  padding-bottom: 0;
+}
+
+.footer-social {
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.footer-term {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.75rem 0.35rem 0.4rem;
+  font: inherit;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition:
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.footer-term:hover,
+.footer-term:focus-visible {
+  color: var(--color-text);
+  border-color: var(--color-accent);
+}
+
+.footer-term kbd {
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--color-accent);
+}
+
+.footer-mark {
+  margin-top: 2.5rem;
+  margin-bottom: -0.2em;
+  font-family: var(--font-display);
+  font-size: 20.5vw;
+  font-weight: 700;
+  line-height: 0.8;
+  letter-spacing: -0.055em;
+  text-align: center;
+  white-space: nowrap;
+  color: color-mix(in srgb, var(--color-text) 9%, var(--color-background));
+  user-select: none;
+}
+
+.footer-mark span {
+  display: inline-block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports ((animation-timeline: view()) and (animation-range: entry)) {
+    .footer-mark span {
+      animation: mark-rise linear both;
+      animation-timeline: view();
+      animation-range: entry calc(var(--i) * 3%) entry calc(55% + var(--i) * 3%);
+    }
+
+    @keyframes mark-rise {
+      from {
+        transform: translateY(55%);
+        opacity: 0;
+      }
+    }
+  }
+}
+
+/* ---------- page titles ----------
+ * The projects page title runs as big as the hero name, with its count set
+ * small beside it, like a footnote. */
+.page-title h1 {
+  margin: 0.5rem 0 1.5rem;
+  font-size: clamp(4rem, 15.5vw, 13.5rem);
+  font-weight: 700;
+  line-height: 0.84;
+  letter-spacing: -0.055em;
+}
+
+.title-count {
+  position: relative;
+  top: -0.25em;
+  margin-left: 0.2em;
+  font-family: var(--font-mono);
+  font-size: 0.13em;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  vertical-align: top;
+  color: var(--color-accent);
+}
+
+html.js-ready .page-title.reveal {
+  transform: none;
+}
+
+/* ---------- projects list ----------
+ * The rows read as an index set in big type; the hovered one turns blue,
+ * and (flair.js) its cover floats beside the pointer. */
+.page-header + .section .project-accordion-title {
+  font-size: clamp(1.75rem, 4.4vw, 3.6rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  transition: color 300ms var(--ease);
+}
+
+.page-header + .section .project-accordion-head {
+  padding-block: 1.6rem;
+}
+
+.page-header + .section .project-accordion-head:hover .project-accordion-title,
+.page-header + .section .project-accordion-item.is-open .project-accordion-title {
+  color: var(--color-accent);
+}
+
+/* ---------- case studies ---------- */
+.project-detail-page .project-hero h1 {
+  font-size: clamp(3.25rem, 9vw, 8.25rem);
+  font-weight: 700;
+  line-height: 0.88;
+  letter-spacing: -0.05em;
+  margin-bottom: 1rem;
+}
+
+/* The cover's frame stays put (it is what morphs in from the home page);
+   the picture inside drifts and settles as it scrolls past. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports ((animation-timeline: view()) and (animation-range: entry)) {
+    .case-cover img {
+      animation: cover-drift linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+
+    @keyframes cover-drift {
+      from {
+        transform: scale(1.08) translateY(-2.5%);
+      }
+      to {
+        transform: scale(1) translateY(2.5%);
+      }
+    }
+  }
+}
+
+/* Screenshots wipe up into their frames as they are revealed. */
+html.js-ready .shot.reveal img {
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1100ms var(--ease-out-expo) 150ms;
+}
+
+html.js-ready .shot.reveal.in-view img {
+  clip-path: inset(0 0 0 0);
+}
+
+/* The next case study, set big. The name fills with the accent from the
+   left on hover, and the arrow moves on. */
+.next-project {
+  margin-top: 5rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.next-project-link {
+  display: grid;
+  gap: 0.6rem;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.next-project-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.next-project-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
+  font-size: clamp(2.5rem, 8vw, 6.5rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+}
+
+.next-project-text {
+  background: linear-gradient(var(--color-accent), var(--color-accent)) 0 0 / 0% 100% no-repeat,
+    linear-gradient(var(--color-text), var(--color-text));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  transition: background-size 700ms var(--ease-out-expo);
+}
+
+.next-project-name svg {
+  flex: 0 0 auto;
+  color: var(--color-accent);
+  transition: transform 600ms var(--ease-out-expo);
+}
+
+.next-project-link:hover .next-project-text,
+.next-project-link:focus-visible .next-project-text {
+  background-size: 100% 100%, auto;
+}
+
+.next-project-link:hover svg,
+.next-project-link:focus-visible svg {
+  transform: translateX(0.18em);
+}
+
+.next-project-more {
+  display: flex;
+  gap: 1.5rem;
+  margin: 2rem 0 0;
+  font-size: 0.95rem;
+}
+
+.next-project-more a {
+  color: var(--color-text-muted);
+  text-underline-offset: 3px;
+}
+
+.next-project-more a:hover {
+  color: var(--color-accent);
+}
+
+/* ---------- error page ----------
+ * 404 in the pixel face, big, with a glitch: two offset copies in slices
+ * flicker across it every few seconds, as if the packet were corrupt. */
+.error-page-code {
+  font-family: var(--font-pixel);
+  font-style: normal;
+  font-size: clamp(5.5rem, 24vw, 15rem);
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  color: var(--color-accent);
+}
+
+.glitch {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.glitch::before {
+  color: var(--px-hi);
+}
+
+.glitch::after {
+  color: var(--px-lo);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .glitch::before {
+    animation: glitch-a 3.2s steps(1) infinite;
+  }
+
+  .glitch::after {
+    animation: glitch-b 3.2s steps(1) infinite;
+  }
+
+  @keyframes glitch-a {
+    0%, 88%, 100% { opacity: 0; }
+    89% { opacity: 1; clip-path: inset(10% 0 62% 0); transform: translate(-6px, 0); }
+    92% { opacity: 1; clip-path: inset(55% 0 20% 0); transform: translate(5px, 0); }
+    95% { opacity: 1; clip-path: inset(30% 0 45% 0); transform: translate(-3px, 0); }
+  }
+
+  @keyframes glitch-b {
+    0%, 88%, 100% { opacity: 0; }
+    90% { opacity: 1; clip-path: inset(70% 0 5% 0); transform: translate(6px, 0); }
+    93% { opacity: 1; clip-path: inset(5% 0 75% 0); transform: translate(-5px, 0); }
+    96% { opacity: 1; clip-path: inset(40% 0 35% 0); transform: translate(4px, 0); }
+  }
+}
+
+.error-page-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js-ready .shot.reveal img {
+    clip-path: none;
+    transition: none;
+  }
+}
+
+/* The list follows the title straight on. */
+.page-header:has(.page-title) {
+  padding-bottom: 1.5rem;
+}
+
+.page-header:has(.page-title) + .section {
+  padding-top: 1.5rem;
+}
+
+/* ---------- about ----------
+ * A statement set large that lights up as it is read, then the portrait
+ * beside a ruled fact sheet. The portrait resolves out of pixels when it
+ * scrolls in, then leans toward the pointer. */
+.about-lede {
+  max-width: 24ch;
+  margin: 0 0 clamp(3rem, 7vw, 5.5rem);
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 4.2vw, 3.6rem);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  color: var(--color-text);
+  text-wrap: balance;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2.75rem;
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .about-grid {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(3rem, 6vw, 6rem);
+  }
+}
+
+.about-photo-wrap {
+  width: 100%;
+  max-width: 440px;
+}
+
+.about-photo {
+  margin: 0;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+  box-shadow: var(--shadow-lg);
+}
+
+.about-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 280ms var(--ease);
+}
+
+/* The pixel resolve: the canvas holds the coarse frames; the real photo
+   fades in under it once the last frame lands. The glare stays on top. */
+.about-photo .pixel-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  transition: opacity 280ms var(--ease);
+}
+
+.about-photo.is-pixelated img {
+  opacity: 0;
+}
+
+.about-photo.is-resolved img {
+  opacity: 1;
+}
+
+.about-photo.is-resolved .pixel-canvas {
+  opacity: 0;
+}
+
+.about-photo::after {
+  z-index: 1;
+}
+
+.about-body {
+  display: grid;
+  gap: 2.25rem;
+  min-width: 0;
+}
+
+.about-text {
+  max-width: 52ch;
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.65;
+  color: var(--color-text-muted);
+}
+
+/* The fact sheet: label and value on one ruled line each. The rule draws
+   itself in from the left as its line is revealed. */
+.about-facts {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  margin: 0;
+}
+
+@media (min-width: 620px) {
+  .about-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 2.5rem;
+  }
+}
+
+.about-facts > div {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 0.35rem;
+  padding: 1.1rem 0 1.2rem;
+}
+
+.about-facts > div::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--color-border-strong);
+  transform-origin: left;
+}
+
+html.js-ready .about-facts > div.reveal::before {
+  transform: scaleX(0);
+  transition: transform 1000ms var(--ease-out-expo);
+  transition-delay: calc(var(--reveal-index, 0) * 80ms + 100ms);
+}
+
+html.js-ready .about-facts > div.reveal.in-view::before {
+  transform: none;
+}
+
+.about-facts dt {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.about-facts dd {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--color-text);
+}
+
+.about-facts dd a {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 4px;
+}
+
+.about-facts dd a:hover {
+  color: var(--color-accent);
+}
+
+.about-facts .status-dot {
+  animation: status-pulse 2.4s var(--ease) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js-ready .about-facts > div.reveal::before {
+    transform: none;
+    transition: none;
+  }
+
+  .about-facts .status-dot {
+    animation: none;
+  }
+}
+
+/* ---------- header ----------
+ * At the top of a page the bar is not there: the links float over the
+ * page. Scrolled, it lifts into a floating glass capsule with a hairline of
+ * reading progress along its foot. The capsule is a pseudo-element behind
+ * the row, so the row itself never moves (the hero name lands on the logo
+ * at a measured spot). A pill glides between the links: to the hovered one,
+ * back to the current section's. */
+.navbar {
+  background: transparent;
+  border-bottom-color: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition: border-color 300ms var(--ease);
+}
+
+.nav-container::before {
+  content: "";
+  position: absolute;
+  inset: 0.5rem 0.75rem;
+  z-index: -1;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--color-surface) 72%, transparent);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  backdrop-filter: blur(16px) saturate(150%);
+  opacity: 0;
+  transform: translateY(-6px) scale(0.985);
+  transition:
+    opacity 380ms var(--ease),
+    transform 520ms var(--ease-out-expo);
+  pointer-events: none;
+}
+
+.navbar.is-scrolled .nav-container::before {
+  opacity: 1;
+  transform: none;
+}
+
+/* Reading progress, drawn by scroll where the browser can. */
+.nav-container::after {
+  content: "";
+  position: absolute;
+  left: 2.25rem;
+  right: 2.25rem;
+  bottom: 0.5rem;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 0;
+  transition: opacity 300ms var(--ease);
+  pointer-events: none;
+}
+
+.navbar.is-scrolled .nav-container::after {
+  opacity: 1;
+}
+
+@supports ((animation-timeline: scroll()) and (animation-range: 0% 100%)) {
+  .nav-container::after {
+    animation: nav-progress linear both;
+    animation-timeline: scroll(root block);
+  }
+
+  @keyframes nav-progress {
+    to {
+      transform: scaleX(1);
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .nav-container::before {
+    inset: 0.55rem 1.25rem;
+  }
+}
+
+/* The gliding pill (flair.js) replaces the underline on a wide screen. */
+@media (min-width: 768px) {
+  .nav-links {
+    position: relative;
+  }
+
+  .nav-link {
+    z-index: 1;
+    border-radius: var(--radius-pill);
+  }
+
+  .nav-link::after {
+    display: none;
+  }
+
+  .nav-pill {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    height: 34px;
+    margin-top: -17px;
+    border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--color-text) 9%, transparent);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      transform 520ms cubic-bezier(0.34, 1.4, 0.64, 1),
+      width 520ms cubic-bezier(0.34, 1.4, 0.64, 1),
+      opacity 220ms var(--ease);
+  }
+}
+
+@media (max-width: 767px) {
+  .nav-pill {
+    display: none;
+  }
+}
+
+/* The logo: a block cursor blinks after the name on hover. */
+.logo-name::after {
+  content: "";
+  display: inline-block;
+  width: 0.5em;
+  height: 0.9em;
+  margin-left: 0.15em;
+  vertical-align: -0.08em;
+  background: var(--color-accent);
+  opacity: 0;
+}
+
+.logo:hover .logo-name::after,
+.logo:focus-visible .logo-name::after {
+  animation: logo-caret 0.9s steps(1) infinite;
+}
+
+@keyframes logo-caret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* The terminal's key chip. */
+.nav-term {
+  display: none;
+  align-items: center;
+  height: 40px;
+  padding: 0 0.6rem;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+}
+
+.nav-term kbd {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  transition: color var(--transition-fast);
+}
+
+.nav-term:hover,
+.nav-term:focus-visible {
+  border-color: var(--color-accent);
+}
+
+.nav-term:hover kbd,
+.nav-term:focus-visible kbd {
+  color: var(--color-accent);
+}
+
+@media (min-width: 1100px) {
+  .nav-term {
+    display: inline-flex;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-container::before,
+  .nav-pill {
+    transition: none;
+  }
+
+  .logo:hover .logo-name::after,
+  .logo:focus-visible .logo-name::after {
+    animation: none;
+    opacity: 1;
+  }
+}

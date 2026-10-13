@@ -50,40 +50,28 @@
 
   // ==================== Scroll Reveal ====================
   // ==================== Heading entrances ====================
-  // When a section heading is revealed, its eyebrow decodes out of random
-  // characters (the same effect as the name in the hero) and the heading's
-  // words rise out of a mask, one after another. The text itself is never
-  // changed for long: the words are only wrapped, and the eyebrow is back to
-  // its real text within half a second.
+  // When a heading is revealed, a glowing scan line sweeps across it and the
+  // text appears behind it, as if the packet were being read; its eyebrow
+  // decodes out of random characters (the same effect as the name in the
+  // hero). The text is only wrapped in one span, never changed.
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const GLYPHS = "01<>/#%&*+=ABCDEFxyz";
 
-  function wrapWords(heading) {
-    if (heading.dataset.words) return;
-    heading.dataset.words = "1";
-    let i = 0;
-    (function walk(node) {
-      Array.from(node.childNodes).forEach((n) => {
-        if (n.nodeType === 1) return walk(n);
-        if (n.nodeType !== 3 || !n.nodeValue.trim()) return;
-        const frag = document.createDocumentFragment();
-        n.nodeValue.split(/(\s+)/).forEach((part) => {
-          if (!part) return;
-          if (/^\s+$/.test(part)) {
-            frag.appendChild(document.createTextNode(part));
-            return;
-          }
-          const outer = document.createElement("span");
-          outer.className = "hw";
-          const inner = document.createElement("span");
-          inner.textContent = part;
-          inner.style.setProperty("--i", i++);
-          outer.appendChild(inner);
-          frag.appendChild(outer);
-        });
-        n.parentNode.replaceChild(frag, n);
-      });
-    })(heading);
+  function wrapScan(heading) {
+    if (heading.dataset.scan) return;
+    heading.dataset.scan = "1";
+    const span = document.createElement("span");
+    span.className = "hscan";
+    while (heading.firstChild) span.appendChild(heading.firstChild);
+    heading.appendChild(span);
+    heading.classList.add("has-scan");
+  }
+
+  // The scan line travels the width of the text, which is only known once
+  // the fonts are in.
+  function measureScan(heading) {
+    const span = heading.querySelector(".hscan");
+    if (span) heading.style.setProperty("--scan-w", span.offsetWidth + "px");
   }
 
   function decodeEyebrow(el) {
@@ -114,15 +102,16 @@
     })(start);
   }
 
+  const SCAN = ".section-heading.reveal h2, .project-section.reveal > h2, .page-title.reveal h1";
+
   function prepareHeadings() {
     if (reducedMotion) return;
-    document
-      .querySelectorAll(".section-heading.reveal h2, .project-section.reveal > h2")
-      .forEach(wrapWords);
+    document.querySelectorAll(SCAN).forEach(wrapScan);
   }
 
   function show(el) {
     if (el.classList.contains("in-view")) return;
+    if (!reducedMotion) el.querySelectorAll(".has-scan").forEach(measureScan);
     el.classList.add("in-view");
     if (reducedMotion) return;
     const eyebrow = el.matches(".section-heading") && el.querySelector(".eyebrow");

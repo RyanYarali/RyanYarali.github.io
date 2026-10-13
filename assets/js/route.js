@@ -406,6 +406,22 @@
       var y = offsetWithin(stop.el, main).y + stop.el.offsetHeight / 2;
       if (i === 0) {
         d = "M " + x + " " + y;
+        // The title runs wider than the article column, so the column's
+        // margin falls inside it and the line would cut through the title.
+        // Start in the title's own margin instead, run down past the title,
+        // and bend over to the column behind the cover image.
+        var hx = Math.max(12, offsetWithin(stop.el, main).x - 40);
+        var heroBox = main.querySelector(".project-hero");
+        if (hx < x - 4 && heroBox) {
+          var cover = heroBox.querySelector(".case-cover");
+          var bend = cover ? offsetWithin(cover, main).y + 60 : offsetWithin(heroBox, main).y + heroBox.offsetHeight;
+          d = "M " + hx + " " + y + " L " + hx + " " + bend + sweep(hx, bend, x, bend + 160);
+          stop.x = hx;
+          stop.y = y;
+          stop.side = side;
+          prevY = bend + 160;
+          return;
+        }
       } else {
         // Run down the current side, then sweep across in the gap above the
         // next heading.

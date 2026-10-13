@@ -3,10 +3,10 @@
  * ----------------------------------------
  * Starts from the system setting, allows a manual override, and persists it.
  *
- * The toggle button lives in the palette dock, which palette.js builds on
- * DOMContentLoaded, so this script cannot bind to it directly at parse time.
- * It listens on the document instead and exposes window.siteTheme, which means
- * the control can move anywhere in the markup without touching this file.
+ * The toggle button sits in the nav. This script runs before the nav is
+ * parsed, so it listens on the document instead of binding to the button,
+ * and exposes window.siteTheme; the control can move anywhere in the markup
+ * without touching this file.
  */
 
 (function () {
@@ -36,9 +36,21 @@
     toggle.setAttribute("title", label);
   }
 
+  // The browser chrome (the address bar on a phone) matches the page.
+  function syncChrome(theme) {
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (!m) {
+      m = document.createElement("meta");
+      m.name = "theme-color";
+      document.head.appendChild(m);
+    }
+    m.content = theme === "dark" ? "#0a0a0b" : "#fafafa";
+  }
+
   function applyTheme(theme, options) {
     document.documentElement.setAttribute("data-theme", theme);
     updateToggleA11y(theme);
+    syncChrome(theme);
 
     if (options && options.persist) {
       try {
@@ -75,6 +87,11 @@
         if (!override) applyTheme(e.matches ? "dark" : "light");
       });
   }
+
+  // The button is parsed after this script runs; label it once it exists.
+  document.addEventListener("DOMContentLoaded", function () {
+    updateToggleA11y(current());
+  });
 
   window.siteTheme = {
     toggle: toggleTheme,

@@ -1,7 +1,7 @@
 /* ==================== Motion layer ====================
  * The first-visit intro, the hero entrance, the 3D globe that stands behind
  * the hero, and the cursor ring. Like the rest of the site, every colour here
- * is a token, so all six palettes in both themes follow automatically.
+ * is a token, so both themes follow automatically.
  *
  * The page never depends on any of this: the intro and the hero entrance are
  * switched on by a class the inline <head> script adds, and both carry a CSS
@@ -67,45 +67,163 @@ html.intro-pending .intro {
 }
 
 /* ---------- hero ----------
- * The photo moved to About; the globe now owns the right of the hero, so the
- * text column runs on its own and the name gets to be properly large. */
+ * Bold and minimal: one line of meta at the top, the name across the full
+ * width, and a ruled footer with the pitch, one number and the two actions.
+ * The globe sits behind, off to the right. */
 .hero {
   overflow: clip;
+  /* A full screen: the name, then nothing else until the reader scrolls. */
+  min-height: 100svh;
 }
 
 .hero .container {
   position: relative;
-  z-index: 1;
-  /* The container spans the full width over the globe; only the text column
-     takes the pointer, so the globe underneath can be dragged. */
+  /* Above the stacking dimmer (z-index 5 on .hero::after): the name flies
+     up into the nav while the next section covers the hero, and must not
+     fade on the way. */
+  z-index: 6;
+  /* The container spans the full width over the globe; only the text takes
+     the pointer, so the globe underneath can be dragged. */
   pointer-events: none;
 }
 
 .hero-content {
+  pointer-events: none;
+  /* The name is sized from this box's width, so it always fills the line. */
+  container-type: inline-size;
+}
+
+.hero-top,
+.hero-foot {
   pointer-events: auto;
 }
 
-.hero-layout {
-  grid-template-columns: minmax(0, 1fr);
+.hero-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem 2rem;
 }
 
-@media (min-width: 860px) {
-  .hero-layout {
-    grid-template-columns: minmax(0, 1fr);
-  }
+.hero-greeting {
+  margin: 0;
+}
 
-  .hero-content {
-    max-width: 620px;
+.hero-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.hero-status .status-dot {
+  box-shadow: 0 0 0 0 var(--color-accent);
+  animation: status-pulse 2.4s var(--ease) infinite;
+}
+
+@keyframes status-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent) 60%, transparent);
   }
+  70%,
+  100% {
+    box-shadow: 0 0 0 7px transparent;
+  }
+}
+
+.hero-name {
+  margin: clamp(1.5rem, 4vh, 3rem) 0 clamp(1.25rem, 3vh, 2.25rem);
+  transform-origin: 0 0;
+  will-change: transform;
 }
 
 .hero-title {
-  font-size: clamp(3.4rem, 7.4vw, 7rem);
+  /* "Ryan Yarali" is about 4.4 em wide in this face and weight, so 22.4cqi
+     runs it the full width of the column. */
+  font-size: 22.4cqi;
   font-weight: 700;
-  letter-spacing: -0.035em;
-  line-height: 0.96;
+  letter-spacing: -0.045em;
+  line-height: 0.86;
+  margin: 0;
   max-width: none;
   white-space: nowrap;
+  /* The tight line height would clip the descender of the y. */
+  padding-bottom: 0.06em;
+}
+
+/* Frosted glass: the globe shows through it, blurred, so the footer reads
+   as a pane laid over the scene rather than text printed on top of it. */
+.hero-foot {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem;
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-surface) 52%, transparent);
+  border: 1px solid var(--color-border);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--color-text) 8%, transparent),
+    var(--shadow-lg);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(150%);
+}
+
+@media (min-width: 900px) {
+  .hero-foot {
+    padding: 1.6rem 1.6rem 1.6rem 2rem;
+  }
+}
+
+.hero-tagline {
+  margin: 0;
+  max-width: 34ch;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.hero-stat {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin: 0;
+}
+
+.hero-stat .stat-value {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--color-text);
+}
+
+.hero-stat .stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  line-height: 1.5;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.hero-foot .hero-cta {
+  margin: 0;
+}
+
+@media (min-width: 900px) {
+  .hero-foot {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 3rem;
+  }
 }
 
 /* Hidden until hero.js plays the entrance. The failsafe shows everything if
@@ -145,12 +263,15 @@ html.hero-anim .hero-reveal {
   }
 }
 
+/* On a wide screen the whole globe sits on the right, behind the end of
+   the name and the glass footer, which blurs the part of it that passes
+   behind. */
 @media (min-width: 860px) {
   .hero-globe {
     top: 50%;
-    right: max(-10vw, calc((100vw - 1180px) / 2 - 14vw));
-    width: min(52vw, 760px);
-    opacity: 1;
+    right: max(-6vw, calc((100vw - 1180px) / 2 - 6vw));
+    width: min(50vw, 720px);
+    opacity: 0.8;
     transform: translateY(-46%);
   }
 }
@@ -210,7 +331,9 @@ html.hero-anim .hero-reveal {
 
 /* Labels name the real nodes: the projects, and the tools they are built on.
    They are decoration (the same facts are in the page text), so the globe is
-   aria-hidden and the labels only appear where there is room for them. */
+   aria-hidden. With the name running the full width over the globe there is
+   no room to show them all (they peeked out between the letters), so a label
+   appears only while the pointer is on its project's node. */
 .globe-labels {
   position: absolute;
   inset: 0;
@@ -222,6 +345,16 @@ html.hero-anim .hero-reveal {
   .globe-labels {
     display: block;
   }
+}
+
+.globe-label:not(.is-hover) {
+  visibility: hidden;
+}
+
+.globe-label.is-hover {
+  z-index: 1;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 4px var(--color-accent-soft);
 }
 
 .globe-label {
@@ -254,41 +387,6 @@ html.hero-anim .hero-reveal {
   height: 6px;
   border-radius: 50%;
   background: var(--color-accent);
-}
-
-/* ---------- about photo ----------
- * The portrait that used to sit in the hero. */
-.about-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 2.5rem;
-  align-items: center;
-}
-
-@media (min-width: 860px) {
-  .about-layout {
-    grid-template-columns: minmax(0, 1fr) 300px;
-    gap: 4.5rem;
-  }
-}
-
-.about-photo {
-  margin: 0;
-  width: 100%;
-  max-width: 300px;
-  aspect-ratio: 4 / 5;
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  border: 1px solid var(--color-border);
-  background: var(--color-surface-2);
-  box-shadow: var(--shadow-md);
-}
-
-.about-photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
 }
 
 /* ---------- cursor ring ----------
@@ -448,11 +546,6 @@ html.is-stacked main > .is-covered {
 }
 
 /* ---------- tilt card ---------- */
-.about-photo-wrap {
-  width: 100%;
-  max-width: 300px;
-}
-
 .about-photo {
   position: relative;
   transform-style: preserve-3d;
@@ -745,7 +838,10 @@ html.work-pinned .work-viewport {
   overflow: visible;
   scroll-snap-type: none;
   display: flex;
-  align-items: center;
+  /* The cards sit up under the heading. Centred, they left a dead band
+     above them; the space below is where the route runs sideways. */
+  align-items: flex-start;
+  padding-top: clamp(1rem, 3.5vh, 2.5rem);
 }
 
 html.work-pinned .work-track {
@@ -1104,7 +1200,7 @@ html.js-ready .screenshots-grid .reveal.in-view img {
 /* ---------- route ----------
  * route.js draws a line that winds down the page through every heading.
  * It sits behind the content (.route-above lifts the content over it) and
- * every colour is a token, so it follows the palette and the theme. */
+ * every colour is a token, so it follows the theme. */
 .route-svg {
   position: absolute;
   inset: 0;
@@ -1278,12 +1374,9 @@ html.route-moving .route-ghost {
   fill: var(--color-accent);
 }
 
-/* Labels live in the margin, so they appear only where there is one. */
-@media (min-width: 1400px) {
-  .route-label {
-    opacity: 1;
-  }
-}
+/* The labels stay hidden: the headings already name each stop, and Ping
+   tells the story, so numbered labels in the margin were one voice too many.
+   They remain in the SVG for route.js. */
 
 /* The sideways stretch of the route under the pinned gallery is its
    progress bar now. */
@@ -1315,45 +1408,67 @@ html.has-route.work-pinned .work-progress {
 }
 
 /* ---------- heading entrances ----------
- * main.js wraps each word of a section heading; when the heading is
- * revealed, the words rise out of their masks one after another. Without
- * JS the words are never wrapped, and under reduced motion they are left
- * alone. */
-html.js-ready .hw {
+ * main.js wraps a heading's text in .hscan. When the heading is revealed, a
+ * glowing scan line in the accent sweeps across it and the text appears
+ * behind the line, as if it were being read off the wire; then the line
+ * fades. Without JS nothing is wrapped, and under reduced motion headings
+ * are left alone. */
+html.js-ready .has-scan {
+  position: relative;
+}
+
+html.js-ready .hscan {
   display: inline-block;
-  overflow: hidden;
-  vertical-align: bottom;
-  padding-bottom: 0.12em;
-  margin-bottom: -0.12em;
+  max-width: 100%;
+  clip-path: inset(-0.2em 100% -0.2em 0);
 }
 
-html.js-ready .hw > span {
-  display: inline-block;
-  transform: translateY(108%);
-  transition: transform 950ms var(--ease-out-expo);
-  transition-delay: calc(var(--i, 0) * 60ms + 120ms);
+html.js-ready .in-view .hscan {
+  animation: hscan-reveal 900ms var(--ease-out-expo) 120ms forwards;
 }
 
-html.js-ready .in-view .hw > span {
-  transform: none;
+@keyframes hscan-reveal {
+  to {
+    clip-path: inset(-0.2em -0.2em -0.2em 0);
+  }
 }
 
-/* The heading block itself no longer needs to slide; its words do. */
+html.js-ready .has-scan::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.08em;
+  bottom: 0.04em;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--color-accent);
+  box-shadow:
+    0 0 12px 2px color-mix(in srgb, var(--color-accent) 70%, transparent),
+    -18px 0 24px color-mix(in srgb, var(--color-accent) 25%, transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+html.js-ready .in-view .has-scan::after {
+  animation: hscan-line 900ms var(--ease-out-expo) 120ms forwards;
+}
+
+@keyframes hscan-line {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(var(--scan-w, 100%));
+  }
+}
+
+/* The heading block itself no longer needs to slide; the scan reveals it. */
 html.js-ready .section-heading.reveal {
-  transform: none;
-}
-
-/* ---------- skills rows ----------
- * Rows arrive from alternate sides instead of all rising the same way. */
-html.js-ready .skills-rows > .skills-row.reveal:nth-child(odd) {
-  transform: translateX(-28px);
-}
-
-html.js-ready .skills-rows > .skills-row.reveal:nth-child(even) {
-  transform: translateX(28px);
-}
-
-html.js-ready .skills-rows > .skills-row.reveal.in-view {
   transform: none;
 }
 
@@ -1362,7 +1477,9 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
  * accent, his eyes are always white with dark pupils. --s is his scale:
  * smaller on a phone, big for the goodbye. */
 .ping {
-  --s: 1;
+  /* A pixel sprite needs size for its details (the eye glints, the shading)
+     to read, so he is drawn a little larger than the old vector Ping. */
+  --s: 1.3;
   position: fixed;
   left: 0;
   top: 0;
@@ -1381,18 +1498,24 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
 
 @media (max-width: 700px) {
   .ping {
-    --s: 0.72;
+    --s: 0.95;
   }
 }
 
 .ping.is-big {
-  --s: 2.3;
+  --s: 2.6;
 }
 
 @media (max-width: 700px) {
   .ping.is-big {
     --s: 1.9;
   }
+}
+
+/* On a phone the hero's route runs right past the main buttons, so he waits
+   off stage until the reader scrolls on. */
+.ping.is-passive {
+  opacity: 0;
 }
 
 .ping.is-passive .ping-hit {
@@ -1421,7 +1544,6 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
 .ping-float {
   width: 100%;
   height: 100%;
-  animation: ping-bob 2.6s ease-in-out infinite;
 }
 
 .ping-squash {
@@ -1431,221 +1553,189 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
   transition: transform 160ms ease-out;
 }
 
+/* The sprite (ping-sprite.js) is drawn on a hard grid: one viewBox unit is
+ * one sprite pixel. Colour comes from classes, and each state class on
+ * .ping shows the frame that matches it. Frame changes are steps(), never
+ * tweens, so he moves like a game sprite. */
 .ping svg {
   display: block;
   width: 100%;
   height: 100%;
   overflow: visible;
-  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--color-accent) 55%, transparent));
 }
 
-@keyframes ping-bob {
+.px-o { fill: var(--px-outline); }
+.px-b { fill: var(--color-accent); }
+.px-h { fill: var(--px-hi); }
+.px-s { fill: var(--px-lo); }
+.px-k { fill: var(--px-ink); }
+.px-w { fill: #ffffff; }
+.px-c { fill: var(--px-tongue); }
+.px-t { fill: var(--px-hi); }
+.px-shadow rect { fill: var(--px-shadow); }
+
+.px-f { display: none; }
+.px-eyes-open,
+.px-mouth-smile,
+.px-arms-rest,
+.px-feet-a {
+  display: inline;
+}
+
+.px-eyes {
+  transition: transform 120ms steps(1);
+}
+
+/* Idle: a one-pixel bob in two frames, and the antenna tip blinking. */
+.px-body,
+.px-face,
+.px-limbs .px-f:not(.px-feet-a):not(.px-feet-b),
+.px-signal,
+.px-envelope {
+  animation: px-bob 1.2s steps(1) infinite;
+}
+
+@keyframes px-bob {
   50% {
-    transform: translateY(-2px);
+    transform: translateY(1px);
   }
 }
 
-.ping-skin {
-  fill: var(--color-accent);
-  transition: fill var(--transition-palette);
+.px-antenna rect.px-t {
+  animation: px-tip 1.6s steps(1) infinite;
 }
 
-.ping-shine {
-  fill: var(--ping-eye);
-  opacity: 0.35;
-}
-
-.ping-antenna {
-  transform-box: view-box;
-  transform-origin: 20px 12px;
-}
-
-.ping-antenna line {
-  stroke: var(--color-accent);
-  stroke-width: 2;
-  stroke-linecap: round;
-  transition: stroke var(--transition-palette);
-}
-
-.ping-antenna circle {
-  fill: var(--color-accent-strong);
-  transition: fill var(--transition-palette);
-}
-
-/* Arms hang behind the body; the hands are little round mitts. */
-.ping-arm {
-  transform-box: view-box;
-  transition: transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.ping-arm line {
-  stroke: var(--color-accent);
-  stroke-width: 3.4;
-  stroke-linecap: round;
-  transition: stroke var(--transition-palette);
-}
-
-.ping-arm circle {
-  fill: var(--color-accent-strong);
-  transition: fill var(--transition-palette);
-}
-
-.ping-arm-l {
-  transform-origin: 8px 28px;
-  transform: rotate(28deg);
-}
-
-.ping-arm-r {
-  transform-origin: 32px 28px;
-  transform: rotate(-28deg);
-}
-
-.ping.pose-cheer .ping-arm-l,
-.ping.pose-carry .ping-arm-l {
-  transform: rotate(152deg);
-}
-
-.ping.pose-cheer .ping-arm-r,
-.ping.pose-carry .ping-arm-r {
-  transform: rotate(-152deg);
-}
-
-.ping.pose-point-r .ping-arm-r {
-  transform: rotate(-98deg);
-}
-
-.ping.pose-point-l .ping-arm-l {
-  transform: rotate(98deg);
-}
-
-.ping.pose-wave .ping-arm-r {
-  transform: rotate(-170deg);
-  animation: ping-wave 0.55s ease-in-out infinite alternate;
-}
-
-.ping.is-flip.pose-wave .ping-arm-r {
-  animation: none;
-  transform: rotate(-28deg);
-}
-
-.ping.is-flip.pose-wave .ping-arm-l {
-  transform: rotate(170deg);
-  animation: ping-wave-l 0.55s ease-in-out infinite alternate;
-}
-
-.ping.pose-droop .ping-arm-l {
-  transform: rotate(10deg);
-}
-
-.ping.pose-droop .ping-arm-r {
-  transform: rotate(-10deg);
-}
-
-@keyframes ping-wave {
-  from {
-    transform: rotate(-145deg);
-  }
-  to {
-    transform: rotate(-200deg);
+@keyframes px-tip {
+  50% {
+    fill: #ffffff;
   }
 }
 
-@keyframes ping-wave-l {
-  from {
-    transform: rotate(145deg);
-  }
-  to {
-    transform: rotate(200deg);
+@keyframes px-frame {
+  50% {
+    visibility: hidden;
   }
 }
 
-.ping-eye {
-  fill: var(--ping-eye);
-}
-
-.ping-pupils {
-  fill: var(--ping-ink);
-  transition: transform 220ms var(--ease-out-expo);
-}
-
-.ping-eyes {
-  transform-box: view-box;
-  transform-origin: 20px 25px;
-  transition: transform 90ms ease-in;
-}
-
-.ping-eyes.is-blink {
-  transform: scaleY(0.08);
-}
-
-.ping-face path,
-.ping-mouth {
-  fill: none;
-  stroke: var(--ping-ink);
-  stroke-width: 1.8;
-  stroke-linecap: round;
-}
-
-.ping-mouth-open {
-  fill: var(--ping-ink);
-}
-
-.ping-face,
-.ping-mouth-sad,
-.ping-mouth-open,
-.ping-envelope {
+/* Faces. */
+.ping.is-blink .px-eyes-open,
+.ping.is-happy .px-eyes-open,
+.ping.is-sleep .px-eyes-open,
+.ping.is-dizzy .px-eyes-open,
+.ping.is-sad .px-eyes-open {
   display: none;
 }
 
-.ping.is-happy .ping-eyes,
-.ping.is-sleep .ping-eyes,
-.ping.is-dizzy .ping-eyes {
+.ping.is-blink .px-eyes-blink,
+.ping.is-happy .px-eyes-happy,
+.ping.is-sleep .px-eyes-sleep,
+.ping.is-dizzy .px-eyes-dizzy,
+.ping.is-sad .px-eyes-sad {
+  display: inline;
+}
+
+/* Happy and asleep win over a blink that lands at the same moment. */
+.ping.is-happy.is-blink .px-eyes-blink,
+.ping.is-sleep.is-blink .px-eyes-blink,
+.ping.is-dizzy.is-blink .px-eyes-blink,
+.ping.is-sad.is-blink .px-eyes-blink {
   display: none;
 }
 
-.ping.is-happy .ping-face-happy,
-.ping.is-sleep .ping-face-sleep,
-.ping.is-dizzy .ping-face-dizzy {
-  display: inline;
-}
-
-.ping.is-talking .ping-mouth-open,
-.ping.is-sad .ping-mouth-sad {
-  display: inline;
-}
-
-.ping.is-talking .ping-mouth-smile,
-.ping.is-sad .ping-mouth-smile {
+.ping.is-sad .px-mouth-smile {
   display: none;
 }
 
-.ping.is-carrying .ping-envelope {
+.ping.is-sad .px-mouth-sad {
   display: inline;
 }
 
-.ping-envelope rect {
-  fill: var(--color-surface-2);
-  stroke: var(--color-accent);
-  stroke-width: 1.6;
+/* Talking: the mouth flaps in two frames and the signal goes out. */
+.ping.is-talking .px-mouth-smile {
+  animation: px-frame 0.24s steps(1) infinite;
 }
 
-.ping-envelope path {
-  fill: none;
-  stroke: var(--color-accent);
-  stroke-width: 1.6;
-  stroke-linejoin: round;
+.ping.is-talking .px-mouth-open {
+  display: inline;
+  animation: px-frame 0.24s steps(1) infinite reverse;
 }
 
-.ping-face-dizzy g {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: ping-spin 0.7s linear infinite;
+.ping.is-talking .px-signal-1,
+.ping.is-talking .px-signal-2 {
+  display: inline;
+  animation: px-signal 0.9s steps(1) infinite;
 }
 
-@keyframes ping-spin {
-  to {
-    transform: rotate(360deg);
+.ping.is-talking .px-signal-2 {
+  animation-delay: 0.3s;
+}
+
+@keyframes px-signal {
+  66% {
+    visibility: hidden;
   }
+}
+
+/* Arms. Waving uses the arm on the open side of the screen. */
+.ping[class*="pose-"] .px-arms-rest {
+  display: none;
+}
+
+.ping.pose-cheer .px-arms-cheer,
+.ping.pose-carry .px-arms-carry,
+.ping.pose-point-r .px-arms-point-r,
+.ping.pose-point-l .px-arms-point-l,
+.ping.pose-droop .px-arms-droop {
+  display: inline;
+}
+
+.ping.pose-wave .px-arms-wave-a {
+  display: inline;
+  animation: px-frame 0.5s steps(1) infinite;
+}
+
+.ping.pose-wave .px-arms-wave-b {
+  display: inline;
+  animation: px-frame 0.5s steps(1) infinite reverse;
+}
+
+.ping.is-flip.pose-wave .px-arms-wave-a,
+.ping.is-flip.pose-wave .px-arms-wave-b {
+  display: none;
+}
+
+.ping.is-flip.pose-wave .px-arms-wave-l-a {
+  display: inline;
+  animation: px-frame 0.5s steps(1) infinite;
+}
+
+.ping.is-flip.pose-wave .px-arms-wave-l-b {
+  display: inline;
+  animation: px-frame 0.5s steps(1) infinite reverse;
+}
+
+/* Carrying the contact form's message: the envelope rests on his head and
+   the antenna folds away under it. */
+.ping.pose-carry .px-envelope,
+.ping.is-carrying .px-envelope {
+  display: inline;
+}
+
+.ping.pose-carry .px-antenna,
+.ping.is-carrying .px-antenna,
+.ping.pose-carry .px-signal,
+.ping.is-carrying .px-signal {
+  display: none;
+}
+
+/* Walking while the page moves. */
+.ping.is-walking .px-feet-a {
+  animation: px-frame 0.3s steps(1) infinite;
+}
+
+.ping.is-walking .px-feet-b {
+  display: inline;
+  animation: px-frame 0.3s steps(1) infinite reverse;
 }
 
 .ping.is-hop .ping-float {
@@ -1653,27 +1743,14 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
 }
 
 @keyframes ping-hop {
-  30% {
-    transform: translateY(-14px) scale(1.05, 0.95);
+  35% {
+    transform: translateY(-14px);
   }
-  60% {
-    transform: translateY(0) scale(1.1, 0.9);
+  70% {
+    transform: translateY(0);
   }
-  80% {
-    transform: scale(0.96, 1.04);
-  }
-}
-
-.ping.pose-wave .ping-antenna {
-  animation: ping-antenna 0.5s ease-in-out 3;
-}
-
-@keyframes ping-antenna {
-  25% {
-    transform: rotate(-20deg);
-  }
-  75% {
-    transform: rotate(20deg);
+  85% {
+    transform: translateY(-3px);
   }
 }
 
@@ -1707,21 +1784,32 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
   }
 }
 
-/* Speech: grows upward from beside him, on the side away from the edge. */
+/* Speech is a retro RPG dialog box: a square panel whose border is four
+ * flat shadows, which leaves the corners out and steps them like a pixel-art
+ * window; a hard offset shadow; a pixel-font header with the line's
+ * sequence number; the payload typing behind a block caret; and a blinking
+ * arrow once the line is complete. It opens in four frames, not a tween. */
 .ping-bubble {
+  --bw: 3px;
   position: absolute;
-  bottom: calc(16px * var(--s));
-  left: calc(28px * var(--s));
+  bottom: calc(22px * var(--s));
+  left: calc(34px * var(--s));
+  display: grid;
+  gap: 0.3rem;
   width: max-content;
-  max-width: min(250px, 62vw);
-  padding: 0.55rem 0.8rem;
-  border-radius: 14px 14px 14px 4px;
-  background: var(--color-surface-2);
-  border: 1px solid var(--color-border-strong);
-  box-shadow: var(--shadow-md);
+  max-width: min(280px, 62vw);
+  margin: var(--bw);
+  padding: 0.7rem 0.95rem 0.95rem;
+  background: var(--color-surface);
+  box-shadow:
+    0 calc(var(--bw) * -1) 0 0 var(--color-accent),
+    0 var(--bw) 0 0 var(--color-accent),
+    calc(var(--bw) * -1) 0 0 0 var(--color-accent),
+    var(--bw) 0 0 0 var(--color-accent),
+    calc(var(--bw) * 2.5) calc(var(--bw) * 2.5) 0 0 var(--px-shadow);
   color: var(--color-text);
   font-family: var(--font-display);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 500;
   font-style: normal;
   line-height: 1.35;
@@ -1729,50 +1817,99 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
   text-transform: none;
   text-align: left;
   pointer-events: none;
-  /* It pops in by scale rather than fading, so its text is never shown
-     half-transparent (and low-contrast) over whatever is behind it. */
+  /* Never faded: its text is never shown half-transparent (and so
+     low-contrast) over whatever is behind it. */
   visibility: hidden;
-  transform: translate(-6px, 6px) scale(0.6);
-  transform-origin: 0 100%;
+  clip-path: inset(0 100% 100% 0);
   transition:
-    visibility 0s linear 320ms,
-    transform 320ms var(--ease-out-expo),
-    left 700ms var(--ease-out-expo),
-    right 700ms var(--ease-out-expo),
-    bottom 700ms var(--ease-out-expo);
+    visibility 0s linear 240ms,
+    clip-path 240ms steps(4);
 }
 
 .ping-bubble.is-on {
   visibility: visible;
-  transform: none;
+  clip-path: inset(-12px -16px -16px -12px);
   transition-delay: 0s;
+}
+
+.ping-bubble-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.25rem;
+  font-family: var(--font-pixel);
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  color: var(--color-accent);
+}
+
+.ping-seq {
+  color: var(--color-text-subtle);
+}
+
+.ping-bubble-text {
+  padding-right: 0.6rem;
+}
+
+.ping-rest {
+  color: transparent;
+}
+
+.ping-bubble.is-typing .ping-typed::after {
+  content: "";
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: -0.14em;
+  background: var(--color-accent);
+  animation: ping-caret 0.6s steps(1) infinite;
+}
+
+@keyframes ping-caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* The "next" arrow, once the line is all there. */
+.ping-bubble::after {
+  content: "";
+  position: absolute;
+  right: 0.6rem;
+  bottom: 0.4rem;
+  width: 9px;
+  height: 5px;
+  background: var(--color-accent);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  opacity: 0;
+}
+
+.ping-bubble.is-on:not(.is-typing)::after {
+  opacity: 1;
+  animation: ping-next 0.8s steps(1) infinite;
+}
+
+@keyframes ping-next {
+  50% {
+    transform: translateY(2px);
+  }
 }
 
 .ping.is-flip .ping-bubble {
   left: auto;
-  right: calc(28px * var(--s));
-  border-radius: 14px 14px 4px 14px;
-  transform-origin: 100% 100%;
+  right: calc(34px * var(--s));
+  clip-path: inset(0 0 100% 100%);
+}
+
+.ping.is-flip .ping-bubble.is-on {
+  clip-path: inset(-12px -16px -16px -12px);
 }
 
 .ping.is-big .ping-bubble {
   font-size: 1rem;
 }
 
-/* On a phone the goodbye happens in the clear space under the send button:
-   Ping on the left, his bubble beside him at the same height, so neither
-   covers the button. */
-@media (max-width: 700px) {
-  .ping.is-big .ping-bubble,
-  .ping.is-big.is-flip .ping-bubble {
-    left: calc(30px * var(--s));
-    right: auto;
-    bottom: calc(-4px * var(--s));
-    max-width: calc(100vw - 150px);
-    border-radius: 14px 14px 14px 4px;
-    transform-origin: 0 100%;
-  }
-}
 /* On a page without a route he stands beside the heading instead. */
 .ping.is-standalone {
   position: relative;
@@ -1799,14 +1936,30 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ping-float,
   .ping.is-hop .ping-float,
-  .ping.pose-wave .ping-arm-r,
-  .ping.is-flip.pose-wave .ping-arm-l,
-  .ping.pose-wave .ping-antenna,
-  .ping-face-dizzy g,
+  .px-body,
+  .px-face,
+  .px-limbs .px-f,
+  .px-signal,
+  .px-envelope,
+  .px-antenna rect.px-t,
+  .ping.is-talking .px-mouth-smile,
+  .ping.is-talking .px-signal-1,
+  .ping.is-talking .px-signal-2,
+  .ping.pose-wave .px-arms-wave-a,
+  .ping.is-flip.pose-wave .px-arms-wave-l-a,
+  .ping.is-walking .px-feet-a,
+  .ping-bubble.is-typing .ping-typed::after,
+  .ping-bubble.is-on:not(.is-typing)::after,
   .ping.is-sleep .ping-zzz {
     animation: none;
+  }
+  .ping.is-talking .px-mouth-open,
+  .ping.is-talking .px-signal-2,
+  .ping.pose-wave .px-arms-wave-b,
+  .ping.is-flip.pose-wave .px-arms-wave-l-b,
+  .ping.is-walking .px-feet-b {
+    display: none;
   }
   .ping.is-sleep .ping-zzz {
     opacity: 1;
@@ -1860,8 +2013,11 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
   color: var(--color-accent);
 }
 
-/* Fixed decoration (Ping, the cursor ring) can sit a few pixels past the
-   edge; clip, unlike hidden, keeps sticky positioning working. */
+/* Fixed decoration (Ping, the cursor ring) and rows waiting to slide in can
+   sit a few pixels past the edge; clip, unlike hidden, keeps sticky
+   positioning working. On the root too: the body's clip alone still left the
+   page a few pixels of sideways scroll on a phone. */
+html,
 body {
   overflow-x: clip;
 }
@@ -1887,4 +2043,111 @@ body {
    the bottom-left corner of the screen. */
 html.work-pinned .work-pin > .container:last-child {
   text-align: right;
+}
+
+/* ---------- name into the nav ----------
+ * story.js adds .name-fly on the home page when the stacking runs, and then
+ * drives the hero name's transform and the logo's opacity from scroll. The
+ * logo starts hidden there: at the top of the page the big name is the
+ * logo. */
+html.name-fly .navbar .logo {
+  opacity: 0;
+}
+
+/* The stacked hero holds still rather than sinking while it is covered, so
+   the name's flight is not thrown off by the sink. */
+html.name-fly main > .hero {
+  transform: none;
+}
+
+/* ---------- gallery, bold ----------
+ * While pinned, the screenshot is the card: it takes most of the width and
+ * as much of the screen's height as the heading leaves, and the text beside
+ * it is the number, the name, one line and the links. The stack lives on
+ * the projects page and in each case study. The width is capped by the
+ * height too, so a short screen still fits a whole card. */
+@media (min-width: 1100px) {
+  html.work-pinned .work-card {
+    width: min(86vw, 1240px, calc((100vh - 400px) * 2.55 + 40px));
+    grid-template-columns: minmax(0, 2.3fr) minmax(0, 1fr);
+    gap: 2.5rem;
+  }
+
+  html.work-pinned .work-title {
+    font-size: clamp(2.25rem, 3.4vw, 3.25rem);
+  }
+}
+
+/* ---------- docked speech ----------
+ * On the route, ping.js moves the bubble out of Ping and docks it in the
+ * bottom corner on his side of the screen (left/top set in px), with a
+ * dotted wire from him to its near corner. It opens in four frames from
+ * that corner, as if the packet had just come down the wire. */
+.ping-bubble.is-docked {
+  position: fixed;
+  z-index: 901;
+  right: auto;
+  bottom: auto;
+  margin: 0;
+  max-width: min(300px, calc(100vw - 30px));
+}
+
+.ping-bubble.is-docked.is-flip {
+  clip-path: inset(0 0 100% 100%);
+}
+
+.ping-bubble.is-docked.is-above {
+  clip-path: inset(100% 100% 0 0);
+}
+
+.ping-bubble.is-docked.is-above.is-flip {
+  clip-path: inset(100% 0 0 100%);
+}
+
+.ping-bubble.is-docked.is-on {
+  clip-path: inset(-12px -16px -16px -12px);
+}
+
+.ping-wire {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 900;
+  pointer-events: none;
+  overflow: visible;
+  opacity: 0;
+  transition: opacity 260ms var(--ease);
+}
+
+.ping-wire.is-on {
+  opacity: 1;
+}
+
+/* Dots flowing from him to the bubble: the packet on its way. */
+.ping-wire path {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 3;
+  stroke-linecap: butt;
+  stroke-dasharray: 3 6;
+  animation: ping-wire-flow 0.9s linear infinite;
+}
+
+@keyframes ping-wire-flow {
+  to {
+    stroke-dashoffset: -18;
+  }
+}
+
+@media (max-width: 700px) {
+  .ping-bubble.is-docked {
+    max-width: calc(100vw - 30px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ping-wire path {
+    animation: none;
+  }
 }

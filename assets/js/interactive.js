@@ -2,7 +2,7 @@
  * Interactive layer
  * -----------------
  * Ambient scroll trace (only on pages without the winding route), hero
- * counters, the project accordion, the skills filter, and
+ * counters, the project accordion, and
  * magnetic buttons.
  *
  * Every effect here is driven by scroll or by a tap, never by cursor position
@@ -287,64 +287,6 @@
     });
   }
 
-  // ==================== Skills filter ====================
-
-  function initSkillsFilter() {
-    var chips = document.querySelectorAll(".skills-filter-chip");
-    var rows = document.querySelectorAll(".skills-row");
-    if (!chips.length || !rows.length) return;
-
-    // Remember the authored order so "All" can put it back.
-    [].forEach.call(rows, function (row, n) {
-      row.dataset.order = n;
-    });
-
-    [].forEach.call(chips, function (chip) {
-      chip.addEventListener("click", function () {
-        var key = chip.dataset.filter;
-
-        [].forEach.call(chips, function (other) {
-          other.setAttribute("aria-pressed", String(other === chip));
-        });
-
-        // Matching rows rise to the top and the rest settle below them,
-        // animated FLIP-style: measure, reorder, then play each row from
-        // where it was to where it now is. "All" restores the original order.
-        var list = [].slice.call(rows);
-        var first = list.map(function (row) {
-          return row.getBoundingClientRect().top;
-        });
-
-        list.forEach(function (row) {
-          var match = key === "all" || row.dataset.skillGroup === key;
-          row.classList.toggle("is-dimmed", !match);
-          row.classList.toggle("is-match", match && key !== "all");
-        });
-
-        var parent = list[0].parentNode;
-        var ordered = list
-          .slice()
-          .sort(function (a, b) {
-            return (a.classList.contains("is-dimmed") - b.classList.contains("is-dimmed")) ||
-              (+a.dataset.order - +b.dataset.order);
-          });
-        ordered.forEach(function (row) {
-          parent.appendChild(row);
-        });
-
-        if (reduced) return;
-        list.forEach(function (row, i) {
-          var dy = first[i] - row.getBoundingClientRect().top;
-          if (Math.abs(dy) < 1) return;
-          row.animate(
-            [{ transform: "translateY(" + dy + "px)" }, { transform: "none" }],
-            { duration: 560, easing: "cubic-bezier(.19,1,.22,1)" },
-          );
-        });
-      });
-    });
-  }
-
   // ==================== Magnetic buttons ====================
 
   function initMagnetic() {
@@ -374,14 +316,13 @@
     initTrace();
     initCounters();
     initAccordion();
-    initSkillsFilter();
     initMagnetic();
 
-    // The art is drawn from palette tokens, so it has to be redrawn whenever
-    // the palette or the theme changes.
+    // The art is drawn from colour tokens, so it has to be redrawn whenever
+    // the theme changes.
     new MutationObserver(repaintArt).observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ["data-theme", "data-palette"],
+      attributeFilter: ["data-theme"],
     });
     window.addEventListener("resize", repaintArt, { passive: true });
   }

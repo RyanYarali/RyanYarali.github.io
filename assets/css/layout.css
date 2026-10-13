@@ -212,8 +212,8 @@ html.js-ready .reveal-group > * {
 }
 
 /* On a small phone the résumé button and the subtitle can't share the bar
-   without the subtitle wrapping. The hero repeats the program name directly
-   below, so the subtitle is the one to go. */
+   without the subtitle wrapping. The hero names the program just below, so
+   the subtitle is the one to go. */
 @media (max-width: 479px) {
   .logo-subtitle {
     display: none;

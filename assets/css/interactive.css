@@ -1,7 +1,6 @@
 /* ==================== Interactive layer ====================
- * Ambient trace, palette dock, hero stat strip, project accordion,
- * and the skills filter. Everything here reads the colour tokens, so it
- * follows the palette and the theme without a single hard-coded colour.
+ * Ambient trace, the light/dark switch and the project accordion. Everything here reads the colour tokens, so it follows the
+ * theme without a single hard-coded colour.
  * ============================================================ */
 
 /* ---------- ambient trace ----------
@@ -35,44 +34,23 @@ main,
   min-height: auto;
 }
 
-/* ---------- palette dock ----------
- * Closed, it is the light/dark button plus three coloured dots. The theme
- * control is never hidden: it is used far more often than the palette, and it
- * should not take a tap to become visible. Only the six swatches expand. */
-.palette-dock {
-  position: fixed;
-  left: 1.5rem;
-  bottom: 1.5rem;
-  z-index: var(--z-nav);
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.3rem;
-  border-radius: var(--radius-pill);
-  background: var(--color-overlay);
-  border: 1px solid var(--color-border);
-  backdrop-filter: blur(12px);
-  box-shadow: var(--shadow-md);
-}
-
-/* --- light/dark, round like everything else in the dock --- */
+/* ---------- light/dark switch (in the nav) ---------- */
 .theme-switch {
   position: relative;
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   flex: 0 0 auto;
   padding: 0;
   cursor: pointer;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-pill);
-  background: var(--color-surface);
+  background: transparent;
   display: grid;
   place-items: center;
   color: var(--color-text-muted);
   transition:
     border-color var(--transition-fast),
-    color var(--transition-fast),
-    background-color var(--transition-palette);
+    color var(--transition-fast);
 }
 
 .theme-switch:hover {
@@ -108,224 +86,6 @@ html[data-theme="dark"] .theme-switch-sun {
 html[data-theme="dark"] .theme-switch-moon {
   transform: rotate(0deg) scale(1);
   opacity: 1;
-}
-
-.palette-sep {
-  width: 1px;
-  height: 18px;
-  flex: 0 0 auto;
-  background: var(--color-border);
-}
-
-/* --- the trigger: three dots in three of the real palette accents --- */
-.palette-trigger {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  height: 34px;
-  padding: 0 0.55rem;
-  flex: 0 0 auto;
-  border: 0;
-  background: transparent;
-  border-radius: var(--radius-pill);
-  cursor: pointer;
-}
-
-.palette-hint-dot {
-  display: block;
-  width: 7px;
-  height: 7px;
-  border-radius: var(--radius-pill);
-  background: var(--color-accent);
-  transition:
-    transform 420ms var(--ease-out-expo),
-    opacity 260ms var(--ease),
-    background-color var(--transition-palette);
-}
-
-.palette-trigger:hover .palette-hint-dot {
-  transform: scale(1.25);
-}
-
-.palette-trigger:hover .palette-hint-dot:nth-child(2) {
-  transition-delay: 40ms;
-}
-
-.palette-trigger:hover .palette-hint-dot:nth-child(3) {
-  transition-delay: 80ms;
-}
-
-/* Open, the dots step back so the swatches are the thing being looked at. */
-.palette-dock.is-open .palette-hint-dot {
-  opacity: 0.3;
-  transform: scale(0.7);
-}
-
-/* The row clips its own overflow so the width can animate, which would also
-   clip a swatch that grows past 1x. The transparent padding gives that growth
-   somewhere to go, and the matching negative margin keeps the visible gap
-   between the trigger and the first swatch exactly where it was. */
-.palette-swatches {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 5px;
-  margin: -5px;
-  max-width: 0;
-  overflow: hidden;
-  transition: max-width 460ms var(--ease-out-expo);
-}
-
-.palette-dock.is-open .palette-swatches {
-  max-width: 210px;
-}
-
-.palette-swatch {
-  width: 22px;
-  height: 22px;
-  flex: 0 0 auto;
-  padding: 0;
-  cursor: pointer;
-  border: 0;
-  border-radius: var(--radius-pill);
-  background: var(--sw-light);
-  opacity: 0;
-  transform: scale(0.3);
-  transition:
-    opacity 260ms var(--ease),
-    transform 420ms var(--ease-out-expo),
-    box-shadow 240ms var(--ease);
-}
-
-html[data-theme="dark"] .palette-swatch {
-  background: var(--sw-dark);
-}
-
-.palette-dock.is-open .palette-swatch {
-  opacity: 1;
-  transform: scale(1);
-  /* each swatch trails the one before it */
-  transition-delay: calc(var(--sw-i) * 42ms);
-}
-
-/* The dot stays 22px because a bigger one crowds the dock, but the target has
-   to clear 24px (WCAG 2.2 target size), so the hit area is pushed out past the
-   paint with a pseudo-element. */
-.palette-swatch::before {
-  content: "";
-  position: absolute;
-  inset: -3px;
-  border-radius: inherit;
-}
-
-.palette-swatch {
-  position: relative;
-}
-
-.palette-swatch:hover {
-  transform: scale(1.22);
-}
-
-/* The selected mark has to live inside the swatch. The row clips its overflow
-   to animate its width, so a ring drawn outside the circle gets cut off. An
-   inset ring reads the same and cannot clip. */
-.palette-swatch[aria-pressed="true"] {
-  box-shadow: inset 0 0 0 3.5px var(--color-background);
-  transform: scale(1.1);
-}
-
-.palette-dock.is-open .palette-swatch[aria-pressed="true"] {
-  transform: scale(1.1);
-}
-
-.palette-swatch[aria-pressed="true"]:hover {
-  transform: scale(1.25);
-}
-
-@media (max-width: 640px) {
-  .palette-dock {
-    left: 1rem;
-    bottom: 1rem;
-  }
-
-  /* Open, the dock runs most of the width of a phone and would sit under the
-     back-to-top button. Nobody needs that button while picking a colour. */
-  html.is-palette-open .back-to-top {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-  }
-
-  .palette-swatch {
-    width: 26px;
-    height: 26px;
-  }
-  .palette-dock.is-open .palette-swatches {
-    max-width: 245px;
-  }
-}
-
-/* ---------- hero stat strip ---------- */
-/* The 1px grid gap is the rule between tiles, so the column count has to divide
-   the tiles exactly: an auto-fit grid leaves the odd cell empty and that empty
-   cell shows as a block of rule colour. One column, then three. */
-.hero-stats {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1px;
-  margin-top: 2.75rem;
-  background: var(--color-border);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-}
-
-.stat-tile {
-  background: var(--color-background);
-  padding: 0.85rem 1.1rem;
-  /* Stacked tiles read as rows on a phone, which keeps the strip short. */
-  display: flex;
-  align-items: baseline;
-  gap: 0.75rem;
-}
-
-.stat-value {
-  flex: 0 0 auto;
-  min-width: 3.2ch;
-  font-family: var(--font-mono);
-  font-size: 1.4rem;
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
-  color: var(--color-text);
-}
-
-.stat-label {
-  font-size: 0.82rem;
-  line-height: 1.35;
-  color: var(--color-text-subtle);
-}
-
-@media (min-width: 640px) {
-  .hero-stats {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .stat-tile {
-    display: block;
-    padding: 1.05rem 1.1rem;
-  }
-
-  .stat-value {
-    display: block;
-    font-size: clamp(1.45rem, 2.6vw, 1.85rem);
-    margin-bottom: 0.15rem;
-  }
-
-  .stat-label {
-    display: block;
-    font-size: 0.78rem;
-  }
 }
 
 /* ---------- project accordion ----------
@@ -548,69 +308,13 @@ html[data-theme="dark"] .palette-swatch {
   color: var(--color-text-subtle);
 }
 
-/* ---------- skills filter ---------- */
-.skills-filter {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-  margin-bottom: 1.9rem;
-}
-
-.skills-filter-chip {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  padding: 0.46rem 0.9rem;
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--color-border);
-  background: transparent;
-  color: var(--color-text-muted);
-  cursor: pointer;
-  transition:
-    background-color var(--transition-fast),
-    color var(--transition-fast),
-    border-color var(--transition-fast);
-}
-
-.skills-filter-chip:hover {
-  border-color: var(--color-border-strong);
-  color: var(--color-text);
-}
-
-.skills-filter-chip[aria-pressed="true"] {
-  background: var(--color-text);
-  border-color: var(--color-text);
-  color: var(--color-background);
-}
-
-.skills-row {
-  transition:
-    opacity 380ms var(--ease),
-    transform 420ms var(--ease-out-expo);
-}
-
-/* Rows are also .reveal items, and "html.js-ready .reveal.in-view" sets them
-   to full opacity; the html prefix lifts this rule to the same weight so the
-   dimming still applies (this file loads after layout.css). */
-html .skills-rows .skills-row.is-dimmed {
-  opacity: 0.24;
-}
-
-.skills-row.is-match .skills-label {
-  color: var(--color-accent);
-}
-
 /* ---------- magnetic controls ---------- */
 .btn[data-magnetic] {
   will-change: transform;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .palette-swatches,
-  .palette-swatch,
   .theme-switch svg,
-  .palette-hint-dot,
   .project-accordion-panel {
     transition: none !important;
   }

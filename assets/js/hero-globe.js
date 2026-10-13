@@ -348,7 +348,7 @@ export function mount(host, { reduced = false } = {}) {
   }
   new MutationObserver(() => requestAnimationFrame(applyTokens)).observe(document.documentElement, {
     attributes: true,
-    attributeFilter: ["data-theme", "data-palette"],
+    attributeFilter: ["data-theme"],
   });
 
   // ---- sizing
@@ -389,12 +389,52 @@ export function mount(host, { reduced = false } = {}) {
       },
       { passive: true },
     );
+    // The project nodes are links: near one, its name appears and the
+    // pointer says so; a click (not a drag) opens it.
+    let hover = null;
+    let downAt = null;
+    const nearest = (e) => {
+      if (!showLabels) return null;
+      const r = canvas.getBoundingClientRect();
+      const px = e.clientX - r.left;
+      const py = e.clientY - r.top;
+      let best = null;
+      let bestD = 30;
+      for (const id in byId) {
+        const n = byId[id];
+        if (!n.project || !n.href || !(n.shown > 0.6)) continue;
+        const d = Math.hypot(n.sx - px, n.sy - py);
+        if (d < bestD) {
+          bestD = d;
+          best = n;
+        }
+      }
+      return best;
+    };
+    const setHover = (n) => {
+      if (n === hover) return;
+      if (hover && hover.el) hover.el.classList.remove("is-hover");
+      hover = n;
+      if (hover && hover.el) hover.el.classList.add("is-hover");
+      canvas.style.cursor = hover ? "pointer" : "";
+    };
+    canvas.addEventListener("pointermove", (e) => {
+      if (!dragging) setHover(nearest(e));
+    });
+    canvas.addEventListener("pointerleave", () => setHover(null));
     canvas.addEventListener("pointerdown", (e) => {
       dragging = { x: e.clientX };
+      downAt = { x: e.clientX, y: e.clientY };
       canvas.setPointerCapture(e.pointerId);
     });
-    const end = () => {
+    const end = (e) => {
       dragging = null;
+      const moved = downAt ? Math.hypot(e.clientX - downAt.x, e.clientY - downAt.y) : 99;
+      downAt = null;
+      if (e.type === "pointerup" && moved < 6 && hover) {
+        if (/^https?:/.test(hover.href)) window.open(hover.href, "_blank", "noopener");
+        else location.href = hover.href;
+      }
     };
     canvas.addEventListener("pointerup", end);
     canvas.addEventListener("pointercancel", end);
@@ -434,6 +474,7 @@ export function mount(host, { reduced = false } = {}) {
       const fade = smooth(0.26, 0.4, facing) * labelReveal;
       const o = Math.round(fade * 100) / 100;
       if (o <= 0) {
+        n.sx = -1e4;
         if (n.shown !== 0) {
           n.el.style.opacity = "0";
           n.el.classList.remove("is-shown");
@@ -447,6 +488,9 @@ export function mount(host, { reduced = false } = {}) {
       if (!n.w) n.w = n.el.offsetWidth;
       const x = Math.min(((v.x + 1) / 2) * W, W - n.w - 18);
       const y = ((1 - v.y) / 2) * H;
+      // Where the node itself is, for hovering and clicking it.
+      n.sx = ((v.x + 1) / 2) * W;
+      n.sy = y;
       n.el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) translate(12px, -50%)`;
       if (n.shown !== o) {
         n.el.style.opacity = String(o);

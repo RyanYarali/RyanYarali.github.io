@@ -39,20 +39,22 @@ assets/
     typography.css    Type scale and text utilities
     layout.css        Navigation, sections, footer, scroll reveal
     components.css    Buttons, forms, tags, cards
-    interactive.css   Ambient trace, palette dock, stat strip, project accordion
+    interactive.css   Ambient trace, light/dark switch, stat strip, project accordion
     motion.css        Intro, hero, globe, cursor, stacking, route, gallery
+    bold.css          Skills grid, terminal, contact, footer, projects page, case studies, 404
     pages.css         Page- and section-specific styles
   js/
     theme.js          Light/dark theme with system preference + persistence
-    palette.js        Six colour palettes and the palette dock
     form.js           Contact form validation and submission
-    main.js           Mobile menu, scroll reveal, active nav, back to top
-    interactive.js    Ambient trace, counters, accordion, skills filter
+    main.js           Mobile menu, scroll reveal, heading scan, active nav, back to top
+    flair.js          Skill tile pixel icons, project hover preview, Ctrl/Cmd K terminal
+    interactive.js    Ambient trace, counters, accordion, magnetic buttons
     hero.js           First-visit intro, hero entrance, lazy globe loader
     hero-globe.js     The WebGL network globe (ES module, three.js)
     cursor.js         Cursor ring that follows the real pointer
     route.js          The winding route: a timeline line through every heading
     ping.js           Ping, the packet creature that rides the route
+    ping-sprite.js    Ping's pixel-art sprite: character maps drawn as SVG rects
     story.js          Home page stacking, About word fill, portrait tilt
   vendor/three/       three.js r186, the one third-party library (see its README)
 CNAME, robots.txt, sitemap.xml, llms.txt, favicon.svg
@@ -115,21 +117,20 @@ Everything is driven by CSS custom properties defined in
 overrides those same variables under `html[data-theme="dark"]`, so themes stay
 in sync by construction.
 
-- **Colour:** six palettes (Ocean, Violet, Emerald, Crimson, Cyan, Magenta),
-  each with a light and a dark variant. Ocean is the default and lives in
-  `tokens.css`; `palette.js` carries the other five and swaps them at runtime by
-  writing one `<style>` block that redefines the same variables. All twelve
-  variants clear WCAG AA (4.5:1) for body, muted, and subtle text and for the
-  accent on both grounds.
+- **Colour:** one colour story in light and dark: neutral near-black and
+  off-white, and a single electric blue (`#2450f5` light, `#4d7aff` dark) kept
+  rare on purpose, for Ping, the route, the name and the main button. Both
+  themes clear WCAG AA (4.5:1) for body, muted and subtle text and for the
+  accent.
 - **Type:** Familjen Grotesk for headings and UI, IBM Plex Mono for labels,
   indices, and figures, both from Google Fonts.
 - **Theme:** a small inline script in each `<head>` sets `data-theme` before
-  first paint so the correct theme renders immediately, and `palette.js` is
-  loaded in the `<head>` for the same reason. `theme.js` then wires up the
-  toggle and follows the system setting until the visitor overrides it.
+  first paint so the correct theme renders immediately. `theme.js` then wires
+  up the switch in the nav and follows the system setting until the visitor
+  overrides it.
 
-To change the default palette or the fonts, edit `tokens.css`; to change the
-palette list, edit `palette.js`. Nothing else hardcodes a colour or font.
+To change the colours or the fonts, edit `tokens.css`. Nothing else
+hardcodes a colour or font.
 
 ## Interaction
 
@@ -139,7 +140,7 @@ palette list, edit `palette.js`. Nothing else hardcodes a colour or font.
 - **Hero globe:** a three.js scene whose labelled nodes are the projects and
   the tools they are built with, linked by their real relationships. It loads
   after the page has finished loading, renders only while the hero is on
-  screen, follows the palette, and falls back to a CSS poster without WebGL
+  screen, follows the theme, and falls back to a CSS poster without WebGL
   or with Data Saver on.
 - **Stacking:** on the home page each section slides up over the last,
   which sinks back and fades toward the page colour. Sections taller than the
@@ -154,16 +155,34 @@ palette list, edit `palette.js`. Nothing else hardcodes a colour or font.
   cards. Case studies weave between their sections. On phones the packet
   carries the current hop's name while the page moves.
 - **Ping:** the packet at the head of the route is a little creature (a
-  ping says hello; the answer is a pong). Drawn in SVG from the palette
-  tokens, he blinks, looks the way the page moves, hops and points at each
-  heading with a line of his own, dozes off when nothing happens, reacts to
-  fast scrolling, taps, palette and theme changes, carries the contact
-  form's real request to the inbox, and grows big at the end of the route to
-  wave goodbye. Pages without a route (404, résumé, projects) have him
-  standing by the heading. He is aria-hidden, and holds still under reduced
-  motion.
-- **Headings:** eyebrows decode out of random characters and heading words
-  rise out of a mask as they are revealed.
+  ping says hello; the answer is a pong), drawn as a pixel-art sprite
+  (`ping-sprite.js`, 19 x 22 on a hard grid) in three shades of the accent
+  with a navy outline. Every state is a frame swapped in
+  steps, like a game sprite: blinking, glancing, talking, waving, cheering,
+  walking while the page scrolls, happy, asleep, dizzy, and carrying the
+  contact form's real request in an envelope. He grows big at the end of the
+  route to wave goodbye. On the home page he speaks only at the hello, the
+  projects and contact stops and the goodbye; each line is a retro RPG dialog
+  box docked in the bottom corner on his side, joined to him by a dotted
+  wire, so it never jumps around over the content. Pages without a route
+  (404, résumé, projects) have him standing by the heading. He is
+  aria-hidden, and holds still under reduced motion.
+- **Headings:** eyebrows decode out of random characters, and a glowing scan
+  line sweeps across each heading, revealing the text behind it.
+- **Hero name:** fills the column, and as the next section slides over the
+  hero it shrinks and flies up into the nav, cross-fading into the logo.
+- **Skills:** the marquee drifts above a ruled grid of tiles, one per area,
+  each with a 12 x 12 pixel icon that boots in pixel by pixel and animates in
+  two frames while its tile is hovered (or, on a phone, mid-screen).
+- **Terminal:** Ctrl K / Cmd K (or the footer button) opens a small terminal
+  that filters commands as you type: every section, case study and profile,
+  plus the theme switch. A shortcut over links that already exist.
+- **Projects page:** a giant title, big index rows, and on a fine pointer the
+  hovered project's cover floats beside the cursor.
+- **Case studies:** the cover drifts as it scrolls past, screenshots wipe up
+  into their frames, and each ends on the next case study, set big.
+- **Footer:** the name set as wide as the screen, cropped, its letters
+  rising as the footer scrolls in.
 - **About:** the lede lights up word by word as it is read, and the portrait
   tilts toward the pointer.
 - **Cursor ring:** follows the real pointer (which stays visible), wraps
@@ -174,7 +193,6 @@ palette list, edit `palette.js`. Nothing else hardcodes a colour or font.
 - **Project accordion:** one row per project, opened by a tap, one open at a
   time. Rows without a screenshot draw a canvas figure seeded by the project
   key and coloured from the live palette.
-- **Skills filter:** the category chips dim the rows that do not match.
 - **Magnetic buttons:** gated behind `(hover: hover) and (pointer: fine)`, so
   they are purely additive and never a requirement.
 
