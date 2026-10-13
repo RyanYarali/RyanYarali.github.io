@@ -155,7 +155,7 @@ hardcodes a colour or font.
 - **Ping:** the packet at the head of the route is a little creature (a
   ping says hello; the answer is a pong), drawn as a pixel-art sprite
   (`ping-sprite.js`, 19 x 22 on a hard grid) in three shades of the accent
-  with a navy outline and pink cheeks. Every state is a frame swapped in
+  with a navy outline. Every state is a frame swapped in
   steps, like a game sprite: blinking, glancing, talking, waving, cheering,
   walking while the page scrolls, happy, asleep, dizzy, and carrying the
   contact form's real request in an envelope. He grows big at the end of the

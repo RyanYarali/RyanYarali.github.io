@@ -41,12 +41,12 @@
   --color-glare: rgba(255, 255, 255, 0.34);
 
   /* Ping, the pixel sprite: highlight and shade of the accent, a deep navy
-     outline and ink, pink cheeks, and his ground shadow. */
+     outline and ink, his tongue, and his ground shadow. */
   --px-hi: #7f9bff;
   --px-lo: #1638b8;
   --px-outline: #0a1240;
   --px-ink: #0a1030;
-  --px-cheek: #ff8fb3;
+  --px-tongue: #ff8fb3;
   --px-shadow: rgba(10, 10, 11, 0.16);
 
   --color-danger: #a32b22;
