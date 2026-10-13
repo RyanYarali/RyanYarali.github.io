@@ -1012,36 +1012,21 @@ html.js-ready .about-facts > div.reveal.in-view::before {
   transform: none;
 }
 
-/* Reading progress, drawn by scroll where the browser can. */
-.nav-container::after {
-  content: "";
-  position: absolute;
-  left: 2.25rem;
-  right: 2.25rem;
-  bottom: 0.5rem;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--color-accent);
-  transform: scaleX(0);
-  transform-origin: left;
-  opacity: 0;
-  transition: opacity 300ms var(--ease);
-  pointer-events: none;
-}
-
-.navbar.is-scrolled .nav-container::after {
-  opacity: 1;
-}
-
+/* Reading progress: a second background layer on the capsule, so it runs
+   along the capsule's foot and is rounded off by its corners. Drawn by
+   scroll where the browser can. */
 @supports ((animation-timeline: scroll()) and (animation-range: 0% 100%)) {
-  .nav-container::after {
+  .nav-container::before {
+    background:
+      linear-gradient(var(--color-accent), var(--color-accent)) left bottom / 0% 2px no-repeat,
+      color-mix(in srgb, var(--color-surface) 72%, transparent);
     animation: nav-progress linear both;
     animation-timeline: scroll(root block);
   }
 
   @keyframes nav-progress {
     to {
-      transform: scaleX(1);
+      background-size: 100% 2px, auto;
     }
   }
 }
@@ -1166,5 +1151,47 @@ html.js-ready .about-facts > div.reveal.in-view::before {
   .logo:focus-visible .logo-name::after {
     animation: none;
     opacity: 1;
+  }
+}
+
+
+/* ---------- letters ----------
+ * flair.js splits big titles into words (.wd) and letters (.ch). A title
+ * marked rise-ready holds its letters below their word's mask until it is
+ * risen, then they come up one after another. The mask is a clip-path that
+ * leaves room for descenders and overhangs. */
+.wd,
+.ch {
+  display: inline-block;
+}
+
+.wd {
+  white-space: nowrap;
+}
+
+html.js-ready .rise-ready .wd {
+  clip-path: inset(-0.35em -0.12em -0.24em -0.12em);
+}
+
+html.js-ready .rise-ready .ch {
+  transform: translateY(115%);
+  transition: transform 1100ms var(--ease-out-expo);
+  transition-delay: calc(var(--i, 0) * 34ms + 60ms);
+}
+
+html.js-ready .rise-ready.is-risen .ch {
+  transform: none;
+}
+
+/* The lens sets each letter's weight inline; the variable face lets any
+   weight between 400 and 700 render. */
+[data-lens] .ch {
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js-ready .rise-ready .ch {
+    transform: none;
+    transition: none;
   }
 }

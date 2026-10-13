@@ -35,15 +35,18 @@
     var animations = [];
 
     if (title) {
-      animations.push(
-        title.animate(
-          [
-            { opacity: 0, transform: "translateY(18px)", filter: "blur(10px)" },
-            { opacity: 1, transform: "none", filter: "blur(0)" },
-          ],
-          { duration: 900, easing: EASE, fill: "both" },
-        ),
-      );
+      // The name's letters rise out of their masks one after another
+      // (flair.js splits them and holds the styles).
+      if (window.siteSplit) {
+        window.siteSplit(title);
+        title.classList.add("rise-ready");
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            title.classList.add("is-risen");
+          });
+        });
+      }
+      animations.push(title.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 160, fill: "both" }));
     }
 
     [].forEach.call(parts, function (el, i) {
@@ -186,7 +189,7 @@
     if (conn && conn.saveData) return;
 
     function go() {
-      import("./hero-globe.js?v=20261032")
+      import("./hero-globe.js?v=20261035")
         .then(function (mod) {
           mod.mount(host, { reduced: reduced });
         })
