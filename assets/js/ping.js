@@ -55,24 +55,11 @@
   };
 
   // Case study headings, matched by what they are about.
+  // On a case study he speaks at three stops only, as on the home page.
   var CASE = [
-    [/overview/i, "Here's the story."],
     [/the site|screens/i, "Screenshots! The fun part."],
-    [/brief/i, "What the client asked for."],
-    [/design/i, "Pretty, right?"],
-    [/stack|tech/i, "Ooh, the good stuff."],
     [/what i built|features?/i, "Here's what he built."],
-    [/seo|search/i, "Google likes this bit."],
-    [/client|working with/i, "Straight from the client."],
     [/outcome|result/i, "And how it turned out."],
-    [/the idea/i, "My favourite part. It's about me!"],
-    [/motion/i, "Watch me move!"],
-    [/performance/i, "Fast. Like me."],
-    [/accessib/i, "Everyone's welcome here."],
-    [/left out/i, "Knowing when to stop."],
-    [/problem|challenge/i, "The tricky part."],
-    [/team/i, "Teamwork!"],
-    [/learn/i, "Lessons learned."],
   ];
 
   var QUIPS = {

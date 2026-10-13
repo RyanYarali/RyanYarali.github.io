@@ -102,7 +102,8 @@
     })(start);
   }
 
-  const SCAN = ".section-heading.reveal h2, .project-section.reveal > h2, .page-title.reveal h1";
+  const SCAN =
+    ".section-heading.reveal h2:not([data-rise]), .project-section.reveal > h2, .page-title.reveal h1:not([data-rise])";
 
   function prepareHeadings() {
     if (reducedMotion) return;

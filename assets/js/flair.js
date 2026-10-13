@@ -3,6 +3,10 @@
  * -----
  * The smaller custom touches shared by every page:
  *
+ *   letters       big titles split into letters that rise one after
+ *                 another; the hero name and the footer wordmark thin
+ *                 under the pointer (a weight lens); the skills marquee
+ *                 speeds up with fast scrolling
  *   header        the bar lifts into a glass capsule on scroll, and a pill
  *                 glides between the nav links
  *   pixel icons   the skill tiles' icons, drawn on a 12 x 12 grid in Ping's
@@ -119,6 +123,218 @@
     [].forEach.call(tiles, function (t) {
       io.observe(t);
     });
+  }
+
+  // ==================== Letters ====================
+  // Big display type is split into one span per letter (inside one span per
+  // word), so its letters can rise one after another and respond to the
+  // pointer. The heading keeps its real text as its accessible name; the
+  // spans are hidden from assistive technology.
+
+  function split(el) {
+    if (el.dataset.split) return el;
+    el.dataset.split = "1";
+    var clone = el.cloneNode(true);
+    [].forEach.call(clone.querySelectorAll("[aria-hidden='true']"), function (n) {
+      n.remove();
+    });
+    if (!el.hasAttribute("aria-label")) el.setAttribute("aria-label", clone.textContent.replace(/\s+/g, " ").trim());
+    var i = 0;
+    (function walk(node) {
+      [].slice.call(node.childNodes).forEach(function (n) {
+        if (n.nodeType === 1) {
+          if (n.getAttribute("aria-hidden") === "true") return;
+          return walk(n);
+        }
+        if (n.nodeType !== 3 || !n.nodeValue.trim()) return;
+        var frag = document.createDocumentFragment();
+        n.nodeValue.split(/(\s+)/).forEach(function (part) {
+          if (!part) return;
+          if (/^\s+$/.test(part)) {
+            frag.appendChild(document.createTextNode(" "));
+            return;
+          }
+          var wd = document.createElement("span");
+          wd.className = "wd";
+          wd.setAttribute("aria-hidden", "true");
+          Array.from(part).forEach(function (c) {
+            var ch = document.createElement("span");
+            ch.className = "ch";
+            ch.textContent = c;
+            ch.style.setProperty("--i", i++);
+            wd.appendChild(ch);
+          });
+          frag.appendChild(wd);
+        });
+        n.parentNode.replaceChild(frag, n);
+      });
+    })(el);
+    return el;
+  }
+  window.siteSplit = split;
+
+  // Letters rise out of their word's mask when the title comes into view.
+  // The hero name (data-rise="manual") is timed by hero.js instead.
+  function initRise() {
+    if (reduced) return;
+    var els = document.querySelectorAll("[data-rise]:not([data-rise='manual'])");
+    if (!els.length || !("IntersectionObserver" in window)) return;
+    var io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          e.target.classList.add("is-risen");
+          io.unobserve(e.target);
+        });
+      },
+      { threshold: 0.2 },
+    );
+    [].forEach.call(els, function (el) {
+      split(el);
+      el.classList.add("rise-ready");
+      // A frame in the hidden state first, so the rise has somewhere to
+      // start from.
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          io.observe(el);
+        });
+      });
+    });
+  }
+
+  // The weight lens: over a title marked data-lens, each letter's weight
+  // follows the pointer's distance from it, so the type thins under the
+  // pointer like glass passing over it. Letters keep the width they have at
+  // rest, so nothing around them moves.
+  function initLens() {
+    if (!fine || reduced) return;
+    [].forEach.call(document.querySelectorAll("[data-lens]"), function (el) {
+      if (!el.querySelector(".ch")) split(el);
+      var chars = [].slice.call(el.querySelectorAll(".ch"));
+      if (!chars.length) return;
+      var accent = el.getAttribute("data-lens") === "accent";
+      var base = parseFloat(getComputedStyle(chars[0]).fontWeight) || 700;
+      var MIN = 380;
+      var cur = chars.map(function () {
+        return base;
+      });
+      var tgt = cur.slice();
+      var raf = 0;
+      var px = -1e4;
+      var py = -1e4;
+
+      function fix() {
+        chars.forEach(function (c) {
+          c.style.width = "";
+          c.style.fontWeight = "";
+        });
+        // Computed width: fractional, and blind to any transform on the way
+        // up (the hero name may be mid-flight into the nav).
+        chars.forEach(function (c) {
+          c.style.width = getComputedStyle(c).width;
+        });
+        cur = chars.map(function () {
+          return base;
+        });
+      }
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(fix);
+      else fix();
+      window.addEventListener("resize", fix, { passive: true });
+
+      function aim() {
+        var any = false;
+        chars.forEach(function (c, i) {
+          var r = c.getBoundingClientRect();
+          var radius = r.height * 1.15;
+          var d = Math.hypot(r.left + r.width / 2 - px, r.top + r.height / 2 - py);
+          var f = Math.max(0, 1 - d / radius);
+          f = f * f;
+          tgt[i] = base - (base - MIN) * f;
+          if (f > 0) any = true;
+        });
+        return any;
+      }
+
+      function frame() {
+        raf = 0;
+        var moving = false;
+        chars.forEach(function (c, i) {
+          var next = cur[i] + (tgt[i] - cur[i]) * 0.2;
+          if (Math.abs(tgt[i] - next) < 0.6) next = tgt[i];
+          if (Math.round(next) !== Math.round(cur[i])) {
+            c.style.fontWeight = String(Math.round(next));
+            if (accent) {
+              var k = Math.round(((base - next) / (base - MIN)) * 100);
+              c.style.color = k > 2 ? "color-mix(in srgb, var(--color-accent) " + k + "%, currentColor)" : "";
+            }
+          }
+          cur[i] = next;
+          if (next !== tgt[i]) moving = true;
+        });
+        if (moving) raf = requestAnimationFrame(frame);
+      }
+
+      window.addEventListener(
+        "pointermove",
+        function (e) {
+          var box = el.getBoundingClientRect();
+          var pad = box.height * 0.6;
+          var near = e.clientX > box.left - pad && e.clientX < box.right + pad && e.clientY > box.top - pad && e.clientY < box.bottom + pad;
+          if (!near) {
+            if (px === -1e4) return;
+            px = py = -1e4;
+          } else {
+            px = e.clientX;
+            py = e.clientY;
+          }
+          aim();
+          if (!raf) raf = requestAnimationFrame(frame);
+        },
+        { passive: true },
+      );
+    });
+  }
+
+  // The skills marquee runs faster while the page is scrolled fast, and
+  // eases back to its own pace.
+  function initMarqueeSpeed() {
+    if (reduced) return;
+    var last = window.scrollY;
+    var v = 0;
+    var rate = 1;
+    var raf = 0;
+    var rows = null;
+    function apply(r) {
+      rows.forEach(function (row) {
+        row.getAnimations().forEach(function (a) {
+          a.playbackRate = r;
+        });
+      });
+    }
+    function tick() {
+      raf = 0;
+      if (!rows) rows = [].slice.call(document.querySelectorAll(".marquee-row"));
+      if (!rows.length) return;
+      rate += (1 + v - rate) * 0.12;
+      v *= 0.9;
+      if (Math.abs(rate - 1) < 0.01 && v < 0.01) {
+        rate = 1;
+        apply(1);
+        return;
+      }
+      apply(rate);
+      raf = requestAnimationFrame(tick);
+    }
+    window.addEventListener(
+      "scroll",
+      function () {
+        var dy = window.scrollY - last;
+        last = window.scrollY;
+        v = Math.min(5, Math.max(v, Math.abs(dy) / 14));
+        if (!raf) raf = requestAnimationFrame(tick);
+      },
+      { passive: true },
+    );
   }
 
   // ==================== Header ====================
@@ -513,6 +729,9 @@
   }
 
   function boot() {
+    initRise();
+    initLens();
+    initMarqueeSpeed();
     initHeader();
     initIcons();
     initPixelReveal();
