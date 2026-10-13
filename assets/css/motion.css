@@ -783,6 +783,10 @@ html.work-pinned .work-progress {
     view-transition-name: cover-nooklook;
   }
 
+  [data-vt="vancobab"] {
+    view-transition-name: cover-vancobab;
+  }
+
   [data-vt="taskmate"] {
     view-transition-name: cover-taskmate;
   }
