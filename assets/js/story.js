@@ -159,7 +159,12 @@
       setPinned(!reduced && wide.matches);
       if (pinned) {
         pinW = work.clientWidth;
-        travel = Math.max(0, track.scrollWidth - pinW);
+        // The ride ends with the last card at its resting place: flush with
+        // the right edge of the column when it is narrower than the column,
+        // and with the left edge when it is wider (as the cards are on a big
+        // screen), so it never ends hanging off the left of the screen.
+        var edge = parseFloat(getComputedStyle(track).paddingLeft) || 0;
+        travel = Math.max(0, Math.min(track.scrollWidth - pinW, cards[n - 1].offsetLeft - edge));
         // Three screens of scroll per four of sideways travel: long enough
         // to read each card, short enough not to feel like a detour.
         height = vh + travel * 0.75;
