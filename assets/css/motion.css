@@ -591,7 +591,8 @@ html.is-stacked main > .is-covered {
   max-width: none;
   height: 100%;
   object-fit: cover;
-  object-position: top center;
+  /* Covers are device mockups with margin all round, so crop evenly. */
+  object-position: center;
   display: block;
   will-change: transform;
 }
@@ -792,6 +793,14 @@ html.work-pinned .work-progress {
 
   [data-vt="taskmate"] {
     view-transition-name: cover-taskmate;
+  }
+
+  [data-vt="foodroutes"] {
+    view-transition-name: cover-foodroutes;
+  }
+
+  [data-vt="hackertycoon"] {
+    view-transition-name: cover-hackertycoon;
   }
 
   ::view-transition-group(*) {

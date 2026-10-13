@@ -113,7 +113,7 @@
             "name": "TaskMate",
             "url": "https://ryanyarali.com/projects/taskmate.html",
             "description": "Mobile-friendly task manager for students, built end to end with Firebase Authentication and Firestore as BCIT coursework (COMM 1800, Team DTC 09) and tested by a nine-person class team.",
-            "image": "https://ryanyarali.com/assets/TaskMate6.jpg",
+            "image": "https://ryanyarali.com/assets/tm-cover.jpg",
             "contributor": {
               "@id": "https://ryanyarali.com/#ryan"
             },
@@ -138,7 +138,7 @@
             },
             "primaryImageOfPage": {
               "@type": "ImageObject",
-              "url": "https://ryanyarali.com/assets/TaskMate6.jpg"
+              "url": "https://ryanyarali.com/assets/tm-cover.jpg"
             }
           },
           {
@@ -147,7 +147,7 @@
             "headline": "TaskMate: academic task management",
             "url": "https://ryanyarali.com/projects/taskmate.html",
             "description": "Case study: a student task manager built end to end with Firebase auth and Firestore as BCIT coursework.",
-            "image": "https://ryanyarali.com/assets/TaskMate6.jpg",
+            "image": "https://ryanyarali.com/assets/tm-cover.jpg",
             "inLanguage": "en",
             "datePublished": "2026-03-27T12:00:00-07:00",
             "dateModified": "2026-10-06T12:00:00-07:00",
@@ -248,10 +248,10 @@
           </div>
           <figure class="case-cover" data-vt="taskmate">
             <img
-              src="../assets/TaskMate6.jpg"
-              alt="TaskMate dashboard listing a student’s tasks by course"
-              width="1000"
-              height="508"
+              src="../assets/tm-cover.jpg"
+              alt="Three TaskMate phone screens: the home dashboard welcoming Ryan, the To Do list grouped by due date with priorities, and completed tasks with check marks"
+              width="1400"
+              height="788"
               fetchpriority="high"
               decoding="async"
             />
@@ -318,35 +318,35 @@
 
               <div class="screenshots-grid">
                 <figure class="reveal">
-                  <img src="../assets/TaskMate1.jpg" alt="Home dashboard screen" width="440" height="880" />
+                  <img src="../assets/tm-home.jpg" alt="Home dashboard on a phone: Welcome, Ryan!, Add New Task and View All Tasks buttons, the start of Today's Tasks, and the bottom tab bar" width="520" height="1125" loading="lazy" decoding="async" />
                   <figcaption>
                     <strong>Screen 1: Home dashboard</strong><br />Personalized
                     welcome with today's tasks
                   </figcaption>
                 </figure>
                 <figure class="reveal">
-                  <img src="../assets/TaskMate2.jpg" alt="Pending tasks screen" width="440" height="866" />
+                  <img src="../assets/tm-todo.jpg" alt="To Do list on a phone: course and priority filters above tasks grouped by due date, each with a course, a task name, a priority and an empty circle" width="520" height="1125" loading="lazy" decoding="async" />
                   <figcaption>
                     <strong>Screen 2: Pending tasks</strong><br />All
                     incomplete tasks sorted by due date
                   </figcaption>
                 </figure>
                 <figure class="reveal">
-                  <img src="../assets/TaskMate3.jpg" alt="Completed tasks screen" width="440" height="833" />
+                  <img src="../assets/tm-done.jpg" alt="Done list on a phone: filters and a Delete All button above completed tasks grouped by completion date, each with a red check mark" width="520" height="1125" loading="lazy" decoding="async" />
                   <figcaption>
                     <strong>Screen 3: Completed tasks</strong><br />Progress
                     history and completion tracking
                   </figcaption>
                 </figure>
                 <figure class="reveal">
-                  <img src="../assets/TaskMate4.jpg" alt="Task detail screen" width="316" height="296" />
+                  <img src="../assets/tm-detail.jpg" alt="Task Detail screen on a phone: editable course, task name, description, due date and priority fields" width="520" height="1125" loading="lazy" decoding="async" />
                   <figcaption>
-                    <strong>Screen 4: Task details</strong><br />Priority
-                    badges and course context
+                    <strong>Screen 4: Task details</strong><br />Edit any
+                    field, then save or delete
                   </figcaption>
                 </figure>
                 <figure class="reveal">
-                  <img src="../assets/TaskMate5.jpg" alt="FAQ and help screen" width="440" height="424" />
+                  <img src="../assets/tm-faq.jpg" alt="FAQ screen on a phone: category filter chips and expandable questions, with the first answer open" width="520" height="1125" loading="lazy" decoding="async" />
                   <figcaption>
                     <strong>Screen 5: FAQ &amp; help</strong><br />Categorized
                     Q&amp;A with expandable answers
@@ -358,8 +358,8 @@
 
               <h4>Home dashboard (screen 1)</h4>
               <p>
-                The home screen greets users by name (e.g. "Welcome, Fish
-                Liu!") with the tagline: "Stay focused. Stay productive. One
+                The home screen greets users by name (e.g. "Welcome,
+                Ryan!") with the tagline: "Stay focused. Stay productive. One
                 task at a time."
               </p>
               <p><strong>Key UI elements:</strong></p>
@@ -385,8 +385,8 @@
               </p>
               <p><strong>Each task card shows:</strong></p>
               <ul>
-                <li>Course name (e.g. COMP1510, Math, 1800)</li>
-                <li>Task name (e.g. Term project, Submission)</li>
+                <li>Course name (e.g. COMP 2537, COMM 1116, MATH 2030)</li>
+                <li>Task name (e.g. Lab 6, Essay, Quiz 4)</li>
                 <li>Priority level: high / medium / low</li>
                 <li>An empty circle on the right to mark as complete</li>
               </ul>
@@ -403,14 +403,14 @@
                 can see what they've gotten through over the term.
               </p>
 
-              <h4>Task card detail (screen 4)</h4>
-              <p>A focused view of task information when expanded, showing:</p>
+              <h4>Task detail (screen 4)</h4>
+              <p>Tapping a task opens it for editing, with every field in one place:</p>
               <ul>
-                <li>Task name</li>
-                <li>Priority badge (color-coded)</li>
-                <li>Course identifier</li>
-                <li>Category / course section</li>
-                <li>Due date status</li>
+                <li>Course name and task name</li>
+                <li>Description</li>
+                <li>Due date</li>
+                <li>Priority: low / medium / high</li>
+                <li>"Save changes" and "Delete task" actions</li>
               </ul>
 
               <h4>FAQ / help page (screen 5)</h4>
