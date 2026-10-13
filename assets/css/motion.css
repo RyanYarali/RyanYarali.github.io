@@ -605,6 +605,16 @@ html.is-stacked main > .is-covered {
   scale: 1.04;
 }
 
+/* While the gallery is pinned, only the card in front is fully readable;
+   the neighbours peeking in at the edges fade back. */
+html.work-pinned .work-card .work-body {
+  transition: opacity 400ms var(--ease-out-expo);
+}
+
+html.work-pinned .work-card:not(.is-current) .work-body {
+  opacity: 0.18;
+}
+
 .work-body {
   min-width: 0;
   display: grid;
