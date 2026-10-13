@@ -594,6 +594,7 @@
       { cmd: "foodroutes", desc: "Case study: FoodRoutes", go: base + "projects/foodroutes.html" },
       { cmd: "hackertycoon", desc: "Case study: Hacker Tycoon", go: base + "projects/hackertycoon.html" },
       { cmd: "how-its-built", desc: "How this site is built", go: base + "projects/this-site.html" },
+      { cmd: "email", desc: "ryan@ryanyarali.com", go: "mailto:ryan@ryanyarali.com", mail: true },
       { cmd: "github", desc: "github.com/RyanYarali", go: "https://github.com/RyanYarali", ext: true },
       { cmd: "linkedin", desc: "linkedin.com/in/ryan-yarali", go: "https://www.linkedin.com/in/ryan-yarali/", ext: true },
       { cmd: "theme", desc: "Switch light and dark", run: function () {
@@ -681,6 +682,10 @@
         window.open(c.go, "_blank", "noopener");
         return;
       }
+      if (c.mail) {
+        location.href = c.go;
+        return;
+      }
       if (c.go.charAt(0) === "#") {
         var target = document.querySelector(c.go);
         var link = document.querySelector('.nav-link[href="' + c.go + '"]');
@@ -746,7 +751,41 @@
     }
   }
 
+  // ==================== Copy email ====================
+  // A button that copies the address it carries and says so for a moment.
+  function initCopy() {
+    [].forEach.call(document.querySelectorAll("[data-copy]"), function (b) {
+      var label = b.textContent;
+      var timer = 0;
+      b.addEventListener("click", function () {
+        var text = b.getAttribute("data-copy");
+        var done = function (ok) {
+          b.textContent = ok ? "Copied" : "Press Ctrl C";
+          b.classList.toggle("is-done", ok);
+          clearTimeout(timer);
+          timer = setTimeout(function () {
+            b.textContent = label;
+            b.classList.remove("is-done");
+          }, 1800);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(
+            function () {
+              done(true);
+            },
+            function () {
+              done(false);
+            },
+          );
+        } else {
+          done(false);
+        }
+      });
+    });
+  }
+
   function boot() {
+    initCopy();
     initRise();
     initLens();
     initMarqueeSpeed();
