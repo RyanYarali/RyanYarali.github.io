@@ -26,11 +26,6 @@
       return null;
     },
 
-    subject: (value) => {
-      if (!value) return "Please select a subject";
-      return null;
-    },
-
     message: (value) => {
       if (!value.trim()) return "Message is required";
       if (value.trim().length < 10)

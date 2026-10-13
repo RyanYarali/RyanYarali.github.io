@@ -5,12 +5,12 @@
  * machine says "hello, are you there?", and the answer is a pong, so Ping
  * says hello when you arrive and "Pong" when you reach the end.
  *
- * He is drawn in SVG from the palette tokens, so he recolours with the
- * palette and the theme. He blinks, looks the way the page is moving,
- * stretches with scroll speed, hops at each heading and points at what it
- * introduces, dozes off when nothing happens, carries the contact form's
- * message to the inbox, and at the end of the route grows big to wave
- * goodbye. On pages without a route he stands next to the heading.
+ * He is a pixel-art sprite (ping-sprite.js) coloured from the theme tokens.
+ * He blinks, glances the way the page is moving, walks while it scrolls,
+ * hops at each heading, dozes off when nothing happens, carries the contact
+ * form's message to the inbox, and at the end of the route grows big to wave
+ * goodbye. His lines dock in a corner as RPG dialog boxes, wired to him. On
+ * pages without a route he stands next to the heading.
  *
  * Everything he says repeats something already on the page, so he is
  * hidden from assistive technology. Under reduced motion he holds still and
@@ -47,11 +47,10 @@
 
   // ==================== What he says ====================
 
+  // He speaks at the two stops that matter and stays quiet in between: a
+  // line at every heading turned him into a narrator competing with the page.
   var HOME = {
-    about: "This is Ryan. Full-stack, and a proper networking nerd.",
     projects: "Real clients. Real live sites. Have a look!",
-    skills: "The toolbox. Everything here shows up in his projects.",
-    learning: "Term 3 at BCIT. Still levelling up.",
     contact: "Want to say hi? Write below. I'll deliver it myself.",
   };
 
@@ -94,42 +93,38 @@
 
   // ==================== Building him ====================
 
-  var SVG =
-    '<svg viewBox="-10 -16 60 64" aria-hidden="true" focusable="false">' +
-    '<g class="ping-arm ping-arm-l"><line x1="8" y1="28" x2="8" y2="38"/><circle cx="8" cy="40" r="3.6"/></g>' +
-    '<g class="ping-arm ping-arm-r"><line x1="32" y1="28" x2="32" y2="38"/><circle cx="32" cy="40" r="3.6"/></g>' +
-    '<g class="ping-antenna"><line x1="20" y1="12" x2="20" y2="4"/><circle cx="20" cy="3.5" r="2.8"/></g>' +
-    '<path class="ping-skin" d="M20 11 C29.5 11 35 18.5 35 27 C35 36 28.5 42 20 42 C11.5 42 5 36 5 27 C5 18.5 10.5 11 20 11 Z"/>' +
-    '<ellipse class="ping-shine" cx="13" cy="18" rx="4.5" ry="2.6" transform="rotate(-28 13 18)"/>' +
-    '<g class="ping-eyes">' +
-    '<ellipse class="ping-eye" cx="14.5" cy="25" rx="4.3" ry="4.9"/>' +
-    '<ellipse class="ping-eye" cx="25.5" cy="25" rx="4.3" ry="4.9"/>' +
-    '<g class="ping-pupils"><circle cx="14.5" cy="25.6" r="2.3"/><circle cx="25.5" cy="25.6" r="2.3"/></g>' +
-    "</g>" +
-    '<g class="ping-face ping-face-happy"><path d="M11 26 Q14.5 21.5 18 26"/><path d="M22 26 Q25.5 21.5 29 26"/></g>' +
-    '<g class="ping-face ping-face-sleep"><path d="M11 26 Q14.5 28.5 18 26"/><path d="M22 26 Q25.5 28.5 29 26"/></g>' +
-    '<g class="ping-face ping-face-dizzy"><g><path d="M14.5 25 m-3 0 a3 3 0 1 0 6 0 a1.8 1.8 0 1 0 -3.6 0"/></g>' +
-    '<g><path d="M25.5 25 m-3 0 a3 3 0 1 0 6 0 a1.8 1.8 0 1 0 -3.6 0"/></g></g>' +
-    '<path class="ping-mouth ping-mouth-smile" d="M17.5 33 Q20 35.2 22.5 33"/>' +
-    '<path class="ping-mouth ping-mouth-sad" d="M17.5 34.5 Q20 32.4 22.5 34.5"/>' +
-    '<ellipse class="ping-mouth-open" cx="20" cy="34" rx="2.4" ry="2"/>' +
-    '<g class="ping-envelope" transform="translate(9 -14)"><rect x="0" y="0" width="22" height="15" rx="2.5"/><path d="M1 1.5 L11 9 L21 1.5"/></g>' +
-    "</svg>";
+  // He is a pixel-art sprite (ping-sprite.js draws him on a hard grid from
+  // character maps); every state below is a class on .ping that the
+  // stylesheet turns into the matching frame.
+  var SVG = '<svg class="ping-svg" aria-hidden="true" focusable="false"></svg>';
 
   var el = document.createElement("div");
   el.className = "ping";
   el.setAttribute("aria-hidden", "true");
   el.innerHTML =
-    '<div class="ping-bubble"></div>' +
+    // Each line arrives as a packet: a header with its sequence number, then
+    // the payload typing out. The full line is laid out from the start (the
+    // untyped rest is transparent), so the bubble never grows while typing.
+    '<div class="ping-bubble"><span class="ping-bubble-head"><span>PING</span><span class="ping-seq"></span></span>' +
+    '<span class="ping-bubble-text"><span class="ping-typed"></span><span class="ping-rest"></span></span></div>' +
     '<span class="ping-zzz">z</span>' +
     '<div class="ping-hit" data-cursor="link"><div class="ping-scale"><div class="ping-float"><div class="ping-squash">' +
     SVG +
     "</div></div></div></div>";
 
   var bubble = el.querySelector(".ping-bubble");
-  var squash = el.querySelector(".ping-squash");
-  var pupils = el.querySelector(".ping-pupils");
-  var eyes = el.querySelector(".ping-eyes");
+  var bubbleSeq = el.querySelector(".ping-seq");
+  var bubbleText = el.querySelector(".ping-bubble-text");
+  var typed = el.querySelector(".ping-typed");
+  var rest = el.querySelector(".ping-rest");
+  var seq = 0;
+
+  function setLine(shown, all) {
+    typed.textContent = all.slice(0, shown);
+    rest.textContent = all.slice(shown);
+  }
+  var sprite = window.PingSprite ? window.PingSprite.build(el.querySelector(".ping-svg")) : null;
+  var eyes = sprite ? sprite.eyes : null;
   var hit = el.querySelector(".ping-hit");
 
   if (route) {
@@ -191,16 +186,18 @@
   // Blinking on his own schedule.
   (function blink() {
     if (!reduced && mood === "awake" && !document.hidden) {
-      eyes.classList.add("is-blink");
+      el.classList.add("is-blink");
       setTimeout(function () {
-        eyes.classList.remove("is-blink");
-      }, 110);
+        el.classList.remove("is-blink");
+      }, 130);
     }
     setTimeout(blink, 2200 + Math.random() * 3200);
   })();
 
+  // His eyes glance one whole sprite pixel at most, so they stay on the grid.
   function look(x, y) {
-    pupils.style.transform = "translate(" + clamp(x, -1.6, 1.6).toFixed(2) + "px," + clamp(y, -1.6, 1.6).toFixed(2) + "px)";
+    if (!eyes) return;
+    eyes.style.transform = "translate(" + Math.round(clamp(x / 1.6, -1, 1)) + "px," + Math.round(clamp(y / 1.6, -1, 1)) + "px)";
   }
 
   // Which way to point at something on the page.
@@ -239,12 +236,100 @@
   }
   if (!route) window.addEventListener("resize", fitBubble, { passive: true });
 
+  // ==================== Where his words go ====================
+  // Riding the route he is always over the page, so a bubble beside him
+  // would sit on whatever scrolls past, and hiding it whenever something did
+  // left most lines unread. Instead each line docks in the bottom corner on
+  // his side of the screen, the least-read part of it, and a dotted wire runs
+  // from him to it: the line the packet travels down. It stays put while the
+  // page moves, long enough to read, on a phone as on a desktop.
+
+  var current = "";
+  var waiting = null;
+  var wire = null;
+  var NS = "http://www.w3.org/2000/svg";
+
+  if (route) {
+    bubble.classList.add("is-docked");
+    bubble.setAttribute("aria-hidden", "true");
+    document.body.appendChild(bubble);
+    var wireSvg = document.createElementNS(NS, "svg");
+    wireSvg.setAttribute("class", "ping-wire");
+    wireSvg.setAttribute("aria-hidden", "true");
+    wire = document.createElementNS(NS, "path");
+    wireSvg.appendChild(wire);
+    document.body.appendChild(wireSvg);
+  }
+
+  function showBubble(on) {
+    bubble.classList.toggle("is-on", on);
+    if (wire) wire.parentNode.classList.toggle("is-on", on);
+    if (on) dock();
+  }
+
+  function dock() {
+    if (!route || !bubble.classList.contains("is-on")) return;
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+    var phone = vw <= 700;
+    var gap = phone ? 12 : 24;
+    var w = bubble.offsetWidth;
+    var h = bubble.offsetHeight;
+    var r = hit.getBoundingClientRect();
+    var cx = r.left + r.width / 2;
+    var side = cx < vw / 2 ? "L" : "R";
+    var left = side === "L" ? cx - 28 : cx + 28 - w;
+    left = clamp(left, gap, vw - w - gap);
+    // Clear of the back-to-top button, which holds the bottom-right corner
+    // (and, on a phone, sits where a full-width bubble would reach).
+    var bottom = gap + (side === "R" || phone ? 64 : 0);
+    var top = vh - bottom - h;
+    // When he is down in that corner himself (the goodbye), the line docks
+    // under the nav instead.
+    if (r.bottom > top - 12 && r.top < top + h + 12 && r.right > left - 12 && r.left < left + w + 12) {
+      var nav = document.querySelector(".navbar");
+      top = (nav ? nav.getBoundingClientRect().bottom : 64) + gap;
+    }
+    bubble.style.left = left.toFixed(1) + "px";
+    bubble.style.top = top.toFixed(1) + "px";
+    bubble.classList.toggle("is-flip", side === "R");
+    bubble.classList.toggle("is-above", top < r.top);
+    // The wire leaves him on the side facing the bubble and meets its near
+    // corner, where the little square port sits.
+    var below = top > r.top;
+    var ax = cx;
+    var ay = below ? r.bottom - r.height * 0.12 : r.top + r.height * 0.1;
+    var bx = side === "L" ? left + 4 : left + w - 4;
+    var by = below ? top : top + h;
+    var mid = (ay + by) / 2;
+    wire.setAttribute("d", "M" + ax.toFixed(1) + " " + ay.toFixed(1) + " C" + ax.toFixed(1) + " " + mid.toFixed(1) + " " + bx.toFixed(1) + " " + mid.toFixed(1) + " " + bx.toFixed(1) + " " + by.toFixed(1));
+  }
+  window.addEventListener("resize", dock, { passive: true });
+
+  // On a phone in the hero he waits off stage; a line worth saying is kept
+  // for when he steps on.
+  function retryWaiting() {
+    if (!waiting || bubble.classList.contains("is-on") || el.classList.contains("is-passive")) return;
+    if (performance.now() > waiting.until) {
+      waiting = null;
+      return;
+    }
+    var w = waiting;
+    waiting = null;
+    say(w.text, w.opt);
+  }
+
   function say(text, opt) {
     opt = opt || {};
     fitBubble();
     var prio = opt.prio || 1;
     if (opt.once && said[opt.once]) return;
     if (opt.cool && cool[opt.cool] && performance.now() - cool[opt.cool] < (opt.coolMs || 15000)) return;
+    if (route && el.classList.contains("is-passive")) {
+      if (opt.once || prio >= 2) waiting = { text: text, opt: opt, until: performance.now() + 20000 };
+      return;
+    }
+    if (waiting && waiting.text === text) waiting = null;
     if (bubble.classList.contains("is-on") && prio < prioNow) {
       if (opt.once || prio >= 2) {
         if (!pending || (pending.opt.prio || 1) <= prio) pending = { text: text, opt: opt };
@@ -257,28 +342,37 @@
     clearTimeout(talkTimer);
     clearInterval(typeTimer);
     if (mood === "sleep") setMood("awake");
-    if (opt.pose) setPose(opt.pose, (opt.hold || 2200) + text.length * 30);
+    // Long enough to read: a beat to start, then about a word every 300ms.
+    var hold = (opt.hold || 3200) + text.length * 45;
+    if (opt.pose) setPose(opt.pose, hold);
 
-    bubble.classList.add("is-on");
+    current = text;
+    seq++;
+    bubbleSeq.textContent = "SEQ " + (seq < 10 ? "0" : "") + seq;
     if (reduced) {
-      bubble.textContent = text;
+      setLine(text.length, text);
+      showBubble(true);
     } else {
       el.classList.add("is-talking");
+      bubble.classList.add("is-typing");
       var i = 0;
-      bubble.textContent = "";
+      setLine(0, text);
+      showBubble(true);
       typeTimer = setInterval(function () {
         i++;
-        bubble.textContent = text.slice(0, i);
+        setLine(i, text);
         if (i >= text.length) {
           clearInterval(typeTimer);
           el.classList.remove("is-talking");
+          bubble.classList.remove("is-typing");
         }
       }, 26);
     }
     talkTimer = setTimeout(
       function () {
-        bubble.classList.remove("is-on");
+        showBubble(false);
         prioNow = 0;
+        current = "";
         if (pending) {
           var next = pending;
           pending = null;
@@ -287,7 +381,7 @@
           }, 260);
         }
       },
-      (opt.hold || 2200) + text.length * 30,
+      hold,
     );
   }
 
@@ -303,7 +397,8 @@
 
   function target() {
     // On a phone the route hugs the screen edge; he stays wholly on screen.
-    var half = hit.offsetWidth * 0.5 * (window.innerWidth <= 700 ? 0.72 : 1) + 4;
+    var scale = parseFloat(getComputedStyle(el).getPropertyValue("--s")) || 1;
+    var half = hit.offsetWidth * 0.5 * scale + 4;
     if (!big) return { x: clamp(head.x, half, window.innerWidth - half), y: head.y };
     // Grown for the goodbye he steps in from the edge, so all of him is on
     // screen, and stands a little above the end of the route.
@@ -316,7 +411,7 @@
     var btn = document.querySelector('#contact-form button[type="submit"]');
     if (btn) {
       var b = btn.getBoundingClientRect();
-      var reach = hit.offsetHeight * 0.6 * (phone ? 1.9 : 2.3);
+      var reach = hit.offsetHeight * 0.6 * (phone ? 1.9 : 2.6);
       if (b.bottom > sy - reach && b.top < sy + reach) sy = b.bottom + reach + 6;
     }
     return { x: clamp(sx, margin, window.innerWidth - margin), y: sy };
@@ -328,6 +423,7 @@
     // On a phone in the hero he stands at the edge of the main buttons; taps
     // there belong to the buttons, not to him.
     el.classList.toggle("is-passive", window.innerWidth <= 700 && window.scrollY < window.innerHeight * 0.8);
+    dock();
   }
 
   function follow() {
@@ -371,14 +467,12 @@
     if (mood === "awake" && !flying && !big && performance.now() - lastActive > 45000) {
       setMood("sleep");
       setPose("");
-      bubble.classList.remove("is-on");
+      showBubble(false);
     }
   }, 1000);
 
   var settleTimer = 0;
-  var upRun = 0;
   var lastScroll = window.scrollY;
-  var wheeSaid = false;
 
   window.addEventListener(
     "scroll",
@@ -386,41 +480,30 @@
       var dy = window.scrollY - lastScroll;
       lastScroll = window.scrollY;
       wake();
+      // A pixel sprite can't stretch without breaking its grid, so instead
+      // of squashing he walks: his feet step while the page moves, and he
+      // looks the way it is going.
       if (!reduced && !big) {
-        var s = clamp(Math.abs(dy) / 60, 0, 1);
-        squash.style.transform = "scale(" + (1 - s * 0.18).toFixed(3) + "," + (1 + s * 0.32).toFixed(3) + ")";
+        el.classList.add("is-walking");
         look(0, dy > 0 ? 1.5 : -1.5);
         clearTimeout(settleTimer);
         settleTimer = setTimeout(function () {
-          squash.style.transform = "scale(1.12,0.88)";
-          setTimeout(function () {
-            squash.style.transform = "";
-          }, 140);
+          el.classList.remove("is-walking");
           look(0, 0);
-        }, 140);
+        }, 160);
       }
-      // No reactions while the hero is on screen: the bubble would sit on
-      // the two main buttons.
-      var inHero = window.scrollY < window.innerHeight * 0.8;
-      if (!inHero && Math.abs(dy) > 90) say("Whoa, slow down! I'm only 64 bytes.", { cool: "fast", coolMs: 20000, pose: "cheer" });
-      if (dy < 0 && !inHero) {
-        upRun -= dy;
-        if (upRun > 900) {
-          upRun = 0;
-          say("Going back? Forgot something?", { cool: "up", coolMs: 25000 });
-        }
-      } else {
-        upRun = 0;
-      }
-      // Riding the sideways stretch under the gallery.
-      if (!wheeSaid && html.classList.contains("work-pinned")) {
-        var work = document.getElementById("work");
-        var p = work ? parseFloat(work.style.getPropertyValue("--work-p")) || 0 : 0;
-        if (p > 0.25 && p < 0.8) {
-          wheeSaid = true;
-          say("Wheee! Ride with the cards!", { prio: 2, pose: "cheer" });
+      // A jump away from the bottom (a nav link, the terminal) can leave the
+      // route's end lit, so the goodbye never hears it was left: once the end
+      // is well off screen, he shrinks back regardless.
+      if (big && !flying && route && route.endPoint) {
+        var endPt = route.endPoint();
+        if (!endPt || endPt.y > window.innerHeight * 1.15 || endPt.y < -window.innerHeight * 0.5) {
+          clearTimeout(endTimer);
+          growBig(false);
+          setPose("");
         }
       }
+      retryWaiting();
     },
     { passive: true },
   );
@@ -481,29 +564,15 @@
     });
   }
 
-  // A palette or theme change gets noticed.
+  // A theme change gets noticed.
   var lastTheme = html.getAttribute("data-theme");
-  var lastPalette = html.getAttribute("data-palette");
   new MutationObserver(function () {
     var t = html.getAttribute("data-theme");
-    var p = html.getAttribute("data-palette");
     if (t !== lastTheme) {
       say(t === "dark" ? "Ahh, dark mode. Much better." : "Lights on! My eyes!", { prio: 2, cool: "theme", coolMs: 4000 });
-    } else if (p !== lastPalette) {
-      var LINES = {
-        ocean: "Back to blue. Classic.",
-        violet: "Purple! Very royal.",
-        emerald: "Green suits me, right?",
-        crimson: "Ooh, red. Very dramatic.",
-        cyan: "Cyan. Cool and crisp.",
-        magenta: "Magenta! Now we're talking.",
-      };
-      say(LINES[p] || "New colours!", { prio: 2, cool: "palette", coolMs: 2500, pose: "cheer" });
-      hop();
     }
     lastTheme = t;
-    lastPalette = p;
-  }).observe(html, { attributes: true, attributeFilter: ["data-theme", "data-palette"] });
+  }).observe(html, { attributes: true, attributeFilter: ["data-theme"] });
 
   // ==================== Following the route ====================
 
@@ -685,12 +754,6 @@
       // the hero's buttons.
       say(line, { prio: 2, hold: window.innerWidth <= 700 ? 1500 : 2800, pose: route ? "wave" : "point-r" });
     }, reduced ? 0 : 450);
-    var h = new Date().getHours();
-    if (route && (h >= 23 || h < 5)) {
-      setTimeout(function () {
-        say("Up late, huh? Me too.", { prio: 2 });
-      }, 5200);
-    }
   }
 
   // On a first visit to the home page, wait for the intro to finish.

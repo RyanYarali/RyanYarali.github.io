@@ -43,15 +43,15 @@
     <meta property="og:url" content="https://ryanyarali.com/" />
     <meta property="og:title" content="Ryan Yarali | Full-Stack Developer &amp; BCIT CST Student" />
     <meta property="og:description" content="Ryan Yarali, full-stack developer and BCIT Computer Systems Technology student in Coquitlam, BC, open to internship, co-op and junior developer roles." />
-    <meta property="og:image" content="https://ryanyarali.com/assets/og-card-ping.jpg" />
+    <meta property="og:image" content="https://ryanyarali.com/assets/og-card-pixel.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Ryan Yarali, full-stack developer at BCIT, open to co-op and internships, beside Ping, a small blue packet character saying: Ping! Come see what Ryan has built." />
+    <meta property="og:image:alt" content="Ryan Yarali, full-stack developer at BCIT, open to co-op and internships, beside Ping, a blue pixel-art packet character saying: Ping! Come see what Ryan has built." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Ryan Yarali | Full-Stack Developer &amp; BCIT CST Student" />
     <meta name="twitter:description" content="Ryan Yarali, full-stack developer and BCIT Computer Systems Technology student in Coquitlam, BC, open to internship, co-op and junior developer roles." />
-    <meta name="twitter:image" content="https://ryanyarali.com/assets/og-card-ping.jpg" />
-    <meta name="twitter:image:alt" content="Ryan Yarali, full-stack developer at BCIT, open to co-op and internships, beside Ping, a small blue packet character saying: Ping! Come see what Ryan has built." />
+    <meta name="twitter:image" content="https://ryanyarali.com/assets/og-card-pixel.jpg" />
+    <meta name="twitter:image:alt" content="Ryan Yarali, full-stack developer at BCIT, open to co-op and internships, beside Ping, a blue pixel-art packet character saying: Ping! Come see what Ryan has built." />
 
     <title>Ryan Yarali | Full-Stack Developer &amp; BCIT CST Student</title>
 
@@ -59,23 +59,22 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Silkscreen&display=swap"
       rel="stylesheet"
     />
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="assets/css/tokens.css?v=20261013" />
-    <link rel="stylesheet" href="assets/css/reset.css?v=20261013" />
-    <link rel="stylesheet" href="assets/css/typography.css?v=20261013" />
-    <link rel="stylesheet" href="assets/css/layout.css?v=20261013" />
-    <link rel="stylesheet" href="assets/css/components.css?v=20261013" />
-    <link rel="stylesheet" href="assets/css/pages.css?v=20261013" />
-    <link rel="stylesheet" href="assets/css/interactive.css?v=20261013" />
-    <link rel="stylesheet" href="assets/css/motion.css?v=20261013" />
-    <link rel="stylesheet" href="assets/css/style.css?v=20261013" />
+    <link rel="stylesheet" href="assets/css/tokens.css?v=20261031" />
+    <link rel="stylesheet" href="assets/css/reset.css?v=20261031" />
+    <link rel="stylesheet" href="assets/css/typography.css?v=20261031" />
+    <link rel="stylesheet" href="assets/css/layout.css?v=20261031" />
+    <link rel="stylesheet" href="assets/css/components.css?v=20261031" />
+    <link rel="stylesheet" href="assets/css/pages.css?v=20261031" />
+    <link rel="stylesheet" href="assets/css/interactive.css?v=20261031" />
+    <link rel="stylesheet" href="assets/css/motion.css?v=20261031" />
+    <link rel="stylesheet" href="assets/css/bold.css?v=20261031" />
+    <link rel="stylesheet" href="assets/css/style.css?v=20261031" />
 
-    <!-- Palette tokens are written before first paint -->
-    <script src="assets/js/palette.js?v=20261013"></script>
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=4" />
@@ -370,12 +369,15 @@
           <li><a href="#about" class="nav-link">About</a></li>
           <li><a href="#projects" class="nav-link">Projects</a></li>
           <li><a href="#skills" class="nav-link">Skills</a></li>
-          <li><a href="#learning" class="nav-link">Learning</a></li>
           <li><a href="#contact" class="nav-link">Contact</a></li>
         </ul>
 
-        <!-- The theme switch lives in the palette dock, next to the colours. -->
         <div class="nav-actions">
+          <button type="button" class="nav-term" data-terminal aria-label="Open the site terminal, Ctrl K"><kbd>Ctrl K</kbd></button>
+          <button type="button" id="theme-toggle" class="theme-switch">
+            <svg class="theme-switch-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.4"></circle><path d="M12 1.6v2.2M12 20.2v2.2M4 4l1.6 1.6M18.4 18.4l1.6 1.6M1.6 12h2.2M20.2 12h2.2M4 20l1.6-1.6M18.4 5.6l1.6-1.6"></path></svg>
+            <svg class="theme-switch-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          </button>
           <!-- Points at resume.html until the PDF exists; then swap the href for the PDF and add a download attribute. -->
           <a href="resume.html" class="nav-resume" data-magnetic>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"></path><polyline points="7 10 12 15 17 10"></polyline><path d="M5 21h14"></path></svg>
@@ -399,48 +401,37 @@
           <div class="hero-globe-poster"></div>
         </div>
         <div class="container">
-          <div class="hero-layout">
-            <div class="hero-content">
-              <p class="eyebrow hero-greeting hero-reveal">
-                Computer Systems Technology · BCIT
+          <div class="hero-content">
+            <div class="hero-top hero-reveal">
+              <p class="eyebrow hero-greeting">Full-stack developer · Coquitlam, BC</p>
+              <p class="hero-status">
+                <span class="status-dot" aria-hidden="true"></span>
+                Open to co-op &amp; internships
               </p>
+            </div>
+            <!-- The name fills the width. On the home page story.js flies it
+                 up into the nav logo as the next section slides over the hero;
+                 the wrapper takes that motion so the entrance can animate the
+                 heading itself. -->
+            <div class="hero-name">
               <h1 class="hero-title">
                 Ryan <span class="highlight">Yarali</span>
               </h1>
-              <p class="hero-subtitle hero-reveal">
-                Data Communications &amp; Cyber Security · open to co-op &amp; internships
+            </div>
+            <div class="hero-foot hero-reveal">
+              <p class="hero-tagline">
+                Studying Data Communications &amp; Cyber Security at BCIT, and
+                building real sites for real clients.
               </p>
-              <p class="hero-tagline hero-reveal">
-                Full-stack developer in Coquitlam, BC, working through BCIT's
-                Computer Systems Technology diploma and building something new
-                every term.
+              <p class="hero-stat">
+                <span class="stat-value" data-count="15" data-suffix="+">15+</span>
+                <span class="stat-label">projects shipped<br />for clients</span>
               </p>
-
-              <div class="hero-cta hero-reveal">
-                <a href="#projects" class="btn btn-primary" data-magnetic
-                  >View projects</a
-                >
-                <a href="#contact" class="btn btn-secondary" data-magnetic
-                  >Get in touch</a
-                >
-              </div>
-
-              <div class="hero-stats hero-reveal" aria-label="At a glance">
-                <div class="stat-tile">
-                  <span class="stat-value" data-count="15" data-suffix="+">0</span>
-                  <span class="stat-label">Projects shipped for happy clients</span>
-                </div>
-                <div class="stat-tile">
-                  <span class="stat-value" data-count="3">0</span>
-                  <span class="stat-label">Terms into the BCIT diploma</span>
-                </div>
-                <div class="stat-tile">
-                  <span class="stat-value" data-count="9">0</span>
-                  <span class="stat-label">Languages &amp; runtimes</span>
-                </div>
+              <div class="hero-cta">
+                <a href="#projects" class="btn btn-primary" data-magnetic>View projects</a>
+                <a href="#contact" class="btn btn-secondary" data-magnetic>Get in touch</a>
               </div>
             </div>
-
           </div>
         </div>
       </header>
@@ -452,24 +443,19 @@
             <p class="eyebrow">About</p>
             <h2>A systems mindset, applied to the web</h2>
           </div>
-          <div class="about-layout">
-            <div class="about-content reveal">
-              <p class="about-lede">
-                I'm a Computer Systems Technology student at BCIT, now in Term 3
-                on the Data Communications &amp; Cyber Security option. I work
-                across the stack, and the networking specialization is teaching
-                me the layer underneath it: <em>what actually happens between the
-                client and the server.</em>
-              </p>
-              <p>
-                BCIT's program is hands-on: every course ends in something
-                built and defended, not just graded. That's shaped how I
-                work. I'd rather ship a smaller feature that's solid than a
-                bigger one held together with guesses.
-              </p>
-            </div>
+
+          <!-- The statement: story.js lights it up word by word as it is
+               read. -->
+          <p class="about-lede">
+            I work across the stack, and I'm learning the layer underneath it:
+            <em>what actually happens between the client and the server.</em>
+          </p>
+
+          <div class="about-grid">
+            <!-- The portrait resolves out of pixels when it scrolls in
+                 (flair.js), then tilts toward the pointer (story.js). -->
             <div class="about-photo-wrap reveal">
-              <figure class="about-photo">
+              <figure class="about-photo" data-pixel-reveal>
                 <img
                   src="assets/ryan-yarali.jpg"
                   alt="Portrait of Ryan Yarali in a dark denim shirt against a charcoal backdrop"
@@ -479,6 +465,42 @@
                   decoding="async"
                 />
               </figure>
+            </div>
+
+            <div class="about-body">
+              <p class="about-text reveal">
+                BCIT's program is hands-on: every course ends in something
+                built and defended, not just graded. That's shaped how I work.
+                I'd rather ship a smaller feature that's solid than a bigger
+                one held together with guesses.
+              </p>
+
+              <dl class="about-facts reveal-group" id="learning">
+                <div>
+                  <dt>Based in</dt>
+                  <dd>Coquitlam, BC, in Greater Vancouver</dd>
+                </div>
+                <div>
+                  <dt>Studying</dt>
+                  <dd><a href="https://www.bcit.ca/programs/computer-systems-technology-diploma-full-time-5500dipma/" target="_blank" rel="noopener noreferrer">Computer Systems Technology Diploma, BCIT</a></dd>
+                </div>
+                <div>
+                  <dt>Option</dt>
+                  <dd>Data Communications &amp; Cyber Security</dd>
+                </div>
+                <div>
+                  <dt>Now</dt>
+                  <dd><span class="status-dot" aria-hidden="true"></span>Term 3 of 4, graduating Apr 2027 (expected)</dd>
+                </div>
+                <div>
+                  <dt>Shipped</dt>
+                  <dd>15+ projects for clients</dd>
+                </div>
+                <div>
+                  <dt>Looking for</dt>
+                  <dd>Co-op, internship and junior developer roles</dd>
+                </div>
+              </dl>
             </div>
           </div>
         </div>
@@ -496,8 +518,8 @@
                 <p class="eyebrow">Selected work</p>
                 <h2>What I've shipped</h2>
                 <p class="section-intro work-note">
-                  15+ projects shipped so far. These are the six I'm cleared
-                  to show publicly.
+                  Six I'm cleared to show publicly, from client sites to
+                  coursework.
                 </p>
               </div>
               <p class="work-count" aria-hidden="true">
@@ -522,13 +544,6 @@
                       The full web presence for a Coquitlam portrait studio: priced service lines, a booking pipeline, a filterable gallery, and local SEO.
                     </p>
                   </div>
-                  <ul class="work-tech" aria-label="Built with">
-                      <li>WordPress</li>
-                      <li>Pods</li>
-                      <li>PHP</li>
-                      <li>Custom CSS/JS</li>
-                      <li>Local SEO</li>
-                  </ul>
                   <div class="project-accordion-links">
                     <a class="project-accordion-link" href="projects/nooklook.html">
                       Read the case study
@@ -557,12 +572,6 @@
                       A five-page site for a Persian kebab food truck, with a visual identity of its own and a launch list while the truck gets ready.
                     </p>
                   </div>
-                  <ul class="work-tech" aria-label="Built with">
-                      <li>HTML5</li>
-                      <li>CSS3</li>
-                      <li>Vanilla JavaScript</li>
-                      <li>SEO</li>
-                  </ul>
                   <div class="project-accordion-links">
                     <a class="project-accordion-link" href="projects/vancobab.html">
                       Read the case study
@@ -592,12 +601,6 @@
                       A mobile-friendly task manager that pulls students' deadlines out of five different apps and into one list, built on Firebase.
                     </p>
                   </div>
-                  <ul class="work-tech" aria-label="Built with">
-                      <li>HTML5</li>
-                      <li>CSS3</li>
-                      <li>JavaScript</li>
-                      <li>Firebase</li>
-                  </ul>
                   <div class="project-accordion-links">
                     <a class="project-accordion-link" href="projects/taskmate.html">
                       Read the case study
@@ -622,12 +625,6 @@
                       A mobile app that finds affordable groceries nearby and gets you there by transit. I built its map, routing, and accounts.
                     </p>
                   </div>
-                  <ul class="work-tech" aria-label="Built with">
-                      <li>React</li>
-                      <li>TypeScript</li>
-                      <li>Supabase</li>
-                      <li>Google Maps</li>
-                  </ul>
                   <div class="project-accordion-links">
                     <a class="project-accordion-link" href="projects/foodroutes.html">
                       Read the case study
@@ -656,12 +653,6 @@
                       A JavaFX idle game: take hacking jobs, earn crypto, and stay under the FBI's radar. I wrote about 80% of the game.
                     </p>
                   </div>
-                  <ul class="work-tech" aria-label="Built with">
-                      <li>Java 25</li>
-                      <li>JavaFX</li>
-                      <li>Gradle</li>
-                      <li>CheckStyle</li>
-                  </ul>
                   <div class="project-accordion-links">
                     <a class="project-accordion-link" href="projects/hackertycoon.html">
                       Read the case study
@@ -686,14 +677,6 @@
                       A bilingual English and Farsi restaurant site, with an admin panel so the owner updates the menu, hours, and reservations.
                     </p>
                   </div>
-                  <ul class="work-tech" aria-label="Built with">
-                      <li>React 19</li>
-                      <li>Vite</li>
-                      <li>Node.js</li>
-                      <li>Express</li>
-                      <li>SQLite</li>
-                      <li>i18n</li>
-                  </ul>
                   <div class="project-accordion-links">
                     <span class="project-accordion-note">Launching soon</span>
                   </div>
@@ -720,20 +703,18 @@
             <h2>Skills &amp; tools</h2>
           </div>
 
-          <div class="skills-filter" role="group" aria-label="Filter skills by area">
-            <button class="skills-filter-chip" type="button" data-filter="all" aria-pressed="true">All</button>
-            <button class="skills-filter-chip" type="button" data-filter="languages" aria-pressed="false">Languages</button>
-            <button class="skills-filter-chip" type="button" data-filter="frontend" aria-pressed="false">Frontend</button>
-            <button class="skills-filter-chip" type="button" data-filter="backend" aria-pressed="false">Backend</button>
-            <button class="skills-filter-chip" type="button" data-filter="networking" aria-pressed="false">Networking</button>
-            <button class="skills-filter-chip" type="button" data-filter="data" aria-pressed="false">Data &amp; systems</button>
-            <button class="skills-filter-chip" type="button" data-filter="workflow" aria-pressed="false">Workflow</button>
-          </div>
 
-          <div class="skills-rows reveal-group" aria-label="Skills and technologies">
-            <article class="skills-row" data-skill-group="languages">
-              <h3 class="skills-label">Languages</h3>
-              <ul class="skills-list" aria-label="Programming languages">
+          <!-- One tile per area. Each carries a small pixel-art icon (drawn by
+               flair.js, decoration only) that animates when the tile is
+               hovered, focused or, on a touch screen, scrolled into view. -->
+          <div class="skill-grid reveal-group" aria-label="Skills and technologies">
+            <article class="skill-tile is-wide" data-icon="lang">
+              <div class="skill-tile-top">
+                <svg class="skill-icon" aria-hidden="true" focusable="false"></svg>
+                <span class="skill-count" aria-hidden="true">09</span>
+              </div>
+              <h3 class="skill-name">Languages</h3>
+              <ul class="skill-list" aria-label="Languages">
                 <li>JavaScript</li>
                 <li>C</li>
                 <li>C++</li>
@@ -745,19 +726,25 @@
                 <li>CSS3</li>
               </ul>
             </article>
-
-            <article class="skills-row" data-skill-group="frontend">
-              <h3 class="skills-label">Frontend</h3>
-              <ul class="skills-list" aria-label="Frontend skills">
+            <article class="skill-tile" data-icon="front">
+              <div class="skill-tile-top">
+                <svg class="skill-icon" aria-hidden="true" focusable="false"></svg>
+                <span class="skill-count" aria-hidden="true">03</span>
+              </div>
+              <h3 class="skill-name">Frontend</h3>
+              <ul class="skill-list" aria-label="Frontend">
                 <li>React</li>
                 <li>Responsive design</li>
                 <li>Accessibility fundamentals</li>
               </ul>
             </article>
-
-            <article class="skills-row" data-skill-group="backend">
-              <h3 class="skills-label">Backend</h3>
-              <ul class="skills-list" aria-label="Backend skills">
+            <article class="skill-tile" data-icon="back">
+              <div class="skill-tile-top">
+                <svg class="skill-icon" aria-hidden="true" focusable="false"></svg>
+                <span class="skill-count" aria-hidden="true">05</span>
+              </div>
+              <h3 class="skill-name">Backend</h3>
+              <ul class="skill-list" aria-label="Backend">
                 <li>Node.js</li>
                 <li>Express</li>
                 <li>REST API design</li>
@@ -765,48 +752,63 @@
                 <li>Pods</li>
               </ul>
             </article>
-
-            <article class="skills-row" data-skill-group="frontend">
-              <h3 class="skills-label">SEO &amp; performance</h3>
-              <ul class="skills-list" aria-label="SEO and performance skills">
-                <li>On-page &amp; local SEO</li>
-                <li>Structured data (JSON-LD)</li>
-                <li>Core Web Vitals tuning</li>
-                <li>Image optimization</li>
-              </ul>
-            </article>
-
-            <article class="skills-row" data-skill-group="networking">
-              <h3 class="skills-label">Networking</h3>
-              <ul class="skills-list" aria-label="Networking skills">
+            <article class="skill-tile is-wide" data-icon="net">
+              <div class="skill-tile-top">
+                <svg class="skill-icon" aria-hidden="true" focusable="false"></svg>
+                <span class="skill-count" aria-hidden="true">04</span>
+              </div>
+              <h3 class="skill-name">Networking</h3>
+              <ul class="skill-list" aria-label="Networking">
                 <li>TCP/IP</li>
                 <li>Socket programming</li>
                 <li>Network protocols</li>
                 <li>Packet analysis</li>
               </ul>
             </article>
-
-            <article class="skills-row" data-skill-group="data">
-              <h3 class="skills-label">Databases</h3>
-              <ul class="skills-list" aria-label="Database technologies">
+            <article class="skill-tile" data-icon="db">
+              <div class="skill-tile-top">
+                <svg class="skill-icon" aria-hidden="true" focusable="false"></svg>
+                <span class="skill-count" aria-hidden="true">03</span>
+              </div>
+              <h3 class="skill-name">Databases</h3>
+              <ul class="skill-list" aria-label="Databases">
                 <li>MySQL</li>
                 <li>PostgreSQL</li>
                 <li>MongoDB</li>
               </ul>
             </article>
-
-            <article class="skills-row" data-skill-group="data">
-              <h3 class="skills-label">Systems</h3>
-              <ul class="skills-list" aria-label="Systems skills">
+            <article class="skill-tile" data-icon="sys">
+              <div class="skill-tile-top">
+                <svg class="skill-icon" aria-hidden="true" focusable="false"></svg>
+                <span class="skill-count" aria-hidden="true">03</span>
+              </div>
+              <h3 class="skill-name">Systems</h3>
+              <ul class="skill-list" aria-label="Systems">
                 <li>Linux/Unix</li>
                 <li>Systems programming</li>
                 <li>Systems analysis</li>
               </ul>
             </article>
-
-            <article class="skills-row" data-skill-group="workflow">
-              <h3 class="skills-label">Workflow</h3>
-              <ul class="skills-list" aria-label="Workflow and tools">
+            <article class="skill-tile is-wide" data-icon="seo">
+              <div class="skill-tile-top">
+                <svg class="skill-icon" aria-hidden="true" focusable="false"></svg>
+                <span class="skill-count" aria-hidden="true">04</span>
+              </div>
+              <h3 class="skill-name">SEO &amp; performance</h3>
+              <ul class="skill-list" aria-label="SEO &amp; performance">
+                <li>On-page &amp; local SEO</li>
+                <li>Structured data (JSON-LD)</li>
+                <li>Core Web Vitals tuning</li>
+                <li>Image optimization</li>
+              </ul>
+            </article>
+            <article class="skill-tile is-wide" data-icon="flow">
+              <div class="skill-tile-top">
+                <svg class="skill-icon" aria-hidden="true" focusable="false"></svg>
+                <span class="skill-count" aria-hidden="true">06</span>
+              </div>
+              <h3 class="skill-name">Workflow</h3>
+              <ul class="skill-list" aria-label="Workflow">
                 <li>Git/GitHub</li>
                 <li>Agile/Scrum</li>
                 <li>Testing &amp; debugging</li>
@@ -819,57 +821,14 @@
         </div>
       </section>
 
-      <!-- Education Section -->
-      <section class="section learning" id="learning">
-        <div class="container">
-          <div class="section-heading reveal">
-            <p class="eyebrow">Education</p>
-            <h2>Currently studying</h2>
-          </div>
-
-          <div class="education-card surface-card reveal">
-            <div class="education-header">
-              <div class="education-logo">
-                <img src="assets/BCIT_logo.png" alt="British Columbia Institute of Technology (BCIT) logo" width="128" height="116" />
-              </div>
-              <div class="education-content">
-                <h3>Computer Systems Technology Diploma</h3>
-                <span class="education-school"
-                  >British Columbia Institute of Technology (BCIT)</span
-                >
-                <span class="education-option"
-                  >Data Communications &amp; Cyber Security option</span
-                >
-                <a
-                  class="education-program-link"
-                  href="https://www.bcit.ca/programs/computer-systems-technology-diploma-full-time-5500dipma/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  >View program details</a
-                >
-                <div class="education-meta">
-                  <span class="education-period"
-                    >Sept 2025 to Apr 2027 (expected)</span
-                  >
-                  <span class="status-indicator">
-                    <span class="status-dot" aria-hidden="true"></span>
-                    Currently in Term 3
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <!-- Contact Section -->
       <section class="section contact" id="contact">
         <div class="container">
           <div class="contact-layout">
             <div class="contact-note">
-              <div class="section-heading reveal" style="margin-bottom: 0">
+              <div class="section-heading contact-heading reveal" style="margin-bottom: 0">
                 <p class="eyebrow">Contact</p>
-                <h2>Let's talk</h2>
+                <h2>Let's <span class="highlight">talk.</span></h2>
                 <p class="section-intro">
                   I'm based in Coquitlam, in Greater Vancouver, and looking
                   for internship, co-op, and junior developer roles. If
@@ -883,10 +842,6 @@
                   Open to opportunities
                 </span>
               </div>
-              <a href="resume.html" class="btn btn-secondary contact-resume" data-magnetic>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"></path><polyline points="7 10 12 15 17 10"></polyline><path d="M5 21h14"></path></svg>
-                Download résumé
-              </a>
               <p class="contact-links">
                 <a href="https://github.com/RyanYarali" target="_blank" rel="me noopener noreferrer">GitHub</a>
                 <a href="https://www.linkedin.com/in/ryan-yarali/" target="_blank" rel="me noopener noreferrer">LinkedIn</a>
@@ -899,6 +854,7 @@
               action="https://formspree.io/f/mwvebbgj"
               method="POST"
             >
+              <input type="hidden" name="_subject" value="New message from ryanyarali.com" />
               <div class="form-group">
                 <label for="name">Name *</label>
                 <input
@@ -923,18 +879,6 @@
                   autocomplete="email"
                 />
                 <span class="error-message" id="email-error"></span>
-              </div>
-
-              <div class="form-group">
-                <label for="subject">Subject *</label>
-                <select id="subject" name="subject" required>
-                  <option value="">Select a subject</option>
-                  <option value="job">Job opportunity</option>
-                  <option value="collaboration">Collaboration</option>
-                  <option value="question">Question</option>
-                  <option value="other">Other</option>
-                </select>
-                <span class="error-message" id="subject-error"></span>
               </div>
 
               <div class="form-group">
@@ -997,23 +941,30 @@
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.93.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.87-1.36-3.87-1.36-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.42-2.69 5.4-5.25 5.68.41.36.78 1.06.78 2.14 0 1.54-.01 2.79-.01 3.17 0 .3.2.66.79.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
             GitHub
           </a>
+          <button type="button" class="footer-term" data-terminal title="Open the site terminal (Ctrl K)"><kbd aria-hidden="true">Ctrl K</kbd> Terminal</button>
           <a href="https://www.linkedin.com/in/ryan-yarali/" target="_blank" rel="me noopener noreferrer">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.55V9h3.57v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>
             LinkedIn
           </a>
         </div>
       </div>
+      <!-- The name again, set as large as the page allows: decoration only
+           (the copyright line above carries it as text). Its letters rise
+           as the footer scrolls into view. -->
+      <div class="footer-mark" aria-hidden="true"><span style="--i:0">R</span><span style="--i:1">y</span><span style="--i:2">a</span><span style="--i:3">n</span><span style="--i:4">&nbsp;</span><span style="--i:5">Y</span><span style="--i:6">a</span><span style="--i:7">r</span><span style="--i:8">a</span><span style="--i:9">l</span><span style="--i:10">i</span></div>
     </footer>
 
     <!-- Scripts -->
-    <script src="assets/js/theme.js?v=20261013"></script>
-    <script src="assets/js/form.js?v=20261013"></script>
-    <script src="assets/js/main.js?v=20261013"></script>
-    <script src="assets/js/interactive.js?v=20261013"></script>
-    <script src="assets/js/cursor.js?v=20261013"></script>
-    <script src="assets/js/story.js?v=20261013"></script>
-    <script src="assets/js/route.js?v=20261013"></script>
-    <script src="assets/js/ping.js?v=20261013"></script>
-    <script src="assets/js/hero.js?v=20261013"></script>
+    <script src="assets/js/theme.js?v=20261031"></script>
+    <script src="assets/js/form.js?v=20261031"></script>
+    <script src="assets/js/main.js?v=20261031"></script>
+    <script src="assets/js/flair.js?v=20261031"></script>
+    <script src="assets/js/interactive.js?v=20261031"></script>
+    <script src="assets/js/cursor.js?v=20261031"></script>
+    <script src="assets/js/story.js?v=20261031"></script>
+    <script src="assets/js/route.js?v=20261031"></script>
+    <script src="assets/js/ping-sprite.js?v=20261031"></script>
+    <script src="assets/js/ping.js?v=20261031"></script>
+    <script src="assets/js/hero.js?v=20261031"></script>
   </body>
 </html>
