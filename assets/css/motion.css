@@ -745,7 +745,10 @@ html.work-pinned .work-viewport {
   overflow: visible;
   scroll-snap-type: none;
   display: flex;
-  align-items: center;
+  /* The cards sit up under the heading. Centred, they left a dead band
+     above them; the space below is where the route runs sideways. */
+  align-items: flex-start;
+  padding-top: clamp(1rem, 3.5vh, 2.5rem);
 }
 
 html.work-pinned .work-track {
@@ -1278,12 +1281,9 @@ html.route-moving .route-ghost {
   fill: var(--color-accent);
 }
 
-/* Labels live in the margin, so they appear only where there is one. */
-@media (min-width: 1400px) {
-  .route-label {
-    opacity: 1;
-  }
-}
+/* The labels stay hidden: the headings already name each stop, and Ping
+   tells the story, so numbered labels in the margin were one voice too many.
+   They remain in the SVG for route.js. */
 
 /* The sideways stretch of the route under the pinned gallery is its
    progress bar now. */
@@ -1393,6 +1393,12 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
   .ping.is-big {
     --s: 1.9;
   }
+}
+
+/* On a phone the hero's route runs right past the main buttons, so he waits
+   off stage until the reader scrolls on. */
+.ping.is-passive {
+  opacity: 0;
 }
 
 .ping.is-passive .ping-hit {

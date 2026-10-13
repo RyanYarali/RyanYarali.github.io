@@ -47,7 +47,7 @@ assets/
     palette.js        Six colour palettes and the palette dock
     form.js           Contact form validation and submission
     main.js           Mobile menu, scroll reveal, active nav, back to top
-    interactive.js    Ambient trace, counters, accordion, skills filter
+    interactive.js    Ambient trace, counters, accordion, magnetic buttons
     hero.js           First-visit intro, hero entrance, lazy globe loader
     hero-globe.js     The WebGL network globe (ES module, three.js)
     cursor.js         Cursor ring that follows the real pointer
@@ -155,11 +155,12 @@ palette list, edit `palette.js`. Nothing else hardcodes a colour or font.
   carries the current hop's name while the page moves.
 - **Ping:** the packet at the head of the route is a little creature (a
   ping says hello; the answer is a pong). Drawn in SVG from the palette
-  tokens, he blinks, looks the way the page moves, hops and points at each
-  heading with a line of his own, dozes off when nothing happens, reacts to
-  fast scrolling, taps, palette and theme changes, carries the contact
-  form's real request to the inbox, and grows big at the end of the route to
-  wave goodbye. Pages without a route (404, résumé, projects) have him
+  tokens, he blinks, looks the way the page moves, hops at each heading,
+  dozes off when nothing happens, reacts to taps and palette and theme
+  changes, carries the contact form's real request to the inbox, and grows
+  big at the end of the route to wave goodbye. On the home page he speaks
+  only at the projects and contact stops, and his bubble never covers
+  content: a line that would is held until the space clears. Pages without a route (404, résumé, projects) have him
   standing by the heading. He is aria-hidden, and holds still under reduced
   motion.
 - **Headings:** eyebrows decode out of random characters and heading words
@@ -174,7 +175,6 @@ palette list, edit `palette.js`. Nothing else hardcodes a colour or font.
 - **Project accordion:** one row per project, opened by a tap, one open at a
   time. Rows without a screenshot draw a canvas figure seeded by the project
   key and coloured from the live palette.
-- **Skills filter:** the category chips dim the rows that do not match.
 - **Magnetic buttons:** gated behind `(hover: hover) and (pointer: fine)`, so
   they are purely additive and never a requirement.
 
