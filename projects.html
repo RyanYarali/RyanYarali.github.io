@@ -49,18 +49,18 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="assets/css/tokens.css?v=20261007" />
-    <link rel="stylesheet" href="assets/css/reset.css?v=20261007" />
-    <link rel="stylesheet" href="assets/css/typography.css?v=20261007" />
-    <link rel="stylesheet" href="assets/css/layout.css?v=20261007" />
-    <link rel="stylesheet" href="assets/css/components.css?v=20261007" />
-    <link rel="stylesheet" href="assets/css/pages.css?v=20261007" />
-    <link rel="stylesheet" href="assets/css/interactive.css?v=20261007" />
-    <link rel="stylesheet" href="assets/css/motion.css?v=20261007" />
-    <link rel="stylesheet" href="assets/css/style.css?v=20261007" />
+    <link rel="stylesheet" href="assets/css/tokens.css?v=20261012" />
+    <link rel="stylesheet" href="assets/css/reset.css?v=20261012" />
+    <link rel="stylesheet" href="assets/css/typography.css?v=20261012" />
+    <link rel="stylesheet" href="assets/css/layout.css?v=20261012" />
+    <link rel="stylesheet" href="assets/css/components.css?v=20261012" />
+    <link rel="stylesheet" href="assets/css/pages.css?v=20261012" />
+    <link rel="stylesheet" href="assets/css/interactive.css?v=20261012" />
+    <link rel="stylesheet" href="assets/css/motion.css?v=20261012" />
+    <link rel="stylesheet" href="assets/css/style.css?v=20261012" />
 
     <!-- Palette tokens are written before first paint -->
-    <script src="assets/js/palette.js?v=20261007"></script>
+    <script src="assets/js/palette.js?v=20261012"></script>
 
     <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=4" />
     <!-- Structured data -->
@@ -131,9 +131,9 @@
                   "item": {
                     "@type": "WebSite",
                     "@id": "https://ryanyarali.com/projects/nooklook.html#project",
-                    "name": "Nook Look",
+                    "name": "Nook Look Studio",
                     "url": "https://nooklook.ca",
-                    "description": "Website for Nook Look, a portrait photography studio in Coquitlam, BC: four priced service lines, a booking pipeline, a filterable gallery and local SEO. Built and launched solo by Ryan Yarali on WordPress.",
+                    "description": "Website for Nook Look Studio, a portrait photography studio in Coquitlam, BC: four priced service lines, a booking pipeline, a filterable gallery and local SEO. Built and launched solo by Ryan Yarali on WordPress.",
                     "image": "https://ryanyarali.com/assets/nl-hero.jpg",
                     "creator": {
                       "@id": "https://ryanyarali.com/#ryan"
@@ -151,15 +151,18 @@
                   "item": {
                     "@type": "WebSite",
                     "@id": "https://ryanyarali.com/projects.html#vancobab",
-                    "name": "Vanco Bab",
+                    "name": "Vancobab",
                     "url": "https://vancobab.ca",
-                    "description": "Five-page website for Vanco Bab, a Persian kebab food truck in Vancouver: the truck menu, catering packages, and a vanilla JavaScript order builder.",
+                    "description": "Five-page website for Vancobab, a Persian kebab food truck in Vancouver: a Persian visual identity, launch signups while the truck gets ready, and a vanilla JavaScript order builder ready for opening day.",
                     "image": "https://ryanyarali.com/assets/vb-hero.jpg",
                     "creator": {
                       "@id": "https://ryanyarali.com/#ryan"
                     },
                     "dateCreated": "2026",
-                    "keywords": "HTML5, CSS3, vanilla JavaScript, SEO"
+                    "keywords": "HTML5, CSS3, vanilla JavaScript, SEO",
+                    "subjectOf": {
+                      "@id": "https://ryanyarali.com/projects/vancobab.html#article"
+                    }
                   }
                 },
                 {
@@ -291,7 +294,7 @@
                 </span>
                 <span class="project-accordion-name">
                   <span class="project-accordion-title">
-                    Nook Look
+                    Nook Look Studio
                   </span>
                   <span class="project-accordion-kind">
                     Client · 2026
@@ -307,8 +310,8 @@
               </button>
               <div class="project-accordion-panel" id="project-panel-nooklook">
                 <div class="project-accordion-panel-inner">
-                  <a class="project-accordion-media" href="projects/nooklook.html" data-vt="nooklook" aria-label="Open Nook Look">
-                    <img src="assets/nl-hero.jpg" alt="Nook Look home page: a dark text panel beside a full-height maternity photograph" loading="lazy" decoding="async" width="1400" height="776">
+                  <a class="project-accordion-media" href="projects/nooklook.html" data-vt="nooklook" aria-label="Open Nook Look Studio">
+                    <img src="assets/nl-hero.jpg" alt="Nook Look Studio home page: a dark text panel beside a full-height maternity photograph" loading="lazy" decoding="async" width="1400" height="776">
                   </a>
                   <div class="project-accordion-copy">
                     <p>
@@ -355,7 +358,7 @@
                 </span>
                 <span class="project-accordion-name">
                   <span class="project-accordion-title">
-                    Vanco Bab
+                    Vancobab
                   </span>
                   <span class="project-accordion-kind">
                     Client · 2026
@@ -371,16 +374,16 @@
               </button>
               <div class="project-accordion-panel" id="project-panel-vancobab">
                 <div class="project-accordion-panel-inner">
-                  <a class="project-accordion-media" href="https://vancobab.ca" target="_blank" rel="noopener noreferrer" aria-label="Open Vanco Bab">
+                  <a class="project-accordion-media" href="projects/vancobab.html" aria-label="Open the Vancobab case study">
                     <canvas data-art="vancobab" aria-hidden="true">
                     </canvas>
                   </a>
                   <div class="project-accordion-copy">
                     <p>
-                      A five-page site for a Persian kebab food truck in Vancouver: the truck menu, catering packages, and an order builder customers use before they reach the window.
+                      A five-page site for a Persian kebab food truck in Vancouver, with a Persian visual identity of its own. While the truck gets ready, it collects a launch list; the menu and order builder are ready for opening day.
                     </p>
                     <p>
-                      The order builder is plain JavaScript with no backend and no payment step. It totals a customer's picks and hands them a summary to read at the counter, which is what a food truck actually needs. Catering pages re-point the brand accent from red to gold through a single data attribute, so one stylesheet carries two moods.
+                      The order builder is plain JavaScript with no backend and no payment step. It totals a customer's picks and hands them a summary to read at the counter, which is what a food truck actually needs. When the opening moved, I turned the site into a pre-launch flow rather than show prices and a location that didn't exist yet.
                     </p>
                     <div class="project-accordion-tech">
                       <span>
@@ -397,11 +400,14 @@
                       </span>
                     </div>
                     <div class="project-accordion-links">
+                      <a class="project-accordion-link" href="projects/vancobab.html">
+                        Read the case study
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                      </a>
                       <a class="project-accordion-link" href="https://vancobab.ca" target="_blank" rel="noopener noreferrer">
                         Visit the site
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                       </a>
-                      <span class="project-accordion-note">Case study coming soon</span>
                     </div>
                   </div>
                 </div>
@@ -556,10 +562,10 @@
         </div>
       </div>
     </footer>
-    <script src="assets/js/theme.js?v=20261007"></script>
-    <script src="assets/js/main.js?v=20261007"></script>
-    <script src="assets/js/interactive.js?v=20261007"></script>
-    <script src="assets/js/cursor.js?v=20261007"></script>
-    <script src="assets/js/ping.js?v=20261007"></script>
+    <script src="assets/js/theme.js?v=20261012"></script>
+    <script src="assets/js/main.js?v=20261012"></script>
+    <script src="assets/js/interactive.js?v=20261012"></script>
+    <script src="assets/js/cursor.js?v=20261012"></script>
+    <script src="assets/js/ping.js?v=20261012"></script>
   </body>
 </html>
