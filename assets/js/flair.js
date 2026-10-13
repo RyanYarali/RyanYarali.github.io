@@ -3,6 +3,8 @@
  * -----
  * The smaller custom touches shared by every page:
  *
+ *   header        the bar lifts into a glass capsule on scroll, and a pill
+ *                 glides between the nav links
  *   pixel icons   the skill tiles' icons, drawn on a 12 x 12 grid in Ping's
  *                 pixel style, booting in pixel by pixel and animating in
  *                 two frames when a tile is hovered or (on a touch screen)
@@ -117,6 +119,76 @@
     [].forEach.call(tiles, function (t) {
       io.observe(t);
     });
+  }
+
+  // ==================== Header ====================
+  // The bar lifts into a glass capsule once the page is scrolled, and a pill
+  // glides between the links: to the one under the pointer, then back to the
+  // current section's (main.js marks it .active as the page scrolls).
+
+  function initHeader() {
+    var nav = document.querySelector(".navbar");
+    if (!nav) return;
+    function lift() {
+      nav.classList.toggle("is-scrolled", window.scrollY > 8);
+    }
+    lift();
+    window.addEventListener("scroll", lift, { passive: true });
+
+    var list = document.getElementById("nav-links");
+    if (!list) return;
+    var links = [].slice.call(list.querySelectorAll(".nav-link"));
+    var pill = document.createElement("li");
+    pill.className = "nav-pill";
+    pill.setAttribute("aria-hidden", "true");
+    list.appendChild(pill);
+    var wide = window.matchMedia("(min-width: 768px)");
+
+    function current() {
+      return list.querySelector(".nav-link.active, .nav-link[aria-current='page']");
+    }
+
+    function place(link) {
+      if (!wide.matches || !link) {
+        pill.style.opacity = "0";
+        return;
+      }
+      var lr = list.getBoundingClientRect();
+      var r = link.getBoundingClientRect();
+      pill.style.width = r.width.toFixed(1) + "px";
+      pill.style.transform = "translateX(" + (r.left - lr.left).toFixed(1) + "px)";
+      pill.style.opacity = "1";
+    }
+
+    links.forEach(function (a) {
+      a.addEventListener("pointerenter", function () {
+        place(a);
+      });
+      a.addEventListener("focus", function () {
+        place(a);
+      });
+    });
+    list.addEventListener("pointerleave", function () {
+      place(current());
+    });
+    list.addEventListener("focusout", function () {
+      place(current());
+    });
+    new MutationObserver(function () {
+      place(current());
+    }).observe(list, { attributes: true, subtree: true, attributeFilter: ["class"] });
+    window.addEventListener("resize", function () {
+      place(current());
+    });
+    // The first placement waits for the fonts, which set the links' widths.
+    var settle = function () {
+      pill.style.transition = "none";
+      place(current());
+      void pill.offsetWidth;
+      pill.style.transition = "";
+    };
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(settle);
+    else settle();
   }
 
   // ==================== Pixel resolve ====================
@@ -429,13 +501,17 @@
     });
     // Name the shortcut the way this keyboard does.
     if (/Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent)) {
-      [].forEach.call(document.querySelectorAll(".footer-term kbd"), function (k) {
+      [].forEach.call(document.querySelectorAll(".footer-term kbd, .nav-term kbd"), function (k) {
         k.textContent = "⌘K";
+      });
+      [].forEach.call(document.querySelectorAll(".nav-term"), function (b) {
+        b.setAttribute("aria-label", "Open the site terminal, ⌘K");
       });
     }
   }
 
   function boot() {
+    initHeader();
     initIcons();
     initPixelReveal();
     initPreview();
