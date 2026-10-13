@@ -138,18 +138,21 @@
     var svg = el("svg", "route-svg");
     svg.setAttribute("aria-hidden", "true");
     var ghost = el("path", "route-ghost");
-    // The comet trail: two soft strokes that cover only the last stretch of
-    // line behind the head, wide and faint, then narrower and brighter.
-    var glow = el("path", "route-trail route-trail-wide");
-    var core = el("path", "route-trail route-trail-core");
+    // The comet: three strokes over the last stretch of line behind the head,
+    // each shorter, narrower and brighter than the last, so the light fades
+    // out behind it in steps.
+    var trails = [1, 2, 3].map(function (n) {
+      return el("path", "route-trail route-trail-" + n);
+    });
     var line = el("path", "route-line");
     svg.appendChild(ghost);
-    svg.appendChild(glow);
-    svg.appendChild(core);
     svg.appendChild(line);
+    trails.forEach(function (t) {
+      svg.appendChild(t);
+    });
     host.insertBefore(svg, host.firstChild);
     liftContent(host, svg);
-    return { host: host, kind: kind, svg: svg, ghost: ghost, line: line, trails: [glow, core], nodes: [], drawn: -1, trailOn: false };
+    return { host: host, kind: kind, svg: svg, ghost: ghost, line: line, trails: trails, nodes: [], drawn: -1, shown: -1, trailOn: false };
   }
 
   function addNode(seg, x, y, label, side, terminal) {
@@ -247,7 +250,7 @@
     }
     var lens = new Float32Array(xs.length);
     for (var j = 1; j < xs.length; j++) lens[j] = lens[j - 1] + Math.hypot(xs[j] - xs[j - 1], ys[j] - ys[j - 1]);
-    return { ys: Float32Array.from(ys), lens: lens };
+    return { xs: Float32Array.from(xs), ys: Float32Array.from(ys), lens: lens };
   }
 
   function index(seg) {
@@ -262,6 +265,7 @@
     var k = s.lens[s.lens.length - 1] ? total / s.lens[s.lens.length - 1] : 1;
     for (var j = 0; j < s.lens.length; j++) s.lens[j] *= k;
     seg.total = total;
+    seg.xs = s.xs;
     seg.ys = s.ys;
     seg.lens = s.lens;
     p.style.strokeDasharray = total + " " + total;
@@ -287,6 +291,25 @@
     return lens[lo] + (lens[hi] - lens[lo]) * f;
   }
 
+
+  // The point a given length along the route, from the same table: the
+  // browser's getPointAtLength on a page-long path cost a frame's budget on a
+  // phone, every frame.
+  function pointAtLen(seg, len) {
+    var lens = seg.lens;
+    var hi = lens.length - 1;
+    if (len <= 0) return { x: seg.xs[0], y: seg.ys[0] };
+    if (len >= lens[hi]) return { x: seg.xs[hi], y: seg.ys[hi] };
+    var lo = 0;
+    while (hi - lo > 1) {
+      var mid = (lo + hi) >> 1;
+      if (lens[mid] < len) lo = mid;
+      else hi = mid;
+    }
+    var span = lens[hi] - lens[lo];
+    var f = span > 0 ? (len - lens[lo]) / span : 0;
+    return { x: seg.xs[lo] + (seg.xs[hi] - seg.xs[lo]) * f, y: seg.ys[lo] + (seg.ys[hi] - seg.ys[lo]) * f };
+  }
 
   function measureLen(d) {
     var tmp = el("path");
@@ -489,65 +512,86 @@
   }
 
   var lastUpdateY = window.scrollY;
-  var speed = 0;
-  var TRAIL = [220, 110];
+  var TRAIL = [240, 130, 56];
+  // How much of the remaining distance the drawn line covers each frame: it
+  // glides to the reading line instead of snapping, so it stays smooth when
+  // a phone delivers scroll unevenly.
+  var EASE = 0.24;
+  var animating = false;
+  // Boxes measured in the scroll event, where the page has not been touched
+  // yet this frame. Measured later, in the animation frame, they came after
+  // the stacking script's writes and forced every style to be recalculated.
+  var early = null;
 
+  // One frame. Every layout read (the hosts' boxes) happens before any
+  // write, and the writes only touch the SVG's stroke properties, so nothing
+  // here forces the page to lay out again.
   function update(force, quiet) {
     var vh = window.innerHeight;
-    // How fast the page is moving, smoothed: the line brightens and thickens
-    // a little with it (--route-speed, read by motion.css).
-    var v = Math.min(1, Math.abs(window.scrollY - lastUpdateY) / 60);
-    speed += (v - speed) * 0.3;
-    if (!reduced) html.style.setProperty("--route-speed", speed.toFixed(3));
     // A jump of more than a screen and a half (a deep link, a nav click, the
     // back-to-top button) passes hops without reaching them; it lights them
-    // without announcing each one.
-    if (Math.abs(window.scrollY - lastUpdateY) > vh * 1.5) quiet = true;
+    // without announcing each one, and the line lands there at once.
+    var jump = Math.abs(window.scrollY - lastUpdateY) > vh * 1.5;
+    if (jump) quiet = true;
     lastUpdateY = window.scrollY;
     var read = vh * READ;
+
+    var rects =
+      early ||
+      segs.map(function (s) {
+        return s.host.getBoundingClientRect();
+      });
+    early = null;
+
     // Near the bottom the page runs out of scroll before the reading line
     // can reach the end of the route (the footer holds the last of the
     // screen), so over the last stretch the line slides down the screen to
     // land on the end exactly when the page does.
     var room = document.documentElement.scrollHeight - vh - window.scrollY;
     var runway = vh * 0.6;
-    if (room < runway) {
-      var last = segs[segs.length - 1];
-      var endNode = last && last.nodes[last.nodes.length - 1];
+    if (room < runway && segs.length) {
+      var lastI = segs.length - 1;
+      var endNode = segs[lastI].nodes[segs[lastI].nodes.length - 1];
       if (endNode) {
-        var endScreen = last.host.getBoundingClientRect().top + endNode.y + 2;
-        var k = 1 - Math.max(0, room) / runway;
-        read += (Math.max(read, endScreen) - read) * k * k;
+        var endScreen = rects[lastI].top + endNode.y + 2;
+        var kk = 1 - Math.max(0, room) / runway;
+        read += (Math.max(read, endScreen) - read) * kk * kk;
       }
     }
-    var rects = segs.map(function (s) {
-      return s.host.getBoundingClientRect();
-    });
 
     // The segment on top at the reading line is the one the packet rides.
     var active = -1;
     for (var i = 0; i < segs.length; i++) if (rects[i].top <= read) active = i;
 
     var moved = false;
+    var settling = false;
     segs.forEach(function (s, i) {
       var local = read - rects[i].top;
-      var len;
+      var target;
       if (local <= 0) {
-        len = 0;
+        target = 0;
       } else if (s.kind === "gallery" && rects[i].top <= 1) {
         // Held on screen: the sideways run follows the cards.
         var p = galleryProgress();
         var held = lenAtY(s, Math.min(local, s.barY));
-        len =
+        target =
           p <= 0.06
             ? held + (s.lenA - held) * (p / 0.06)
             : p < 0.97
               ? s.lenA + (s.lenB - s.lenA) * ((p - 0.06) / 0.91)
               : s.lenB + (s.total - s.lenB) * ((p - 0.97) / 0.03);
       } else {
-        len = lenAtY(s, s.kind === "gallery" ? Math.min(local, s.barY) : local);
+        target = lenAtY(s, s.kind === "gallery" ? Math.min(local, s.barY) : local);
       }
-      len = clamp(len, 0, s.total);
+      target = clamp(target, 0, s.total);
+
+      var len = target;
+      if (!reduced && !force && !jump && s.shown >= 0) {
+        len = s.shown + (target - s.shown) * EASE;
+        if (Math.abs(target - len) < 0.4) len = target;
+        else settling = true;
+      }
+      s.shown = len;
       // Under reduced motion the line is simply drawn complete; the head
       // still knows where the reader is.
       var draw = reduced ? s.total : len;
@@ -580,12 +624,12 @@
         if (reduced) node.g.classList.add("is-lit");
       });
 
-      // The comet trail follows the head on the segment it is riding.
+      // The comet follows the head on the segment it is riding.
       var trail = i === active && !reduced && len > 0;
       if (trail) {
         s.trails.forEach(function (t, k) {
           var T = Math.min(TRAIL[k], len);
-          t.style.strokeDasharray = T + " " + (s.total * 2 + T);
+          t.style.strokeDasharray = T.toFixed(1) + " " + (s.total * 2 + T).toFixed(1);
           t.style.strokeDashoffset = (-(len - T)).toFixed(1);
         });
       }
@@ -595,7 +639,7 @@
       }
 
       if (i === active) {
-        var pt = s.line.getPointAtLength(len);
+        var pt = pointAtLen(s, len);
         head.x = rects[i].left + pt.x;
         head.y = rects[i].top + pt.y;
         head.side = head.x > window.innerWidth / 2 ? "R" : "L";
@@ -605,32 +649,29 @@
 
     head.active = active >= 0;
     if (moved || force || !head.active) emit({ type: "move", head: head });
+    return settling;
+  }
+
+  // Keeps gliding after the scroll stops, until the line has caught up.
+  function frame() {
+    animating = update(false);
+    if (animating) requestAnimationFrame(frame);
   }
 
   // ==================== Wiring ====================
 
-  var ticking = false;
-  var movingTimer = 0;
   window.addEventListener(
     "scroll",
     function () {
       var dy = window.scrollY - lastY;
       if (dy) dir = dy > 0 ? 1 : -1;
       lastY = window.scrollY;
-      // The dotted road ahead flows only while the page moves.
-      html.classList.add("route-moving");
-      clearTimeout(movingTimer);
-      movingTimer = setTimeout(function () {
-        html.classList.remove("route-moving");
-        speed = 0;
-        html.style.setProperty("--route-speed", "0");
-      }, 260);
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(function () {
-        ticking = false;
-        update(false);
+      early = segs.map(function (s) {
+        return s.host.getBoundingClientRect();
       });
+      if (animating) return;
+      animating = true;
+      requestAnimationFrame(frame);
     },
     { passive: true },
   );
