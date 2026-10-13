@@ -2114,3 +2114,21 @@ html.name-fly .navbar .logo {
 html.name-fly main > .hero {
   transform: none;
 }
+
+/* ---------- gallery, bold ----------
+ * While pinned, the screenshot is the card: it takes most of the width and
+ * as much of the screen's height as the heading leaves, and the text beside
+ * it is the number, the name, one line and the links. The stack lives on
+ * the projects page and in each case study. The width is capped by the
+ * height too, so a short screen still fits a whole card. */
+@media (min-width: 1100px) {
+  html.work-pinned .work-card {
+    width: min(86vw, 1240px, calc((100vh - 400px) * 2.55 + 40px));
+    grid-template-columns: minmax(0, 2.3fr) minmax(0, 1fr);
+    gap: 2.5rem;
+  }
+
+  html.work-pinned .work-title {
+    font-size: clamp(2.25rem, 3.4vw, 3.25rem);
+  }
+}
