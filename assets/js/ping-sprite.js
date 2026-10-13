@@ -9,7 +9,7 @@
  *
  * Colours are classes, so the palette tokens recolour him:
  *   o outline   b body     h highlight   s shade
- *   k ink       w white    c cheek       t antenna tip
+ *   k ink       w white    c tongue      t antenna tip
  */
 (function (root) {
   "use strict";
@@ -32,7 +32,7 @@
     ".obbbbbbbbbbso.",
     ".obbbbbbbbbbso.",
     ".obbbbbbbbbbso.",
-    ".obccbbbbbccso.",
+    ".obbbbbbbbbbso.",
     ".obbbbbbbbbbso.",
     ".obbbbbbbbbbso.",
     ".obbbbbbbbbbso.",
