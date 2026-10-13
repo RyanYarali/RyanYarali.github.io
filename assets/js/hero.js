@@ -22,60 +22,6 @@
   var EASE = "cubic-bezier(0.19, 1, 0.22, 1)";
   var INTRO_KEY = "ry-intro-seen";
 
-  // ==================== Name decode ====================
-  // Each character settles left to right out of a run of random glyphs. The
-  // real name stays in the HTML; the heading carries it as its accessible name
-  // while the visible text is scrambled.
-
-  var GLYPHS = "01<>/#%&*+=ABCDEFxyz";
-
-  function decode(el, duration) {
-    var nodes = [];
-    (function walk(node) {
-      [].forEach.call(node.childNodes, function (n) {
-        if (n.nodeType === 3) nodes.push({ node: n, text: n.nodeValue });
-        else if (n.nodeType === 1) walk(n);
-      });
-    })(el);
-
-    // Whitespace (including the indentation around the name in the HTML) is
-    // never scrambled and does not count toward the sweep.
-    var total = 0;
-    nodes.forEach(function (n) {
-      total += n.text.replace(/\s/g, "").length;
-    });
-    if (!total) return;
-
-    el.setAttribute("aria-label", el.textContent.replace(/\s+/g, " ").trim());
-    var start = performance.now();
-
-    (function tick(now) {
-      var p = Math.min(1, (now - start) / duration);
-      var index = 0;
-      nodes.forEach(function (n) {
-        var out = "";
-        for (var i = 0; i < n.text.length; i++) {
-          var ch = n.text[i];
-          if (/\s/.test(ch)) {
-            out += ch;
-            continue;
-          }
-          index++;
-          out += p >= index / total ? ch : GLYPHS[(Math.random() * GLYPHS.length) | 0];
-        }
-        n.node.nodeValue = out;
-      });
-      if (p < 1) {
-        requestAnimationFrame(tick);
-      } else {
-        nodes.forEach(function (n) {
-          n.node.nodeValue = n.text;
-        });
-        el.removeAttribute("aria-label");
-      }
-    })(start);
-  }
-
   // ==================== Hero entrance ====================
 
   var heroPlayed = false;
@@ -98,7 +44,6 @@
           { duration: 900, easing: EASE, fill: "both" },
         ),
       );
-      decode(title, 700);
     }
 
     [].forEach.call(parts, function (el, i) {
@@ -241,7 +186,7 @@
     if (conn && conn.saveData) return;
 
     function go() {
-      import("./hero-globe.js?v=20261027")
+      import("./hero-globe.js?v=20261028")
         .then(function (mod) {
           mod.mount(host, { reduced: reduced });
         })

@@ -41,11 +41,13 @@ assets/
     components.css    Buttons, forms, tags, cards
     interactive.css   Ambient trace, light/dark switch, stat strip, project accordion
     motion.css        Intro, hero, globe, cursor, stacking, route, gallery
+    bold.css          Skills grid, terminal, contact, footer, projects page, case studies, 404
     pages.css         Page- and section-specific styles
   js/
     theme.js          Light/dark theme with system preference + persistence
     form.js           Contact form validation and submission
-    main.js           Mobile menu, scroll reveal, active nav, back to top
+    main.js           Mobile menu, scroll reveal, heading scan, active nav, back to top
+    flair.js          Skill tile pixel icons, project hover preview, Ctrl/Cmd K terminal
     interactive.js    Ambient trace, counters, accordion, magnetic buttons
     hero.js           First-visit intro, hero entrance, lazy globe loader
     hero-globe.js     The WebGL network globe (ES module, three.js)
@@ -165,8 +167,22 @@ hardcodes a colour or font.
   wire, so it never jumps around over the content. Pages without a route
   (404, résumé, projects) have him standing by the heading. He is
   aria-hidden, and holds still under reduced motion.
-- **Headings:** eyebrows decode out of random characters and heading words
-  rise out of a mask as they are revealed.
+- **Headings:** eyebrows decode out of random characters, and a glowing scan
+  line sweeps across each heading, revealing the text behind it.
+- **Hero name:** fills the column, and as the next section slides over the
+  hero it shrinks and flies up into the nav, cross-fading into the logo.
+- **Skills:** the marquee drifts above a ruled grid of tiles, one per area,
+  each with a 12 x 12 pixel icon that boots in pixel by pixel and animates in
+  two frames while its tile is hovered (or, on a phone, mid-screen).
+- **Terminal:** Ctrl K / Cmd K (or the footer button) opens a small terminal
+  that filters commands as you type: every section, case study and profile,
+  plus the theme switch. A shortcut over links that already exist.
+- **Projects page:** a giant title, big index rows, and on a fine pointer the
+  hovered project's cover floats beside the cursor.
+- **Case studies:** the cover drifts as it scrolls past, screenshots wipe up
+  into their frames, and each ends on the next case study, set big.
+- **Footer:** the name set as wide as the screen, cropped, its letters
+  rising as the footer scrolls in.
 - **About:** the lede lights up word by word as it is read, and the portrait
   tilts toward the pointer.
 - **Cursor ring:** follows the real pointer (which stays visible), wraps
