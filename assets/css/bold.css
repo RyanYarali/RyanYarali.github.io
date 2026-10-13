@@ -415,75 +415,6 @@ html.js-ready .skill-tile.in-view .skill-icon .pi-a rect {
   }
 }
 
-/* ---------- education, inside About ----------
- * The diploma on one ruled line: the school's mark, the programme and its
- * dates, and where Ryan is in it now. */
-.about-edu {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: 0.9rem 1.1rem;
-  margin-top: 2rem;
-  padding: 1rem 1.15rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: color-mix(in srgb, var(--color-surface) 60%, transparent);
-}
-
-/* The logo is dark on white, so it keeps its own white tile in both themes. */
-.about-edu img {
-  width: 46px;
-  height: 46px;
-  padding: 0.4rem;
-  object-fit: contain;
-  border-radius: var(--radius-sm);
-  background: #ffffff;
-}
-
-.about-edu-text p {
-  margin: 0;
-}
-
-.about-edu-title {
-  font-weight: 600;
-  color: var(--color-text);
-  line-height: 1.3;
-}
-
-.about-edu-meta {
-  font-size: 0.85rem;
-  line-height: 1.5;
-  color: var(--color-text-subtle);
-}
-
-.about-edu-meta a {
-  color: var(--color-accent);
-  text-underline-offset: 3px;
-}
-
-.about-edu-now {
-  grid-column: 1 / -1;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 0;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-}
-
-@media (min-width: 720px) {
-  .about-edu {
-    grid-template-columns: auto minmax(0, 1fr) auto;
-  }
-
-  .about-edu-now {
-    grid-column: auto;
-  }
-}
-
 /* ---------- contact ----------
  * The heading goes big, and the form loses its boxes: each field is a line
  * that draws itself in the accent from the left when it takes focus. */
@@ -855,4 +786,189 @@ html.js-ready .shot.reveal.in-view img {
 
 .page-header:has(.page-title) + .section {
   padding-top: 1.5rem;
+}
+
+/* ---------- about ----------
+ * A statement set large that lights up as it is read, then the portrait
+ * beside a ruled fact sheet. The portrait resolves out of pixels when it
+ * scrolls in, then leans toward the pointer. */
+.about-lede {
+  max-width: 24ch;
+  margin: 0 0 clamp(3rem, 7vw, 5.5rem);
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 4.2vw, 3.6rem);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  color: var(--color-text);
+  text-wrap: balance;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2.75rem;
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .about-grid {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(3rem, 6vw, 6rem);
+  }
+}
+
+.about-photo-wrap {
+  width: 100%;
+  max-width: 440px;
+}
+
+.about-photo {
+  margin: 0;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+  box-shadow: var(--shadow-lg);
+}
+
+.about-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 280ms var(--ease);
+}
+
+/* The pixel resolve: the canvas holds the coarse frames; the real photo
+   fades in under it once the last frame lands. The glare stays on top. */
+.about-photo .pixel-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  transition: opacity 280ms var(--ease);
+}
+
+.about-photo.is-pixelated img {
+  opacity: 0;
+}
+
+.about-photo.is-resolved img {
+  opacity: 1;
+}
+
+.about-photo.is-resolved .pixel-canvas {
+  opacity: 0;
+}
+
+.about-photo::after {
+  z-index: 1;
+}
+
+.about-body {
+  display: grid;
+  gap: 2.25rem;
+  min-width: 0;
+}
+
+.about-text {
+  max-width: 52ch;
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.65;
+  color: var(--color-text-muted);
+}
+
+/* The fact sheet: label and value on one ruled line each. The rule draws
+   itself in from the left as its line is revealed. */
+.about-facts {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  margin: 0;
+}
+
+@media (min-width: 620px) {
+  .about-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 2.5rem;
+  }
+}
+
+.about-facts > div {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 0.35rem;
+  padding: 1.1rem 0 1.2rem;
+}
+
+.about-facts > div::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--color-border-strong);
+  transform-origin: left;
+}
+
+html.js-ready .about-facts > div.reveal::before {
+  transform: scaleX(0);
+  transition: transform 1000ms var(--ease-out-expo);
+  transition-delay: calc(var(--reveal-index, 0) * 80ms + 100ms);
+}
+
+html.js-ready .about-facts > div.reveal.in-view::before {
+  transform: none;
+}
+
+.about-facts dt {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.about-facts dd {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--color-text);
+}
+
+.about-facts dd a {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 4px;
+}
+
+.about-facts dd a:hover {
+  color: var(--color-accent);
+}
+
+.about-facts .status-dot {
+  animation: status-pulse 2.4s var(--ease) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js-ready .about-facts > div.reveal::before {
+    transform: none;
+    transition: none;
+  }
+
+  .about-facts .status-dot {
+    animation: none;
+  }
 }

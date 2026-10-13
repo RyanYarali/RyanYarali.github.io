@@ -7,6 +7,8 @@
  *                 pixel style, booting in pixel by pixel and animating in
  *                 two frames when a tile is hovered or (on a touch screen)
  *                 in the middle of the screen
+ *   pixel resolve the About portrait arrives as a coarse mosaic that
+ *                 sharpens in steps, like a packet coming in
  *   preview       on the projects page, a project's cover floats beside the
  *                 pointer while its row is hovered
  *   terminal      Ctrl K / Cmd K (or the footer button) opens a small
@@ -114,6 +116,80 @@
     );
     [].forEach.call(tiles, function (t) {
       io.observe(t);
+    });
+  }
+
+  // ==================== Pixel resolve ====================
+  // A portrait marked data-pixel-reveal arrives like a packet: when it
+  // scrolls in it is drawn as a coarse mosaic that sharpens in steps (6, 10,
+  // 16, 26, 44, 72 blocks across), then the real photo takes over.
+
+  function initPixelReveal() {
+    var figs = document.querySelectorAll("[data-pixel-reveal]");
+    if (!figs.length || reduced || !("IntersectionObserver" in window)) return;
+    [].forEach.call(figs, function (fig) {
+      var img = fig.querySelector("img");
+      if (!img) return;
+      var cv = document.createElement("canvas");
+      cv.className = "pixel-canvas";
+      cv.setAttribute("aria-hidden", "true");
+      fig.insertBefore(cv, img.nextSibling);
+      fig.classList.add("is-pixelated");
+
+      function done() {
+        fig.classList.add("is-resolved");
+      }
+
+      function run() {
+        var ready = img.decode ? img.decode() : Promise.resolve();
+        ready
+          .catch(function () {})
+          .then(function () {
+            try {
+              var W = fig.clientWidth;
+              var H = fig.clientHeight;
+              var dpr = Math.min(2, window.devicePixelRatio || 1);
+              cv.width = Math.round(W * dpr);
+              cv.height = Math.round(H * dpr);
+              var ctx = cv.getContext("2d");
+              var tmp = document.createElement("canvas");
+              var tctx = tmp.getContext("2d");
+              // The same crop as object-fit: cover.
+              var iw = img.naturalWidth;
+              var ih = img.naturalHeight;
+              var sc = Math.max(W / iw, H / ih);
+              var sw = W / sc;
+              var sh = H / sc;
+              var sx = (iw - sw) / 2;
+              var sy = (ih - sh) / 2;
+              var STEPS = [6, 10, 16, 26, 44, 72];
+              var i = 0;
+              (function step() {
+                var cols = STEPS[i];
+                var rows = Math.max(1, Math.round((cols * H) / W));
+                tmp.width = cols;
+                tmp.height = rows;
+                tctx.drawImage(img, sx, sy, sw, sh, 0, 0, cols, rows);
+                ctx.imageSmoothingEnabled = false;
+                ctx.drawImage(tmp, 0, 0, cols, rows, 0, 0, cv.width, cv.height);
+                i++;
+                setTimeout(i < STEPS.length ? step : done, i === 1 ? 260 : 120);
+              })();
+            } catch (e) {
+              done();
+            }
+          });
+      }
+
+      var io = new IntersectionObserver(
+        function (entries) {
+          if (!entries[0].isIntersecting) return;
+          io.disconnect();
+          run();
+        },
+        { threshold: 0.3 },
+      );
+      io.observe(fig);
     });
   }
 
@@ -361,6 +437,7 @@
 
   function boot() {
     initIcons();
+    initPixelReveal();
     initPreview();
     initTerminal();
   }
