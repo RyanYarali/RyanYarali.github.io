@@ -318,11 +318,11 @@
     initAccordion();
     initMagnetic();
 
-    // The art is drawn from palette tokens, so it has to be redrawn whenever
-    // the palette or the theme changes.
+    // The art is drawn from colour tokens, so it has to be redrawn whenever
+    // the theme changes.
     new MutationObserver(repaintArt).observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ["data-theme", "data-palette"],
+      attributeFilter: ["data-theme"],
     });
     window.addEventListener("resize", repaintArt, { passive: true });
   }

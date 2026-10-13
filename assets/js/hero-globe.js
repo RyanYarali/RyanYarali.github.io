@@ -348,7 +348,7 @@ export function mount(host, { reduced = false } = {}) {
   }
   new MutationObserver(() => requestAnimationFrame(applyTokens)).observe(document.documentElement, {
     attributes: true,
-    attributeFilter: ["data-theme", "data-palette"],
+    attributeFilter: ["data-theme"],
   });
 
   // ---- sizing

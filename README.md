@@ -39,12 +39,11 @@ assets/
     typography.css    Type scale and text utilities
     layout.css        Navigation, sections, footer, scroll reveal
     components.css    Buttons, forms, tags, cards
-    interactive.css   Ambient trace, palette dock, stat strip, project accordion
+    interactive.css   Ambient trace, light/dark switch, stat strip, project accordion
     motion.css        Intro, hero, globe, cursor, stacking, route, gallery
     pages.css         Page- and section-specific styles
   js/
     theme.js          Light/dark theme with system preference + persistence
-    palette.js        Six colour palettes and the palette dock
     form.js           Contact form validation and submission
     main.js           Mobile menu, scroll reveal, active nav, back to top
     interactive.js    Ambient trace, counters, accordion, magnetic buttons
@@ -115,21 +114,20 @@ Everything is driven by CSS custom properties defined in
 overrides those same variables under `html[data-theme="dark"]`, so themes stay
 in sync by construction.
 
-- **Colour:** six palettes (Ocean, Violet, Emerald, Crimson, Cyan, Magenta),
-  each with a light and a dark variant. Ocean is the default and lives in
-  `tokens.css`; `palette.js` carries the other five and swaps them at runtime by
-  writing one `<style>` block that redefines the same variables. All twelve
-  variants clear WCAG AA (4.5:1) for body, muted, and subtle text and for the
-  accent on both grounds.
+- **Colour:** one colour story in light and dark: neutral near-black and
+  off-white, and a single electric blue (`#2450f5` light, `#4d7aff` dark) kept
+  rare on purpose, for Ping, the route, the name and the main button. Both
+  themes clear WCAG AA (4.5:1) for body, muted and subtle text and for the
+  accent.
 - **Type:** Familjen Grotesk for headings and UI, IBM Plex Mono for labels,
   indices, and figures, both from Google Fonts.
 - **Theme:** a small inline script in each `<head>` sets `data-theme` before
-  first paint so the correct theme renders immediately, and `palette.js` is
-  loaded in the `<head>` for the same reason. `theme.js` then wires up the
-  toggle and follows the system setting until the visitor overrides it.
+  first paint so the correct theme renders immediately. `theme.js` then wires
+  up the switch in the nav and follows the system setting until the visitor
+  overrides it.
 
-To change the default palette or the fonts, edit `tokens.css`; to change the
-palette list, edit `palette.js`. Nothing else hardcodes a colour or font.
+To change the colours or the fonts, edit `tokens.css`. Nothing else
+hardcodes a colour or font.
 
 ## Interaction
 
@@ -139,7 +137,7 @@ palette list, edit `palette.js`. Nothing else hardcodes a colour or font.
 - **Hero globe:** a three.js scene whose labelled nodes are the projects and
   the tools they are built with, linked by their real relationships. It loads
   after the page has finished loading, renders only while the hero is on
-  screen, follows the palette, and falls back to a CSS poster without WebGL
+  screen, follows the theme, and falls back to a CSS poster without WebGL
   or with Data Saver on.
 - **Stacking:** on the home page each section slides up over the last,
   which sinks back and fades toward the page colour. Sections taller than the
@@ -154,9 +152,9 @@ palette list, edit `palette.js`. Nothing else hardcodes a colour or font.
   cards. Case studies weave between their sections. On phones the packet
   carries the current hop's name while the page moves.
 - **Ping:** the packet at the head of the route is a little creature (a
-  ping says hello; the answer is a pong). Drawn in SVG from the palette
+  ping says hello; the answer is a pong). Drawn in SVG from the colour
   tokens, he blinks, looks the way the page moves, hops at each heading,
-  dozes off when nothing happens, reacts to taps and palette and theme
+  dozes off when nothing happens, reacts to taps and theme
   changes, carries the contact form's real request to the inbox, and grows
   big at the end of the route to wave goodbye. On the home page he speaks
   only at the projects and contact stops, and his bubble never covers
