@@ -64,16 +64,16 @@
     />
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="assets/css/tokens.css?v=20261028" />
-    <link rel="stylesheet" href="assets/css/reset.css?v=20261028" />
-    <link rel="stylesheet" href="assets/css/typography.css?v=20261028" />
-    <link rel="stylesheet" href="assets/css/layout.css?v=20261028" />
-    <link rel="stylesheet" href="assets/css/components.css?v=20261028" />
-    <link rel="stylesheet" href="assets/css/pages.css?v=20261028" />
-    <link rel="stylesheet" href="assets/css/interactive.css?v=20261028" />
-    <link rel="stylesheet" href="assets/css/motion.css?v=20261028" />
-    <link rel="stylesheet" href="assets/css/bold.css?v=20261028" />
-    <link rel="stylesheet" href="assets/css/style.css?v=20261028" />
+    <link rel="stylesheet" href="assets/css/tokens.css?v=20261030" />
+    <link rel="stylesheet" href="assets/css/reset.css?v=20261030" />
+    <link rel="stylesheet" href="assets/css/typography.css?v=20261030" />
+    <link rel="stylesheet" href="assets/css/layout.css?v=20261030" />
+    <link rel="stylesheet" href="assets/css/components.css?v=20261030" />
+    <link rel="stylesheet" href="assets/css/pages.css?v=20261030" />
+    <link rel="stylesheet" href="assets/css/interactive.css?v=20261030" />
+    <link rel="stylesheet" href="assets/css/motion.css?v=20261030" />
+    <link rel="stylesheet" href="assets/css/bold.css?v=20261030" />
+    <link rel="stylesheet" href="assets/css/style.css?v=20261030" />
 
 
     <!-- Favicon -->
@@ -442,38 +442,19 @@
             <p class="eyebrow">About</p>
             <h2>A systems mindset, applied to the web</h2>
           </div>
-          <div class="about-layout">
-            <div class="about-content reveal">
-              <p class="about-lede">
-                I'm a Computer Systems Technology student at BCIT, now in Term 3
-                on the Data Communications &amp; Cyber Security option. I work
-                across the stack, and the networking specialization is teaching
-                me the layer underneath it: <em>what actually happens between the
-                client and the server.</em>
-              </p>
-              <p>
-                BCIT's program is hands-on: every course ends in something
-                built and defended, not just graded. That's shaped how I
-                work. I'd rather ship a smaller feature that's solid than a
-                bigger one held together with guesses.
-              </p>
-              <!-- Education, folded in from its own section: one line is
-                   all it needs. -->
-              <div class="about-edu" id="learning">
-                <img src="assets/BCIT_logo.png" alt="British Columbia Institute of Technology (BCIT) logo" width="128" height="116" loading="lazy" decoding="async" />
-                <div class="about-edu-text">
-                  <p class="about-edu-title">Computer Systems Technology Diploma, BCIT</p>
-                  <p class="about-edu-meta">
-                    Data Communications &amp; Cyber Security option ·
-                    Sept 2025 to Apr 2027 (expected) ·
-                    <a href="https://www.bcit.ca/programs/computer-systems-technology-diploma-full-time-5500dipma/" target="_blank" rel="noopener noreferrer">Program details</a>
-                  </p>
-                </div>
-                <p class="about-edu-now"><span class="status-dot" aria-hidden="true"></span>Term 3 now</p>
-              </div>
-            </div>
+
+          <!-- The statement: story.js lights it up word by word as it is
+               read. -->
+          <p class="about-lede">
+            I work across the stack, and I'm learning the layer underneath it:
+            <em>what actually happens between the client and the server.</em>
+          </p>
+
+          <div class="about-grid">
+            <!-- The portrait resolves out of pixels when it scrolls in
+                 (flair.js), then tilts toward the pointer (story.js). -->
             <div class="about-photo-wrap reveal">
-              <figure class="about-photo">
+              <figure class="about-photo" data-pixel-reveal>
                 <img
                   src="assets/ryan-yarali.jpg"
                   alt="Portrait of Ryan Yarali in a dark denim shirt against a charcoal backdrop"
@@ -483,6 +464,42 @@
                   decoding="async"
                 />
               </figure>
+            </div>
+
+            <div class="about-body">
+              <p class="about-text reveal">
+                BCIT's program is hands-on: every course ends in something
+                built and defended, not just graded. That's shaped how I work.
+                I'd rather ship a smaller feature that's solid than a bigger
+                one held together with guesses.
+              </p>
+
+              <dl class="about-facts reveal-group" id="learning">
+                <div>
+                  <dt>Based in</dt>
+                  <dd>Coquitlam, BC, in Greater Vancouver</dd>
+                </div>
+                <div>
+                  <dt>Studying</dt>
+                  <dd><a href="https://www.bcit.ca/programs/computer-systems-technology-diploma-full-time-5500dipma/" target="_blank" rel="noopener noreferrer">Computer Systems Technology Diploma, BCIT</a></dd>
+                </div>
+                <div>
+                  <dt>Option</dt>
+                  <dd>Data Communications &amp; Cyber Security</dd>
+                </div>
+                <div>
+                  <dt>Now</dt>
+                  <dd><span class="status-dot" aria-hidden="true"></span>Term 3 of 4, graduating Apr 2027 (expected)</dd>
+                </div>
+                <div>
+                  <dt>Shipped</dt>
+                  <dd>15+ projects for clients</dd>
+                </div>
+                <div>
+                  <dt>Looking for</dt>
+                  <dd>Co-op, internship and junior developer roles</dd>
+                </div>
+              </dl>
             </div>
           </div>
         </div>
@@ -937,16 +954,16 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="assets/js/theme.js?v=20261028"></script>
-    <script src="assets/js/form.js?v=20261028"></script>
-    <script src="assets/js/main.js?v=20261028"></script>
-    <script src="assets/js/flair.js?v=20261028"></script>
-    <script src="assets/js/interactive.js?v=20261028"></script>
-    <script src="assets/js/cursor.js?v=20261028"></script>
-    <script src="assets/js/story.js?v=20261028"></script>
-    <script src="assets/js/route.js?v=20261028"></script>
-    <script src="assets/js/ping-sprite.js?v=20261028"></script>
-    <script src="assets/js/ping.js?v=20261028"></script>
-    <script src="assets/js/hero.js?v=20261028"></script>
+    <script src="assets/js/theme.js?v=20261030"></script>
+    <script src="assets/js/form.js?v=20261030"></script>
+    <script src="assets/js/main.js?v=20261030"></script>
+    <script src="assets/js/flair.js?v=20261030"></script>
+    <script src="assets/js/interactive.js?v=20261030"></script>
+    <script src="assets/js/cursor.js?v=20261030"></script>
+    <script src="assets/js/story.js?v=20261030"></script>
+    <script src="assets/js/route.js?v=20261030"></script>
+    <script src="assets/js/ping-sprite.js?v=20261030"></script>
+    <script src="assets/js/ping.js?v=20261030"></script>
+    <script src="assets/js/hero.js?v=20261030"></script>
   </body>
 </html>
