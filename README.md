@@ -169,9 +169,18 @@ hardcodes a colour or font.
   aria-hidden, and holds still under reduced motion.
 - **Headings:** eyebrows decode out of random characters, and a glowing scan
   line sweeps across each heading, revealing the text behind it.
-- **Hero name:** fills the column, and as the next section slides over the
-  hero it shrinks and flies up into the nav, cross-fading into the logo.
-- **Skills:** the marquee drifts above a ruled grid of tiles, one per area,
+- **Hero name:** fills the column; its letters rise one after another on
+  load, and as the next section slides over the hero it shrinks and flies up
+  into the nav, cross-fading into the logo.
+- **Big titles:** the projects page, case study and contact titles rise
+  letter by letter as they come into view (flair.js splits them, keeping the
+  real text as the accessible name).
+- **Weight lens:** on a fine pointer, the hero name and the footer wordmark
+  thin under the pointer, letter by letter (the variable Familjen Grotesk,
+  400 to 700); the wordmark's letters also turn blue. Letters keep their
+  resting width, so nothing around them moves.
+- **Skills:** the marquee (which speeds up while the page is scrolled fast)
+  drifts above a ruled grid of tiles, one per area,
   each with a 12 x 12 pixel icon that boots in pixel by pixel and animates in
   two frames while its tile is hovered (or, on a phone, mid-screen).
 - **Terminal:** Ctrl K / Cmd K (or the footer button) opens a small terminal

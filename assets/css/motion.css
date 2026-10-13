@@ -144,9 +144,10 @@ html.intro-pending .intro {
 }
 
 .hero-title {
-  /* "Ryan Yarali" is about 4.4 em wide in this face and weight, so 22.4cqi
-     runs it the full width of the column. */
-  font-size: 22.4cqi;
+  /* "Ryan Yarali" is about 4.5 em wide in this face and weight once its
+     letters are split (for the rise and the lens, which costs the kerning),
+     so 21.8cqi runs it the full width of the column. */
+  font-size: 21.8cqi;
   font-weight: 700;
   letter-spacing: -0.045em;
   line-height: 0.86;
