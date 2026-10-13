@@ -14,57 +14,13 @@
   }
 }
 
-.hero-layout {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 3rem;
-  align-items: center;
-}
-
-@media (min-width: 860px) {
-  .hero-layout {
-    grid-template-columns: 1.25fr 0.75fr;
-    gap: 4.5rem;
-  }
-}
-
-.hero-content {
-  text-align: left;
-}
-
-.hero-greeting {
-  margin-bottom: 1.75rem;
-}
-
 .hero-title {
-  font-size: clamp(3rem, 5vw + 1rem, 5rem);
-  margin-bottom: 1.5rem;
   color: var(--color-text);
-  font-weight: 600;
-  line-height: 1.04;
-  letter-spacing: -0.02em;
-  max-width: 12ch;
 }
 
 .hero-title .highlight {
   color: var(--color-accent);
   transition: color var(--transition-palette);
-}
-
-.hero-subtitle {
-  font-size: 1.125rem;
-  color: var(--color-text);
-  margin-bottom: 1.25rem;
-  font-weight: 400;
-  font-family: var(--font-display);
-}
-
-.hero-tagline {
-  font-size: 1.0625rem;
-  color: var(--color-text-muted);
-  max-width: 48ch;
-  margin: 0 0 2.5rem;
-  line-height: var(--line-height-relaxed);
 }
 
 .hero-image {

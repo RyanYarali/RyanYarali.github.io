@@ -106,8 +106,7 @@ html[data-theme="dark"] {
 body,
 .navbar,
 .surface-card,
-.project-accordion-item,
-.stat-tile {
+.project-accordion-item {
   transition:
     background-color var(--transition-palette),
     border-color var(--transition-palette),

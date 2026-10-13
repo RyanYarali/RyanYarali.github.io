@@ -264,7 +264,7 @@
   // back until the space under it clears, and a showing bubble that content
   // scrolls into is put away.
 
-  var CONTENT = "a, button, input, textarea, select, label, img, picture, figure, h1, h2, h3, h4, p, li, .btn, .work-card, .stat-tile";
+  var CONTENT = "a, button, input, textarea, select, label, img, picture, figure, h1, h2, h3, h4, p, li, .btn, .work-card, .hero-name";
   var current = "";
   var waiting = null;
 
