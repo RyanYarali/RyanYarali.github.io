@@ -481,18 +481,18 @@
   border: 1px solid var(--color-border);
 }
 
-.taskmate-page .screenshots-grid {
+.project-detail-page .screenshots-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1.75rem;
   margin-top: 1.75rem;
 }
 
-.taskmate-page .screenshots-grid figure {
+.project-detail-page .screenshots-grid figure {
   margin: 0;
 }
 
-.taskmate-page .screenshots-grid img {
+.project-detail-page .screenshots-grid img {
   width: 100%;
   max-width: 300px;
   height: auto;
@@ -502,7 +502,7 @@
   margin: 0 0 0.75rem;
 }
 
-.taskmate-page .screenshots-grid figcaption {
+.project-detail-page .screenshots-grid figcaption {
   font-size: 0.8125rem;
   color: var(--color-text-subtle);
   line-height: 1.5;
