@@ -1070,9 +1070,10 @@ html.js-ready .about-facts > div.reveal.in-view::before {
   .nav-pill {
     position: absolute;
     left: 0;
-    top: 50%;
-    height: 34px;
-    margin-top: -17px;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
     border-radius: var(--radius-pill);
     background: color-mix(in srgb, var(--color-text) 9%, transparent);
     opacity: 0;

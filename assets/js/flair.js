@@ -156,6 +156,8 @@
       var lr = list.getBoundingClientRect();
       var r = link.getBoundingClientRect();
       pill.style.width = r.width.toFixed(1) + "px";
+      pill.style.height = r.height.toFixed(1) + "px";
+      pill.style.top = (r.top - lr.top).toFixed(1) + "px";
       pill.style.transform = "translateX(" + (r.left - lr.left).toFixed(1) + "px)";
       pill.style.opacity = "1";
     }
