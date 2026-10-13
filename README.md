@@ -148,8 +148,12 @@ hardcodes a colour or font.
   place in the flow, since a stuck section's own box is not where it lives.
 - **Route:** a line that winds down the page like a timeline: down one
   edge of a section, across the open space above the next heading, and on.
-  A dotted line shows the road ahead; the solid line draws in behind a
-  packet that rides at the reading line, lighting each heading as a hop. On
+  Square pixel dots show the road ahead; the solid line glides in behind a
+  packet that rides at the reading line (eased, so it stays smooth when a
+  phone delivers scroll unevenly), with a three-step comet fading out behind
+  it, lighting each heading as a hop. Points along the path come from a
+  precomputed table, and the hosts are measured in the scroll event before
+  anything writes, so a frame never forces the page to lay out again. On
   the stacked home page each section carries its own stretch, so the line
   moves with its card; under the pinned gallery it runs sideways with the
   cards. Case studies weave between their sections. On phones the packet

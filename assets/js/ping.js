@@ -401,7 +401,10 @@
     // On a phone the route hugs the screen edge; he stays wholly on screen.
     var scale = parseFloat(getComputedStyle(el).getPropertyValue("--s")) || 1;
     var half = hit.offsetWidth * 0.5 * scale + 4;
-    if (!big) return { x: clamp(head.x, half, window.innerWidth - half), y: head.y };
+    // On a phone he hugs the edge (a few pixels may tuck past it) so he does
+    // not sit on the first letters of the text beside the route.
+    var edge = window.innerWidth <= 700 ? half * 0.7 : half;
+    if (!big) return { x: clamp(head.x, edge, window.innerWidth - edge), y: head.y };
     // Grown for the goodbye he steps in from the edge, so all of him is on
     // screen, and stands a little above the end of the route.
     var phone = window.innerWidth <= 700;

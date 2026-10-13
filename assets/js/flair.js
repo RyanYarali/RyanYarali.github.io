@@ -296,40 +296,58 @@
   }
 
   // The skills marquee runs faster while the page is scrolled fast, and
-  // eases back to its own pace.
+  // eases back to its own pace. Only while it is on screen, and with its
+  // animations looked up once: asking for them every frame forced the whole
+  // page's styles to be recalculated on every scroll frame.
   function initMarqueeSpeed() {
-    if (reduced) return;
+    if (reduced || !("IntersectionObserver" in window)) return;
     var last = window.scrollY;
     var v = 0;
     var rate = 1;
+    var applied = 1;
     var raf = 0;
-    var rows = null;
-    function apply(r) {
-      rows.forEach(function (row) {
-        row.getAnimations().forEach(function (a) {
-          a.playbackRate = r;
-        });
+    var anims = null;
+    var visible = false;
+
+    function find() {
+      var box = document.querySelector(".marquee");
+      if (!box) return false;
+      anims = [];
+      [].forEach.call(box.querySelectorAll(".marquee-row"), function (row) {
+        anims = anims.concat(row.getAnimations());
       });
+      new IntersectionObserver(function (entries) {
+        visible = entries[0].isIntersecting;
+      }).observe(box);
+      return true;
     }
+
+    function apply(r) {
+      if (Math.abs(r - applied) < 0.02 && r !== 1) return;
+      applied = r;
+      for (var i = 0; i < anims.length; i++) anims[i].playbackRate = r;
+    }
+
     function tick() {
       raf = 0;
-      if (!rows) rows = [].slice.call(document.querySelectorAll(".marquee-row"));
-      if (!rows.length) return;
       rate += (1 + v - rate) * 0.12;
       v *= 0.9;
       if (Math.abs(rate - 1) < 0.01 && v < 0.01) {
         rate = 1;
-        apply(1);
+        if (applied !== 1) apply(1);
         return;
       }
       apply(rate);
       raf = requestAnimationFrame(tick);
     }
+
     window.addEventListener(
       "scroll",
       function () {
         var dy = window.scrollY - last;
         last = window.scrollY;
+        if (!anims && !find()) return;
+        if (!visible) return;
         v = Math.min(5, Math.max(v, Math.abs(dy) / 14));
         if (!raf) raf = requestAnimationFrame(tick);
       },
