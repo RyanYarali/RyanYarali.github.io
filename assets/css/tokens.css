@@ -9,6 +9,8 @@
   --font-display: "Familjen Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-sans: "Familjen Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  /* Ping's dialog header only. */
+  --font-pixel: "Silkscreen", "IBM Plex Mono", ui-monospace, monospace;
 
   --line-height-tight: 1.06;
   --line-height-snug: 1.35;
@@ -38,10 +40,14 @@
      so it is the same in both themes. */
   --color-glare: rgba(255, 255, 255, 0.34);
 
-  /* Ping's eyes: always white with dark pupils, in either theme, so he
-     reads as the same character everywhere. */
-  --ping-eye: #ffffff;
-  --ping-ink: #0b111a;
+  /* Ping, the pixel sprite: highlight and shade of the accent, a deep navy
+     outline and ink, pink cheeks, and his ground shadow. */
+  --px-hi: #7f9bff;
+  --px-lo: #1638b8;
+  --px-outline: #0a1240;
+  --px-ink: #0a1030;
+  --px-cheek: #ff8fb3;
+  --px-shadow: rgba(10, 10, 11, 0.16);
 
   --color-danger: #a32b22;
   --color-success: #1f6b47;
@@ -91,6 +97,11 @@ html[data-theme="dark"] {
 
   --color-border: rgba(237, 237, 237, 0.12);
   --color-border-strong: rgba(237, 237, 237, 0.28);
+
+  --px-hi: #a9bfff;
+  --px-lo: #2a4bd0;
+  --px-outline: #0c1640;
+  --px-shadow: rgba(0, 0, 0, 0.5);
 
   --color-danger: #e0827a;
   --color-success: #6fb894;

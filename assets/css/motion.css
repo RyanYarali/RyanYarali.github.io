@@ -1479,7 +1479,9 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
  * accent, his eyes are always white with dark pupils. --s is his scale:
  * smaller on a phone, big for the goodbye. */
 .ping {
-  --s: 1;
+  /* A pixel sprite needs size for its details (the eye glints, the cheeks)
+     to read, so he is drawn a little larger than the old vector Ping. */
+  --s: 1.3;
   position: fixed;
   left: 0;
   top: 0;
@@ -1498,12 +1500,12 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
 
 @media (max-width: 700px) {
   .ping {
-    --s: 0.72;
+    --s: 0.95;
   }
 }
 
 .ping.is-big {
-  --s: 2.3;
+  --s: 2.6;
 }
 
 @media (max-width: 700px) {
@@ -1544,7 +1546,6 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
 .ping-float {
   width: 100%;
   height: 100%;
-  animation: ping-bob 2.6s ease-in-out infinite;
 }
 
 .ping-squash {
@@ -1554,250 +1555,189 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
   transition: transform 160ms ease-out;
 }
 
+/* The sprite (ping-sprite.js) is drawn on a hard grid: one viewBox unit is
+ * one sprite pixel. Colour comes from classes, and each state class on
+ * .ping shows the frame that matches it. Frame changes are steps(), never
+ * tweens, so he moves like a game sprite. */
 .ping svg {
   display: block;
   width: 100%;
   height: 100%;
   overflow: visible;
-  /* A tight, low glow: enough to lift him off the route, not a halo. */
-  filter: drop-shadow(0 2px 6px color-mix(in srgb, var(--color-accent) 35%, transparent));
 }
 
-@keyframes ping-bob {
+.px-o { fill: var(--px-outline); }
+.px-b { fill: var(--color-accent); }
+.px-h { fill: var(--px-hi); }
+.px-s { fill: var(--px-lo); }
+.px-k { fill: var(--px-ink); }
+.px-w { fill: #ffffff; }
+.px-c { fill: var(--px-cheek); }
+.px-t { fill: var(--px-hi); }
+.px-shadow rect { fill: var(--px-shadow); }
+
+.px-f { display: none; }
+.px-eyes-open,
+.px-mouth-smile,
+.px-arms-rest,
+.px-feet-a {
+  display: inline;
+}
+
+.px-eyes {
+  transition: transform 120ms steps(1);
+}
+
+/* Idle: a one-pixel bob in two frames, and the antenna tip blinking. */
+.px-body,
+.px-face,
+.px-limbs .px-f:not(.px-feet-a):not(.px-feet-b),
+.px-signal,
+.px-envelope {
+  animation: px-bob 1.2s steps(1) infinite;
+}
+
+@keyframes px-bob {
   50% {
-    transform: translateY(-2px);
+    transform: translateY(1px);
   }
 }
 
-.ping-skin {
-  fill: var(--color-accent);
-  transition: fill var(--transition-palette);
+.px-antenna rect.px-t {
+  animation: px-tip 1.6s steps(1) infinite;
 }
 
-/* The antenna is a signal: a dot and two arcs. At rest the arcs are faint;
-   while he talks they pulse outward one after the other, like a broadcast. */
-.ping-antenna {
-  transform-box: view-box;
-  transform-origin: 20px 12px;
-}
-
-.ping-signal-dot {
-  fill: var(--color-accent);
-}
-
-.ping-signal {
-  fill: none;
-  stroke: var(--color-accent);
-  stroke-width: 2.2;
-  stroke-linecap: round;
-  opacity: 0.35;
-}
-
-.ping-signal-2 {
-  opacity: 0.18;
-}
-
-.ping.is-talking .ping-signal {
-  animation: ping-signal 0.9s ease-out infinite;
-}
-
-.ping.is-talking .ping-signal-2 {
-  animation-delay: 0.18s;
-}
-
-@keyframes ping-signal {
-  0% {
-    opacity: 0.15;
-  }
-  35% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0.15;
+@keyframes px-tip {
+  50% {
+    fill: #ffffff;
   }
 }
 
-/* Arms hang behind the body; the hands are little round mitts. */
-.ping-arm {
-  transform-box: view-box;
-  transition: transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.ping-arm line {
-  stroke: var(--color-accent);
-  stroke-width: 2.6;
-  stroke-linecap: round;
-  transition: stroke var(--transition-palette);
-}
-
-.ping-arm circle {
-  fill: var(--color-accent);
-  transition: fill var(--transition-palette);
-}
-
-.ping-arm-l {
-  transform-origin: 8px 30px;
-  transform: rotate(28deg);
-}
-
-.ping-arm-r {
-  transform-origin: 32px 30px;
-  transform: rotate(-28deg);
-}
-
-.ping.pose-cheer .ping-arm-l,
-.ping.pose-carry .ping-arm-l {
-  transform: rotate(152deg);
-}
-
-.ping.pose-cheer .ping-arm-r,
-.ping.pose-carry .ping-arm-r {
-  transform: rotate(-152deg);
-}
-
-.ping.pose-point-r .ping-arm-r {
-  transform: rotate(-98deg);
-}
-
-.ping.pose-point-l .ping-arm-l {
-  transform: rotate(98deg);
-}
-
-.ping.pose-wave .ping-arm-r {
-  transform: rotate(-170deg);
-  animation: ping-wave 0.55s ease-in-out infinite alternate;
-}
-
-.ping.is-flip.pose-wave .ping-arm-r {
-  animation: none;
-  transform: rotate(-28deg);
-}
-
-.ping.is-flip.pose-wave .ping-arm-l {
-  transform: rotate(170deg);
-  animation: ping-wave-l 0.55s ease-in-out infinite alternate;
-}
-
-.ping.pose-droop .ping-arm-l {
-  transform: rotate(10deg);
-}
-
-.ping.pose-droop .ping-arm-r {
-  transform: rotate(-10deg);
-}
-
-@keyframes ping-wave {
-  from {
-    transform: rotate(-145deg);
-  }
-  to {
-    transform: rotate(-200deg);
+@keyframes px-frame {
+  50% {
+    visibility: hidden;
   }
 }
 
-@keyframes ping-wave-l {
-  from {
-    transform: rotate(145deg);
-  }
-  to {
-    transform: rotate(200deg);
-  }
-}
-
-.ping-eye {
-  fill: var(--ping-eye);
-}
-
-.ping-pupils {
-  fill: var(--ping-ink);
-  transition: transform 220ms var(--ease-out-expo);
-}
-
-.ping-eyes {
-  transform-box: view-box;
-  transform-origin: 20px 25.2px;
-  transition: transform 90ms ease-in;
-}
-
-.ping-eyes.is-blink {
-  transform: scaleY(0.08);
-}
-
-.ping-face path,
-.ping-mouth {
-  fill: none;
-  stroke: var(--ping-ink);
-  stroke-width: 2;
-  stroke-linecap: round;
-}
-
-/* The face sits on the accent body, so the closed eyes and the mouth are
-   drawn in white, like the open eyes. */
-.ping-face path,
-.ping-mouth {
-  stroke: var(--ping-eye);
-}
-
-.ping-mouth-open {
-  fill: var(--ping-eye);
-}
-
-.ping-face,
-.ping-mouth-sad,
-.ping-mouth-open,
-.ping-envelope {
+/* Faces. */
+.ping.is-blink .px-eyes-open,
+.ping.is-happy .px-eyes-open,
+.ping.is-sleep .px-eyes-open,
+.ping.is-dizzy .px-eyes-open,
+.ping.is-sad .px-eyes-open {
   display: none;
 }
 
-.ping.is-happy .ping-eyes,
-.ping.is-sleep .ping-eyes,
-.ping.is-dizzy .ping-eyes {
+.ping.is-blink .px-eyes-blink,
+.ping.is-happy .px-eyes-happy,
+.ping.is-sleep .px-eyes-sleep,
+.ping.is-dizzy .px-eyes-dizzy,
+.ping.is-sad .px-eyes-sad {
+  display: inline;
+}
+
+/* Happy and asleep win over a blink that lands at the same moment. */
+.ping.is-happy.is-blink .px-eyes-blink,
+.ping.is-sleep.is-blink .px-eyes-blink,
+.ping.is-dizzy.is-blink .px-eyes-blink,
+.ping.is-sad.is-blink .px-eyes-blink {
   display: none;
 }
 
-.ping.is-happy .ping-face-happy,
-.ping.is-sleep .ping-face-sleep,
-.ping.is-dizzy .ping-face-dizzy {
-  display: inline;
-}
-
-.ping.is-talking .ping-mouth-open,
-.ping.is-sad .ping-mouth-sad {
-  display: inline;
-}
-
-.ping.is-talking .ping-mouth-smile,
-.ping.is-sad .ping-mouth-smile {
+.ping.is-sad .px-mouth-smile {
   display: none;
 }
 
-.ping.is-carrying .ping-envelope {
+.ping.is-sad .px-mouth-sad {
   display: inline;
 }
 
-.ping-envelope rect {
-  fill: var(--color-surface);
-  stroke: var(--color-accent);
-  stroke-width: 1.6;
+/* Talking: the mouth flaps in two frames and the signal goes out. */
+.ping.is-talking .px-mouth-smile {
+  animation: px-frame 0.24s steps(1) infinite;
 }
 
-.ping-envelope path {
-  fill: none;
-  stroke: var(--color-accent);
-  stroke-width: 1.6;
-  stroke-linejoin: round;
+.ping.is-talking .px-mouth-open {
+  display: inline;
+  animation: px-frame 0.24s steps(1) infinite reverse;
 }
 
-.ping-face-dizzy g {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: ping-spin 0.7s linear infinite;
+.ping.is-talking .px-signal-1,
+.ping.is-talking .px-signal-2 {
+  display: inline;
+  animation: px-signal 0.9s steps(1) infinite;
 }
 
-@keyframes ping-spin {
-  to {
-    transform: rotate(360deg);
+.ping.is-talking .px-signal-2 {
+  animation-delay: 0.3s;
+}
+
+@keyframes px-signal {
+  66% {
+    visibility: hidden;
   }
+}
+
+/* Arms. Waving uses the arm on the open side of the screen. */
+.ping[class*="pose-"] .px-arms-rest {
+  display: none;
+}
+
+.ping.pose-cheer .px-arms-cheer,
+.ping.pose-carry .px-arms-carry,
+.ping.pose-point-r .px-arms-point-r,
+.ping.pose-point-l .px-arms-point-l,
+.ping.pose-droop .px-arms-droop {
+  display: inline;
+}
+
+.ping.pose-wave .px-arms-wave-a {
+  display: inline;
+  animation: px-frame 0.5s steps(1) infinite;
+}
+
+.ping.pose-wave .px-arms-wave-b {
+  display: inline;
+  animation: px-frame 0.5s steps(1) infinite reverse;
+}
+
+.ping.is-flip.pose-wave .px-arms-wave-a,
+.ping.is-flip.pose-wave .px-arms-wave-b {
+  display: none;
+}
+
+.ping.is-flip.pose-wave .px-arms-wave-l-a {
+  display: inline;
+  animation: px-frame 0.5s steps(1) infinite;
+}
+
+.ping.is-flip.pose-wave .px-arms-wave-l-b {
+  display: inline;
+  animation: px-frame 0.5s steps(1) infinite reverse;
+}
+
+/* Carrying the contact form's message: the envelope rests on his head and
+   the antenna folds away under it. */
+.ping.pose-carry .px-envelope,
+.ping.is-carrying .px-envelope {
+  display: inline;
+}
+
+.ping.pose-carry .px-antenna,
+.ping.is-carrying .px-antenna,
+.ping.pose-carry .px-signal,
+.ping.is-carrying .px-signal {
+  display: none;
+}
+
+/* Walking while the page moves. */
+.ping.is-walking .px-feet-a {
+  animation: px-frame 0.3s steps(1) infinite;
+}
+
+.ping.is-walking .px-feet-b {
+  display: inline;
+  animation: px-frame 0.3s steps(1) infinite reverse;
 }
 
 .ping.is-hop .ping-float {
@@ -1805,27 +1745,14 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
 }
 
 @keyframes ping-hop {
-  30% {
-    transform: translateY(-14px) scale(1.05, 0.95);
+  35% {
+    transform: translateY(-14px);
   }
-  60% {
-    transform: translateY(0) scale(1.1, 0.9);
+  70% {
+    transform: translateY(0);
   }
-  80% {
-    transform: scale(0.96, 1.04);
-  }
-}
-
-.ping.pose-wave .ping-antenna {
-  animation: ping-antenna 0.5s ease-in-out 3;
-}
-
-@keyframes ping-antenna {
-  25% {
-    transform: rotate(-20deg);
-  }
-  75% {
-    transform: rotate(20deg);
+  85% {
+    transform: translateY(-3px);
   }
 }
 
@@ -1859,91 +1786,86 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
   }
 }
 
-/* Speech arrives as a packet: a squared card with an accent edge on the side
- * facing him, a mono header carrying the sequence number, and the payload
- * typing out behind a block caret. It opens with a wipe out of the corner
- * nearest him, as if it had just been delivered, rather than a cartoon pop. */
+/* Speech is a retro RPG dialog box: a square panel whose border is four
+ * flat shadows, which leaves the corners out and steps them like a pixel-art
+ * window; a hard offset shadow; a pixel-font header with the line's
+ * sequence number; the payload typing behind a block caret; and a blinking
+ * arrow once the line is complete. It opens in four frames, not a tween. */
 .ping-bubble {
+  --bw: 3px;
   position: absolute;
-  bottom: calc(18px * var(--s));
-  left: calc(30px * var(--s));
+  bottom: calc(22px * var(--s));
+  left: calc(34px * var(--s));
   display: grid;
   gap: 0.3rem;
   width: max-content;
-  max-width: min(260px, 62vw);
-  padding: 0.6rem 0.85rem 0.7rem;
-  border-radius: 4px;
+  max-width: min(280px, 62vw);
+  margin: var(--bw);
+  padding: 0.7rem 0.95rem 0.95rem;
   background: var(--color-surface);
-  border: 1px solid var(--color-border-strong);
-  border-left: 2px solid var(--color-accent);
-  box-shadow: var(--shadow-lg);
+  box-shadow:
+    0 calc(var(--bw) * -1) 0 0 var(--color-accent),
+    0 var(--bw) 0 0 var(--color-accent),
+    calc(var(--bw) * -1) 0 0 0 var(--color-accent),
+    var(--bw) 0 0 0 var(--color-accent),
+    calc(var(--bw) * 2.5) calc(var(--bw) * 2.5) 0 0 var(--px-shadow);
   color: var(--color-text);
   font-family: var(--font-display);
   font-size: 0.95rem;
   font-weight: 500;
   font-style: normal;
-  line-height: 1.32;
-  letter-spacing: -0.005em;
+  line-height: 1.35;
+  letter-spacing: normal;
   text-transform: none;
   text-align: left;
   pointer-events: none;
   /* Never faded: its text is never shown half-transparent (and so
      low-contrast) over whatever is behind it. */
   visibility: hidden;
-  clip-path: inset(100% 100% 0 0);
-  transform: translate(-4px, 4px);
+  clip-path: inset(0 100% 100% 0);
   transition:
-    visibility 0s linear 300ms,
-    clip-path 300ms var(--ease-out-expo),
-    transform 300ms var(--ease-out-expo),
-    left 700ms var(--ease-out-expo),
-    right 700ms var(--ease-out-expo),
-    bottom 700ms var(--ease-out-expo);
-}
-
-/* The port it was delivered from: a small square on the corner nearest
-   him, in the accent. */
-.ping-bubble::after {
-  content: "";
-  position: absolute;
-  left: -5px;
-  bottom: -5px;
-  width: 8px;
-  height: 8px;
-  background: var(--color-accent);
+    visibility 0s linear 240ms,
+    clip-path 240ms steps(4);
 }
 
 .ping-bubble.is-on {
   visibility: visible;
-  clip-path: inset(0 0 0 0);
-  transform: none;
+  clip-path: inset(-12px -16px -16px -12px);
   transition-delay: 0s;
-  transition-duration: 0s, 520ms, 520ms, 700ms, 700ms, 700ms;
 }
 
 .ping-bubble-head {
-  font-family: var(--font-mono);
+  display: flex;
+  justify-content: space-between;
+  gap: 1.25rem;
+  font-family: var(--font-pixel);
   font-size: 0.66rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
+  line-height: 1;
   color: var(--color-accent);
+}
+
+.ping-seq {
+  color: var(--color-text-subtle);
+}
+
+.ping-bubble-text {
+  padding-right: 0.6rem;
 }
 
 .ping-rest {
   color: transparent;
 }
 
-/* A block caret at the end of what has been typed, blinking only while
-   the line is still coming in. */
 .ping-bubble.is-typing .ping-typed::after {
   content: "";
   display: inline-block;
   width: 0.5em;
   height: 1em;
-  margin-left: 1px;
+  margin-left: 2px;
   vertical-align: -0.14em;
   background: var(--color-accent);
-  animation: ping-caret 0.7s steps(1) infinite;
+  animation: ping-caret 0.6s steps(1) infinite;
 }
 
 @keyframes ping-caret {
@@ -1952,49 +1874,44 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
   }
 }
 
-.ping.is-flip .ping-bubble {
-  left: auto;
-  right: calc(30px * var(--s));
-  border-left-width: 1px;
-  border-left-color: var(--color-border-strong);
-  border-right: 2px solid var(--color-accent);
-  clip-path: inset(100% 0 0 100%);
-  transform: translate(4px, 4px);
+/* The "next" arrow, once the line is all there. */
+.ping-bubble::after {
+  content: "";
+  position: absolute;
+  right: 0.6rem;
+  bottom: 0.4rem;
+  width: 9px;
+  height: 5px;
+  background: var(--color-accent);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  opacity: 0;
 }
 
-.ping.is-flip .ping-bubble::after {
+.ping-bubble.is-on:not(.is-typing)::after {
+  opacity: 1;
+  animation: ping-next 0.8s steps(1) infinite;
+}
+
+@keyframes ping-next {
+  50% {
+    transform: translateY(2px);
+  }
+}
+
+.ping.is-flip .ping-bubble {
   left: auto;
-  right: -5px;
+  right: calc(34px * var(--s));
+  clip-path: inset(0 0 100% 100%);
 }
 
 .ping.is-flip .ping-bubble.is-on {
-  clip-path: inset(0 0 0 0);
-  transform: none;
+  clip-path: inset(-12px -16px -16px -12px);
 }
 
 .ping.is-big .ping-bubble {
   font-size: 1rem;
 }
 
-/* On a phone the goodbye happens in the clear space under the send button:
-   Ping on the left, his bubble beside him at the same height, so neither
-   covers the button. */
-@media (max-width: 700px) {
-  .ping.is-big .ping-bubble,
-  .ping.is-big.is-flip .ping-bubble {
-    left: calc(30px * var(--s));
-    right: auto;
-    bottom: calc(-4px * var(--s));
-    max-width: calc(100vw - 150px);
-    border-left: 2px solid var(--color-accent);
-    border-right: 1px solid var(--color-border-strong);
-  }
-
-  .ping.is-big.is-flip .ping-bubble::after {
-    left: -5px;
-    right: auto;
-  }
-}
 /* On a page without a route he stands beside the heading instead. */
 .ping.is-standalone {
   position: relative;
@@ -2021,16 +1938,30 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ping-float,
   .ping.is-hop .ping-float,
-  .ping.pose-wave .ping-arm-r,
-  .ping.is-flip.pose-wave .ping-arm-l,
-  .ping.pose-wave .ping-antenna,
-  .ping-face-dizzy g,
-  .ping.is-talking .ping-signal,
+  .px-body,
+  .px-face,
+  .px-limbs .px-f,
+  .px-signal,
+  .px-envelope,
+  .px-antenna rect.px-t,
+  .ping.is-talking .px-mouth-smile,
+  .ping.is-talking .px-signal-1,
+  .ping.is-talking .px-signal-2,
+  .ping.pose-wave .px-arms-wave-a,
+  .ping.is-flip.pose-wave .px-arms-wave-l-a,
+  .ping.is-walking .px-feet-a,
   .ping-bubble.is-typing .ping-typed::after,
+  .ping-bubble.is-on:not(.is-typing)::after,
   .ping.is-sleep .ping-zzz {
     animation: none;
+  }
+  .ping.is-talking .px-mouth-open,
+  .ping.is-talking .px-signal-2,
+  .ping.pose-wave .px-arms-wave-b,
+  .ping.is-flip.pose-wave .px-arms-wave-l-b,
+  .ping.is-walking .px-feet-b {
+    display: none;
   }
   .ping.is-sleep .ping-zzz {
     opacity: 1;
@@ -2084,8 +2015,11 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
   color: var(--color-accent);
 }
 
-/* Fixed decoration (Ping, the cursor ring) can sit a few pixels past the
-   edge; clip, unlike hidden, keeps sticky positioning working. */
+/* Fixed decoration (Ping, the cursor ring) and rows waiting to slide in can
+   sit a few pixels past the edge; clip, unlike hidden, keeps sticky
+   positioning working. On the root too: the body's clip alone still left the
+   page a few pixels of sideways scroll on a phone. */
+html,
 body {
   overflow-x: clip;
 }
@@ -2149,54 +2083,31 @@ html.name-fly main > .hero {
 /* ---------- docked speech ----------
  * On the route, ping.js moves the bubble out of Ping and docks it in the
  * bottom corner on his side of the screen (left/top set in px), with a
- * dotted wire from him to its near corner. It opens with a wipe from that
- * corner, as if the packet had just come down the wire. */
+ * dotted wire from him to its near corner. It opens in four frames from
+ * that corner, as if the packet had just come down the wire. */
 .ping-bubble.is-docked {
   position: fixed;
   z-index: 901;
   right: auto;
   bottom: auto;
-  max-width: min(300px, calc(100vw - 24px));
-  clip-path: inset(0 100% 100% 0);
-  transform: translateY(6px);
-  transition:
-    visibility 0s linear 300ms,
-    clip-path 300ms var(--ease-out-expo),
-    transform 300ms var(--ease-out-expo);
-}
-
-.ping-bubble.is-docked.is-on {
-  clip-path: inset(0 0 0 0);
-  transform: none;
-  transition-delay: 0s;
-  transition-duration: 0s, 560ms, 560ms;
-}
-
-/* The port sits on the corner the wire meets: top, or bottom when the
-   bubble is docked above him. */
-.ping-bubble.is-docked::after {
-  top: -5px;
-  bottom: auto;
-}
-
-.ping-bubble.is-docked.is-above::after {
-  top: auto;
-  bottom: -5px;
+  margin: 0;
+  max-width: min(300px, calc(100vw - 30px));
 }
 
 .ping-bubble.is-docked.is-flip {
-  border-left: 1px solid var(--color-border-strong);
-  border-right: 2px solid var(--color-accent);
   clip-path: inset(0 0 100% 100%);
 }
 
-.ping-bubble.is-docked.is-flip.is-on {
-  clip-path: inset(0 0 0 0);
+.ping-bubble.is-docked.is-above {
+  clip-path: inset(100% 100% 0 0);
 }
 
-.ping-bubble.is-docked.is-flip::after {
-  left: auto;
-  right: -5px;
+.ping-bubble.is-docked.is-above.is-flip {
+  clip-path: inset(100% 0 0 100%);
+}
+
+.ping-bubble.is-docked.is-on {
+  clip-path: inset(-12px -16px -16px -12px);
 }
 
 .ping-wire {
@@ -2219,21 +2130,21 @@ html.name-fly main > .hero {
 .ping-wire path {
   fill: none;
   stroke: var(--color-accent);
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-dasharray: 1 6;
+  stroke-width: 3;
+  stroke-linecap: butt;
+  stroke-dasharray: 3 6;
   animation: ping-wire-flow 0.9s linear infinite;
 }
 
 @keyframes ping-wire-flow {
   to {
-    stroke-dashoffset: -14;
+    stroke-dashoffset: -18;
   }
 }
 
 @media (max-width: 700px) {
   .ping-bubble.is-docked {
-    max-width: calc(100vw - 24px);
+    max-width: calc(100vw - 30px);
   }
 }
 

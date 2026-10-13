@@ -52,6 +52,7 @@ assets/
     cursor.js         Cursor ring that follows the real pointer
     route.js          The winding route: a timeline line through every heading
     ping.js           Ping, the packet creature that rides the route
+    ping-sprite.js    Ping's pixel-art sprite: character maps drawn as SVG rects
     story.js          Home page stacking, About word fill, portrait tilt
   vendor/three/       three.js r186, the one third-party library (see its README)
 CNAME, robots.txt, sitemap.xml, llms.txt, favicon.svg
@@ -152,15 +153,18 @@ hardcodes a colour or font.
   cards. Case studies weave between their sections. On phones the packet
   carries the current hop's name while the page moves.
 - **Ping:** the packet at the head of the route is a little creature (a
-  ping says hello; the answer is a pong). Drawn in SVG from the colour
-  tokens, he blinks, looks the way the page moves, hops at each heading,
-  dozes off when nothing happens, reacts to taps and theme
-  changes, carries the contact form's real request to the inbox, and grows
-  big at the end of the route to wave goodbye. On the home page he speaks
-  only at the projects and contact stops, and his bubble never covers
-  content: a line that would is held until the space clears. Pages without a route (404, résumé, projects) have him
-  standing by the heading. He is aria-hidden, and holds still under reduced
-  motion.
+  ping says hello; the answer is a pong), drawn as a pixel-art sprite
+  (`ping-sprite.js`, 19 x 22 on a hard grid) in three shades of the accent
+  with a navy outline and pink cheeks. Every state is a frame swapped in
+  steps, like a game sprite: blinking, glancing, talking, waving, cheering,
+  walking while the page scrolls, happy, asleep, dizzy, and carrying the
+  contact form's real request in an envelope. He grows big at the end of the
+  route to wave goodbye. On the home page he speaks only at the hello, the
+  projects and contact stops and the goodbye; each line is a retro RPG dialog
+  box docked in the bottom corner on his side, joined to him by a dotted
+  wire, so it never jumps around over the content. Pages without a route
+  (404, résumé, projects) have him standing by the heading. He is
+  aria-hidden, and holds still under reduced motion.
 - **Headings:** eyebrows decode out of random characters and heading words
   rise out of a mask as they are revealed.
 - **About:** the lede lights up word by word as it is read, and the portrait
