@@ -1479,7 +1479,7 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
  * accent, his eyes are always white with dark pupils. --s is his scale:
  * smaller on a phone, big for the goodbye. */
 .ping {
-  /* A pixel sprite needs size for its details (the eye glints, the cheeks)
+  /* A pixel sprite needs size for its details (the eye glints, the shading)
      to read, so he is drawn a little larger than the old vector Ping. */
   --s: 1.3;
   position: fixed;
