@@ -2105,7 +2105,10 @@ html.name-fly main > .hero {
   clip-path: inset(100% 0 0 100%);
 }
 
-.ping-bubble.is-docked.is-on {
+/* Shown, whatever corner it opens from (the above-and-flipped start state
+   outranks a plain .is-on, so it is named here too). */
+.ping-bubble.is-docked.is-on,
+.ping-bubble.is-docked.is-above.is-flip.is-on {
   clip-path: inset(-12px -16px -16px -12px);
 }
 
