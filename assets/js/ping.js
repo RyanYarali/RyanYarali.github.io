@@ -258,77 +258,87 @@
   }
   if (!route) window.addEventListener("resize", fitBubble, { passive: true });
 
-  // ==================== Staying out of the way ====================
-  // He rides a fixed line while the page scrolls under him, so his bubble
-  // can land on anything. It never covers content: a line that would is held
-  // back until the space under it clears, and a showing bubble that content
-  // scrolls into is put away.
+  // ==================== Where his words go ====================
+  // Riding the route he is always over the page, so a bubble beside him
+  // would sit on whatever scrolls past, and hiding it whenever something did
+  // left most lines unread. Instead each line docks in the bottom corner on
+  // his side of the screen, the least-read part of it, and a dotted wire runs
+  // from him to it: the line the packet travels down. It stays put while the
+  // page moves, long enough to read, on a phone as on a desktop.
 
-  var CONTENT = "a, button, input, textarea, select, label, img, picture, figure, h1, h2, h3, h4, p, li, .btn, .work-card, .hero-name";
   var current = "";
   var waiting = null;
+  var wire = null;
+  var NS = "http://www.w3.org/2000/svg";
 
-  function bubbleRect(text) {
-    var old = bubbleText.textContent;
-    var oldTyped = typed.textContent.length;
-    setLine(0, text);
-    // Measured at full size: with its transition running, the box would
-    // report the scaled-down pop-in state and look smaller than it is.
-    bubble.style.transition = "none";
-    bubble.style.transform = "none";
-    var r = bubble.getBoundingClientRect();
-    bubble.style.transform = "";
-    void bubble.offsetWidth;
-    bubble.style.transition = "";
-    setLine(oldTyped, old);
-    return r;
+  if (route) {
+    bubble.classList.add("is-docked");
+    bubble.setAttribute("aria-hidden", "true");
+    document.body.appendChild(bubble);
+    var wireSvg = document.createElementNS(NS, "svg");
+    wireSvg.setAttribute("class", "ping-wire");
+    wireSvg.setAttribute("aria-hidden", "true");
+    wire = document.createElementNS(NS, "path");
+    wireSvg.appendChild(wire);
+    document.body.appendChild(wireSvg);
   }
 
-  function blocked(text) {
-    if (!route) return false;
-    // On a phone in the hero he is hidden behind the main buttons.
-    if (el.classList.contains("is-passive")) return true;
-    var r = bubbleRect(text);
-    if (r.top < 0 || r.left < 0 || r.right > window.innerWidth || r.bottom > window.innerHeight) return true;
-    for (var i = 0; i < 3; i++) {
-      for (var j = 0; j < 3; j++) {
-        var px = r.left + 4 + ((r.width - 8) * i) / 2;
-        var py = r.top + 4 + ((r.height - 8) * j) / 2;
-        var hits = document.elementsFromPoint(px, py);
-        for (var k = 0; k < hits.length; k++) {
-          if (el.contains(hits[k])) continue;
-          if (hits[k].closest(CONTENT)) return true;
-          break;
-        }
-      }
+  function showBubble(on) {
+    bubble.classList.toggle("is-on", on);
+    if (wire) wire.parentNode.classList.toggle("is-on", on);
+    if (on) dock();
+  }
+
+  function dock() {
+    if (!route || !bubble.classList.contains("is-on")) return;
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+    var phone = vw <= 700;
+    var gap = phone ? 12 : 24;
+    var w = bubble.offsetWidth;
+    var h = bubble.offsetHeight;
+    var r = hit.getBoundingClientRect();
+    var cx = r.left + r.width / 2;
+    var side = cx < vw / 2 ? "L" : "R";
+    var left = side === "L" ? cx - 28 : cx + 28 - w;
+    left = clamp(left, gap, vw - w - gap);
+    // Clear of the back-to-top button, which holds the bottom-right corner
+    // (and, on a phone, sits where a full-width bubble would reach).
+    var bottom = gap + (side === "R" || phone ? 64 : 0);
+    var top = vh - bottom - h;
+    // When he is down in that corner himself (the goodbye), the line docks
+    // under the nav instead.
+    if (r.bottom > top - 12 && r.top < top + h + 12 && r.right > left - 12 && r.left < left + w + 12) {
+      var nav = document.querySelector(".navbar");
+      top = (nav ? nav.getBoundingClientRect().bottom : 64) + gap;
     }
-    return false;
+    bubble.style.left = left.toFixed(1) + "px";
+    bubble.style.top = top.toFixed(1) + "px";
+    bubble.classList.toggle("is-flip", side === "R");
+    bubble.classList.toggle("is-above", top < r.top);
+    // The wire leaves him on the side facing the bubble and meets its near
+    // corner, where the little square port sits.
+    var below = top > r.top;
+    var ax = cx;
+    var ay = below ? r.bottom - r.height * 0.12 : r.top + r.height * 0.1;
+    var bx = side === "L" ? left + 4 : left + w - 4;
+    var by = below ? top : top + h;
+    var mid = (ay + by) / 2;
+    wire.setAttribute("d", "M" + ax.toFixed(1) + " " + ay.toFixed(1) + " C" + ax.toFixed(1) + " " + mid.toFixed(1) + " " + bx.toFixed(1) + " " + mid.toFixed(1) + " " + bx.toFixed(1) + " " + by.toFixed(1));
   }
+  window.addEventListener("resize", dock, { passive: true });
 
-  function hush() {
-    clearTimeout(talkTimer);
-    clearInterval(typeTimer);
-    el.classList.remove("is-talking");
-    bubble.classList.remove("is-on", "is-typing");
-    prioNow = 0;
-    current = "";
-  }
-
-  var guardRaf = 0;
-  function guard() {
-    if (!route || guardRaf) return;
-    guardRaf = requestAnimationFrame(function () {
-      guardRaf = 0;
-      if (current && bubble.classList.contains("is-on") && blocked(current)) hush();
-      if (waiting && !bubble.classList.contains("is-on")) {
-        if (performance.now() > waiting.until) waiting = null;
-        else if (!blocked(waiting.text)) {
-          var w = waiting;
-          waiting = null;
-          say(w.text, w.opt);
-        }
-      }
-    });
+  // On a phone in the hero he waits off stage; a line worth saying is kept
+  // for when he steps on.
+  function retryWaiting() {
+    if (!waiting || bubble.classList.contains("is-on") || el.classList.contains("is-passive")) return;
+    if (performance.now() > waiting.until) {
+      waiting = null;
+      return;
+    }
+    var w = waiting;
+    waiting = null;
+    say(w.text, w.opt);
   }
 
   function say(text, opt) {
@@ -337,9 +347,8 @@
     var prio = opt.prio || 1;
     if (opt.once && said[opt.once]) return;
     if (opt.cool && cool[opt.cool] && performance.now() - cool[opt.cool] < (opt.coolMs || 15000)) return;
-    if (blocked(text)) {
-      // Worth waiting a few seconds of scrolling for; small talk is dropped.
-      if (opt.once || prio >= 2) waiting = { text: text, opt: opt, until: performance.now() + 8000 };
+    if (route && el.classList.contains("is-passive")) {
+      if (opt.once || prio >= 2) waiting = { text: text, opt: opt, until: performance.now() + 20000 };
       return;
     }
     if (waiting && waiting.text === text) waiting = null;
@@ -355,19 +364,22 @@
     clearTimeout(talkTimer);
     clearInterval(typeTimer);
     if (mood === "sleep") setMood("awake");
-    if (opt.pose) setPose(opt.pose, (opt.hold || 2200) + text.length * 30);
+    // Long enough to read: a beat to start, then about a word every 300ms.
+    var hold = (opt.hold || 3200) + text.length * 45;
+    if (opt.pose) setPose(opt.pose, hold);
 
     current = text;
     seq++;
     bubbleHead.textContent = "PING · seq " + (seq < 10 ? "0" : "") + seq;
-    bubble.classList.add("is-on");
     if (reduced) {
       setLine(text.length, text);
+      showBubble(true);
     } else {
       el.classList.add("is-talking");
       bubble.classList.add("is-typing");
       var i = 0;
       setLine(0, text);
+      showBubble(true);
       typeTimer = setInterval(function () {
         i++;
         setLine(i, text);
@@ -380,7 +392,7 @@
     }
     talkTimer = setTimeout(
       function () {
-        bubble.classList.remove("is-on");
+        showBubble(false);
         prioNow = 0;
         current = "";
         if (pending) {
@@ -391,7 +403,7 @@
           }, 260);
         }
       },
-      (opt.hold || 2200) + text.length * 30,
+      hold,
     );
   }
 
@@ -432,6 +444,7 @@
     // On a phone in the hero he stands at the edge of the main buttons; taps
     // there belong to the buttons, not to him.
     el.classList.toggle("is-passive", window.innerWidth <= 700 && window.scrollY < window.innerHeight * 0.8);
+    dock();
   }
 
   function follow() {
@@ -475,7 +488,7 @@
     if (mood === "awake" && !flying && !big && performance.now() - lastActive > 45000) {
       setMood("sleep");
       setPose("");
-      bubble.classList.remove("is-on");
+      showBubble(false);
     }
   }, 1000);
 
@@ -501,7 +514,7 @@
           look(0, 0);
         }, 140);
       }
-      guard();
+      retryWaiting();
     },
     { passive: true },
   );

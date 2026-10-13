@@ -157,12 +157,28 @@ html.intro-pending .intro {
   padding-bottom: 0.06em;
 }
 
+/* Frosted glass: the globe shows through it, blurred, so the footer reads
+   as a pane laid over the scene rather than text printed on top of it. */
 .hero-foot {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 1.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--color-border-strong);
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-surface) 52%, transparent);
+  border: 1px solid var(--color-border);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--color-text) 8%, transparent),
+    var(--shadow-lg);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(150%);
+}
+
+@media (min-width: 900px) {
+  .hero-foot {
+    padding: 1.6rem 1.6rem 1.6rem 2rem;
+  }
 }
 
 .hero-tagline {
@@ -247,15 +263,16 @@ html.hero-anim .hero-reveal {
   }
 }
 
-/* On a wide screen it is a planet rising from the bottom-right corner: only
-   its upper part shows, under the name and behind the footer row, so the
-   name stays clean against the page colour. */
+/* On a wide screen the whole globe sits on the right, behind the end of
+   the name and the glass footer, which blurs the part of it that passes
+   behind. */
 @media (min-width: 860px) {
   .hero-globe {
-    top: 52%;
-    right: max(-14vw, calc((100vw - 1180px) / 2 - 18vw));
-    width: min(66vw, 980px);
-    opacity: 0.9;
+    top: 50%;
+    right: max(-6vw, calc((100vw - 1180px) / 2 - 6vw));
+    width: min(50vw, 720px);
+    opacity: 0.8;
+    transform: translateY(-46%);
   }
 }
 
@@ -314,18 +331,14 @@ html.hero-anim .hero-reveal {
 
 /* Labels name the real nodes: the projects, and the tools they are built on.
    They are decoration (the same facts are in the page text), so the globe is
-   aria-hidden and the labels only appear where there is room for them. */
+   aria-hidden. With the name running the full width over the globe there is
+   no room left for them: they peeked out between the letters, so they stay
+   hidden and the nodes speak for themselves. */
 .globe-labels {
   position: absolute;
   inset: 0;
   pointer-events: none;
   display: none;
-}
-
-@media (min-width: 860px) {
-  .globe-labels {
-    display: block;
-  }
 }
 
 .globe-label {
@@ -2130,5 +2143,102 @@ html.name-fly main > .hero {
 
   html.work-pinned .work-title {
     font-size: clamp(2.25rem, 3.4vw, 3.25rem);
+  }
+}
+
+/* ---------- docked speech ----------
+ * On the route, ping.js moves the bubble out of Ping and docks it in the
+ * bottom corner on his side of the screen (left/top set in px), with a
+ * dotted wire from him to its near corner. It opens with a wipe from that
+ * corner, as if the packet had just come down the wire. */
+.ping-bubble.is-docked {
+  position: fixed;
+  z-index: 901;
+  right: auto;
+  bottom: auto;
+  max-width: min(300px, calc(100vw - 24px));
+  clip-path: inset(0 100% 100% 0);
+  transform: translateY(6px);
+  transition:
+    visibility 0s linear 300ms,
+    clip-path 300ms var(--ease-out-expo),
+    transform 300ms var(--ease-out-expo);
+}
+
+.ping-bubble.is-docked.is-on {
+  clip-path: inset(0 0 0 0);
+  transform: none;
+  transition-delay: 0s;
+  transition-duration: 0s, 560ms, 560ms;
+}
+
+/* The port sits on the corner the wire meets: top, or bottom when the
+   bubble is docked above him. */
+.ping-bubble.is-docked::after {
+  top: -5px;
+  bottom: auto;
+}
+
+.ping-bubble.is-docked.is-above::after {
+  top: auto;
+  bottom: -5px;
+}
+
+.ping-bubble.is-docked.is-flip {
+  border-left: 1px solid var(--color-border-strong);
+  border-right: 2px solid var(--color-accent);
+  clip-path: inset(0 0 100% 100%);
+}
+
+.ping-bubble.is-docked.is-flip.is-on {
+  clip-path: inset(0 0 0 0);
+}
+
+.ping-bubble.is-docked.is-flip::after {
+  left: auto;
+  right: -5px;
+}
+
+.ping-wire {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 900;
+  pointer-events: none;
+  overflow: visible;
+  opacity: 0;
+  transition: opacity 260ms var(--ease);
+}
+
+.ping-wire.is-on {
+  opacity: 1;
+}
+
+/* Dots flowing from him to the bubble: the packet on its way. */
+.ping-wire path {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 1 6;
+  animation: ping-wire-flow 0.9s linear infinite;
+}
+
+@keyframes ping-wire-flow {
+  to {
+    stroke-dashoffset: -14;
+  }
+}
+
+@media (max-width: 700px) {
+  .ping-bubble.is-docked {
+    max-width: calc(100vw - 24px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ping-wire path {
+    animation: none;
   }
 }
