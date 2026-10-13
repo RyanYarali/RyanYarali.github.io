@@ -1195,3 +1195,54 @@ html.js-ready .rise-ready.is-risen .ch {
     transition: none;
   }
 }
+
+/* ---------- direct email ----------
+ * The address set large under the contact heading, with a copy button that
+ * says "Copied" for a moment. */
+.contact-email {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1rem;
+  margin: 0;
+}
+
+.contact-email a {
+  font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+  overflow-wrap: anywhere;
+  transition: color var(--transition-fast);
+}
+
+.contact-email a:hover {
+  color: var(--color-accent);
+}
+
+.copy-email {
+  padding: 0.35rem 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition:
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.copy-email:hover,
+.copy-email:focus-visible,
+.copy-email.is-done {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
