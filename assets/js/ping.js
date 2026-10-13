@@ -5,12 +5,12 @@
  * machine says "hello, are you there?", and the answer is a pong, so Ping
  * says hello when you arrive and "Pong" when you reach the end.
  *
- * He is drawn in SVG from the palette tokens, so he recolours with the
- * palette and the theme. He blinks, looks the way the page is moving,
- * stretches with scroll speed, hops at each heading and points at what it
- * introduces, dozes off when nothing happens, carries the contact form's
- * message to the inbox, and at the end of the route grows big to wave
- * goodbye. On pages without a route he stands next to the heading.
+ * He is a pixel-art sprite (ping-sprite.js) coloured from the theme tokens.
+ * He blinks, glances the way the page is moving, walks while it scrolls,
+ * hops at each heading, dozes off when nothing happens, carries the contact
+ * form's message to the inbox, and at the end of the route grows big to wave
+ * goodbye. His lines dock in a corner as RPG dialog boxes, wired to him. On
+ * pages without a route he stands next to the heading.
  *
  * Everything he says repeats something already on the page, so he is
  * hidden from assistive technology. Under reduced motion he holds still and
@@ -93,33 +93,10 @@
 
   // ==================== Building him ====================
 
-  // A packet with a face: a rounded square in the accent, pill eyes, and
-  // signal arcs for an antenna that pulse while he talks. Flat colour, no
-  // shine, so he reads as part of the same bold, minimal system as the page.
-  var SVG =
-    '<svg viewBox="-10 -16 60 64" aria-hidden="true" focusable="false">' +
-    '<g class="ping-arm ping-arm-l"><line x1="8" y1="30" x2="8" y2="37"/><circle cx="8" cy="39.5" r="3.2"/></g>' +
-    '<g class="ping-arm ping-arm-r"><line x1="32" y1="30" x2="32" y2="37"/><circle cx="32" cy="39.5" r="3.2"/></g>' +
-    '<g class="ping-antenna">' +
-    '<circle class="ping-signal-dot" cx="20" cy="7" r="2.2"/>' +
-    '<path class="ping-signal ping-signal-1" d="M15.2 3.4 Q20 -0.8 24.8 3.4"/>' +
-    '<path class="ping-signal ping-signal-2" d="M11.6 -0.4 Q20 -7.2 28.4 -0.4"/>' +
-    "</g>" +
-    '<rect class="ping-skin" x="5" y="12" width="30" height="30" rx="10.5"/>' +
-    '<g class="ping-eyes">' +
-    '<rect class="ping-eye" x="11.4" y="20" width="6.2" height="10.4" rx="3.1"/>' +
-    '<rect class="ping-eye" x="22.4" y="20" width="6.2" height="10.4" rx="3.1"/>' +
-    '<g class="ping-pupils"><circle cx="14.5" cy="26.4" r="2.1"/><circle cx="25.5" cy="26.4" r="2.1"/></g>' +
-    "</g>" +
-    '<g class="ping-face ping-face-happy"><path d="M11.4 26.5 Q14.5 22 17.6 26.5"/><path d="M22.4 26.5 Q25.5 22 28.6 26.5"/></g>' +
-    '<g class="ping-face ping-face-sleep"><path d="M11.4 25.5 H17.6"/><path d="M22.4 25.5 H28.6"/></g>' +
-    '<g class="ping-face ping-face-dizzy"><g><path d="M14.5 25.5 m-3 0 a3 3 0 1 0 6 0 a1.8 1.8 0 1 0 -3.6 0"/></g>' +
-    '<g><path d="M25.5 25.5 m-3 0 a3 3 0 1 0 6 0 a1.8 1.8 0 1 0 -3.6 0"/></g></g>' +
-    '<path class="ping-mouth ping-mouth-smile" d="M17.8 34.4 Q20 36.2 22.2 34.4"/>' +
-    '<path class="ping-mouth ping-mouth-sad" d="M17.8 35.6 Q20 33.8 22.2 35.6"/>' +
-    '<rect class="ping-mouth-open" x="18" y="33.4" width="4" height="3.2" rx="1.4"/>' +
-    '<g class="ping-envelope" transform="translate(9 -14)"><rect x="0" y="0" width="22" height="15" rx="2"/><path d="M1 1.5 L11 9 L21 1.5"/></g>' +
-    "</svg>";
+  // He is a pixel-art sprite (ping-sprite.js draws him on a hard grid from
+  // character maps); every state below is a class on .ping that the
+  // stylesheet turns into the matching frame.
+  var SVG = '<svg class="ping-svg" aria-hidden="true" focusable="false"></svg>';
 
   var el = document.createElement("div");
   el.className = "ping";
@@ -128,7 +105,7 @@
     // Each line arrives as a packet: a header with its sequence number, then
     // the payload typing out. The full line is laid out from the start (the
     // untyped rest is transparent), so the bubble never grows while typing.
-    '<div class="ping-bubble"><span class="ping-bubble-head"></span>' +
+    '<div class="ping-bubble"><span class="ping-bubble-head"><span>PING</span><span class="ping-seq"></span></span>' +
     '<span class="ping-bubble-text"><span class="ping-typed"></span><span class="ping-rest"></span></span></div>' +
     '<span class="ping-zzz">z</span>' +
     '<div class="ping-hit" data-cursor="link"><div class="ping-scale"><div class="ping-float"><div class="ping-squash">' +
@@ -136,7 +113,7 @@
     "</div></div></div></div>";
 
   var bubble = el.querySelector(".ping-bubble");
-  var bubbleHead = el.querySelector(".ping-bubble-head");
+  var bubbleSeq = el.querySelector(".ping-seq");
   var bubbleText = el.querySelector(".ping-bubble-text");
   var typed = el.querySelector(".ping-typed");
   var rest = el.querySelector(".ping-rest");
@@ -146,9 +123,8 @@
     typed.textContent = all.slice(0, shown);
     rest.textContent = all.slice(shown);
   }
-  var squash = el.querySelector(".ping-squash");
-  var pupils = el.querySelector(".ping-pupils");
-  var eyes = el.querySelector(".ping-eyes");
+  var sprite = window.PingSprite ? window.PingSprite.build(el.querySelector(".ping-svg")) : null;
+  var eyes = sprite ? sprite.eyes : null;
   var hit = el.querySelector(".ping-hit");
 
   if (route) {
@@ -210,16 +186,18 @@
   // Blinking on his own schedule.
   (function blink() {
     if (!reduced && mood === "awake" && !document.hidden) {
-      eyes.classList.add("is-blink");
+      el.classList.add("is-blink");
       setTimeout(function () {
-        eyes.classList.remove("is-blink");
-      }, 110);
+        el.classList.remove("is-blink");
+      }, 130);
     }
     setTimeout(blink, 2200 + Math.random() * 3200);
   })();
 
+  // His eyes glance one whole sprite pixel at most, so they stay on the grid.
   function look(x, y) {
-    pupils.style.transform = "translate(" + clamp(x, -1.6, 1.6).toFixed(2) + "px," + clamp(y, -1.6, 1.6).toFixed(2) + "px)";
+    if (!eyes) return;
+    eyes.style.transform = "translate(" + Math.round(clamp(x / 1.6, -1, 1)) + "px," + Math.round(clamp(y / 1.6, -1, 1)) + "px)";
   }
 
   // Which way to point at something on the page.
@@ -370,7 +348,7 @@
 
     current = text;
     seq++;
-    bubbleHead.textContent = "PING · seq " + (seq < 10 ? "0" : "") + seq;
+    bubbleSeq.textContent = "SEQ " + (seq < 10 ? "0" : "") + seq;
     if (reduced) {
       setLine(text.length, text);
       showBubble(true);
@@ -419,7 +397,8 @@
 
   function target() {
     // On a phone the route hugs the screen edge; he stays wholly on screen.
-    var half = hit.offsetWidth * 0.5 * (window.innerWidth <= 700 ? 0.72 : 1) + 4;
+    var scale = parseFloat(getComputedStyle(el).getPropertyValue("--s")) || 1;
+    var half = hit.offsetWidth * 0.5 * scale + 4;
     if (!big) return { x: clamp(head.x, half, window.innerWidth - half), y: head.y };
     // Grown for the goodbye he steps in from the edge, so all of him is on
     // screen, and stands a little above the end of the route.
@@ -432,7 +411,7 @@
     var btn = document.querySelector('#contact-form button[type="submit"]');
     if (btn) {
       var b = btn.getBoundingClientRect();
-      var reach = hit.offsetHeight * 0.6 * (phone ? 1.9 : 2.3);
+      var reach = hit.offsetHeight * 0.6 * (phone ? 1.9 : 2.6);
       if (b.bottom > sy - reach && b.top < sy + reach) sy = b.bottom + reach + 6;
     }
     return { x: clamp(sx, margin, window.innerWidth - margin), y: sy };
@@ -501,18 +480,17 @@
       var dy = window.scrollY - lastScroll;
       lastScroll = window.scrollY;
       wake();
+      // A pixel sprite can't stretch without breaking its grid, so instead
+      // of squashing he walks: his feet step while the page moves, and he
+      // looks the way it is going.
       if (!reduced && !big) {
-        var s = clamp(Math.abs(dy) / 60, 0, 1);
-        squash.style.transform = "scale(" + (1 - s * 0.18).toFixed(3) + "," + (1 + s * 0.32).toFixed(3) + ")";
+        el.classList.add("is-walking");
         look(0, dy > 0 ? 1.5 : -1.5);
         clearTimeout(settleTimer);
         settleTimer = setTimeout(function () {
-          squash.style.transform = "scale(1.12,0.88)";
-          setTimeout(function () {
-            squash.style.transform = "";
-          }, 140);
+          el.classList.remove("is-walking");
           look(0, 0);
-        }, 140);
+        }, 160);
       }
       retryWaiting();
     },
