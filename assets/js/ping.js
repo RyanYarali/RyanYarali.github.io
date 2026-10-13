@@ -264,19 +264,34 @@
     var h = bubble.offsetHeight;
     var r = hit.getBoundingClientRect();
     var cx = r.left + r.width / 2;
-    var side = cx < vw / 2 ? "L" : "R";
-    var left = side === "L" ? cx - 28 : cx + 28 - w;
-    left = clamp(left, gap, vw - w - gap);
-    // Clear of the back-to-top button, which holds the bottom-right corner
-    // (and, on a phone, sits where a full-width bubble would reach).
-    var bottom = gap + (side === "R" || phone ? 64 : 0);
-    var top = vh - bottom - h;
-    // When he is down in that corner himself (the goodbye), the line docks
-    // under the nav instead.
-    if (r.bottom > top - 12 && r.top < top + h + 12 && r.right > left - 12 && r.left < left + w + 12) {
-      var nav = document.querySelector(".navbar");
-      top = (nav ? nav.getBoundingClientRect().bottom : 64) + gap;
+    var nav = document.querySelector(".navbar");
+    var navBottom = (nav ? nav.getBoundingClientRect().bottom : 64) + gap;
+    var mine = cx < vw / 2 ? "L" : "R";
+    var other = mine === "L" ? "R" : "L";
+
+    // Where a bubble on a given side and edge would sit.
+    function spot(side, atTop) {
+      var l = side === "L" ? cx - 28 : cx + 28 - w;
+      // Across the screen from him, it keeps to its own corner.
+      if (side !== mine) l = side === "L" ? gap : vw - w - gap;
+      l = clamp(l, gap, vw - w - gap);
+      // Clear of the back-to-top button, which holds the bottom-right corner
+      // (and, on a phone, sits where a full-width bubble would reach).
+      var bottom = gap + (side === "R" || phone ? 64 : 0);
+      return { side: side, left: l, top: atTop ? navBottom : vh - bottom - h };
     }
+    function clear(sp) {
+      return !(r.bottom > sp.top - 12 && r.top < sp.top + h + 12 && r.right > sp.left - 12 && r.left < sp.left + w + 12);
+    }
+    // His own bottom corner first; when he is down there himself (riding
+    // under the gallery, or the goodbye), the other bottom corner; then the
+    // top, under the nav.
+    var pick = spot(mine, false);
+    if (!clear(pick)) pick = spot(other, false);
+    if (!clear(pick)) pick = spot(mine, true);
+    var side = pick.side;
+    var left = pick.left;
+    var top = pick.top;
     bubble.style.left = left.toFixed(1) + "px";
     bubble.style.top = top.toFixed(1) + "px";
     bubble.classList.toggle("is-flip", side === "R");
@@ -286,7 +301,7 @@
     var below = top > r.top;
     var ax = cx;
     var ay = below ? r.bottom - r.height * 0.12 : r.top + r.height * 0.1;
-    var bx = side === "L" ? left + 4 : left + w - 4;
+    var bx = cx < left + w / 2 ? left + 4 : left + w - 4;
     var by = below ? top : top + h;
     var mid = (ay + by) / 2;
     wire.setAttribute("d", "M" + ax.toFixed(1) + " " + ay.toFixed(1) + " C" + ax.toFixed(1) + " " + mid.toFixed(1) + " " + bx.toFixed(1) + " " + mid.toFixed(1) + " " + bx.toFixed(1) + " " + by.toFixed(1));
