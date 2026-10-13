@@ -510,8 +510,74 @@
 
   // The gallery sets the projects section's height, so it measures before
   // the stacking reads that height.
+  // ==================== Name into the nav ====================
+  // As the About section slides over the hero, the big name shrinks and
+  // flies up into the nav, landing where the logo is; the two cross-fade at
+  // the end, so the logo is the name, parked. Scrolling back up plays it in
+  // reverse. Only with the stacking on: the hero then holds still while it
+  // is covered, so the flight is plain arithmetic on scroll position.
+
+  function initNameFly() {
+    var hero = document.getElementById("hero");
+    var name = hero && hero.querySelector(".hero-name");
+    var title = name && name.querySelector(".hero-title");
+    var logo = document.querySelector(".navbar .logo");
+    var logoName = logo && logo.querySelector(".logo-name");
+    // The meta line above the name: the name flies up through it, so it
+    // clears out of the way first.
+    var meta = hero && hero.querySelector(".hero-top");
+    if (!html.classList.contains("is-stacked") || !title || !logoName) return;
+
+    html.classList.add("name-fly");
+    var m = null;
+
+    function textWidth(el) {
+      var r = document.createRange();
+      r.selectNodeContents(el);
+      return r.getBoundingClientRect().width;
+    }
+
+    measurers.push(function () {
+      name.style.transform = "none";
+      var box = name.getBoundingClientRect();
+      var target = logoName.getBoundingClientRect();
+      var s = target.width / Math.max(1, textWidth(title));
+      m = {
+        x0: box.left,
+        // Where the name sits inside the hero, and where the hero holds.
+        offset: offsetWithin(name, hero),
+        heroTop: layout.top(hero),
+        stick: parseFloat(hero.style.getPropertyValue("--stick-top")) || 0,
+        h: box.height,
+        s: s,
+        x1: target.left,
+        // Centre on the logo line; the name's box is taller than its glyphs.
+        y1: target.top + target.height / 2 - (box.height * s) / 2,
+        dist: vh * 0.8,
+      };
+    });
+
+    updaters.push(function (y) {
+      if (!m) return;
+      var c = clamp(y / m.dist, 0, 1);
+      // Where the name would be with no flight: in the hero, which scrolls
+      // until it holds at its stick point.
+      var baseY = Math.max(m.heroTop - y, m.stick) + m.offset;
+      var x = (m.x1 - m.x0) * c;
+      var ty = m.y1 + (baseY - m.y1) * (1 - c) - baseY;
+      var s = 1 + (m.s - 1) * c;
+      name.style.transform = "translate3d(" + x.toFixed(1) + "px," + ty.toFixed(1) + "px,0) scale(" + s.toFixed(4) + ")";
+      var fade = clamp((c - 0.82) / 0.18, 0, 1);
+      name.style.opacity = String(1 - fade);
+      name.style.visibility = fade >= 1 ? "hidden" : "";
+      logo.style.opacity = String(fade);
+      if (meta) meta.style.opacity = String(1 - clamp(c / 0.3, 0, 1));
+    });
+  }
+
   initGallery();
   initStack();
+  initNameFly();
   initLede();
   initTilt();
   initMarquee();
