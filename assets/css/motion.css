@@ -794,6 +794,14 @@ html.work-pinned .work-progress {
     view-transition-name: cover-taskmate;
   }
 
+  [data-vt="foodroutes"] {
+    view-transition-name: cover-foodroutes;
+  }
+
+  [data-vt="hackertycoon"] {
+    view-transition-name: cover-hackertycoon;
+  }
+
   ::view-transition-group(*) {
     animation-duration: 700ms;
     animation-timing-function: var(--ease-out-expo);

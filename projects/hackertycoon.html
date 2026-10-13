@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("portfolio-theme-override");
+          var theme =
+            stored ||
+            (window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light");
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      })();
+    </script>
+    <link rel="canonical" href="https://ryanyarali.com/projects/hackertycoon.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A JavaFX idle tycoon game built by two at BCIT: hacking jobs, random events, an FBI raid meter, badges, and the save and sound systems I built." />
+    <meta name="author" content="Ryan Yarali" />
+
+    <!-- Open Graph / social link previews -->
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Ryan Yarali" />
+    <meta property="og:locale" content="en_CA" />
+    <meta property="og:url" content="https://ryanyarali.com/projects/hackertycoon.html" />
+    <meta property="og:title" content="Hacker Tycoon: JavaFX Idle Game | Ryan Yarali" />
+    <meta property="og:description" content="A JavaFX idle tycoon game built by two at BCIT: hacking jobs, random events, an FBI raid meter, badges, and the save and sound systems I built." />
+    <meta property="og:image" content="https://ryanyarali.com/assets/og-card-ping.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Ryan Yarali, full-stack developer at BCIT, open to co-op and internships, beside Ping, a small blue packet character saying: Ping! Come see what Ryan has built." />
+    <meta property="article:published_time" content="2026-10-12T12:00:00-07:00" />
+    <meta property="article:modified_time" content="2026-10-12T12:00:00-07:00" />
+    <meta property="article:author" content="https://ryanyarali.com/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Hacker Tycoon: JavaFX Idle Game | Ryan Yarali" />
+    <meta name="twitter:description" content="A JavaFX idle tycoon game built by two at BCIT: hacking jobs, random events, an FBI raid meter, badges, and the save and sound systems I built." />
+    <meta name="twitter:image" content="https://ryanyarali.com/assets/og-card-ping.jpg" />
+    <meta name="twitter:image:alt" content="Ryan Yarali, full-stack developer at BCIT, open to co-op and internships, beside Ping, a small blue packet character saying: Ping! Come see what Ryan has built." />
+
+    <title>Hacker Tycoon: JavaFX Idle Game | Ryan Yarali</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../assets/css/tokens.css?v=20261012" />
+    <link rel="stylesheet" href="../assets/css/reset.css?v=20261012" />
+    <link rel="stylesheet" href="../assets/css/typography.css?v=20261012" />
+    <link rel="stylesheet" href="../assets/css/layout.css?v=20261012" />
+    <link rel="stylesheet" href="../assets/css/components.css?v=20261012" />
+    <link rel="stylesheet" href="../assets/css/pages.css?v=20261012" />
+    <link rel="stylesheet" href="../assets/css/interactive.css?v=20261012" />
+    <link rel="stylesheet" href="../assets/css/motion.css?v=20261012" />
+    <link rel="stylesheet" href="../assets/css/style.css?v=20261012" />
+
+    <!-- Palette tokens are written before first paint -->
+    <script src="../assets/js/palette.js?v=20261012"></script>
+
+    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=4" />
+    <!-- Structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://ryanyarali.com/#ryan",
+            "name": "Ryan Yarali",
+            "url": "https://ryanyarali.com/",
+            "jobTitle": "Full-stack developer",
+            "alumniOf": {
+              "@id": "https://ryanyarali.com/#bcit"
+            },
+            "sameAs": [
+              "https://github.com/RyanYarali",
+              "https://www.linkedin.com/in/ryan-yarali/"
+            ]
+          },
+          {
+            "@type": "CollegeOrUniversity",
+            "@id": "https://ryanyarali.com/#bcit",
+            "name": "British Columbia Institute of Technology",
+            "alternateName": "BCIT",
+            "url": "https://www.bcit.ca/",
+            "sameAs": "https://en.wikipedia.org/wiki/British_Columbia_Institute_of_Technology"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://ryanyarali.com/#site",
+            "url": "https://ryanyarali.com/",
+            "name": "Ryan Yarali",
+            "alternateName": "ryanyarali.com",
+            "description": "Portfolio of Ryan Yarali, full-stack developer and BCIT Computer Systems Technology student in Coquitlam, BC.",
+            "inLanguage": "en",
+            "author": {
+              "@id": "https://ryanyarali.com/#ryan"
+            },
+            "publisher": {
+              "@id": "https://ryanyarali.com/#ryan"
+            }
+          },
+          {
+            "@type": "VideoGame",
+            "@id": "https://ryanyarali.com/projects/hackertycoon.html#project",
+            "name": "Hacker Tycoon",
+            "url": "https://ryanyarali.com/projects/hackertycoon.html",
+            "description": "JavaFX idle tycoon game built by a team of two in BCIT COMP 2522: take hacking jobs, earn crypto, and keep suspicion below 100% or lose half of it in an FBI raid. Ryan Yarali wrote about 80% of the game code.",
+            "image": "https://ryanyarali.com/assets/ht-cover.jpg",
+            "contributor": {
+              "@id": "https://ryanyarali.com/#ryan"
+            },
+            "dateCreated": "2026",
+            "gamePlatform": "Desktop (Java)",
+            "keywords": "Java 25, JavaFX, Gradle, CheckStyle, object-oriented design",
+            "subjectOf": {
+              "@id": "https://ryanyarali.com/projects/hackertycoon.html#article"
+            }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://ryanyarali.com/projects/hackertycoon.html#page",
+            "url": "https://ryanyarali.com/projects/hackertycoon.html",
+            "name": "Hacker Tycoon: JavaFX Idle Game | Ryan Yarali",
+            "inLanguage": "en",
+            "isPartOf": {
+              "@id": "https://ryanyarali.com/#site"
+            },
+            "breadcrumb": {
+              "@id": "https://ryanyarali.com/projects/hackertycoon.html#breadcrumb"
+            },
+            "primaryImageOfPage": {
+              "@type": "ImageObject",
+              "url": "https://ryanyarali.com/assets/ht-cover.jpg"
+            }
+          },
+          {
+            "@type": "Article",
+            "@id": "https://ryanyarali.com/projects/hackertycoon.html#article",
+            "headline": "Hacker Tycoon: a JavaFX idle tycoon game",
+            "url": "https://ryanyarali.com/projects/hackertycoon.html",
+            "description": "Case study: Hacker Tycoon, a BCIT COMP 2522 JavaFX game. Ryan Yarali wrote about 80% of the game code, including the game loop, save and load, sound, events and badges.",
+            "image": "https://ryanyarali.com/assets/ht-cover.jpg",
+            "inLanguage": "en",
+            "datePublished": "2026-10-12T12:00:00-07:00",
+            "dateModified": "2026-10-12T12:00:00-07:00",
+            "author": {
+              "@id": "https://ryanyarali.com/#ryan"
+            },
+            "publisher": {
+              "@id": "https://ryanyarali.com/#ryan"
+            },
+            "isPartOf": {
+              "@id": "https://ryanyarali.com/#site"
+            },
+            "mainEntityOfPage": {
+              "@id": "https://ryanyarali.com/projects/hackertycoon.html#page"
+            },
+            "about": {
+              "@id": "https://ryanyarali.com/projects/hackertycoon.html#project"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://ryanyarali.com/projects/hackertycoon.html#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://ryanyarali.com/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Projects",
+                "item": "https://ryanyarali.com/projects.html"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Hacker Tycoon",
+                "item": "https://ryanyarali.com/projects/hackertycoon.html"
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="project-detail-page hackertycoon-page">
+    <canvas id="site-trace" aria-hidden="true"></canvas>
+    <a href="#main" class="skip-link">Skip to content</a>
+
+        <nav class="navbar">
+      <div class="nav-container">
+        <a href="../index.html" class="logo" aria-label="Ryan Yarali, Computer Systems Technology, home">
+          <span class="logo-name">Ryan Yarali</span>
+          <span class="logo-subtitle">Computer Systems Technology</span>
+        </a>
+
+        <ul class="nav-links" id="nav-links">
+          <li><a href="../index.html" class="nav-link">Home</a></li>
+          <li><a href="../index.html#about" class="nav-link">About</a></li>
+          <li><a href="../projects.html" class="nav-link" aria-current="page">Projects</a></li>
+          <li><a href="../index.html#skills" class="nav-link">Skills</a></li>
+          <li><a href="../index.html#learning" class="nav-link">Learning</a></li>
+          <li><a href="../index.html#contact" class="nav-link">Contact</a></li>
+        </ul>
+
+        <!-- The theme switch lives in the palette dock, next to the colours. -->
+        <div class="nav-actions">
+          <!-- Points at resume.html until the PDF exists; then swap the href for the PDF and add a download attribute. -->
+          <a href="../resume.html" class="nav-resume" data-magnetic>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"></path><polyline points="7 10 12 15 17 10"></polyline><path d="M5 21h14"></path></svg>
+            Résumé
+          </a>
+          <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <main id="main">
+      <div class="project-hero">
+        <div class="container">
+          <a href="../projects.html" class="back-link">&larr; Projects</a>
+          <h1>Hacker Tycoon</h1>
+          <p>A JavaFX idle tycoon game, built with one teammate at BCIT</p>
+          <figure class="case-cover" data-vt="hackertycoon">
+            <img
+              src="../assets/ht-cover.jpg"
+              alt="Hacker Tycoon game window over a falling green code background: a job board with progress bars, two upgrade shops, settings and badges, a suspicion meter at 72%, and job, upgrade and event logs"
+              width="1300"
+              height="720"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </figure>
+        </div>
+      </div>
+
+      <section class="section">
+        <div class="container">
+          <div class="project-content">
+            <div class="project-section reveal">
+              <h2>Overview</h2>
+              <p>
+                Hacker Tycoon is a tongue-in-cheek idle game. You take hacking
+                jobs, from mining crypto up to a pump-and-dump scam, and spend
+                what you earn on upgrades. The catch is the suspicion meter:
+                it climbs while you play, and when it hits 100% the FBI raids
+                you and takes half your crypto.
+              </p>
+              <p>
+                It was our term project for BCIT's COMP 2522 (object-oriented
+                programming), built by two people from January to April 2026
+                in Java 25 and JavaFX. The code stays private under course
+                rules, so this page walks through it instead.
+              </p>
+            </div>
+
+            <div class="project-section reveal">
+              <h2>My role</h2>
+              <p>
+                I wrote about 80% of the game's code. My teammate set up the
+                project and its first classes; I built the game on top of
+                them.
+              </p>
+              <ul>
+                <li>
+                  <strong>The game itself:</strong> the main game screen, the
+                  game loop, and the job, upgrade, and settings panels
+                </li>
+                <li>
+                  <strong>Systems:</strong> save and load, the sound system,
+                  most of the random events, and the badge system
+                </li>
+                <li>
+                  <strong>Feedback:</strong> three colour-coded logs and the
+                  live suspicion meter
+                </li>
+                <li>
+                  <strong>Code quality:</strong> Javadoc throughout, and the
+                  CheckStyle configuration and cleanup
+                </li>
+              </ul>
+              <p>
+                My teammate built the starting class structure (player, jobs,
+                upgrades, events), added the security jobs and the first sound
+                effects, set up Gradle, and wrote the unit tests.
+              </p>
+            </div>
+
+            <div class="project-section reveal">
+              <h2>The game</h2>
+              <div class="shots">
+                <figure class="reveal shot shot-wide">
+                  <img
+                    src="../assets/ht-shop.jpg"
+                    alt="Job board with six hacking jobs and green progress bars beside the upgrade shop and security upgrades, some owned and some with prices"
+                    loading="lazy"
+                  width="1060" height="445" />
+                  <figcaption>
+                    Six jobs run on their own timers, so several can be in
+                    progress at once. Upgrades lock to "owned" once bought.
+                  </figcaption>
+                </figure>
+                <figure class="reveal shot shot-wide">
+                  <img
+                    src="../assets/ht-raid.jpg"
+                    alt="Suspicion meter back at 2% after a raid, with the event log ending in a red line: ALERT: FBI RAID! Liquidating assets"
+                    loading="lazy"
+                  width="1300" height="165" />
+                  <figcaption>
+                    The moment after a raid: suspicion resets, and the event
+                    log reports the loss in red.
+                  </figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="project-section reveal">
+              <h2>How it plays</h2>
+              <ul>
+                <li>
+                  Six jobs, from "Mine Crypto" (+$50) to "Crypto Scam: Pump
+                  and Dump" (+$3,000), each with its own progress bar and
+                  duration
+                </li>
+                <li>
+                  A game loop every two seconds: suspicion rises by half a
+                  percent, and there's an 8% chance of one of ten random
+                  events, from "Mom unplugged the router!" to finding Bitcoin
+                  in an old wallet
+                </li>
+                <li>
+                  At 100% suspicion the FBI raids: half your crypto is gone
+                  and the meter resets
+                </li>
+                <li>
+                  A regular upgrade shop and a security shop, thirteen
+                  upgrades in all, up to a $99,999 "ULTIMATE RGB GAMING PC"
+                </li>
+                <li>
+                  Eight badges, such as Millionaire, FBI Survivor (three
+                  raids), and Upgrade Addict (fifteen upgrades)
+                </li>
+                <li>
+                  Game speed at 1&times;, 2&times;, or 5&times;; save and
+                  load; sound with a mute switch
+                </li>
+              </ul>
+            </div>
+
+            <div class="project-section reveal">
+              <h2>What I built</h2>
+
+              <h3>Timers, not threads</h3>
+              <p>
+                Every moving part runs on JavaFX Timelines on the UI thread:
+                the game loop, each job's progress bar, and the delayed start.
+                Game speed is a single multiplier: it sets the game loop's
+                rate, and every job started afterwards runs at the same rate,
+                so 5&times; speed needed no changes to the timing logic.
+              </p>
+
+              <h3>Save and load</h3>
+              <p>
+                The save system writes the player's name, crypto, and
+                suspicion to a properties file and reads them back on launch.
+                An early version asked for a hacker name every time the game
+                started; I changed it to ask only on the very first launch.
+              </p>
+
+              <h3>One sound system</h3>
+              <p>
+                Sound began as playback code scattered through the game. I
+                pulled it into a single SoundManager class: one place for
+                click, success, loss, warning, badge, and raid effects, looping
+                background music at a lower volume, and the mute switch.
+              </p>
+
+              <h3>Logs you can read</h3>
+              <p>
+                One console became three: jobs, upgrades, and events, each
+                line coloured by type through a MessageType enum (info,
+                success, upgrade, warning, error). In long sessions the logs
+                kept growing until the interface froze, so they now clear
+                themselves every 20 seconds.
+              </p>
+
+              <h3>Badges</h3>
+              <p>
+                The badge system tracks lifetime earnings, jobs completed,
+                upgrades bought, raids survived, and peak suspicion, and
+                unlocks a badge the moment its condition is met, with its own
+                sound and a line in the event log.
+              </p>
+            </div>
+
+            <div class="project-section reveal">
+              <h2>Tech stack</h2>
+              <div class="tech-list">
+                <span class="tech-item">Java 25</span>
+                <span class="tech-item">JavaFX</span>
+                <span class="tech-item">Gradle</span>
+                <span class="tech-item">JUnit</span>
+                <span class="tech-item">CheckStyle</span>
+                <span class="tech-item">PMD</span>
+                <span class="tech-item">SpotBugs</span>
+                <span class="tech-item">JaCoCo</span>
+              </div>
+            </div>
+
+            <div class="project-section reveal">
+              <h2>What I'd do next</h2>
+              <ul>
+                <li>
+                  Upgrades raise a "hacking power" stat that nothing reads
+                  yet. Next step: feed it into job payouts, so upgrades pay
+                  for themselves
+                </li>
+                <li>
+                  Let security upgrades slow the suspicion meter, which would
+                  give the second shop a real job
+                </li>
+                <li>
+                  After loading a save, the suspicion bar is right but its
+                  percentage label reads 0% until the next tick; it should
+                  update on load
+                </li>
+              </ul>
+            </div>
+
+            <div class="project-footer">
+              <a href="../projects.html" class="btn btn-secondary"
+                >&larr; All projects</a
+              >
+              <a href="../index.html#contact" class="btn btn-primary"
+                >Get in touch</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <div>
+          <p>&copy; 2026 <a href="../index.html">Ryan Yarali</a>. All rights reserved.</p>
+          <p class="footer-tech">Built with HTML, CSS, and JavaScript. No framework. <a href="this-site.html">How it's built</a></p>
+        </div>
+        <div class="footer-social">
+          <a href="https://github.com/RyanYarali" target="_blank" rel="me noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.93.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.87-1.36-3.87-1.36-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.42-2.69 5.4-5.25 5.68.41.36.78 1.06.78 2.14 0 1.54-.01 2.79-.01 3.17 0 .3.2.66.79.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+            GitHub
+          </a>
+          <a href="https://www.linkedin.com/in/ryan-yarali/" target="_blank" rel="me noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.55V9h3.57v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>
+            LinkedIn
+          </a>
+        </div>
+      </div>
+    </footer>
+    <script src="../assets/js/theme.js?v=20261012"></script>
+    <script src="../assets/js/main.js?v=20261012"></script>
+    <script src="../assets/js/interactive.js?v=20261012"></script>
+    <script src="../assets/js/cursor.js?v=20261012"></script>
+    <script src="../assets/js/route.js?v=20261012"></script>
+    <script src="../assets/js/ping.js?v=20261012"></script>
+  </body>
+</html>
