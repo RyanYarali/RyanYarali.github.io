@@ -1217,24 +1217,27 @@ html.js-ready .screenshots-grid .reveal.in-view img {
   z-index: 1;
 }
 
+/* The road ahead: square dots in pixel steps, like Ping's wire. Static, so
+   it costs nothing while the page moves. */
 .route-ghost {
   fill: none;
   stroke: var(--color-border-strong);
-  stroke-width: 1.5;
-  stroke-dasharray: 2 7;
-  stroke-linecap: round;
+  stroke-width: 2;
+  stroke-dasharray: 2 8;
+  stroke-linecap: butt;
 }
 
 .route-line {
   fill: none;
   stroke: var(--color-accent);
-  /* A little thicker while the page moves fast (route.js sets the speed). */
-  stroke-width: calc(2.25px + var(--route-speed, 0) * 1.25px);
+  stroke-width: 2.5px;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
-/* The comet trail behind the head: only on the stretch being ridden. */
+/* The comet behind the head: three strokes on the stretch being ridden,
+   each shorter, narrower and brighter, so the light fades out in steps.
+   route.js sizes them; only the active segment shows them. */
 .route-trail {
   fill: none;
   stroke: var(--color-accent);
@@ -1243,28 +1246,22 @@ html.js-ready .screenshots-grid .reveal.in-view img {
   transition: opacity 300ms var(--ease);
 }
 
-.route-svg.has-trail .route-trail-wide {
-  stroke-width: 9;
-  opacity: calc(0.1 + var(--route-speed, 0) * 0.12);
+.route-svg.has-trail .route-trail-1 {
+  stroke-width: 12;
+  opacity: 0.08;
 }
 
-.route-svg.has-trail .route-trail-core {
-  stroke-width: 4.5;
-  opacity: calc(0.22 + var(--route-speed, 0) * 0.18);
+.route-svg.has-trail .route-trail-2 {
+  stroke-width: 6.5;
+  opacity: 0.18;
 }
 
-/* The dotted road ahead flows down the page while it moves. */
-html.route-moving .route-ghost {
-  animation: route-flow 0.9s linear infinite;
+.route-svg.has-trail .route-trail-3 {
+  stroke: var(--px-hi);
+  stroke-width: 3.5;
+  opacity: 0.85;
 }
 
-@keyframes route-flow {
-  to {
-    stroke-dashoffset: -18;
-  }
-}
-
-/* Reaching a hop: a ripple, and a small ACK that floats up and fades. */
 .route-ripple {
   fill: none;
   stroke: var(--color-accent);
@@ -1385,23 +1382,24 @@ html.has-route.work-pinned .work-progress {
   visibility: hidden;
 }
 
-/* Bolder on a phone, where the route runs along the edge of the screen. */
+/* Bolder on a phone, where the route runs along the edge of the screen;
+   the comet keeps its bright core only, which is the cheapest to paint. */
 @media (max-width: 700px) {
   .route-line {
-    stroke-width: calc(3px + var(--route-speed, 0) * 1.25px);
+    stroke-width: 3px;
   }
 
-  .route-svg.has-trail .route-trail-wide {
-    stroke-width: 11;
+  .route-svg.has-trail .route-trail-1,
+  .route-svg.has-trail .route-trail-2 {
+    display: none;
   }
 
-  .route-ghost {
-    stroke-width: 2;
+  .route-svg.has-trail .route-trail-3 {
+    stroke-width: 4.5;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html.route-moving .route-ghost,
   .route-node.is-ack .route-ripple,
   .route-node.is-ack .route-ack {
     animation: none;
@@ -1499,7 +1497,7 @@ html.js-ready .section-heading.reveal {
 
 @media (max-width: 700px) {
   .ping {
-    --s: 0.95;
+    --s: 0.8;
   }
 }
 
