@@ -64,18 +64,18 @@
     />
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="assets/css/tokens.css?v=20261007" />
-    <link rel="stylesheet" href="assets/css/reset.css?v=20261007" />
-    <link rel="stylesheet" href="assets/css/typography.css?v=20261007" />
-    <link rel="stylesheet" href="assets/css/layout.css?v=20261007" />
-    <link rel="stylesheet" href="assets/css/components.css?v=20261007" />
-    <link rel="stylesheet" href="assets/css/pages.css?v=20261007" />
-    <link rel="stylesheet" href="assets/css/interactive.css?v=20261007" />
-    <link rel="stylesheet" href="assets/css/motion.css?v=20261007" />
-    <link rel="stylesheet" href="assets/css/style.css?v=20261007" />
+    <link rel="stylesheet" href="assets/css/tokens.css?v=20261012" />
+    <link rel="stylesheet" href="assets/css/reset.css?v=20261012" />
+    <link rel="stylesheet" href="assets/css/typography.css?v=20261012" />
+    <link rel="stylesheet" href="assets/css/layout.css?v=20261012" />
+    <link rel="stylesheet" href="assets/css/components.css?v=20261012" />
+    <link rel="stylesheet" href="assets/css/pages.css?v=20261012" />
+    <link rel="stylesheet" href="assets/css/interactive.css?v=20261012" />
+    <link rel="stylesheet" href="assets/css/motion.css?v=20261012" />
+    <link rel="stylesheet" href="assets/css/style.css?v=20261012" />
 
     <!-- Palette tokens are written before first paint -->
-    <script src="assets/js/palette.js?v=20261007"></script>
+    <script src="assets/js/palette.js?v=20261012"></script>
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=4" />
@@ -102,9 +102,9 @@
             "image": {
               "@type": "ImageObject",
               "@id": "https://ryanyarali.com/#ryan-photo",
-              "url": "https://ryanyarali.com/assets/profile-photo.jpg",
+              "url": "https://ryanyarali.com/assets/ryan-yarali.jpg",
               "width": 760,
-              "height": 760,
+              "height": 950,
               "caption": "Ryan Yarali"
             },
             "jobTitle": "Full-stack developer",
@@ -224,9 +224,9 @@
                 "item": {
                   "@type": "WebSite",
                   "@id": "https://ryanyarali.com/projects/nooklook.html#project",
-                  "name": "Nook Look",
+                  "name": "Nook Look Studio",
                   "url": "https://nooklook.ca",
-                  "description": "Website for Nook Look, a portrait photography studio in Coquitlam, BC: four priced service lines, a booking pipeline, a filterable gallery and local SEO. Built and launched solo by Ryan Yarali on WordPress.",
+                  "description": "Website for Nook Look Studio, a portrait photography studio in Coquitlam, BC: four priced service lines, a booking pipeline, a filterable gallery and local SEO. Built and launched solo by Ryan Yarali on WordPress.",
                   "image": "https://ryanyarali.com/assets/nl-hero.jpg",
                   "creator": {
                     "@id": "https://ryanyarali.com/#ryan"
@@ -244,15 +244,18 @@
                 "item": {
                   "@type": "WebSite",
                   "@id": "https://ryanyarali.com/projects.html#vancobab",
-                  "name": "Vanco Bab",
+                  "name": "Vancobab",
                   "url": "https://vancobab.ca",
-                  "description": "Five-page website for Vanco Bab, a Persian kebab food truck in Vancouver: the truck menu, catering packages, and a vanilla JavaScript order builder.",
+                  "description": "Five-page website for Vancobab, a Persian kebab food truck in Vancouver: a Persian visual identity, launch signups while the truck gets ready, and a vanilla JavaScript order builder ready for opening day.",
                   "image": "https://ryanyarali.com/assets/vb-hero.jpg",
                   "creator": {
                     "@id": "https://ryanyarali.com/#ryan"
                   },
                   "dateCreated": "2026",
-                  "keywords": "HTML5, CSS3, vanilla JavaScript, SEO"
+                  "keywords": "HTML5, CSS3, vanilla JavaScript, SEO",
+                  "subjectOf": {
+                    "@id": "https://ryanyarali.com/projects/vancobab.html#article"
+                  }
                 }
               },
               {
@@ -427,10 +430,10 @@
             <div class="about-photo-wrap reveal">
               <figure class="about-photo">
                 <img
-                  src="assets/profile-photo.jpg"
-                  alt="Portrait of Ryan Yarali"
+                  src="assets/ryan-yarali.jpg"
+                  alt="Portrait of Ryan Yarali in a dark denim shirt against a charcoal backdrop"
                   width="760"
-                  height="760"
+                  height="950"
                   loading="lazy"
                   decoding="async"
                 />
@@ -463,8 +466,8 @@
             <div class="work-viewport">
               <ol class="work-track" aria-label="Projects">
               <li class="work-card" id="work-nooklook">
-                <a class="work-media" href="projects/nooklook.html" data-vt="nooklook" aria-label="Read the Nook Look case study">
-                  <img src="assets/nl-hero.jpg" alt="Nook Look home page: a dark text panel beside a full-height maternity photograph" loading="lazy" decoding="async" width="1400" height="776" />
+                <a class="work-media" href="projects/nooklook.html" data-vt="nooklook" aria-label="Read the Nook Look Studio case study">
+                  <img src="assets/nl-hero.jpg" alt="Nook Look Studio home page: a dark text panel beside a full-height maternity photograph" loading="lazy" decoding="async" width="1400" height="776" />
                 </a>
                 <div class="work-body">
                   <p class="work-meta">
@@ -472,7 +475,7 @@
                     <span>Client · 2026</span>
                     <span class="project-status" data-status="live">Live</span>
                   </p>
-                  <h3 class="work-title">Nook Look</h3>
+                  <h3 class="work-title">Nook Look Studio</h3>
                   <div class="work-copy">
                     <p>
                       The full web presence for a Coquitlam portrait studio: four priced service lines, a booking pipeline, a filterable gallery, and local SEO. Built and launched solo.
@@ -501,8 +504,8 @@
                 </div>
               </li>
               <li class="work-card" id="work-vancobab">
-                <a class="work-media" href="https://vancobab.ca" target="_blank" rel="noopener noreferrer" aria-label="Visit vancobab.ca">
-                  <img src="assets/vb-hero.jpg" alt="Vanco Bab home page: the headline 'Persian kebab, fresh off the grill' beside an ornate flame emblem" loading="lazy" decoding="async" width="1400" height="788" />
+                <a class="work-media" href="projects/vancobab.html" data-vt="vancobab" aria-label="Read the Vancobab case study">
+                  <img src="assets/vb-hero.jpg" alt="Vancobab home page: the headline 'Persian kebab, fresh off the grill' beside an ornate flame emblem" loading="lazy" decoding="async" width="1400" height="788" />
                 </a>
                 <div class="work-body">
                   <p class="work-meta">
@@ -510,13 +513,13 @@
                     <span>Client · 2026</span>
                     <span class="project-status" data-status="live">Live</span>
                   </p>
-                  <h3 class="work-title">Vanco Bab</h3>
+                  <h3 class="work-title">Vancobab</h3>
                   <div class="work-copy">
                     <p>
-                      A five-page site for a Persian kebab food truck in Vancouver: the truck menu, catering packages, and an order builder customers use before they reach the window.
+                      A five-page site for a Persian kebab food truck in Vancouver, with a Persian visual identity of its own. While the truck gets ready, it collects a launch list; the menu and order builder are ready for opening day.
                     </p>
                     <p class="work-detail">
-                      The order builder is plain JavaScript with no backend and no payment step. It totals a customer's picks and hands them a summary to read at the counter, which is what a food truck actually needs. Catering pages re-point the brand accent from red to gold through a single data attribute, so one stylesheet carries two moods.
+                      The order builder is plain JavaScript with no backend and no payment step. It totals a customer's picks and hands them a summary to read at the counter, which is what a food truck actually needs. When the opening moved, I turned the site into a pre-launch flow rather than show prices and a location that didn't exist yet.
                     </p>
                   </div>
                   <ul class="work-tech" aria-label="Built with">
@@ -526,11 +529,14 @@
                       <li>SEO</li>
                   </ul>
                   <div class="project-accordion-links">
+                    <a class="project-accordion-link" href="projects/vancobab.html">
+                      Read the case study
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </a>
                     <a class="project-accordion-link" href="https://vancobab.ca" target="_blank" rel="noopener noreferrer">
                       Visit the site
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                     </a>
-                    <span class="project-accordion-note">Case study coming soon</span>
                   </div>
                 </div>
               </li>
@@ -907,14 +913,14 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="assets/js/theme.js?v=20261007"></script>
-    <script src="assets/js/form.js?v=20261007"></script>
-    <script src="assets/js/main.js?v=20261007"></script>
-    <script src="assets/js/interactive.js?v=20261007"></script>
-    <script src="assets/js/cursor.js?v=20261007"></script>
-    <script src="assets/js/story.js?v=20261007"></script>
-    <script src="assets/js/route.js?v=20261007"></script>
-    <script src="assets/js/ping.js?v=20261007"></script>
-    <script src="assets/js/hero.js?v=20261007"></script>
+    <script src="assets/js/theme.js?v=20261012"></script>
+    <script src="assets/js/form.js?v=20261012"></script>
+    <script src="assets/js/main.js?v=20261012"></script>
+    <script src="assets/js/interactive.js?v=20261012"></script>
+    <script src="assets/js/cursor.js?v=20261012"></script>
+    <script src="assets/js/story.js?v=20261012"></script>
+    <script src="assets/js/route.js?v=20261012"></script>
+    <script src="assets/js/ping.js?v=20261012"></script>
+    <script src="assets/js/hero.js?v=20261012"></script>
   </body>
 </html>
