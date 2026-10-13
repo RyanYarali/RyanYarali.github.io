@@ -118,7 +118,9 @@
       bar.style.transform = "scaleX(" + (1 / n + (1 - 1 / n) * p).toFixed(4) + ")";
       var i = nearest != null ? nearest : Math.min(n - 1, Math.round(p * (n - 1)));
       if (i !== shownIndex) {
+        if (shownIndex >= 0) cards[shownIndex].classList.remove("is-current");
         shownIndex = i;
+        cards[i].classList.add("is-current");
         count.textContent = String(i + 1).padStart(2, "0");
       }
     }
