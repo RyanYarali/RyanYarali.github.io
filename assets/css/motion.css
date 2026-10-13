@@ -591,7 +591,8 @@ html.is-stacked main > .is-covered {
   max-width: none;
   height: 100%;
   object-fit: cover;
-  object-position: top center;
+  /* Covers are device mockups with margin all round, so crop evenly. */
+  object-position: center;
   display: block;
   will-change: transform;
 }
