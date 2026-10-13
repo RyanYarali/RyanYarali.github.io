@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("portfolio-theme-override");
+          var theme =
+            stored ||
+            (window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light");
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      })();
+    </script>
+    <link rel="canonical" href="https://ryanyarali.com/projects/foodroutes.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A team-built mobile app for transit directions to affordable groceries. I built its navigation map and Supabase accounts flow in React and TypeScript." />
+    <meta name="author" content="Ryan Yarali" />
+
+    <!-- Open Graph / social link previews -->
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Ryan Yarali" />
+    <meta property="og:locale" content="en_CA" />
+    <meta property="og:url" content="https://ryanyarali.com/projects/foodroutes.html" />
+    <meta property="og:title" content="FoodRoutes: Transit to Affordable Food | Ryan Yarali" />
+    <meta property="og:description" content="A team-built mobile app for transit directions to affordable groceries. I built its navigation map and Supabase accounts flow in React and TypeScript." />
+    <meta property="og:image" content="https://ryanyarali.com/assets/og-card-ping.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Ryan Yarali, full-stack developer at BCIT, open to co-op and internships, beside Ping, a small blue packet character saying: Ping! Come see what Ryan has built." />
+    <meta property="article:published_time" content="2026-10-12T12:00:00-07:00" />
+    <meta property="article:modified_time" content="2026-10-12T12:00:00-07:00" />
+    <meta property="article:author" content="https://ryanyarali.com/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="FoodRoutes: Transit to Affordable Food | Ryan Yarali" />
+    <meta name="twitter:description" content="A team-built mobile app for transit directions to affordable groceries. I built its navigation map and Supabase accounts flow in React and TypeScript." />
+    <meta name="twitter:image" content="https://ryanyarali.com/assets/og-card-ping.jpg" />
+    <meta name="twitter:image:alt" content="Ryan Yarali, full-stack developer at BCIT, open to co-op and internships, beside Ping, a small blue packet character saying: Ping! Come see what Ryan has built." />
+
+    <title>FoodRoutes: Transit to Affordable Food | Ryan Yarali</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../assets/css/tokens.css?v=20261012" />
+    <link rel="stylesheet" href="../assets/css/reset.css?v=20261012" />
+    <link rel="stylesheet" href="../assets/css/typography.css?v=20261012" />
+    <link rel="stylesheet" href="../assets/css/layout.css?v=20261012" />
+    <link rel="stylesheet" href="../assets/css/components.css?v=20261012" />
+    <link rel="stylesheet" href="../assets/css/pages.css?v=20261012" />
+    <link rel="stylesheet" href="../assets/css/interactive.css?v=20261012" />
+    <link rel="stylesheet" href="../assets/css/motion.css?v=20261012" />
+    <link rel="stylesheet" href="../assets/css/style.css?v=20261012" />
+
+    <!-- Palette tokens are written before first paint -->
+    <script src="../assets/js/palette.js?v=20261012"></script>
+
+    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=4" />
+    <!-- Structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://ryanyarali.com/#ryan",
+            "name": "Ryan Yarali",
+            "url": "https://ryanyarali.com/",
+            "jobTitle": "Full-stack developer",
+            "alumniOf": {
+              "@id": "https://ryanyarali.com/#bcit"
+            },
+            "sameAs": [
+              "https://github.com/RyanYarali",
+              "https://www.linkedin.com/in/ryan-yarali/"
+            ]
+          },
+          {
+            "@type": "CollegeOrUniversity",
+            "@id": "https://ryanyarali.com/#bcit",
+            "name": "British Columbia Institute of Technology",
+            "alternateName": "BCIT",
+            "url": "https://www.bcit.ca/",
+            "sameAs": "https://en.wikipedia.org/wiki/British_Columbia_Institute_of_Technology"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://ryanyarali.com/#site",
+            "url": "https://ryanyarali.com/",
+            "name": "Ryan Yarali",
+            "alternateName": "ryanyarali.com",
+            "description": "Portfolio of Ryan Yarali, full-stack developer and BCIT Computer Systems Technology student in Coquitlam, BC.",
+            "inLanguage": "en",
+            "author": {
+              "@id": "https://ryanyarali.com/#ryan"
+            },
+            "publisher": {
+              "@id": "https://ryanyarali.com/#ryan"
+            }
+          },
+          {
+            "@type": "CreativeWork",
+            "@id": "https://ryanyarali.com/projects/foodroutes.html#project",
+            "name": "FoodRoutes",
+            "url": "https://ryanyarali.com/projects/foodroutes.html",
+            "description": "Mobile web app that finds affordable groceries nearby and gives public-transit directions to them, built by a team of four in BCIT COMP 2800. Ryan Yarali built the navigation map (directions in four travel modes, saved routes, current location) and the Supabase accounts flow.",
+            "image": "https://ryanyarali.com/assets/fr-cover.jpg",
+            "contributor": {
+              "@id": "https://ryanyarali.com/#ryan"
+            },
+            "dateCreated": "2026",
+            "keywords": "React 19, TypeScript, Vite, Supabase, Google Maps JavaScript API, Directions API",
+            "sameAs": "https://github.com/RyanYarali/2800-202610-DTC09",
+            "subjectOf": {
+              "@id": "https://ryanyarali.com/projects/foodroutes.html#article"
+            }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://ryanyarali.com/projects/foodroutes.html#page",
+            "url": "https://ryanyarali.com/projects/foodroutes.html",
+            "name": "FoodRoutes: Transit to Affordable Food | Ryan Yarali",
+            "inLanguage": "en",
+            "isPartOf": {
+              "@id": "https://ryanyarali.com/#site"
+            },
+            "breadcrumb": {
+              "@id": "https://ryanyarali.com/projects/foodroutes.html#breadcrumb"
+            },
+            "primaryImageOfPage": {
+              "@type": "ImageObject",
+              "url": "https://ryanyarali.com/assets/fr-cover.jpg"
+            }
+          },
+          {
+            "@type": "Article",
+            "@id": "https://ryanyarali.com/projects/foodroutes.html#article",
+            "headline": "FoodRoutes: transit directions to affordable food",
+            "url": "https://ryanyarali.com/projects/foodroutes.html",
+            "description": "Case study: Ryan Yarali's role in FoodRoutes, a BCIT COMP 2800 team project: the navigation map with four travel modes and saved routes, and the Supabase accounts flow.",
+            "image": "https://ryanyarali.com/assets/fr-cover.jpg",
+            "inLanguage": "en",
+            "datePublished": "2026-10-12T12:00:00-07:00",
+            "dateModified": "2026-10-12T12:00:00-07:00",
+            "author": {
+              "@id": "https://ryanyarali.com/#ryan"
+            },
+            "publisher": {
+              "@id": "https://ryanyarali.com/#ryan"
+            },
+            "isPartOf": {
+              "@id": "https://ryanyarali.com/#site"
+            },
+            "mainEntityOfPage": {
+              "@id": "https://ryanyarali.com/projects/foodroutes.html#page"
+            },
+            "about": {
+              "@id": "https://ryanyarali.com/projects/foodroutes.html#project"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://ryanyarali.com/projects/foodroutes.html#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://ryanyarali.com/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Projects",
+                "item": "https://ryanyarali.com/projects.html"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "FoodRoutes",
+                "item": "https://ryanyarali.com/projects/foodroutes.html"
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="project-detail-page foodroutes-page">
+    <canvas id="site-trace" aria-hidden="true"></canvas>
+    <a href="#main" class="skip-link">Skip to content</a>
+
+        <nav class="navbar">
+      <div class="nav-container">
+        <a href="../index.html" class="logo" aria-label="Ryan Yarali, Computer Systems Technology, home">
+          <span class="logo-name">Ryan Yarali</span>
+          <span class="logo-subtitle">Computer Systems Technology</span>
+        </a>
+
+        <ul class="nav-links" id="nav-links">
+          <li><a href="../index.html" class="nav-link">Home</a></li>
+          <li><a href="../index.html#about" class="nav-link">About</a></li>
+          <li><a href="../projects.html" class="nav-link" aria-current="page">Projects</a></li>
+          <li><a href="../index.html#skills" class="nav-link">Skills</a></li>
+          <li><a href="../index.html#learning" class="nav-link">Learning</a></li>
+          <li><a href="../index.html#contact" class="nav-link">Contact</a></li>
+        </ul>
+
+        <!-- The theme switch lives in the palette dock, next to the colours. -->
+        <div class="nav-actions">
+          <!-- Points at resume.html until the PDF exists; then swap the href for the PDF and add a download attribute. -->
+          <a href="../resume.html" class="nav-resume" data-magnetic>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"></path><polyline points="7 10 12 15 17 10"></polyline><path d="M5 21h14"></path></svg>
+            Résumé
+          </a>
+          <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <main id="main">
+      <div class="project-hero">
+        <div class="container">
+          <a href="../projects.html" class="back-link">&larr; Projects</a>
+          <h1>FoodRoutes</h1>
+          <p>Transit directions to affordable groceries, built by a team of four at BCIT</p>
+          <div class="project-links">
+            <a
+              href="https://github.com/RyanYarali/2800-202610-DTC09"
+              class="btn btn-secondary"
+              target="_blank"
+              rel="noopener noreferrer"
+              >View on GitHub</a
+            >
+          </div>
+          <figure class="case-cover" data-vt="foodroutes">
+            <img
+              src="../assets/fr-cover.jpg"
+              alt="Three FoodRoutes phone screens: the signed-in menu over the home page, the login page with a guided-tour tooltip, and the sign-up form showing validation errors"
+              width="1400"
+              height="788"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </figure>
+        </div>
+      </div>
+
+      <section class="section">
+        <div class="container">
+          <div class="project-content">
+            <div class="project-section reveal">
+              <h2>Overview</h2>
+              <p>
+                FoodRoutes helps people reach affordable food without a car.
+                It finds grocery stores nearby, filters them by how expensive
+                they are, and gives directions there by transit, on foot, by
+                bike, or by car. It's a mobile web app, designed for the phone
+                you'd have in your hand at a bus stop.
+              </p>
+              <p>
+                We built it as a team of four in BCIT's COMP 2800 projects
+                course (Team DTC 09), over about four weeks in spring 2026,
+                using React, TypeScript, Supabase, and the Google Maps
+                JavaScript API.
+              </p>
+            </div>
+
+            <div class="project-section reveal">
+              <h2>My role</h2>
+              <p>
+                I built the parts of the app that move people: the navigation
+                map and the accounts flow. That's about 38% of the final code,
+                including three-quarters of the map page, the app's main
+                screen.
+              </p>
+              <ul>
+                <li>
+                  <strong>The navigation map:</strong> directions in four
+                  travel modes, saved routes, "Use my location", and almost
+                  all of the map's interface
+                </li>
+                <li>
+                  <strong>Accounts:</strong> the Supabase client, login and
+                  sign-up with validation, a guided first-visit tour on both,
+                  and protected routes that send signed-out visitors to log in
+                </li>
+                <li>
+                  <strong>Navigation bar:</strong> the responsive navbar that
+                  collapses into a menu on phones and updates the moment
+                  someone signs in or out
+                </li>
+              </ul>
+              <p>
+                My teammates built the store search and price filter, the
+                map setup, the AI food chatbot, the landing page, and the
+                profile page with its accessibility settings.
+              </p>
+            </div>
+
+            <div class="project-section reveal">
+              <h2>The app</h2>
+              <div class="screenshots-grid">
+                <figure class="reveal">
+                  <img src="../assets/fr-login.jpg" alt="Login screen on a phone with a guided-tour tooltip pointing at the email field: If you have an account, input your email here" width="520" height="1125" loading="lazy" decoding="async" />
+                  <figcaption>
+                    <strong>Login with a guided tour</strong><br />First-time
+                    visitors get a step-by-step walkthrough of the form.
+                  </figcaption>
+                </figure>
+                <figure class="reveal">
+                  <img src="../assets/fr-signup.jpg" alt="Sign-up screen on a phone showing inline errors: enter a valid email address, password must be at least 6 characters, please confirm your password" width="520" height="1125" loading="lazy" decoding="async" />
+                  <figcaption>
+                    <strong>Sign-up validation</strong><br />Each field says
+                    exactly what's wrong before anything is sent.
+                  </figcaption>
+                </figure>
+                <figure class="reveal">
+                  <img src="../assets/fr-menu.jpg" alt="Phone view with the navbar menu open, listing Home, Navigation, Profile and a Log out button above the home page" width="520" height="1125" loading="lazy" decoding="async" />
+                  <figcaption>
+                    <strong>Responsive navbar</strong><br />On phones the
+                    links fold into a menu that knows if you're signed in.
+                  </figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="project-section reveal">
+              <h2>What I built</h2>
+
+              <h3>Directions in four travel modes</h3>
+              <p>
+                Pick a store on the map and FoodRoutes draws the route there
+                with Google's Directions service, along with the trip's time
+                and distance. Transit is the default, because that's who the
+                app is for, and one tap switches to walking, cycling, or
+                driving. Each mode has its own colour, and a transit-layer
+                toggle shows the bus and SkyTrain lines underneath.
+              </p>
+
+              <h3>Saved routes</h3>
+              <p>
+                Any route can be saved to the signed-in user's history in
+                Supabase. The list keeps the 10 most recent: when it's full,
+                the oldest is removed before the new one goes in, so it never
+                grows without limit. Tapping a saved route restores its
+                travel mode and redraws it; each one can also be deleted.
+              </p>
+
+              <h3>"Use my location"</h3>
+              <p>
+                One tap reads the phone's location, centres the map on it,
+                turns the coordinates into a readable street address for the
+                starting point, and runs the nearby-store search straight
+                away.
+              </p>
+
+              <h3>Accounts that guide you in</h3>
+              <p>
+                Login and sign-up run on Supabase Authentication. Sign-up
+                checks the email format, a minimum password length, and that
+                both passwords match, and shows each problem under its own
+                field. Both pages open with a short guided tour (intro.js)
+                for first-time visitors. Protected routes check the session
+                before rendering and send anyone signed out to the login page.
+              </p>
+
+              <h3>A navbar that follows the session</h3>
+              <p>
+                The navbar listens for Supabase's sign-in and sign-out events,
+                so its links switch between "Log in / Sign up" and "Profile /
+                Log out" instantly, without a page reload. On phones it
+                collapses into a menu button.
+              </p>
+            </div>
+
+            <div class="project-section reveal">
+              <h2>Tech stack</h2>
+              <div class="tech-list">
+                <span class="tech-item">React 19</span>
+                <span class="tech-item">TypeScript</span>
+                <span class="tech-item">Vite</span>
+                <span class="tech-item">React Router</span>
+                <span class="tech-item">Supabase Auth</span>
+                <span class="tech-item">Supabase Postgres</span>
+                <span class="tech-item">Google Maps JavaScript API</span>
+                <span class="tech-item">Directions &amp; Places</span>
+                <span class="tech-item">intro.js</span>
+                <span class="tech-item">Vercel</span>
+              </div>
+            </div>
+
+            <div class="project-section reveal">
+              <h2>Working as a team</h2>
+              <ul>
+                <li>
+                  Each of us worked on our own feature branch, merged into a
+                  shared dev branch before release
+                </li>
+                <li>
+                  We split the app by feature, so the map, accounts, chatbot,
+                  and profile could move in parallel without stepping on each
+                  other
+                </li>
+                <li>
+                  The app was deployed on Vercel. The course's Supabase project
+                  has since been retired, so the live demo no longer signs in;
+                  the code is on GitHub
+                </li>
+              </ul>
+            </div>
+
+            <div class="project-footer">
+              <a href="../projects.html" class="btn btn-secondary"
+                >&larr; All projects</a
+              >
+              <a href="../index.html#contact" class="btn btn-primary"
+                >Get in touch</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <div>
+          <p>&copy; 2026 <a href="../index.html">Ryan Yarali</a>. All rights reserved.</p>
+          <p class="footer-tech">Built with HTML, CSS, and JavaScript. No framework. <a href="this-site.html">How it's built</a></p>
+        </div>
+        <div class="footer-social">
+          <a href="https://github.com/RyanYarali" target="_blank" rel="me noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.93.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.87-1.36-3.87-1.36-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.42-2.69 5.4-5.25 5.68.41.36.78 1.06.78 2.14 0 1.54-.01 2.79-.01 3.17 0 .3.2.66.79.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+            GitHub
+          </a>
+          <a href="https://www.linkedin.com/in/ryan-yarali/" target="_blank" rel="me noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.55V9h3.57v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>
+            LinkedIn
+          </a>
+        </div>
+      </div>
+    </footer>
+    <script src="../assets/js/theme.js?v=20261012"></script>
+    <script src="../assets/js/main.js?v=20261012"></script>
+    <script src="../assets/js/interactive.js?v=20261012"></script>
+    <script src="../assets/js/cursor.js?v=20261012"></script>
+    <script src="../assets/js/route.js?v=20261012"></script>
+    <script src="../assets/js/ping.js?v=20261012"></script>
+  </body>
+</html>
