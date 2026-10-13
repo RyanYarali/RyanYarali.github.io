@@ -90,6 +90,15 @@
     var media = cards.map(function (c) {
       return c.querySelector(".work-media img, .work-media canvas");
     });
+    // A screenshot is 12% wider than its frame (6% spare each side), so its
+    // drift stops just short of that and an edge never comes into view.
+    var frames = cards.map(function (c) {
+      return c.querySelector(".work-media");
+    });
+    function drift(i, px) {
+      var lim = frames[i].offsetWidth * 0.055;
+      return clamp(px, -lim, lim).toFixed(1);
+    }
     var count = work.querySelector(".work-count-now");
     var bar = work.querySelector(".work-progress span");
     var n = cards.length;
@@ -175,7 +184,7 @@
           best = Math.abs(off);
           nearest = i;
         }
-        if (media[i]) media[i].style.transform = "translate3d(" + (off * -0.05).toFixed(1) + "px,0,0)";
+        if (media[i]) media[i].style.transform = "translate3d(" + drift(i, off * -0.05) + "px,0,0)";
       }
       setProgress(p, nearest);
       // The route (route.js) runs its sideways stretch from this.
@@ -202,7 +211,7 @@
         var d = clamp(Math.abs(off) / c.offsetWidth, 0, 1);
         c.style.transform = "scale(" + (1 - d * 0.08).toFixed(4) + ")";
         c.style.opacity = (1 - d * 0.45).toFixed(3);
-        if (media[i]) media[i].style.transform = "translate3d(" + (off * -0.06).toFixed(1) + "px,0,0)";
+        if (media[i]) media[i].style.transform = "translate3d(" + drift(i, off * -0.06) + "px,0,0)";
       }
       setProgress(max > 0 ? viewport.scrollLeft / max : 0, nearest);
     }

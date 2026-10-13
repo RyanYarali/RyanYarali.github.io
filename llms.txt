@@ -27,8 +27,8 @@ Skills listed on the site:
 
 ## Projects
 
-- [Nook Look](https://ryanyarali.com/projects/nooklook.html): Client site, 2026, live at https://nooklook.ca. The full web presence for a Coquitlam portrait photography studio: four priced service lines, a booking pipeline, a filterable gallery, and local SEO, built and launched solo. WordPress, Pods, PHP, custom CSS/JS, hand-written LocalBusiness structured data.
-- [Vanco Bab](https://ryanyarali.com/projects/vancobab.html): Client site, 2026, live at https://vancobab.ca. A five-page site for a Persian kebab food truck in Vancouver with its own Persian visual identity (toranj medallion, ogee trellis). While the truck gets ready it runs as a pre-launch site collecting a launch list; a vanilla JavaScript order builder (combos and a five-step build-your-own wizard, no backend or payment) is ready for opening day. HTML5, CSS3, vanilla JavaScript, Web Animations API, Web3Forms.
+- [Nook Look Studio](https://ryanyarali.com/projects/nooklook.html): Client site, 2026, live at https://nooklook.ca. The full web presence for a Coquitlam portrait photography studio: four priced service lines, a booking pipeline, a filterable gallery, and local SEO, built and launched solo. WordPress, Pods, PHP, custom CSS/JS, hand-written LocalBusiness structured data.
+- [Vancobab](https://ryanyarali.com/projects/vancobab.html): Client site, 2026, live at https://vancobab.ca. A five-page site for a Persian kebab food truck in Vancouver with its own Persian visual identity (toranj medallion, ogee trellis). While the truck gets ready it runs as a pre-launch site collecting a launch list; a vanilla JavaScript order builder (combos and a five-step build-your-own wizard, no backend or payment) is ready for opening day. HTML5, CSS3, vanilla JavaScript, Web Animations API, Web3Forms.
 - [Termeh Cafe & Restaurant](https://ryanyarali.com/projects.html): Client site, 2026, coming soon. A bilingual English and Farsi restaurant site with a password-protected admin panel for the menu, prices, hours and reservations. React 19 and Vite on the front end; Node.js, Express and SQLite on the back end.
 - [TaskMate](https://ryanyarali.com/projects/taskmate.html): BCIT coursework, 2025. A mobile-friendly task manager for students, built end to end with Firebase Authentication and Firestore as a team project in COMM 1800 (Team DTC 09) and tested by a nine-person class team. Source: https://github.com/RyanYarali/1800_202530_DTC09
 - [This site](https://ryanyarali.com/projects/this-site.html): ryanyarali.com itself. Plain HTML, CSS and JavaScript on GitHub Pages with no framework and no build step; a three.js network globe, scroll-driven motion, six colour palettes that meet WCAG AA, and every word in the HTML. Source: https://github.com/RyanYarali/RyanYarali.github.io
@@ -37,8 +37,8 @@ Skills listed on the site:
 
 - [Home](https://ryanyarali.com/): About, selected work, skills, education and contact
 - [Projects](https://ryanyarali.com/projects.html): All projects with descriptions and tech stacks
-- [Nook Look case study](https://ryanyarali.com/projects/nooklook.html): Brief, design system, stack, SEO and client process for the studio site
-- [Vanco Bab case study](https://ryanyarali.com/projects/vancobab.html): Brief, Persian design system, order builder, pre-launch pivot and client process for the food truck site
+- [Nook Look Studio case study](https://ryanyarali.com/projects/nooklook.html): Brief, design system, stack, SEO and client process for the studio site
+- [Vancobab case study](https://ryanyarali.com/projects/vancobab.html): Brief, Persian design system, order builder, pre-launch pivot and client process for the food truck site
 - [TaskMate case study](https://ryanyarali.com/projects/taskmate.html): Problem, screens, features, stack and learning outcomes
 - [How this site is built](https://ryanyarali.com/projects/this-site.html): Design, motion, performance and accessibility of ryanyarali.com
 

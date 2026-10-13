@@ -586,6 +586,9 @@ html.is-stacked main > .is-covered {
   top: 0;
   left: -6%;
   width: 112%;
+  /* The reset caps images at 100%, which would leave no spare width for the
+     drift below and let the frame's background show down one side. */
+  max-width: none;
   height: 100%;
   object-fit: cover;
   object-position: top center;
