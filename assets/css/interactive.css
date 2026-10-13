@@ -548,59 +548,6 @@ html[data-theme="dark"] .palette-swatch {
   color: var(--color-text-subtle);
 }
 
-/* ---------- skills filter ---------- */
-.skills-filter {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-  margin-bottom: 1.9rem;
-}
-
-.skills-filter-chip {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  padding: 0.46rem 0.9rem;
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--color-border);
-  background: transparent;
-  color: var(--color-text-muted);
-  cursor: pointer;
-  transition:
-    background-color var(--transition-fast),
-    color var(--transition-fast),
-    border-color var(--transition-fast);
-}
-
-.skills-filter-chip:hover {
-  border-color: var(--color-border-strong);
-  color: var(--color-text);
-}
-
-.skills-filter-chip[aria-pressed="true"] {
-  background: var(--color-text);
-  border-color: var(--color-text);
-  color: var(--color-background);
-}
-
-.skills-row {
-  transition:
-    opacity 380ms var(--ease),
-    transform 420ms var(--ease-out-expo);
-}
-
-/* Rows are also .reveal items, and "html.js-ready .reveal.in-view" sets them
-   to full opacity; the html prefix lifts this rule to the same weight so the
-   dimming still applies (this file loads after layout.css). */
-html .skills-rows .skills-row.is-dimmed {
-  opacity: 0.24;
-}
-
-.skills-row.is-match .skills-label {
-  color: var(--color-accent);
-}
-
 /* ---------- magnetic controls ---------- */
 .btn[data-magnetic] {
   will-change: transform;

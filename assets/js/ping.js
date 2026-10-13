@@ -47,11 +47,10 @@
 
   // ==================== What he says ====================
 
+  // He speaks at the two stops that matter and stays quiet in between: a
+  // line at every heading turned him into a narrator competing with the page.
   var HOME = {
-    about: "This is Ryan. Full-stack, and a proper networking nerd.",
     projects: "Real clients. Real live sites. Have a look!",
-    skills: "The toolbox. Everything here shows up in his projects.",
-    learning: "Term 3 at BCIT. Still levelling up.",
     contact: "Want to say hi? Write below. I'll deliver it myself.",
   };
 
@@ -239,12 +238,85 @@
   }
   if (!route) window.addEventListener("resize", fitBubble, { passive: true });
 
+  // ==================== Staying out of the way ====================
+  // He rides a fixed line while the page scrolls under him, so his bubble
+  // can land on anything. It never covers content: a line that would is held
+  // back until the space under it clears, and a showing bubble that content
+  // scrolls into is put away.
+
+  var CONTENT = "a, button, input, textarea, select, label, img, picture, figure, h1, h2, h3, h4, p, li, .btn, .work-card, .stat-tile";
+  var current = "";
+  var waiting = null;
+
+  function bubbleRect(text) {
+    var old = bubble.textContent;
+    bubble.textContent = text;
+    bubble.style.transform = "none";
+    var r = bubble.getBoundingClientRect();
+    bubble.style.transform = "";
+    bubble.textContent = old;
+    return r;
+  }
+
+  function blocked(text) {
+    if (!route) return false;
+    // On a phone in the hero he is hidden behind the main buttons.
+    if (el.classList.contains("is-passive")) return true;
+    var r = bubbleRect(text);
+    if (r.top < 0 || r.left < 0 || r.right > window.innerWidth || r.bottom > window.innerHeight) return true;
+    for (var i = 0; i < 3; i++) {
+      for (var j = 0; j < 3; j++) {
+        var px = r.left + 4 + ((r.width - 8) * i) / 2;
+        var py = r.top + 4 + ((r.height - 8) * j) / 2;
+        var hits = document.elementsFromPoint(px, py);
+        for (var k = 0; k < hits.length; k++) {
+          if (el.contains(hits[k])) continue;
+          if (hits[k].closest(CONTENT)) return true;
+          break;
+        }
+      }
+    }
+    return false;
+  }
+
+  function hush() {
+    clearTimeout(talkTimer);
+    clearInterval(typeTimer);
+    el.classList.remove("is-talking");
+    bubble.classList.remove("is-on");
+    prioNow = 0;
+    current = "";
+  }
+
+  var guardRaf = 0;
+  function guard() {
+    if (!route || guardRaf) return;
+    guardRaf = requestAnimationFrame(function () {
+      guardRaf = 0;
+      if (current && bubble.classList.contains("is-on") && blocked(current)) hush();
+      if (waiting && !bubble.classList.contains("is-on")) {
+        if (performance.now() > waiting.until) waiting = null;
+        else if (!blocked(waiting.text)) {
+          var w = waiting;
+          waiting = null;
+          say(w.text, w.opt);
+        }
+      }
+    });
+  }
+
   function say(text, opt) {
     opt = opt || {};
     fitBubble();
     var prio = opt.prio || 1;
     if (opt.once && said[opt.once]) return;
     if (opt.cool && cool[opt.cool] && performance.now() - cool[opt.cool] < (opt.coolMs || 15000)) return;
+    if (blocked(text)) {
+      // Worth waiting a few seconds of scrolling for; small talk is dropped.
+      if (opt.once || prio >= 2) waiting = { text: text, opt: opt, until: performance.now() + 8000 };
+      return;
+    }
+    if (waiting && waiting.text === text) waiting = null;
     if (bubble.classList.contains("is-on") && prio < prioNow) {
       if (opt.once || prio >= 2) {
         if (!pending || (pending.opt.prio || 1) <= prio) pending = { text: text, opt: opt };
@@ -259,6 +331,7 @@
     if (mood === "sleep") setMood("awake");
     if (opt.pose) setPose(opt.pose, (opt.hold || 2200) + text.length * 30);
 
+    current = text;
     bubble.classList.add("is-on");
     if (reduced) {
       bubble.textContent = text;
@@ -279,6 +352,7 @@
       function () {
         bubble.classList.remove("is-on");
         prioNow = 0;
+        current = "";
         if (pending) {
           var next = pending;
           pending = null;
@@ -376,9 +450,7 @@
   }, 1000);
 
   var settleTimer = 0;
-  var upRun = 0;
   var lastScroll = window.scrollY;
-  var wheeSaid = false;
 
   window.addEventListener(
     "scroll",
@@ -399,28 +471,7 @@
           look(0, 0);
         }, 140);
       }
-      // No reactions while the hero is on screen: the bubble would sit on
-      // the two main buttons.
-      var inHero = window.scrollY < window.innerHeight * 0.8;
-      if (!inHero && Math.abs(dy) > 90) say("Whoa, slow down! I'm only 64 bytes.", { cool: "fast", coolMs: 20000, pose: "cheer" });
-      if (dy < 0 && !inHero) {
-        upRun -= dy;
-        if (upRun > 900) {
-          upRun = 0;
-          say("Going back? Forgot something?", { cool: "up", coolMs: 25000 });
-        }
-      } else {
-        upRun = 0;
-      }
-      // Riding the sideways stretch under the gallery.
-      if (!wheeSaid && html.classList.contains("work-pinned")) {
-        var work = document.getElementById("work");
-        var p = work ? parseFloat(work.style.getPropertyValue("--work-p")) || 0 : 0;
-        if (p > 0.25 && p < 0.8) {
-          wheeSaid = true;
-          say("Wheee! Ride with the cards!", { prio: 2, pose: "cheer" });
-        }
-      }
+      guard();
     },
     { passive: true },
   );
@@ -685,12 +736,6 @@
       // the hero's buttons.
       say(line, { prio: 2, hold: window.innerWidth <= 700 ? 1500 : 2800, pose: route ? "wave" : "point-r" });
     }, reduced ? 0 : 450);
-    var h = new Date().getHours();
-    if (route && (h >= 23 || h < 5)) {
-      setTimeout(function () {
-        say("Up late, huh? Me too.", { prio: 2 });
-      }, 5200);
-    }
   }
 
   // On a first visit to the home page, wait for the intro to finish.
