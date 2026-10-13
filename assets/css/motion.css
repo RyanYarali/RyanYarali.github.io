@@ -332,13 +332,29 @@ html.hero-anim .hero-reveal {
 /* Labels name the real nodes: the projects, and the tools they are built on.
    They are decoration (the same facts are in the page text), so the globe is
    aria-hidden. With the name running the full width over the globe there is
-   no room left for them: they peeked out between the letters, so they stay
-   hidden and the nodes speak for themselves. */
+   no room to show them all (they peeked out between the letters), so a label
+   appears only while the pointer is on its project's node. */
 .globe-labels {
   position: absolute;
   inset: 0;
   pointer-events: none;
   display: none;
+}
+
+@media (min-width: 860px) {
+  .globe-labels {
+    display: block;
+  }
+}
+
+.globe-label:not(.is-hover) {
+  visibility: hidden;
+}
+
+.globe-label.is-hover {
+  z-index: 1;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 4px var(--color-accent-soft);
 }
 
 .globe-label {
@@ -1432,45 +1448,67 @@ html.has-route.work-pinned .work-progress {
 }
 
 /* ---------- heading entrances ----------
- * main.js wraps each word of a section heading; when the heading is
- * revealed, the words rise out of their masks one after another. Without
- * JS the words are never wrapped, and under reduced motion they are left
- * alone. */
-html.js-ready .hw {
+ * main.js wraps a heading's text in .hscan. When the heading is revealed, a
+ * glowing scan line in the accent sweeps across it and the text appears
+ * behind the line, as if it were being read off the wire; then the line
+ * fades. Without JS nothing is wrapped, and under reduced motion headings
+ * are left alone. */
+html.js-ready .has-scan {
+  position: relative;
+}
+
+html.js-ready .hscan {
   display: inline-block;
-  overflow: hidden;
-  vertical-align: bottom;
-  padding-bottom: 0.12em;
-  margin-bottom: -0.12em;
+  max-width: 100%;
+  clip-path: inset(-0.2em 100% -0.2em 0);
 }
 
-html.js-ready .hw > span {
-  display: inline-block;
-  transform: translateY(108%);
-  transition: transform 950ms var(--ease-out-expo);
-  transition-delay: calc(var(--i, 0) * 60ms + 120ms);
+html.js-ready .in-view .hscan {
+  animation: hscan-reveal 900ms var(--ease-out-expo) 120ms forwards;
 }
 
-html.js-ready .in-view .hw > span {
-  transform: none;
+@keyframes hscan-reveal {
+  to {
+    clip-path: inset(-0.2em -0.2em -0.2em 0);
+  }
 }
 
-/* The heading block itself no longer needs to slide; its words do. */
+html.js-ready .has-scan::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.08em;
+  bottom: 0.04em;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--color-accent);
+  box-shadow:
+    0 0 12px 2px color-mix(in srgb, var(--color-accent) 70%, transparent),
+    -18px 0 24px color-mix(in srgb, var(--color-accent) 25%, transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+html.js-ready .in-view .has-scan::after {
+  animation: hscan-line 900ms var(--ease-out-expo) 120ms forwards;
+}
+
+@keyframes hscan-line {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(var(--scan-w, 100%));
+  }
+}
+
+/* The heading block itself no longer needs to slide; the scan reveals it. */
 html.js-ready .section-heading.reveal {
-  transform: none;
-}
-
-/* ---------- skills rows ----------
- * Rows arrive from alternate sides instead of all rising the same way. */
-html.js-ready .skills-rows > .skills-row.reveal:nth-child(odd) {
-  transform: translateX(-28px);
-}
-
-html.js-ready .skills-rows > .skills-row.reveal:nth-child(even) {
-  transform: translateX(28px);
-}
-
-html.js-ready .skills-rows > .skills-row.reveal.in-view {
   transform: none;
 }
 

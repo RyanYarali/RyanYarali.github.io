@@ -492,6 +492,17 @@
           look(0, 0);
         }, 160);
       }
+      // A jump away from the bottom (a nav link, the terminal) can leave the
+      // route's end lit, so the goodbye never hears it was left: once the end
+      // is well off screen, he shrinks back regardless.
+      if (big && !flying && route && route.endPoint) {
+        var endPt = route.endPoint();
+        if (!endPt || endPt.y > window.innerHeight * 1.15 || endPt.y < -window.innerHeight * 0.5) {
+          clearTimeout(endTimer);
+          growBig(false);
+          setPose("");
+        }
+      }
       retryWaiting();
     },
     { passive: true },

@@ -476,14 +476,14 @@
   // copy of the text, and they are aria-hidden: the list is the content.
 
   function initMarquee() {
-    var rows = [].slice.call(document.querySelectorAll(".skills-row"));
+    var rows = [].slice.call(document.querySelectorAll(".skill-tile"));
     var heading = document.querySelector("#skills .section-heading");
     if (!rows.length || !heading) return;
 
     var names = function (from, to) {
       var out = [];
       rows.slice(from, to).forEach(function (row) {
-        [].forEach.call(row.querySelectorAll(".skills-list li"), function (li) {
+        [].forEach.call(row.querySelectorAll(".skill-list li"), function (li) {
           out.push(li.textContent.trim());
         });
       });
