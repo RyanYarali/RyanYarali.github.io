@@ -93,39 +93,59 @@
 
   // ==================== Building him ====================
 
+  // A packet with a face: a rounded square in the accent, pill eyes, and
+  // signal arcs for an antenna that pulse while he talks. Flat colour, no
+  // shine, so he reads as part of the same bold, minimal system as the page.
   var SVG =
     '<svg viewBox="-10 -16 60 64" aria-hidden="true" focusable="false">' +
-    '<g class="ping-arm ping-arm-l"><line x1="8" y1="28" x2="8" y2="38"/><circle cx="8" cy="40" r="3.6"/></g>' +
-    '<g class="ping-arm ping-arm-r"><line x1="32" y1="28" x2="32" y2="38"/><circle cx="32" cy="40" r="3.6"/></g>' +
-    '<g class="ping-antenna"><line x1="20" y1="12" x2="20" y2="4"/><circle cx="20" cy="3.5" r="2.8"/></g>' +
-    '<path class="ping-skin" d="M20 11 C29.5 11 35 18.5 35 27 C35 36 28.5 42 20 42 C11.5 42 5 36 5 27 C5 18.5 10.5 11 20 11 Z"/>' +
-    '<ellipse class="ping-shine" cx="13" cy="18" rx="4.5" ry="2.6" transform="rotate(-28 13 18)"/>' +
-    '<g class="ping-eyes">' +
-    '<ellipse class="ping-eye" cx="14.5" cy="25" rx="4.3" ry="4.9"/>' +
-    '<ellipse class="ping-eye" cx="25.5" cy="25" rx="4.3" ry="4.9"/>' +
-    '<g class="ping-pupils"><circle cx="14.5" cy="25.6" r="2.3"/><circle cx="25.5" cy="25.6" r="2.3"/></g>' +
+    '<g class="ping-arm ping-arm-l"><line x1="8" y1="30" x2="8" y2="37"/><circle cx="8" cy="39.5" r="3.2"/></g>' +
+    '<g class="ping-arm ping-arm-r"><line x1="32" y1="30" x2="32" y2="37"/><circle cx="32" cy="39.5" r="3.2"/></g>' +
+    '<g class="ping-antenna">' +
+    '<circle class="ping-signal-dot" cx="20" cy="7" r="2.2"/>' +
+    '<path class="ping-signal ping-signal-1" d="M15.2 3.4 Q20 -0.8 24.8 3.4"/>' +
+    '<path class="ping-signal ping-signal-2" d="M11.6 -0.4 Q20 -7.2 28.4 -0.4"/>' +
     "</g>" +
-    '<g class="ping-face ping-face-happy"><path d="M11 26 Q14.5 21.5 18 26"/><path d="M22 26 Q25.5 21.5 29 26"/></g>' +
-    '<g class="ping-face ping-face-sleep"><path d="M11 26 Q14.5 28.5 18 26"/><path d="M22 26 Q25.5 28.5 29 26"/></g>' +
-    '<g class="ping-face ping-face-dizzy"><g><path d="M14.5 25 m-3 0 a3 3 0 1 0 6 0 a1.8 1.8 0 1 0 -3.6 0"/></g>' +
-    '<g><path d="M25.5 25 m-3 0 a3 3 0 1 0 6 0 a1.8 1.8 0 1 0 -3.6 0"/></g></g>' +
-    '<path class="ping-mouth ping-mouth-smile" d="M17.5 33 Q20 35.2 22.5 33"/>' +
-    '<path class="ping-mouth ping-mouth-sad" d="M17.5 34.5 Q20 32.4 22.5 34.5"/>' +
-    '<ellipse class="ping-mouth-open" cx="20" cy="34" rx="2.4" ry="2"/>' +
-    '<g class="ping-envelope" transform="translate(9 -14)"><rect x="0" y="0" width="22" height="15" rx="2.5"/><path d="M1 1.5 L11 9 L21 1.5"/></g>' +
+    '<rect class="ping-skin" x="5" y="12" width="30" height="30" rx="10.5"/>' +
+    '<g class="ping-eyes">' +
+    '<rect class="ping-eye" x="11.4" y="20" width="6.2" height="10.4" rx="3.1"/>' +
+    '<rect class="ping-eye" x="22.4" y="20" width="6.2" height="10.4" rx="3.1"/>' +
+    '<g class="ping-pupils"><circle cx="14.5" cy="26.4" r="2.1"/><circle cx="25.5" cy="26.4" r="2.1"/></g>' +
+    "</g>" +
+    '<g class="ping-face ping-face-happy"><path d="M11.4 26.5 Q14.5 22 17.6 26.5"/><path d="M22.4 26.5 Q25.5 22 28.6 26.5"/></g>' +
+    '<g class="ping-face ping-face-sleep"><path d="M11.4 25.5 H17.6"/><path d="M22.4 25.5 H28.6"/></g>' +
+    '<g class="ping-face ping-face-dizzy"><g><path d="M14.5 25.5 m-3 0 a3 3 0 1 0 6 0 a1.8 1.8 0 1 0 -3.6 0"/></g>' +
+    '<g><path d="M25.5 25.5 m-3 0 a3 3 0 1 0 6 0 a1.8 1.8 0 1 0 -3.6 0"/></g></g>' +
+    '<path class="ping-mouth ping-mouth-smile" d="M17.8 34.4 Q20 36.2 22.2 34.4"/>' +
+    '<path class="ping-mouth ping-mouth-sad" d="M17.8 35.6 Q20 33.8 22.2 35.6"/>' +
+    '<rect class="ping-mouth-open" x="18" y="33.4" width="4" height="3.2" rx="1.4"/>' +
+    '<g class="ping-envelope" transform="translate(9 -14)"><rect x="0" y="0" width="22" height="15" rx="2"/><path d="M1 1.5 L11 9 L21 1.5"/></g>' +
     "</svg>";
 
   var el = document.createElement("div");
   el.className = "ping";
   el.setAttribute("aria-hidden", "true");
   el.innerHTML =
-    '<div class="ping-bubble"></div>' +
+    // Each line arrives as a packet: a header with its sequence number, then
+    // the payload typing out. The full line is laid out from the start (the
+    // untyped rest is transparent), so the bubble never grows while typing.
+    '<div class="ping-bubble"><span class="ping-bubble-head"></span>' +
+    '<span class="ping-bubble-text"><span class="ping-typed"></span><span class="ping-rest"></span></span></div>' +
     '<span class="ping-zzz">z</span>' +
     '<div class="ping-hit" data-cursor="link"><div class="ping-scale"><div class="ping-float"><div class="ping-squash">' +
     SVG +
     "</div></div></div></div>";
 
   var bubble = el.querySelector(".ping-bubble");
+  var bubbleHead = el.querySelector(".ping-bubble-head");
+  var bubbleText = el.querySelector(".ping-bubble-text");
+  var typed = el.querySelector(".ping-typed");
+  var rest = el.querySelector(".ping-rest");
+  var seq = 0;
+
+  function setLine(shown, all) {
+    typed.textContent = all.slice(0, shown);
+    rest.textContent = all.slice(shown);
+  }
   var squash = el.querySelector(".ping-squash");
   var pupils = el.querySelector(".ping-pupils");
   var eyes = el.querySelector(".ping-eyes");
@@ -249,12 +269,18 @@
   var waiting = null;
 
   function bubbleRect(text) {
-    var old = bubble.textContent;
-    bubble.textContent = text;
+    var old = bubbleText.textContent;
+    var oldTyped = typed.textContent.length;
+    setLine(0, text);
+    // Measured at full size: with its transition running, the box would
+    // report the scaled-down pop-in state and look smaller than it is.
+    bubble.style.transition = "none";
     bubble.style.transform = "none";
     var r = bubble.getBoundingClientRect();
     bubble.style.transform = "";
-    bubble.textContent = old;
+    void bubble.offsetWidth;
+    bubble.style.transition = "";
+    setLine(oldTyped, old);
     return r;
   }
 
@@ -283,7 +309,7 @@
     clearTimeout(talkTimer);
     clearInterval(typeTimer);
     el.classList.remove("is-talking");
-    bubble.classList.remove("is-on");
+    bubble.classList.remove("is-on", "is-typing");
     prioNow = 0;
     current = "";
   }
@@ -332,19 +358,23 @@
     if (opt.pose) setPose(opt.pose, (opt.hold || 2200) + text.length * 30);
 
     current = text;
+    seq++;
+    bubbleHead.textContent = "PING · seq " + (seq < 10 ? "0" : "") + seq;
     bubble.classList.add("is-on");
     if (reduced) {
-      bubble.textContent = text;
+      setLine(text.length, text);
     } else {
       el.classList.add("is-talking");
+      bubble.classList.add("is-typing");
       var i = 0;
-      bubble.textContent = "";
+      setLine(0, text);
       typeTimer = setInterval(function () {
         i++;
-        bubble.textContent = text.slice(0, i);
+        setLine(i, text);
         if (i >= text.length) {
           clearInterval(typeTimer);
           el.classList.remove("is-talking");
+          bubble.classList.remove("is-typing");
         }
       }, 26);
     }
@@ -532,29 +562,15 @@
     });
   }
 
-  // A palette or theme change gets noticed.
+  // A theme change gets noticed.
   var lastTheme = html.getAttribute("data-theme");
-  var lastPalette = html.getAttribute("data-palette");
   new MutationObserver(function () {
     var t = html.getAttribute("data-theme");
-    var p = html.getAttribute("data-palette");
     if (t !== lastTheme) {
       say(t === "dark" ? "Ahh, dark mode. Much better." : "Lights on! My eyes!", { prio: 2, cool: "theme", coolMs: 4000 });
-    } else if (p !== lastPalette) {
-      var LINES = {
-        ocean: "Back to blue. Classic.",
-        violet: "Purple! Very royal.",
-        emerald: "Green suits me, right?",
-        crimson: "Ooh, red. Very dramatic.",
-        cyan: "Cyan. Cool and crisp.",
-        magenta: "Magenta! Now we're talking.",
-      };
-      say(LINES[p] || "New colours!", { prio: 2, cool: "palette", coolMs: 2500, pose: "cheer" });
-      hop();
     }
     lastTheme = t;
-    lastPalette = p;
-  }).observe(html, { attributes: true, attributeFilter: ["data-theme", "data-palette"] });
+  }).observe(html, { attributes: true, attributeFilter: ["data-theme"] });
 
   // ==================== Following the route ====================
 

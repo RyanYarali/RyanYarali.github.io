@@ -1,7 +1,7 @@
 /* ==================== Motion layer ====================
  * The first-visit intro, the hero entrance, the 3D globe that stands behind
  * the hero, and the cursor ring. Like the rest of the site, every colour here
- * is a token, so all six palettes in both themes follow automatically.
+ * is a token, so both themes follow automatically.
  *
  * The page never depends on any of this: the intro and the hero entrance are
  * switched on by a class the inline <head> script adds, and both carry a CSS
@@ -1107,7 +1107,7 @@ html.js-ready .screenshots-grid .reveal.in-view img {
 /* ---------- route ----------
  * route.js draws a line that winds down the page through every heading.
  * It sits behind the content (.route-above lifts the content over it) and
- * every colour is a token, so it follows the palette and the theme. */
+ * every colour is a token, so it follows the theme. */
 .route-svg {
   position: absolute;
   inset: 0;
@@ -1442,7 +1442,8 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
   width: 100%;
   height: 100%;
   overflow: visible;
-  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--color-accent) 55%, transparent));
+  /* A tight, low glow: enough to lift him off the route, not a halo. */
+  filter: drop-shadow(0 2px 6px color-mix(in srgb, var(--color-accent) 35%, transparent));
 }
 
 @keyframes ping-bob {
@@ -1456,26 +1457,47 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
   transition: fill var(--transition-palette);
 }
 
-.ping-shine {
-  fill: var(--ping-eye);
-  opacity: 0.35;
-}
-
+/* The antenna is a signal: a dot and two arcs. At rest the arcs are faint;
+   while he talks they pulse outward one after the other, like a broadcast. */
 .ping-antenna {
   transform-box: view-box;
   transform-origin: 20px 12px;
 }
 
-.ping-antenna line {
-  stroke: var(--color-accent);
-  stroke-width: 2;
-  stroke-linecap: round;
-  transition: stroke var(--transition-palette);
+.ping-signal-dot {
+  fill: var(--color-accent);
 }
 
-.ping-antenna circle {
-  fill: var(--color-accent-strong);
-  transition: fill var(--transition-palette);
+.ping-signal {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  opacity: 0.35;
+}
+
+.ping-signal-2 {
+  opacity: 0.18;
+}
+
+.ping.is-talking .ping-signal {
+  animation: ping-signal 0.9s ease-out infinite;
+}
+
+.ping.is-talking .ping-signal-2 {
+  animation-delay: 0.18s;
+}
+
+@keyframes ping-signal {
+  0% {
+    opacity: 0.15;
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.15;
+  }
 }
 
 /* Arms hang behind the body; the hands are little round mitts. */
@@ -1486,23 +1508,23 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
 
 .ping-arm line {
   stroke: var(--color-accent);
-  stroke-width: 3.4;
+  stroke-width: 2.6;
   stroke-linecap: round;
   transition: stroke var(--transition-palette);
 }
 
 .ping-arm circle {
-  fill: var(--color-accent-strong);
+  fill: var(--color-accent);
   transition: fill var(--transition-palette);
 }
 
 .ping-arm-l {
-  transform-origin: 8px 28px;
+  transform-origin: 8px 30px;
   transform: rotate(28deg);
 }
 
 .ping-arm-r {
-  transform-origin: 32px 28px;
+  transform-origin: 32px 30px;
   transform: rotate(-28deg);
 }
 
@@ -1576,7 +1598,7 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
 
 .ping-eyes {
   transform-box: view-box;
-  transform-origin: 20px 25px;
+  transform-origin: 20px 25.2px;
   transition: transform 90ms ease-in;
 }
 
@@ -1588,12 +1610,19 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
 .ping-mouth {
   fill: none;
   stroke: var(--ping-ink);
-  stroke-width: 1.8;
+  stroke-width: 2;
   stroke-linecap: round;
 }
 
+/* The face sits on the accent body, so the closed eyes and the mouth are
+   drawn in white, like the open eyes. */
+.ping-face path,
+.ping-mouth {
+  stroke: var(--ping-eye);
+}
+
 .ping-mouth-open {
-  fill: var(--ping-ink);
+  fill: var(--ping-eye);
 }
 
 .ping-face,
@@ -1630,7 +1659,7 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
 }
 
 .ping-envelope rect {
-  fill: var(--color-surface-2);
+  fill: var(--color-surface);
   stroke: var(--color-accent);
   stroke-width: 1.6;
 }
@@ -1713,52 +1742,117 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
   }
 }
 
-/* Speech: grows upward from beside him, on the side away from the edge. */
+/* Speech arrives as a packet: a squared card with an accent edge on the side
+ * facing him, a mono header carrying the sequence number, and the payload
+ * typing out behind a block caret. It opens with a wipe out of the corner
+ * nearest him, as if it had just been delivered, rather than a cartoon pop. */
 .ping-bubble {
   position: absolute;
-  bottom: calc(16px * var(--s));
-  left: calc(28px * var(--s));
+  bottom: calc(18px * var(--s));
+  left: calc(30px * var(--s));
+  display: grid;
+  gap: 0.3rem;
   width: max-content;
-  max-width: min(250px, 62vw);
-  padding: 0.55rem 0.8rem;
-  border-radius: 14px 14px 14px 4px;
-  background: var(--color-surface-2);
+  max-width: min(260px, 62vw);
+  padding: 0.6rem 0.85rem 0.7rem;
+  border-radius: 4px;
+  background: var(--color-surface);
   border: 1px solid var(--color-border-strong);
-  box-shadow: var(--shadow-md);
+  border-left: 2px solid var(--color-accent);
+  box-shadow: var(--shadow-lg);
   color: var(--color-text);
   font-family: var(--font-display);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 500;
   font-style: normal;
-  line-height: 1.35;
-  letter-spacing: normal;
+  line-height: 1.32;
+  letter-spacing: -0.005em;
   text-transform: none;
   text-align: left;
   pointer-events: none;
-  /* It pops in by scale rather than fading, so its text is never shown
-     half-transparent (and low-contrast) over whatever is behind it. */
+  /* Never faded: its text is never shown half-transparent (and so
+     low-contrast) over whatever is behind it. */
   visibility: hidden;
-  transform: translate(-6px, 6px) scale(0.6);
-  transform-origin: 0 100%;
+  clip-path: inset(100% 100% 0 0);
+  transform: translate(-4px, 4px);
   transition:
-    visibility 0s linear 320ms,
-    transform 320ms var(--ease-out-expo),
+    visibility 0s linear 300ms,
+    clip-path 300ms var(--ease-out-expo),
+    transform 300ms var(--ease-out-expo),
     left 700ms var(--ease-out-expo),
     right 700ms var(--ease-out-expo),
     bottom 700ms var(--ease-out-expo);
 }
 
+/* The port it was delivered from: a small square on the corner nearest
+   him, in the accent. */
+.ping-bubble::after {
+  content: "";
+  position: absolute;
+  left: -5px;
+  bottom: -5px;
+  width: 8px;
+  height: 8px;
+  background: var(--color-accent);
+}
+
 .ping-bubble.is-on {
   visibility: visible;
+  clip-path: inset(0 0 0 0);
   transform: none;
   transition-delay: 0s;
+  transition-duration: 0s, 520ms, 520ms, 700ms, 700ms, 700ms;
+}
+
+.ping-bubble-head {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--color-accent);
+}
+
+.ping-rest {
+  color: transparent;
+}
+
+/* A block caret at the end of what has been typed, blinking only while
+   the line is still coming in. */
+.ping-bubble.is-typing .ping-typed::after {
+  content: "";
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  margin-left: 1px;
+  vertical-align: -0.14em;
+  background: var(--color-accent);
+  animation: ping-caret 0.7s steps(1) infinite;
+}
+
+@keyframes ping-caret {
+  50% {
+    opacity: 0;
+  }
 }
 
 .ping.is-flip .ping-bubble {
   left: auto;
-  right: calc(28px * var(--s));
-  border-radius: 14px 14px 4px 14px;
-  transform-origin: 100% 100%;
+  right: calc(30px * var(--s));
+  border-left-width: 1px;
+  border-left-color: var(--color-border-strong);
+  border-right: 2px solid var(--color-accent);
+  clip-path: inset(100% 0 0 100%);
+  transform: translate(4px, 4px);
+}
+
+.ping.is-flip .ping-bubble::after {
+  left: auto;
+  right: -5px;
+}
+
+.ping.is-flip .ping-bubble.is-on {
+  clip-path: inset(0 0 0 0);
+  transform: none;
 }
 
 .ping.is-big .ping-bubble {
@@ -1775,8 +1869,13 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
     right: auto;
     bottom: calc(-4px * var(--s));
     max-width: calc(100vw - 150px);
-    border-radius: 14px 14px 14px 4px;
-    transform-origin: 0 100%;
+    border-left: 2px solid var(--color-accent);
+    border-right: 1px solid var(--color-border-strong);
+  }
+
+  .ping.is-big.is-flip .ping-bubble::after {
+    left: -5px;
+    right: auto;
   }
 }
 /* On a page without a route he stands beside the heading instead. */
@@ -1811,6 +1910,8 @@ html.js-ready .skills-rows > .skills-row.reveal.in-view {
   .ping.is-flip.pose-wave .ping-arm-l,
   .ping.pose-wave .ping-antenna,
   .ping-face-dizzy g,
+  .ping.is-talking .ping-signal,
+  .ping-bubble.is-typing .ping-typed::after,
   .ping.is-sleep .ping-zzz {
     animation: none;
   }
