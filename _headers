@@ -1,0 +1,29 @@
+# Response headers on Cloudflare (Workers static assets read this file).
+# Every local CSS and JS link carries a ?v= cache tag that changes with the
+# file, so browsers may keep them for a year; images change rarely and keep
+# for a week; pages are checked every time.
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
+  Strict-Transport-Security: max-age=31536000
+
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/assets/css/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/js/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/vendor/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/*.jpg
+  Cache-Control: public, max-age=604800
+
+/assets/og/*
+  Cache-Control: public, max-age=604800

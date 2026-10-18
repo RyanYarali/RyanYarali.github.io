@@ -1,0 +1,15 @@
+# Files in the repo that are not part of the public site (wrangler uploads
+# everything else in the folder).
+.git
+.gitignore
+.assetsignore
+.claude
+.agents
+.wrangler
+.dev.vars*
+node_modules
+worker
+test
+wrangler.jsonc
+README.md
+CNAME
