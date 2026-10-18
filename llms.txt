@@ -9,6 +9,7 @@ Key facts:
 - Education: Computer Systems Technology Diploma, British Columbia Institute of Technology (BCIT), Data Communications & Cyber Security option. Sept 2025 to Apr 2027 (expected); currently in Term 3.
 - Location: Coquitlam, Greater Vancouver, BC, Canada
 - Looking for: internship, co-op and junior developer roles
+- Freelance web work (prices in CAD, starting points; fixed quote after a free 20-minute call): portfolio site from $600; business website from $1,500; custom web app from $3,500; care plan $49/month. Add-ons: extra page $120, second language (incl. Farsi/right-to-left) from $350, booking or order system from $300, copywriting $200, LinkedIn refresh $100, domain and email setup $90, rush delivery +25%. Details: https://ryanyarali.com/#pricing
 - Work: 15+ projects shipped; four are shown publicly with the clients' permission (listed below), plus this site
 - Contact: the form at https://ryanyarali.com/#contact
 - GitHub: https://github.com/RyanYarali
@@ -33,11 +34,11 @@ Skills listed on the site:
 - [TaskMate](https://ryanyarali.com/projects/taskmate.html): BCIT coursework, 2025. A mobile-friendly task manager for students, built end to end with Firebase Authentication and Firestore as a team project in COMM 1800 (Team DTC 09) and tested by a nine-person class team. Source: https://github.com/RyanYarali/1800_202530_DTC09
 - [FoodRoutes](https://ryanyarali.com/projects/foodroutes.html): BCIT COMP 2800 team project (team of four), 2026. A mobile web app that finds affordable groceries nearby and gives directions there by transit, walking, cycling or driving. Ryan built the navigation map (directions in four travel modes, saved routes in Supabase capped at the 10 most recent, "Use my location") and the accounts flow (Supabase login and sign-up with validation, a guided intro.js tour, protected routes). React 19, TypeScript, Vite, Supabase, Google Maps JavaScript API. Code: https://github.com/RyanYarali/2800-202610-DTC09
 - [Hacker Tycoon](https://ryanyarali.com/projects/hackertycoon.html): BCIT COMP 2522 term project (team of two), 2026. A JavaFX idle tycoon game: hacking jobs earn crypto while a suspicion meter rises toward an FBI raid that takes half of it; random events, two upgrade shops, eight badges, save and load, 1x/2x/5x speed. Ryan wrote about 80% of the game code: the game screen and loop, save and load, the sound system, random events, colour-coded logs and badges. Java 25, JavaFX, Gradle, CheckStyle. Code is private under course rules.
-- [This site](https://ryanyarali.com/projects/this-site.html): ryanyarali.com itself. Plain HTML, CSS and JavaScript on GitHub Pages with no framework and no build step; a three.js network globe, scroll-driven motion, six colour palettes that meet WCAG AA, and every word in the HTML. Source: https://github.com/RyanYarali/RyanYarali.github.io
+- [This site](https://ryanyarali.com/projects/this-site.html): ryanyarali.com itself. Plain HTML, CSS and JavaScript on Cloudflare with no framework and no build step; a three.js network globe, scroll-driven motion, six colour palettes that meet WCAG AA, and every word in the HTML. Source: https://github.com/RyanYarali/RyanYarali.github.io
 
 ## Pages
 
-- [Home](https://ryanyarali.com/): About, selected work, skills, education and contact
+- [Home](https://ryanyarali.com/): About, selected work, skills, pricing, education and contact
 - [Projects](https://ryanyarali.com/projects.html): All projects with descriptions and tech stacks
 - [Nook Look Studio case study](https://ryanyarali.com/projects/nooklook.html): Brief, design system, stack, SEO and client process for the studio site
 - [Vancobab case study](https://ryanyarali.com/projects/vancobab.html): Brief, Persian design system, order builder, pre-launch pivot and client process for the food truck site

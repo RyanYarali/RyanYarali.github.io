@@ -1,0 +1,36 @@
+// ryanyarali.com on Cloudflare Workers (free plan): the repo's files are the
+// site, and worker/index.js handles the contact form and the client previews.
+// Deploy: `npx wrangler deploy` (or push to main once Workers Builds is
+// connected to the repo). Secrets, set with `npx wrangler secret put NAME`:
+//   RESEND_API_KEY     sends the emails (resend.com, domain ryanyarali.com)
+//   TURNSTILE_SECRET   the form's bot check
+//   HASH_SALT          any long random string; salts the stored IP hashes
+//   TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID   optional: a Telegram ping per message
+{
+  "$schema": "https://unpkg.com/wrangler/config-schema.json",
+  "name": "ryanyarali",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": ".",
+    "binding": "ASSETS",
+    // Pages keep their .html URLs exactly (the canonicals use them); the
+    // Worker serves index.html for folders and the 404 page itself.
+    "html_handling": "none",
+    "not_found_handling": "none",
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "ryanyarali",
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "worker/migrations"
+    }
+  ],
+  "vars": {
+    "MAIL_FROM": "Ryan Yarali <ryan@ryanyarali.com>",
+    "MAIL_TO": "ryan@ryanyarali.com"
+  },
+  "observability": { "enabled": true }
+}

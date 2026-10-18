@@ -64,16 +64,16 @@
     />
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="assets/css/tokens.css?v=20261041" />
-    <link rel="stylesheet" href="assets/css/reset.css?v=20261041" />
-    <link rel="stylesheet" href="assets/css/typography.css?v=20261041" />
-    <link rel="stylesheet" href="assets/css/layout.css?v=20261041" />
-    <link rel="stylesheet" href="assets/css/components.css?v=20261041" />
-    <link rel="stylesheet" href="assets/css/pages.css?v=20261041" />
-    <link rel="stylesheet" href="assets/css/interactive.css?v=20261041" />
-    <link rel="stylesheet" href="assets/css/motion.css?v=20261041" />
-    <link rel="stylesheet" href="assets/css/bold.css?v=20261041" />
-    <link rel="stylesheet" href="assets/css/style.css?v=20261041" />
+    <link rel="stylesheet" href="assets/css/tokens.css?v=20261042" />
+    <link rel="stylesheet" href="assets/css/reset.css?v=20261042" />
+    <link rel="stylesheet" href="assets/css/typography.css?v=20261042" />
+    <link rel="stylesheet" href="assets/css/layout.css?v=20261042" />
+    <link rel="stylesheet" href="assets/css/components.css?v=20261042" />
+    <link rel="stylesheet" href="assets/css/pages.css?v=20261042" />
+    <link rel="stylesheet" href="assets/css/interactive.css?v=20261042" />
+    <link rel="stylesheet" href="assets/css/motion.css?v=20261042" />
+    <link rel="stylesheet" href="assets/css/bold.css?v=20261042" />
+    <link rel="stylesheet" href="assets/css/style.css?v=20261042" />
 
 
     <!-- Favicon -->
@@ -137,6 +137,68 @@
             "sameAs": [
               "https://github.com/RyanYarali",
               "https://www.linkedin.com/in/ryan-yarali/"
+            ],
+            "makesOffer": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Portfolio site",
+                  "description": "A custom portfolio website for students, job seekers and freelancers: three style demos, custom design and motion, SEO and a contact form.",
+                  "areaServed": "Greater Vancouver, BC, Canada"
+                },
+                "priceSpecification": {
+                  "@type": "PriceSpecification",
+                  "minPrice": 600,
+                  "priceCurrency": "CAD"
+                },
+                "url": "https://ryanyarali.com/#pricing"
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Business website",
+                  "description": "A website of up to six pages for a local business, on WordPress or hand-coded, with local SEO, a Google Business Profile and a quote form.",
+                  "areaServed": "Greater Vancouver, BC, Canada"
+                },
+                "priceSpecification": {
+                  "@type": "PriceSpecification",
+                  "minPrice": 1500,
+                  "priceCurrency": "CAD"
+                },
+                "url": "https://ryanyarali.com/#pricing"
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Custom web app",
+                  "description": "A web app with a database, logins and an admin panel: bookings, orders or reservations, email and Telegram alerts, bilingual support.",
+                  "areaServed": "Greater Vancouver, BC, Canada"
+                },
+                "priceSpecification": {
+                  "@type": "PriceSpecification",
+                  "minPrice": 3500,
+                  "priceCurrency": "CAD"
+                },
+                "url": "https://ryanyarali.com/#pricing"
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Website care plan",
+                  "description": "Hosting watched, updates, backups, uptime alerts and up to an hour of small edits a month."
+                },
+                "priceSpecification": {
+                  "@type": "UnitPriceSpecification",
+                  "price": 49,
+                  "priceCurrency": "CAD",
+                  "unitText": "month"
+                },
+                "url": "https://ryanyarali.com/#pricing"
+              }
             ],
             "knowsAbout": [
               "Full-stack web development",
@@ -373,6 +435,7 @@
           <li><a href="#about" class="nav-link">About</a></li>
           <li><a href="#projects" class="nav-link">Projects</a></li>
           <li><a href="#skills" class="nav-link">Skills</a></li>
+          <li><a href="#pricing" class="nav-link">Pricing</a></li>
           <li><a href="#contact" class="nav-link">Contact</a></li>
         </ul>
 
@@ -824,6 +887,115 @@
         </div>
       </section>
 
+      <!-- Pricing Section -->
+      <!-- The prices here are the ones the contact form adds up (its inputs
+           carry the same figures) and the ones worker/catalog.js puts in the
+           emails; test/catalog.test.js fails if they drift apart. -->
+      <section class="section pricing" id="pricing">
+        <div class="container">
+          <div class="section-heading reveal">
+            <p class="eyebrow">Work with me</p>
+            <h2 data-rise>Websites, priced <span class="highlight">up front.</span></h2>
+            <p class="section-intro">
+              Three packages and a few add-ons. Prices are in Canadian
+              dollars and show where a project starts. After a free
+              20-minute call you get a fixed quote, before any work begins.
+            </p>
+          </div>
+
+          <div class="plan-grid reveal-group">
+            <article class="plan" data-icon="folio">
+              <div class="plan-top">
+                <svg class="skill-icon" aria-hidden="true" focusable="false"></svg>
+                <span class="plan-code" aria-hidden="true">PKG 01 · 1–2 wks</span>
+              </div>
+              <h3 class="plan-name">Portfolio site</h3>
+              <p class="plan-for">For students, job seekers and freelancers who want to stand out.</p>
+              <p class="plan-price"><span class="plan-from">from</span> <span class="plan-amount">$600</span></p>
+              <ul class="plan-list">
+                <li>Three style demos to choose from</li>
+                <li>Custom design and motion, made for phones first</li>
+                <li>SEO, share cards and Google Search setup</li>
+                <li>A contact form that emails you</li>
+                <li>Two rounds of changes</li>
+              </ul>
+              <a class="plan-proof" href="projects/this-site.html">Example: this site</a>
+              <a href="#contact" class="btn btn-secondary btn-full plan-cta" data-pick="portfolio">Start a portfolio</a>
+            </article>
+
+            <article class="plan is-featured" data-icon="shop">
+              <div class="plan-top">
+                <svg class="skill-icon" aria-hidden="true" focusable="false"></svg>
+                <span class="plan-code" aria-hidden="true">PKG 02 · 2–4 wks</span>
+              </div>
+              <h3 class="plan-name">Business website</h3>
+              <p class="plan-for">For local businesses that need to be found, trusted and booked.</p>
+              <p class="plan-price"><span class="plan-from">from</span> <span class="plan-amount">$1,500</span></p>
+              <ul class="plan-list">
+                <li>Up to 6 pages, on WordPress or hand-coded</li>
+                <li>Local SEO and a Google Business Profile</li>
+                <li>A quote or contact form with email alerts</li>
+                <li>Fast on phones, checked for accessibility</li>
+                <li>A walkthrough, so you can edit it yourself</li>
+              </ul>
+              <a class="plan-proof" href="projects/nooklook.html">Example: Nook Look</a>
+              <a href="#contact" class="btn btn-primary btn-full plan-cta" data-pick="business">Start a business site</a>
+            </article>
+
+            <article class="plan" data-icon="app">
+              <div class="plan-top">
+                <svg class="skill-icon" aria-hidden="true" focusable="false"></svg>
+                <span class="plan-code" aria-hidden="true">PKG 03 · 4+ wks</span>
+              </div>
+              <h3 class="plan-name">Custom web app</h3>
+              <p class="plan-for">For when a website isn't enough: bookings, accounts, an admin panel.</p>
+              <p class="plan-price"><span class="plan-from">from</span> <span class="plan-amount">$3,500</span></p>
+              <ul class="plan-list">
+                <li>A database, logins and an admin panel</li>
+                <li>Bookings, orders or reservations</li>
+                <li>Email and Telegram alerts</li>
+                <li>Bilingual, right-to-left languages included</li>
+                <li>Hosting set up on Cloudflare</li>
+              </ul>
+              <a class="plan-proof" href="projects/vancobab.html">Example: Vanco Bab</a>
+              <a href="#contact" class="btn btn-secondary btn-full plan-cta" data-pick="custom">Plan a web app</a>
+            </article>
+          </div>
+
+          <div class="care reveal">
+            <div>
+              <p class="plan-code">After launch</p>
+              <h3 class="care-name">Care plan <span class="care-price">$49<small>/month</small></span></h3>
+            </div>
+            <p class="care-text">
+              Hosting watched, updates and backups done, an alert if the
+              site goes down, and up to an hour of small edits every month.
+              Cancel any time.
+            </p>
+          </div>
+
+          <div class="extras">
+            <h3 class="extras-title reveal">Add-ons</h3>
+            <ul class="addon-list reveal-group">
+              <li><span class="addon-name">Extra page</span><span class="addon-note">Past what your package includes.</span><span class="addon-price">$120 each</span></li>
+              <li><span class="addon-name">Second language</span><span class="addon-note">Farsi and other right-to-left languages included.</span><span class="addon-price">from $350</span></li>
+              <li><span class="addon-name">Booking or order system</span><span class="addon-note">Visitors pick a time or build an order; you get an alert.</span><span class="addon-price">from $300</span></li>
+              <li><span class="addon-name">Copywriting</span><span class="addon-note">I write the words from a short call with you.</span><span class="addon-price">$200</span></li>
+              <li><span class="addon-name">LinkedIn refresh</span><span class="addon-note">Headline, About and experience, rewritten to match.</span><span class="addon-price">$100</span></li>
+              <li><span class="addon-name">Domain and email</span><span class="addon-note">yourname.com and you@yourname.com, set up and connected.</span><span class="addon-price">$90</span></li>
+              <li><span class="addon-name">Rush delivery</span><span class="addon-note">About half the usual time.</span><span class="addon-price">+25%</span></li>
+            </ul>
+          </div>
+
+          <ol class="steps reveal-group" aria-label="How a project goes">
+            <li><span class="step-n" aria-hidden="true">01</span><strong>Free call</strong> 20 minutes on what you need. You get a fixed quote.</li>
+            <li><span class="step-n" aria-hidden="true">02</span><strong>Design</strong> Demos or a plan for you to pick from and approve.</li>
+            <li><span class="step-n" aria-hidden="true">03</span><strong>Build</strong> A private preview link, so you can follow along.</li>
+            <li><span class="step-n" aria-hidden="true">04</span><strong>Launch</strong> Live on your domain, with a walkthrough. Half to start, half at launch.</li>
+          </ol>
+        </div>
+      </section>
+
       <!-- Contact Section -->
       <section class="section contact" id="contact">
         <div class="container">
@@ -833,10 +1005,11 @@
                 <p class="eyebrow">Contact</p>
                 <h2 data-rise>Let's <span class="highlight">talk.</span></h2>
                 <p class="section-intro">
-                  I'm based in Coquitlam, in Greater Vancouver, and looking
-                  for internship, co-op, and junior developer roles. If
-                  something here is a fit, send a note. I read every message
-                  myself.
+                  Hiring, or need a website? I'm based in Coquitlam, in
+                  Greater Vancouver. I'm looking for co-op, internship and
+                  junior developer roles, and I take on a few web projects
+                  at a time. I read every message myself and usually reply
+                  within a day.
                 </p>
               </div>
               <div class="contact-availability">
@@ -857,13 +1030,49 @@
               </p>
             </div>
 
+            <!-- Posts to the site's own Worker (worker/index.js), which checks
+                 Turnstile, saves the message to D1 and emails it to Ryan, with
+                 a thank-you to the sender. Prices on the add-ons are the ones
+                 in the pricing section. -->
             <form
               class="contact-form"
               id="contact-form"
-              action="https://formspree.io/f/mwvebbgj"
+              action="/api/contact"
               method="POST"
+              novalidate
             >
-              <input type="hidden" name="_subject" value="New message from ryanyarali.com" />
+              <fieldset class="form-group chip-group" id="topic-group" aria-describedby="topic-error">
+                <legend>What's this about? *</legend>
+                <div class="chips">
+                  <label class="chip"><input type="radio" name="topic" value="hiring" required /><span>Hiring / co-op</span></label>
+                  <label class="chip"><input type="radio" name="topic" value="portfolio" data-from="600" /><span>Portfolio site</span></label>
+                  <label class="chip"><input type="radio" name="topic" value="business" data-from="1500" /><span>Business website</span></label>
+                  <label class="chip"><input type="radio" name="topic" value="custom" data-from="3500" /><span>Custom web app</span></label>
+                  <label class="chip"><input type="radio" name="topic" value="other" /><span>Something else</span></label>
+                </div>
+                <span class="error-message" id="topic-error"></span>
+              </fieldset>
+
+              <!-- Shown once a package is picked. -->
+              <fieldset class="form-group chip-group addon-group" id="addon-group" hidden>
+                <legend>Add-ons <span class="legend-note">optional</span></legend>
+                <div class="chips">
+                  <label class="chip"><input type="checkbox" name="addons" value="page" data-price="120" /><span>Extra page <em>+$120</em></span></label>
+                  <label class="chip"><input type="checkbox" name="addons" value="language" data-price="350" /><span>Second language <em>+$350</em></span></label>
+                  <label class="chip"><input type="checkbox" name="addons" value="booking" data-price="300" /><span>Booking or orders <em>+$300</em></span></label>
+                  <label class="chip"><input type="checkbox" name="addons" value="copy" data-price="200" /><span>Copywriting <em>+$200</em></span></label>
+                  <label class="chip" data-only="portfolio"><input type="checkbox" name="addons" value="linkedin" data-price="100" /><span>LinkedIn refresh <em>+$100</em></span></label>
+                  <label class="chip"><input type="checkbox" name="addons" value="domain" data-price="90" /><span>Domain and email <em>+$90</em></span></label>
+                  <label class="chip"><input type="checkbox" name="addons" value="rush" data-percent="25" /><span>Rush <em>+25%</em></span></label>
+                  <label class="chip"><input type="checkbox" name="addons" value="care" data-monthly="49" /><span>Care plan <em>$49/mo</em></span></label>
+                </div>
+                <p class="estimate" id="estimate" aria-live="polite">
+                  <span class="estimate-label">Estimate</span>
+                  <span class="estimate-value"><span class="plan-from">from</span> <strong id="estimate-total">$0</strong><span id="estimate-monthly"></span></span>
+                  <span class="estimate-note">You get a fixed quote after a free call.</span>
+                </p>
+              </fieldset>
+
               <div class="form-group">
                 <label for="name">Name *</label>
                 <input
@@ -871,8 +1080,10 @@
                   id="name"
                   name="name"
                   required
+                  maxlength="100"
                   placeholder="Your name"
                   autocomplete="name"
+                  aria-describedby="name-error"
                 />
                 <span class="error-message" id="name-error"></span>
               </div>
@@ -884,8 +1095,13 @@
                   id="email"
                   name="email"
                   required
+                  maxlength="200"
                   placeholder="your.email@example.com"
                   autocomplete="email"
+                  autocorrect="off"
+                  autocapitalize="off"
+                  spellcheck="false"
+                  aria-describedby="email-error"
                 />
                 <span class="error-message" id="email-error"></span>
               </div>
@@ -896,11 +1112,25 @@
                   id="message"
                   name="message"
                   required
+                  maxlength="5000"
                   rows="6"
                   placeholder="Your message..."
+                  aria-describedby="message-error"
                 ></textarea>
                 <span class="error-message" id="message-error"></span>
               </div>
+
+              <!-- A field people never see. Bots that fill in every input
+                   fill this one too, and the Worker drops their message. -->
+              <div class="hp" aria-hidden="true">
+                <label for="website">Website</label>
+                <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+              </div>
+
+              <!-- Cloudflare Turnstile, loaded when the form is first used
+                   (form.js). It stays invisible unless Cloudflare wants a
+                   click. -->
+              <div class="turnstile" id="turnstile" data-sitekey="1x00000000000000000000AA"></div>
 
               <button type="submit" class="btn btn-primary btn-full" data-magnetic>
                 Send message
@@ -968,18 +1198,18 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="assets/js/theme.js?v=20261041"></script>
-    <script src="assets/js/form.js?v=20261041"></script>
-    <script src="assets/js/main.js?v=20261041"></script>
-    <script src="assets/js/flair.js?v=20261041"></script>
+    <script src="assets/js/theme.js?v=20261042"></script>
+    <script src="assets/js/form.js?v=20261042"></script>
+    <script src="assets/js/main.js?v=20261042"></script>
+    <script src="assets/js/flair.js?v=20261042"></script>
     <!-- Straight after flair.js (its one dependency), so the name appears
          without waiting for the scroll choreography to load. -->
-    <script src="assets/js/hero.js?v=20261041"></script>
-    <script src="assets/js/interactive.js?v=20261041"></script>
-    <script src="assets/js/cursor.js?v=20261041"></script>
-    <script src="assets/js/story.js?v=20261041"></script>
-    <script src="assets/js/route.js?v=20261041"></script>
-    <script src="assets/js/ping-sprite.js?v=20261041"></script>
-    <script src="assets/js/ping.js?v=20261041"></script>
+    <script src="assets/js/hero.js?v=20261042"></script>
+    <script src="assets/js/interactive.js?v=20261042"></script>
+    <script src="assets/js/cursor.js?v=20261042"></script>
+    <script src="assets/js/story.js?v=20261042"></script>
+    <script src="assets/js/route.js?v=20261042"></script>
+    <script src="assets/js/ping-sprite.js?v=20261042"></script>
+    <script src="assets/js/ping.js?v=20261042"></script>
   </body>
 </html>
