@@ -20,7 +20,7 @@ export const ADDONS = {
   domain: { label: "Domain and email", say: "domain and email setup", price: 60 },
   linkedin: { label: "LinkedIn refresh", say: "a LinkedIn refresh", price: 80, only: "portfolio" },
   rush: { label: "Rush delivery", say: "rush delivery", percent: 25 },
-  care: { label: "Care plan", say: "the care plan", monthly: 29 },
+  care: { label: "Care plan", say: "the care plan", monthly: 39 },
 };
 
 // A referred client's discount on their first project, and what the friend

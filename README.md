@@ -252,10 +252,34 @@ The form posts JSON to `/api/contact`, handled by `worker/index.js`:
 3. allows five messages an hour per visitor (by salted IP hash);
 4. saves the message to D1 (`messages` table), so nothing is lost if email
    fails;
-5. emails Ryan through Resend, with the sender as reply-to, plus an optional
-   Telegram alert;
+5. texts Ryan on Telegram (below), or emails him through Resend if the bot
+   isn't set up or can't send;
 6. sends the sender a thank-you, at most one per address a day. It repeats
    only what they picked from fixed lists, never their own words.
+
+## The Telegram bot
+
+`worker/telegram.js`, fed by `worker/visits.js` and `assets/js/hit.js` (one
+beacon per page view, no cookies; visitors are a salted hash of IP and
+browser that changes daily; Do Not Track is respected; `?notrack=1` stops
+counting a device). It only talks to `TELEGRAM_CHAT_ID`.
+
+- **Leads**: every message, with the estimate, the referral (and whether the
+  referrer is a past client), where the sender came from (credit tag, friend
+  link, Google, ChatGPT...), the pages they viewed and their time on the site.
+  Buttons: Reply, Call booked, Won, Not a fit. Reply to a lead in Telegram
+  and the bot shows a preview, then emails it from ryan@ryanyarali.com.
+- **Live alerts**: someone arrived from a credit tag (`?ref=` on client
+  sites), a friend link (`?friend=`) or an AI answer. `/alerts` toggles them.
+- **Commands**: `/stats`, `/now`, `/leads`, `/refs` (who to pay the $50),
+  `/alerts`, `/ignoreme`, `/help`.
+- **Every morning at 9** (cron, B.C. time): yesterday's numbers and any
+  lead still waiting after a day.
+
+Set it up: make a bot with @BotFather, `wrangler secret put` the token and a
+random `TELEGRAM_WEBHOOK_SECRET`, open `/api/telegram/setup?key=<secret>`,
+message the bot (it replies with your chat id), `wrangler secret put
+TELEGRAM_CHAT_ID`, and open the setup link again.
 
 Run it locally with `npx wrangler d1 migrations apply ryanyarali --local` once,
 then `npx wrangler dev`. With no `RESEND_API_KEY` the emails are logged

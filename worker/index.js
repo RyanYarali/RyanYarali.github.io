@@ -1,6 +1,11 @@
 // ryanyarali.com on Cloudflare. The site itself is static files (wrangler.jsonc
 // serves the repo); this Worker only runs for:
-//   POST /api/contact   the contact form: check, save to D1, email, thank
+//   POST /api/contact   the contact form: check, save to D1, text Ryan on
+//                       Telegram (email if that fails), thank the sender
+//   POST /api/hit       page-view beacons from assets/js/hit.js
+//   POST /api/telegram  the Telegram bot's webhook (worker/telegram.js)
+//   GET  /api/telegram/setup?key=...   connects the bot, once
+//   the 9:00 cron       the bot's morning summary
 //   "/" and other folders, which get their index.html
 //   any other path that isn't a file here, which is passed to GitHub Pages,
 //   where the client previews live (ryanyarali.com/taha-portfolio and the
@@ -8,7 +13,9 @@
 //   the site's own 404 page.
 
 import { TOPICS, ADDONS, isPackage, estimate } from "./catalog.js";
-import { ownerMail, senderMail, send, telegram } from "./mail.js";
+import { ownerMail, senderMail, send } from "./mail.js";
+import { alertLead, alertVisit, morning, setup, webhook } from "./telegram.js";
+import { bcDay, recordHit, visitorId } from "./visits.js";
 
 const GITHUB = "https://ryanyarali.github.io";
 const PER_HOUR = 5; // messages from one visitor
@@ -18,6 +25,9 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname === "/api/contact") return contact(request, env, ctx, url);
+    if (url.pathname === "/api/hit") return hit(request, env, ctx, url);
+    if (url.pathname === "/api/telegram" && request.method === "POST") return webhook(env, request, url);
+    if (url.pathname === "/api/telegram/setup") return setup(env, url);
     if (url.pathname.startsWith("/api/")) return json({ ok: false, error: "Not found" }, 404);
     if (url.pathname.endsWith("/")) {
       const index = await env.ASSETS.fetch(new URL(url.pathname + "index.html", url.origin), request);
@@ -25,7 +35,26 @@ export default {
     }
     return fromGitHub(request, env, url);
   },
+
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(morning(env));
+  },
 };
+
+// ==================== Page views ====================
+
+async function hit(request, env, ctx, url) {
+  const origin = request.headers.get("Origin");
+  if (request.method === "POST" && (!origin || origin === url.origin)) {
+    try {
+      const visit = await recordHit(env, request, url);
+      if (visit) ctx.waitUntil(alertVisit(env, visit).catch((e) => console.error("[telegram] visit alert", e)));
+    } catch (e) {
+      console.error("[hit] failed", e);
+    }
+  }
+  return new Response(null, { status: 204, headers: { "Cache-Control": "no-store" } });
+}
 
 function json(body, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -138,6 +167,9 @@ async function contact(request, env, ctx, url) {
     return json({ ok: false, error: "Couldn't confirm you're not a bot. Please try again." }, 403);
 
   const ipHash = await sha256((env.HASH_SALT || "ryanyarali.com") + ip);
+  // The same daily id the page-view beacons use, so the bot can tell Ryan
+  // where this sender came from and what they looked at.
+  m.vid = await visitorId(env, request, bcDay(new Date()));
   let id = null;
   try {
     const recent = await env.DB.prepare(
@@ -148,9 +180,9 @@ async function contact(request, env, ctx, url) {
     if (recent && recent.n >= PER_HOUR)
       return json({ ok: false, error: "That's a lot of messages. Please email ryan@ryanyarali.com instead." }, 429);
     const row = await env.DB.prepare(
-      "INSERT INTO messages (topic, addons, estimate, monthly, name, email, message, ref, ip_hash) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id",
+      "INSERT INTO messages (topic, addons, estimate, monthly, name, email, message, ref, ip_hash, vid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id",
     )
-      .bind(m.topic, JSON.stringify(m.addons), m.estimate?.total ?? null, m.estimate?.monthly ?? null, m.name, m.email, m.message, m.ref || null, ipHash)
+      .bind(m.topic, JSON.stringify(m.addons), m.estimate?.total ?? null, m.estimate?.monthly ?? null, m.name, m.email, m.message, m.ref || null, ipHash, m.vid)
       .first();
     id = row && row.id;
   } catch (e) {
@@ -163,11 +195,12 @@ async function contact(request, env, ctx, url) {
 }
 
 async function notify(env, m, id) {
-  const owner = ownerMail(m, new Date());
-  const [notified] = await Promise.all([
-    send(env, { ...owner, to: env.MAIL_TO, replyTo: m.email }),
-    telegram(env, m),
-  ]);
+  // Telegram first; email Ryan only if the bot isn't set up or can't send.
+  let notified = await alertLead(env, m, id).catch((e) => {
+    console.error("[telegram] lead alert", e);
+    return false;
+  });
+  if (!notified) notified = await send(env, { ...ownerMail(m, new Date()), to: env.MAIL_TO, replyTo: m.email });
 
   // One thank-you per address a day, so the form can't flood someone's
   // inbox with them.

@@ -64,16 +64,16 @@
     />
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="assets/css/tokens.css?v=20261043" />
-    <link rel="stylesheet" href="assets/css/reset.css?v=20261043" />
-    <link rel="stylesheet" href="assets/css/typography.css?v=20261043" />
-    <link rel="stylesheet" href="assets/css/layout.css?v=20261043" />
-    <link rel="stylesheet" href="assets/css/components.css?v=20261043" />
-    <link rel="stylesheet" href="assets/css/pages.css?v=20261043" />
-    <link rel="stylesheet" href="assets/css/interactive.css?v=20261043" />
-    <link rel="stylesheet" href="assets/css/motion.css?v=20261043" />
-    <link rel="stylesheet" href="assets/css/bold.css?v=20261043" />
-    <link rel="stylesheet" href="assets/css/style.css?v=20261043" />
+    <link rel="stylesheet" href="assets/css/tokens.css?v=20261044" />
+    <link rel="stylesheet" href="assets/css/reset.css?v=20261044" />
+    <link rel="stylesheet" href="assets/css/typography.css?v=20261044" />
+    <link rel="stylesheet" href="assets/css/layout.css?v=20261044" />
+    <link rel="stylesheet" href="assets/css/components.css?v=20261044" />
+    <link rel="stylesheet" href="assets/css/pages.css?v=20261044" />
+    <link rel="stylesheet" href="assets/css/interactive.css?v=20261044" />
+    <link rel="stylesheet" href="assets/css/motion.css?v=20261044" />
+    <link rel="stylesheet" href="assets/css/bold.css?v=20261044" />
+    <link rel="stylesheet" href="assets/css/style.css?v=20261044" />
 
 
     <!-- Favicon -->
@@ -238,7 +238,7 @@
                 },
                 "priceSpecification": {
                   "@type": "UnitPriceSpecification",
-                  "price": 29,
+                  "price": 39,
                   "priceCurrency": "CAD",
                   "unitText": "month"
                 },
@@ -998,7 +998,7 @@
                 <li>Your gallery, menu or reviews</li>
                 <li>A quote form with email alerts</li>
               </ul>
-              <a class="plan-proof" href="projects/vancobab.html">Example: Vanco Bab</a>
+              <a class="plan-proof" href="projects/nooklook.html">Example: Nook Look</a>
               <a href="#contact" class="btn btn-primary btn-full plan-cta" data-pick="business">Start a business site</a>
             </article>
 
@@ -1016,7 +1016,7 @@
                 <li>Confirmation emails for you and your customers</li>
                 <li>Everything in the business website</li>
               </ul>
-              <a class="plan-proof" href="projects/nooklook.html">Example: Nook Look</a>
+              <span class="plan-proof is-soon">Example: Termeh (soon)</span>
               <a href="#contact" class="btn btn-secondary btn-full plan-cta" data-pick="store">Start a booking site</a>
             </article>
           </div>
@@ -1024,7 +1024,7 @@
           <div class="care reveal">
             <div>
               <p class="plan-code">After launch</p>
-              <h3 class="care-name">Care plan <span class="care-price">$29<small>/month</small></span></h3>
+              <h3 class="care-name">Care plan <span class="care-price">$39<small>/month</small></span></h3>
             </div>
             <p class="care-text">
               Updates and backups, an alert if the site goes down, and up to
@@ -1035,7 +1035,8 @@
 
           <!-- Referral: both sides get something. The link builder is
                decoration over a plain sentence; form.js fills the form's
-               "Referred by" field from ?ref= on the way in. -->
+               "Referred by" field from ?friend= on the way in. (?ref= is
+               taken: the credit tags on client sites use it.) -->
           <div class="refer reveal" id="refer">
             <div class="refer-copy">
               <p class="plan-code">Refer a friend</p>
@@ -1052,7 +1053,7 @@
                 <input type="text" id="refer-name" maxlength="60" autocomplete="name" placeholder="e.g. Sara Ahmadi" />
                 <button type="submit" class="copy-email">Copy link</button>
               </div>
-              <p class="refer-out" id="refer-out" aria-live="polite">ryanyarali.com/?ref=<span>your-name</span></p>
+              <p class="refer-out" id="refer-out" aria-live="polite">ryanyarali.com/?friend=<span>your-name</span></p>
             </form>
           </div>
 
@@ -1172,7 +1173,7 @@
                   <label class="chip"><input type="checkbox" name="addons" value="domain" data-price="60" /><span>Domain and email <em>+$60</em></span></label>
                   <label class="chip" data-only="portfolio"><input type="checkbox" name="addons" value="linkedin" data-price="80" /><span>LinkedIn refresh <em>+$80</em></span></label>
                   <label class="chip"><input type="checkbox" name="addons" value="rush" data-percent="25" /><span>Rush <em>+25%</em></span></label>
-                  <label class="chip"><input type="checkbox" name="addons" value="care" data-monthly="29" /><span>Care plan <em>$29/mo</em></span></label>
+                  <label class="chip"><input type="checkbox" name="addons" value="care" data-monthly="39" /><span>Care plan <em>$39/mo</em></span></label>
                 </div>
                 <p class="estimate" id="estimate" aria-live="polite">
                   <span class="estimate-label">Estimate</span>
@@ -1320,18 +1321,19 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="assets/js/theme.js?v=20261043"></script>
-    <script src="assets/js/form.js?v=20261043"></script>
-    <script src="assets/js/main.js?v=20261043"></script>
-    <script src="assets/js/flair.js?v=20261043"></script>
+    <script src="assets/js/theme.js?v=20261044"></script>
+    <script src="assets/js/hit.js?v=20261044" defer></script>
+    <script src="assets/js/form.js?v=20261044"></script>
+    <script src="assets/js/main.js?v=20261044"></script>
+    <script src="assets/js/flair.js?v=20261044"></script>
     <!-- Straight after flair.js (its one dependency), so the name appears
          without waiting for the scroll choreography to load. -->
-    <script src="assets/js/hero.js?v=20261043"></script>
-    <script src="assets/js/interactive.js?v=20261043"></script>
-    <script src="assets/js/cursor.js?v=20261043"></script>
-    <script src="assets/js/story.js?v=20261043"></script>
-    <script src="assets/js/route.js?v=20261043"></script>
-    <script src="assets/js/ping-sprite.js?v=20261043"></script>
-    <script src="assets/js/ping.js?v=20261043"></script>
+    <script src="assets/js/hero.js?v=20261044"></script>
+    <script src="assets/js/interactive.js?v=20261044"></script>
+    <script src="assets/js/cursor.js?v=20261044"></script>
+    <script src="assets/js/story.js?v=20261044"></script>
+    <script src="assets/js/route.js?v=20261044"></script>
+    <script src="assets/js/ping-sprite.js?v=20261044"></script>
+    <script src="assets/js/ping.js?v=20261044"></script>
   </body>
 </html>

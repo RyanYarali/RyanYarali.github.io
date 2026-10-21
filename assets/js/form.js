@@ -209,8 +209,9 @@
   });
   if (refInput) {
     refInput.addEventListener("input", renderEstimate);
-    // A referral link (ryanyarali.com/?ref=Sara-Ahmadi) fills in who sent them.
-    const fromLink = new URLSearchParams(location.search).get("ref");
+    // A friend's link (ryanyarali.com/?friend=Sara-Ahmadi) fills in who sent
+    // them. (?ref= belongs to the credit tags on client sites.)
+    const fromLink = new URLSearchParams(location.search).get("friend");
     if (fromLink && !refInput.value) refInput.value = fromLink.replace(/[-_+]+/g, " ").trim().slice(0, 100);
   }
 
@@ -239,7 +240,7 @@
     const out = document.getElementById("refer-out");
     const btn = referForm.querySelector("button");
     const slug = () => nameIn.value.trim().replace(/\s+/g, "-").slice(0, 60);
-    const link = () => `https://ryanyarali.com/?ref=${encodeURIComponent(slug())}#pricing`;
+    const link = () => `https://ryanyarali.com/?friend=${encodeURIComponent(slug())}#pricing`;
     nameIn.addEventListener("input", () => {
       out.querySelector("span").textContent = slug() || "your-name";
     });
