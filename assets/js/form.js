@@ -272,7 +272,9 @@
   // screen or takes focus, so it costs nothing on a visit that never gets
   // here. It renders invisibly unless Cloudflare decides it needs a click.
 
-  const box = document.getElementById("turnstile");
+  // (Not id="turnstile": an element id becomes a global, and window.turnstile
+  // has to be Cloudflare's script.)
+  const box = document.getElementById("ts-box");
   let widget = null;
   let loading = null;
 

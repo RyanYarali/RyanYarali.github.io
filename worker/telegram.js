@@ -139,6 +139,7 @@ const HELP = `<b>What I can do</b>
 /refs  who has sent you clients (and who you owe $${REFERRAL.reward})
 /alerts  on or off: pings for credit tags, friend links and AI answers
 /ignoreme  a link that stops counting your own visits
+/forget email  delete everything from that address (privacy requests)
 
 Reply to any lead (or press ✉️ Reply) and I'll email your answer from ryan@ryanyarali.com. You'll see it before it goes.`;
 
@@ -212,6 +213,22 @@ async function command(env, text, url) {
       const want = arg === "off" ? "off" : arg === "on" ? "on" : (await setting(env, "alerts", "on")) === "on" ? "off" : "on";
       await setSetting(env, "alerts", want);
       return say(env, want === "on" ? "🔔 Live alerts are on." : "🔕 Live alerts are off. /alerts to turn them back on.");
+    }
+    case "/forget": {
+      const email = String(arg || "").trim().toLowerCase();
+      if (!email.includes("@")) return say(env, "Usage: /forget someone@example.com");
+      const { results } = await env.DB.prepare("SELECT id FROM messages WHERE email = ?").bind(email).all();
+      for (const r of results) {
+        await env.DB.prepare("DELETE FROM tg_links WHERE message_id = ?").bind(r.id).run();
+        await env.DB.prepare("DELETE FROM drafts WHERE message_id = ?").bind(r.id).run();
+      }
+      await env.DB.prepare("DELETE FROM messages WHERE email = ?").bind(email).run();
+      return say(
+        env,
+        results.length
+          ? `🗑️ Deleted ${results.length} message${results.length === 1 ? "" : "s"} from ${esc(email)}. Delete their emails in your inbox too.`
+          : `Nothing stored for ${esc(email)}.`,
+      );
     }
     case "/ignoreme":
       return say(env, `Open this on each of your devices and your own visits stop counting:\n${url.origin}/?notrack=1`);
@@ -347,6 +364,7 @@ export async function setup(env, url) {
       { command: "refs", description: "Referrals and who you owe" },
       { command: "alerts", description: "Live alerts on or off" },
       { command: "ignoreme", description: "Stop counting your own visits" },
+      { command: "forget", description: "Delete someone's data: /forget email" },
       { command: "help", description: "What the bot can do" },
     ],
   });
@@ -359,6 +377,7 @@ export async function setup(env, url) {
 // 9:00 B.C. time (16:00 UTC, as B.C. stays on UTC-7): yesterday in numbers,
 // and any lead that has waited more than a day.
 export async function morning(env) {
+  await tidy(env);
   if (!ready(env)) return;
   const yesterday = addDays(bcDay(new Date()), -1);
   const s = await stats(env, yesterday, yesterday);
@@ -369,4 +388,15 @@ export async function morning(env) {
   if (results.length)
     text += `\n\n⏰ <b>Waiting on you</b>\n` + results.map((r) => `• ${esc(r.name)} · ${esc(TOPICS[r.topic]?.label || r.topic)}`).join("\n") + "\n/leads to answer them";
   await say(env, text, { disable_notification: !results.length && !s.leads });
+}
+
+// What the privacy page promises: messages go after two years (clients'
+// stay, for business records), visit counts after thirteen months, unsent
+// drafts after a week.
+export async function tidy(env) {
+  const run = (sql) => env.DB.prepare(sql).run().catch((e) => console.error("[tidy]", sql, e));
+  await run("DELETE FROM visits WHERE created_at < strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-396 days')");
+  await run("DELETE FROM drafts WHERE created_at < strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-7 days')");
+  await run("DELETE FROM messages WHERE status != 'won' AND created_at < strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-2 years')");
+  await run("DELETE FROM tg_links WHERE message_id NOT IN (SELECT id FROM messages)");
 }
