@@ -1925,6 +1925,10 @@ html.js-ready .rise-ready.is-risen .ch {
   margin-top: 2rem;
 }
 
+.came-from[hidden] {
+  display: none;
+}
+
 .came-from {
   display: inline-block;
   margin: 1.5rem 0 0;
@@ -2056,4 +2060,19 @@ html.js-ready .rise-ready.is-risen .ch {
   margin: 0 0 1.25rem;
   max-width: 62ch;
   color: var(--color-text-muted);
+}
+
+/* Home: the way to the services page. */
+.work-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 2rem;
+}
+
+.hire-band {
+  margin-top: 3rem;
+}
+
+.hire-band .care-text {
+  max-width: 56ch;
 }
