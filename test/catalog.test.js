@@ -1,11 +1,14 @@
-// The prices live in two places: index.html (the pricing section and the
-// form's inputs) and worker/catalog.js (the emails). This fails if they drift.
+// The prices live in services.html (the pricing section and the form's
+// inputs), in the form on index.html, and in worker/catalog.js (the emails
+// and the bot). This fails if they drift.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { TOPICS, ADDONS, REFERRAL } from "../worker/catalog.js";
 
-const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
+const read = (f) => readFileSync(new URL("../" + f, import.meta.url), "utf8");
+const html = read("services.html");
+const home = read("index.html");
 const attrs = (tag) => Object.fromEntries([...tag.matchAll(/([\w-]+)="([^"]*)"/g)].map((m) => [m[1], m[2]]));
 const inputs = (name) =>
   [...html.matchAll(new RegExp(`<input[^>]*name="${name}"[^>]*>`, "g"))].map((m) => attrs(m[0]));
@@ -39,4 +42,14 @@ test("the referral discount and reward match the page", () => {
   assert.equal(attrs(html.match(/<input[^>]*id="ref"[^>]*>/)[0])["data-discount"], String(REFERRAL.percent));
   assert.match(html, new RegExp(`They save ${REFERRAL.percent}%\\.`));
   assert.match(html, new RegExp(`You get \\$${REFERRAL.reward}\\.`));
+});
+
+test("the form on the home page is the same form", () => {
+  const form = (h) => h.slice(h.indexOf('<form\n              class="contact-form"'), h.indexOf("</form>", h.indexOf('class="contact-form"')));
+  assert.equal(form(home), form(html));
+});
+
+test("the home page points to the services page", () => {
+  assert.match(home, /href="services\.html"/);
+  assert.doesNotMatch(home, /id="pricing"/);
 });

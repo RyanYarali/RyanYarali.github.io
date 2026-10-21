@@ -3,7 +3,7 @@
 // Nothing is stored that could identify someone: vid is a salted hash of IP
 // and browser that changes every day.
 
-const CLIENT_SITES = {
+export const CLIENT_SITES = {
   nooklook: "Nook Look",
   doorlook: "Doorlook",
   vancobab: "Vanco Bab",

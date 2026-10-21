@@ -606,7 +606,7 @@
       { cmd: "about", desc: "Who I am and what I'm studying", go: home("#about") },
       { cmd: "projects", desc: "Every project, with the case studies", go: base + "projects.html" },
       { cmd: "skills", desc: "Languages, stack and tools", go: home("#skills") },
-      { cmd: "pricing", desc: "Packages, add-ons and prices", go: home("#pricing") },
+      { cmd: "services", desc: "Websites for your business: packages and prices", go: base + "services.html" },
       { cmd: "contact", desc: "Send me a message", go: home("#contact") },
       { cmd: "resume", desc: "My résumé", go: base + "resume.html" },
       { cmd: "nooklook", desc: "Case study: Nook Look Studio", go: base + "projects/nooklook.html" },

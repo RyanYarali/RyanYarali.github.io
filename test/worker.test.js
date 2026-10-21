@@ -131,3 +131,9 @@ test("folders get their index.html; previews come from GitHub; the rest is the 4
     assert.equal(await r.text(), "lost");
   });
 });
+
+test("a credit-tag click lands on the services page", async () => {
+  const r = await worker.fetch(new Request("https://ryanyarali.com/?ref=nooklook"), fakeEnv({ "/index.html": "home" }), {});
+  assert.equal(r.status, 302);
+  assert.equal(r.headers.get("Location"), "https://ryanyarali.com/services.html?ref=nooklook");
+});

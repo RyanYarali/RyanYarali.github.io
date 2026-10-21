@@ -15,7 +15,7 @@
 import { TOPICS, ADDONS, isPackage, estimate } from "./catalog.js";
 import { ownerMail, senderMail, send } from "./mail.js";
 import { alertLead, alertVisit, morning, setup, webhook } from "./telegram.js";
-import { bcDay, recordHit, visitorId } from "./visits.js";
+import { CLIENT_SITES, bcDay, recordHit, visitorId } from "./visits.js";
 
 const GITHUB = "https://ryanyarali.github.io";
 const PER_HOUR = 5; // messages from one visitor
@@ -29,6 +29,11 @@ export default {
     if (url.pathname === "/api/telegram" && request.method === "POST") return webhook(env, request, url);
     if (url.pathname === "/api/telegram/setup") return setup(env, url);
     if (url.pathname.startsWith("/api/")) return json({ ok: false, error: "Not found" }, 404);
+    // The "Site by Ryan Yarali" credit on client sites links to /?ref=<client>:
+    // whoever clicks it is shopping for a website, so they start on Services.
+    if (url.pathname === "/" && url.searchParams.has("ref"))
+      return Response.redirect(`${url.origin}/services.html${url.search}`, 302);
+    if (url.pathname === "/services.html") return services(request, env, url);
     if (url.pathname.endsWith("/")) {
       const index = await env.ASSETS.fetch(new URL(url.pathname + "index.html", url.origin), request);
       if (index.status !== 404) return index;
@@ -40,6 +45,24 @@ export default {
     ctx.waitUntil(morning(env));
   },
 };
+
+// ==================== Services page ====================
+
+// A visitor from a client's credit tag gets a hello naming that site,
+// written into the page here so nothing moves once it has loaded.
+async function services(request, env, url) {
+  const res = await env.ASSETS.fetch(request);
+  const site = CLIENT_SITES[url.searchParams.get("ref")];
+  if (!site || site === CLIENT_SITES.preview || !res.ok) return res;
+  return new HTMLRewriter()
+    .on("#came-from", {
+      element(el) {
+        el.removeAttribute("hidden");
+        el.setInnerContent(`👋 You came from ${site}. I built that site, and I'd love to build yours.`);
+      },
+    })
+    .transform(res);
+}
 
 // ==================== Page views ====================
 

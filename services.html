@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("portfolio-theme-override");
+          var theme =
+            stored ||
+            (window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light");
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      })();
+    </script>
+    <link rel="canonical" href="https://ryanyarali.com/services.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Websites for small businesses and portfolios in Greater Vancouver, priced up front: one-page sites from $450, business sites from $900. Free quote." />
+    <meta name="author" content="Ryan Yarali" />
+
+    <!-- Open Graph / social link previews -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Ryan Yarali" />
+    <meta property="og:locale" content="en_CA" />
+    <meta property="og:url" content="https://ryanyarali.com/services.html" />
+    <meta property="og:title" content="Websites for Small Businesses | Ryan Yarali" />
+    <meta property="og:description" content="Websites for small businesses and portfolios in Greater Vancouver, priced up front: one-page sites from $450, business sites from $900. Free quote." />
+    <meta property="og:image" content="https://ryanyarali.com/assets/og/home.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Ryan Yarali, full-stack developer at BCIT, open to co-op and internships, with screenshots of his client sites and Ping, his pixel-art mascot, saying: Ping! Come see what Ryan has built." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Websites for Small Businesses | Ryan Yarali" />
+    <meta name="twitter:description" content="Websites for small businesses and portfolios in Greater Vancouver, priced up front: one-page sites from $450, business sites from $900. Free quote." />
+    <meta name="twitter:image" content="https://ryanyarali.com/assets/og/home.jpg" />
+    <meta name="twitter:image:alt" content="Ryan Yarali, full-stack developer at BCIT, open to co-op and internships, with screenshots of his client sites and Ping, his pixel-art mascot, saying: Ping! Come see what Ryan has built." />
+
+    <title>Websites for Small Businesses | Ryan Yarali, Coquitlam BC</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400..700&family=IBM+Plex+Mono:wght@400;500&family=Silkscreen&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="assets/css/tokens.css?v=20261047" />
+    <link rel="stylesheet" href="assets/css/reset.css?v=20261047" />
+    <link rel="stylesheet" href="assets/css/typography.css?v=20261047" />
+    <link rel="stylesheet" href="assets/css/layout.css?v=20261047" />
+    <link rel="stylesheet" href="assets/css/components.css?v=20261047" />
+    <link rel="stylesheet" href="assets/css/pages.css?v=20261047" />
+    <link rel="stylesheet" href="assets/css/interactive.css?v=20261047" />
+    <link rel="stylesheet" href="assets/css/motion.css?v=20261047" />
+    <link rel="stylesheet" href="assets/css/bold.css?v=20261047" />
+    <link rel="stylesheet" href="assets/css/style.css?v=20261047" />
+
+
+    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=5" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <!-- Structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://ryanyarali.com/#ryan",
+            "name": "Ryan Yarali",
+            "url": "https://ryanyarali.com/",
+            "jobTitle": "Full-stack developer",
+            "email": "mailto:ryan@ryanyarali.com",
+            "sameAs": [
+              "https://github.com/RyanYarali",
+              "https://www.linkedin.com/in/ryan-yarali/"
+            ],
+            "makesOffer": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Portfolio site",
+                  "description": "A personal portfolio website for students and job seekers: three style demos, projects and résumé in one place, made for phones first.",
+                  "areaServed": "Greater Vancouver, BC, Canada"
+                },
+                "priceSpecification": {
+                  "@type": "PriceSpecification",
+                  "minPrice": 350,
+                  "priceCurrency": "CAD"
+                },
+                "url": "https://ryanyarali.com/#pricing"
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "One-page site",
+                  "description": "A one-page website for a new business, side hustle or trade: services, reviews, a quote form, Google Maps and Search setup.",
+                  "areaServed": "Greater Vancouver, BC, Canada"
+                },
+                "priceSpecification": {
+                  "@type": "PriceSpecification",
+                  "minPrice": 450,
+                  "priceCurrency": "CAD"
+                },
+                "url": "https://ryanyarali.com/#pricing"
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Business website",
+                  "description": "A website of up to five pages for a local business, with local SEO, a Google Business Profile, a gallery or menu and a quote form.",
+                  "areaServed": "Greater Vancouver, BC, Canada"
+                },
+                "priceSpecification": {
+                  "@type": "PriceSpecification",
+                  "minPrice": 900,
+                  "priceCurrency": "CAD"
+                },
+                "url": "https://ryanyarali.com/#pricing"
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Booking or online store website",
+                  "description": "A website that takes online bookings or sells products, with card payments through Stripe or Square and confirmation emails.",
+                  "areaServed": "Greater Vancouver, BC, Canada"
+                },
+                "priceSpecification": {
+                  "@type": "PriceSpecification",
+                  "minPrice": 1500,
+                  "priceCurrency": "CAD"
+                },
+                "url": "https://ryanyarali.com/#pricing"
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Website refresh",
+                  "description": "An existing website made faster, mobile-friendly and up to date.",
+                  "areaServed": "Greater Vancouver, BC, Canada"
+                },
+                "priceSpecification": {
+                  "@type": "PriceSpecification",
+                  "minPrice": 400,
+                  "priceCurrency": "CAD"
+                },
+                "url": "https://ryanyarali.com/#pricing"
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Google Business Profile setup",
+                  "description": "A Google Business Profile and local SEO setup, so a business shows up on Maps and local searches.",
+                  "areaServed": "Greater Vancouver, BC, Canada"
+                },
+                "priceSpecification": {
+                  "@type": "PriceSpecification",
+                  "minPrice": 150,
+                  "priceCurrency": "CAD"
+                },
+                "url": "https://ryanyarali.com/#pricing"
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Website care plan",
+                  "description": "Updates, backups, uptime alerts and up to 30 minutes of small edits a month."
+                },
+                "priceSpecification": {
+                  "@type": "UnitPriceSpecification",
+                  "price": 39,
+                  "priceCurrency": "CAD",
+                  "unitText": "month"
+                },
+                "url": "https://ryanyarali.com/#pricing"
+              }
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://ryanyarali.com/#site",
+            "url": "https://ryanyarali.com/",
+            "name": "Ryan Yarali"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://ryanyarali.com/services.html#page",
+            "url": "https://ryanyarali.com/services.html",
+            "name": "Websites for small businesses by Ryan Yarali",
+            "inLanguage": "en",
+            "isPartOf": {
+              "@id": "https://ryanyarali.com/#site"
+            },
+            "about": {
+              "@id": "https://ryanyarali.com/#ryan"
+            },
+            "breadcrumb": {
+              "@id": "https://ryanyarali.com/services.html#breadcrumb"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://ryanyarali.com/services.html#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://ryanyarali.com/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Services",
+                "item": "https://ryanyarali.com/services.html"
+              }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://ryanyarali.com/services.html#faq",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Do I own the website?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. The domain is registered in your name, and at launch you get the logins and the files. You can take the site anywhere."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What else will I pay for?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "A domain is about $20 a year, and hosting is usually $0 to $15 a month depending on the site. I tell you the exact costs before we start. The care plan is optional."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I edit it myself?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Business sites come with a walkthrough so you can change text, photos and prices yourself. If you'd rather not, the care plan covers small edits."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What do you need from me?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Your logo if you have one, photos, and the words for each page, or I can write them with the copywriting add-on. Plus a 20-minute call to start."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How does payment work?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Half to start and half at launch, by Interac e-Transfer. The price is the fixed quote you approved, so there are no surprises."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How long does it take?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "One to four weeks depending on the package, once I have your photos and text. Rush delivery takes about half the time."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Will my site show up on Google?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "I set up Google Search and your Google Business Profile, and build every page for local search. Nobody can promise a first-place ranking, but you start with everything in place."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <canvas id="site-trace" aria-hidden="true"></canvas>
+    <a href="#main" class="skip-link">Skip to content</a>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="logo" aria-label="Ryan Yarali, Computer Systems Technology, home">
+          <span class="logo-name">Ryan Yarali</span>
+          <span class="logo-subtitle">Computer Systems Technology</span>
+        </a>
+
+        <ul class="nav-links" id="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="index.html#about" class="nav-link">About</a></li>
+          <li><a href="projects.html" class="nav-link">Projects</a></li>
+          <li><a href="index.html#skills" class="nav-link">Skills</a></li>
+          <li><a href="services.html" class="nav-link" aria-current="page">Services</a></li>
+          <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <button type="button" class="nav-term" data-terminal aria-label="Open the site terminal, Ctrl K"><kbd>Ctrl K</kbd></button>
+          <button type="button" id="theme-toggle" class="theme-switch">
+            <svg class="theme-switch-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.4"></circle><path d="M12 1.6v2.2M12 20.2v2.2M4 4l1.6 1.6M18.4 18.4l1.6 1.6M1.6 12h2.2M20.2 12h2.2M4 20l1.6-1.6M18.4 5.6l1.6-1.6"></path></svg>
+            <svg class="theme-switch-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          </button>
+          <!-- Points at resume.html until the PDF exists; then swap the href for the PDF and add a download attribute. -->
+          <a href="resume.html" class="nav-resume" data-magnetic>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"></path><polyline points="7 10 12 15 17 10"></polyline><path d="M5 21h14"></path></svg>
+            Résumé
+          </a>
+          <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <main id="main">
+      <!-- Page Header -->
+      <section class="page-header">
+        <div class="container page-title reveal">
+          <p class="eyebrow" data-ping-spot="services">Work with me</p>
+          <h1 class="title-long" data-rise>Websites that bring you <span class="highlight">customers.</span></h1>
+          <p class="section-intro">
+            I design and build websites for small businesses in Greater
+            Vancouver, and portfolios for people who want to stand out. Fast,
+            made for phones, set up for Google, and priced up front.
+          </p>
+          <!-- Filled in by the Worker (worker/index.js) for visitors who
+               came from the credit tag on a client's site. -->
+          <p class="came-from" id="came-from" hidden></p>
+          <div class="hero-cta services-cta">
+            <a href="#pricing" class="btn btn-primary" data-magnetic>See packages</a>
+            <a href="#contact" class="btn btn-secondary" data-pick="other" data-magnetic>Get a free quote</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pricing Section -->
+      <!-- The prices here are the ones the contact form adds up (its inputs
+           carry the same figures) and the ones worker/catalog.js puts in the
+           emails; test/catalog.test.js fails if they drift apart. -->
+      <section class="section pricing" id="pricing">
+        <div class="container">
+          <div class="section-heading reveal">
+            <p class="eyebrow">Packages</p>
+            <h2 data-rise>Websites, priced <span class="highlight">up front.</span></h2>
+            <p class="section-intro">
+              Four packages for what most people need, in Canadian dollars.
+              Each one includes two rounds of changes. Not quite what you
+              need? Ask for a custom quote.
+            </p>
+          </div>
+
+          <div class="plan-grid reveal-group">
+            <article class="plan" data-icon="folio">
+              <div class="plan-top">
+                <svg class="skill-icon" aria-hidden="true" focusable="false"></svg>
+                <span class="plan-code" aria-hidden="true">PKG 01 · 1 wk</span>
+              </div>
+              <h3 class="plan-name">Portfolio site</h3>
+              <p class="plan-for">For students and job seekers who want to stand out.</p>
+              <p class="plan-price"><span class="plan-from">from</span> <span class="plan-amount">$350</span></p>
+              <ul class="plan-list">
+                <li>Three style demos to choose from</li>
+                <li>Your projects, résumé and links in one place</li>
+                <li>Made for phones first, with smooth motion</li>
+                <li>Looks good when you share the link</li>
+              </ul>
+              <a class="plan-proof" href="projects/this-site.html">Example: this site</a>
+              <a href="#contact" class="btn btn-secondary btn-full plan-cta" data-pick="portfolio">Start a portfolio</a>
+            </article>
+
+            <article class="plan" data-icon="page">
+              <div class="plan-top">
+                <svg class="skill-icon" aria-hidden="true" focusable="false"></svg>
+                <span class="plan-code" aria-hidden="true">PKG 02 · 1 wk</span>
+              </div>
+              <h3 class="plan-name">One-page site</h3>
+              <p class="plan-for">For a new business, side hustle or trade that needs to be online fast.</p>
+              <p class="plan-price"><span class="plan-from">from</span> <span class="plan-amount">$450</span></p>
+              <ul class="plan-list">
+                <li>One page: services, about, reviews, contact</li>
+                <li>A quote form that emails you</li>
+                <li>Set up on Google Maps and Search</li>
+                <li>Connected to your own domain</li>
+              </ul>
+              <a href="#contact" class="btn btn-secondary btn-full plan-cta" data-pick="onepage">Start a one-page site</a>
+            </article>
+
+            <article class="plan is-featured" data-icon="shop">
+              <div class="plan-top">
+                <svg class="skill-icon" aria-hidden="true" focusable="false"></svg>
+                <span class="plan-code" aria-hidden="true">PKG 03 · 2–3 wks</span>
+              </div>
+              <h3 class="plan-name">Business website</h3>
+              <p class="plan-for">For a local business that wants more calls, visits and bookings.</p>
+              <p class="plan-price"><span class="plan-from">from</span> <span class="plan-amount">$900</span></p>
+              <ul class="plan-list">
+                <li>Up to 5 pages you can edit yourself</li>
+                <li>Local SEO and a Google Business Profile</li>
+                <li>Your gallery, menu or reviews</li>
+                <li>A quote form with email alerts</li>
+              </ul>
+              <a class="plan-proof" href="projects/nooklook.html">Example: Nook Look</a>
+              <a href="#contact" class="btn btn-primary btn-full plan-cta" data-pick="business">Start a business site</a>
+            </article>
+
+            <article class="plan" data-icon="cart">
+              <div class="plan-top">
+                <svg class="skill-icon" aria-hidden="true" focusable="false"></svg>
+                <span class="plan-code" aria-hidden="true">PKG 04 · 3–4 wks</span>
+              </div>
+              <h3 class="plan-name">Bookings or store</h3>
+              <p class="plan-for">For taking appointments or selling online, paid up front.</p>
+              <p class="plan-price"><span class="plan-from">from</span> <span class="plan-amount">$1,500</span></p>
+              <ul class="plan-list">
+                <li>Online booking, or a shop for your products</li>
+                <li>Card payments through Stripe or Square</li>
+                <li>Confirmation emails for you and your customers</li>
+                <li>Everything in the business website</li>
+              </ul>
+              <span class="plan-proof is-soon">Example: Termeh (soon)</span>
+              <a href="#contact" class="btn btn-secondary btn-full plan-cta" data-pick="store">Start a booking site</a>
+            </article>
+          </div>
+
+          <div class="care reveal">
+            <div>
+              <p class="plan-code">After launch</p>
+              <h3 class="care-name">Care plan <span class="care-price">$39<small>/month</small></span></h3>
+            </div>
+            <p class="care-text">
+              Updates and backups, an alert if the site goes down, and up to
+              30 minutes of small edits every month. Hosting and your domain
+              are billed at cost. Cancel any time.
+            </p>
+          </div>
+
+          <!-- Referral: both sides get something. The link builder is
+               decoration over a plain sentence; form.js fills the form's
+               "Referred by" field from ?friend= on the way in. (?ref= is
+               taken: the credit tags on client sites use it.) -->
+          <div class="refer reveal" id="refer">
+            <div class="refer-copy">
+              <p class="plan-code">Refer a friend</p>
+              <h3 class="care-name">They save 10%. <span class="care-price">You get $50.</span></h3>
+              <p class="care-text">
+                Send someone my way and they get 10% off their first project.
+                Once it's paid, you get $50 off your next invoice or care
+                plan, for every friend who books.
+              </p>
+            </div>
+            <form class="refer-link" id="refer-link" action="#" aria-label="Make your referral link">
+              <label for="refer-name">Your name</label>
+              <div class="refer-row">
+                <input type="text" id="refer-name" maxlength="60" autocomplete="name" placeholder="e.g. Sara Ahmadi" />
+                <button type="submit" class="copy-email">Copy link</button>
+              </div>
+              <p class="refer-out" id="refer-out" aria-live="polite">ryanyarali.com/?friend=<span>your-name</span></p>
+            </form>
+          </div>
+
+          <div class="extras">
+            <h3 class="extras-title reveal">Add-ons</h3>
+            <ul class="addon-list reveal-group">
+              <li><span class="addon-name">Extra page</span><span class="addon-note">Past what your package includes.</span><span class="addon-price">$90 each</span></li>
+              <li><span class="addon-name">Second language</span><span class="addon-note">Farsi and other right-to-left languages included.</span><span class="addon-price">from $250</span></li>
+              <li><span class="addon-name">Copywriting</span><span class="addon-note">I write the words from a short call with you.</span><span class="addon-price">from $150</span></li>
+              <li><span class="addon-name">Domain and email</span><span class="addon-note">yourname.com and you@yourname.com, set up and connected.</span><span class="addon-price">$60</span></li>
+              <li><span class="addon-name">LinkedIn refresh</span><span class="addon-note">With a portfolio: headline, About and experience rewritten to match.</span><span class="addon-price">$80</span></li>
+              <li><span class="addon-name">Rush delivery</span><span class="addon-note">About half the usual time.</span><span class="addon-price">+25%</span></li>
+            </ul>
+          </div>
+
+          <div class="extras">
+            <h3 class="extras-title reveal">Also on request</h3>
+            <ul class="addon-list reveal-group">
+              <li><span class="addon-name">Website refresh</span><span class="addon-note">Your current site, made faster, mobile-friendly and up to date.</span><span class="addon-price">from $400</span></li>
+              <li><span class="addon-name">Google Business Profile</span><span class="addon-note">Show up on Maps and local searches, no new site needed.</span><span class="addon-price">$150</span></li>
+              <li><span class="addon-name">Custom web app</span><span class="addon-note">Logins, an admin panel, reservations or orders, built to fit.</span><span class="addon-price">quote</span></li>
+            </ul>
+          </div>
+
+          <!-- For everything the packages don't cover. -->
+          <div class="quote-cta reveal">
+            <div>
+              <h3 class="care-name">Need something different?</h3>
+              <p class="care-text">
+                Tell me what you have in mind and I'll send you a custom quote,
+                free and with no obligation.
+              </p>
+            </div>
+            <a href="#contact" class="btn btn-primary plan-cta" data-pick="other">Get a custom quote</a>
+          </div>
+
+          <p class="price-note reveal">
+            Prices are starting points in CAD. The final price depends on your
+            project and can change when I quote it. The quote I send you is
+            the price you pay.
+          </p>
+
+          <ol class="steps reveal-group" aria-label="How a project goes">
+            <li><span class="step-n" aria-hidden="true">01</span><strong>Free call</strong> 20 minutes on what you need. You get a fixed quote.</li>
+            <li><span class="step-n" aria-hidden="true">02</span><strong>Design</strong> Demos or a plan for you to pick from and approve.</li>
+            <li><span class="step-n" aria-hidden="true">03</span><strong>Build</strong> A private preview link, so you can follow along.</li>
+            <li><span class="step-n" aria-hidden="true">04</span><strong>Launch</strong> Live on your domain, with a walkthrough. Half to start, half at launch.</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- Client sites: the proof. -->
+      <section class="section clients" id="clients">
+        <div class="container">
+          <div class="section-heading reveal">
+            <p class="eyebrow">Client sites</p>
+            <h2 data-rise>Built, launched, <span class="highlight">live.</span></h2>
+          </div>
+          <ul class="client-grid reveal-group">
+            <li class="client-card">
+              <a href="projects/nooklook.html">
+                <img src="assets/nl-cover.jpg" alt="Nook Look Studio website on a laptop and a phone: a dark panel reading Warm, unhurried portraits beside a maternity photograph by a lake" loading="lazy" decoding="async" width="1400" height="788" />
+                <span class="client-name">Nook Look Studio</span>
+                <span class="client-meta">Photo studio · Coquitlam · bookings, gallery, local SEO</span>
+              </a>
+            </li>
+            <li class="client-card">
+              <a href="projects/vancobab.html">
+                <img src="assets/vb-cover.jpg" alt="Vancobab website on a laptop and a phone: the headline Persian kebab, fresh off the grill beside a gold Persian medallion around the flame emblem" loading="lazy" decoding="async" width="1400" height="788" />
+                <span class="client-name">Vanco Bab</span>
+                <span class="client-meta">Food truck · Vancouver · five pages, launch list, order builder</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Questions clients ask before they book. -->
+      <section class="section faq" id="faq">
+        <div class="container">
+          <div class="section-heading reveal">
+            <p class="eyebrow">Questions</p>
+            <h2 data-rise>Good to <span class="highlight">know.</span></h2>
+          </div>
+          <div class="faq-list reveal">
+            <details class="faq-item">
+              <summary>Do I own the website?</summary>
+              <p>Yes. The domain is registered in your name, and at launch you get the logins and the files. You can take the site anywhere.</p>
+            </details>
+            <details class="faq-item">
+              <summary>What else will I pay for?</summary>
+              <p>A domain is about $20 a year, and hosting is usually $0 to $15 a month depending on the site. I tell you the exact costs before we start. The care plan is optional.</p>
+            </details>
+            <details class="faq-item">
+              <summary>Can I edit it myself?</summary>
+              <p>Yes. Business sites come with a walkthrough so you can change text, photos and prices yourself. If you'd rather not, the care plan covers small edits.</p>
+            </details>
+            <details class="faq-item">
+              <summary>What do you need from me?</summary>
+              <p>Your logo if you have one, photos, and the words for each page, or I can write them with the copywriting add-on. Plus a 20-minute call to start.</p>
+            </details>
+            <details class="faq-item">
+              <summary>How does payment work?</summary>
+              <p>Half to start and half at launch, by Interac e-Transfer. The price is the fixed quote you approved, so there are no surprises.</p>
+            </details>
+            <details class="faq-item">
+              <summary>How long does it take?</summary>
+              <p>One to four weeks depending on the package, once I have your photos and text. Rush delivery takes about half the time.</p>
+            </details>
+            <details class="faq-item">
+              <summary>Will my site show up on Google?</summary>
+              <p>I set up Google Search and your Google Business Profile, and build every page for local search. Nobody can promise a first-place ranking, but you start with everything in place.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section class="section contact" id="contact">
+        <div class="container">
+          <div class="contact-layout">
+            <div class="contact-note">
+              <div class="section-heading contact-heading reveal" style="margin-bottom: 0">
+                <p class="eyebrow">Contact</p>
+                <h2 data-rise>Let's <span class="highlight">talk.</span></h2>
+                <p class="section-intro">
+                  Tell me what you need and when. I read every message
+                  myself and usually reply within a day. Not sure which
+                  package fits? Pick "Custom quote / other" and describe it.
+                </p>
+              </div>
+              <div class="contact-availability">
+                <span class="status-indicator">
+                  <span class="status-dot" aria-hidden="true"></span>
+                  Taking new projects
+                </span>
+              </div>
+              <!-- The direct line: the address, and a button that copies it
+                   (flair.js; it says "Copied" for a moment). -->
+              <p class="contact-email">
+                <a href="mailto:ryan@ryanyarali.com">ryan@ryanyarali.com</a>
+                <button type="button" class="copy-email" data-copy="ryan@ryanyarali.com">Copy</button>
+              </p>
+              <p class="contact-links">
+                <a href="https://github.com/RyanYarali" target="_blank" rel="me noopener noreferrer">GitHub</a>
+                <a href="https://www.linkedin.com/in/ryan-yarali/" target="_blank" rel="me noopener noreferrer">LinkedIn</a>
+              </p>
+            </div>
+
+            <!-- Posts to the site's own Worker (worker/index.js), which checks
+                 Turnstile, saves the message to D1 and emails it to Ryan, with
+                 a thank-you to the sender. Prices on the add-ons are the ones
+                 in the pricing section. -->
+            <form
+              class="contact-form"
+              id="contact-form"
+              action="/api/contact"
+              method="POST"
+              novalidate
+            >
+              <fieldset class="form-group chip-group" id="topic-group" aria-describedby="topic-error">
+                <legend>What's this about? *</legend>
+                <div class="chips">
+                  <label class="chip"><input type="radio" name="topic" value="hiring" required /><span>Hiring / co-op</span></label>
+                  <label class="chip"><input type="radio" name="topic" value="portfolio" data-from="350" /><span>Portfolio site</span></label>
+                  <label class="chip"><input type="radio" name="topic" value="onepage" data-from="450" /><span>One-page site</span></label>
+                  <label class="chip"><input type="radio" name="topic" value="business" data-from="900" /><span>Business website</span></label>
+                  <label class="chip"><input type="radio" name="topic" value="store" data-from="1500" /><span>Bookings or store</span></label>
+                  <label class="chip"><input type="radio" name="topic" value="other" /><span>Custom quote / other</span></label>
+                </div>
+                <span class="error-message" id="topic-error"></span>
+              </fieldset>
+
+              <!-- Shown once a package is picked. -->
+              <fieldset class="form-group chip-group addon-group" id="addon-group" hidden>
+                <legend>Add-ons <span class="legend-note">optional</span></legend>
+                <div class="chips">
+                  <label class="chip"><input type="checkbox" name="addons" value="page" data-price="90" /><span>Extra page <em>+$90</em></span></label>
+                  <label class="chip"><input type="checkbox" name="addons" value="language" data-price="250" /><span>Second language <em>+$250</em></span></label>
+                  <label class="chip"><input type="checkbox" name="addons" value="copy" data-price="150" /><span>Copywriting <em>+$150</em></span></label>
+                  <label class="chip"><input type="checkbox" name="addons" value="domain" data-price="60" /><span>Domain and email <em>+$60</em></span></label>
+                  <label class="chip" data-only="portfolio"><input type="checkbox" name="addons" value="linkedin" data-price="80" /><span>LinkedIn refresh <em>+$80</em></span></label>
+                  <label class="chip"><input type="checkbox" name="addons" value="rush" data-percent="25" /><span>Rush <em>+25%</em></span></label>
+                  <label class="chip"><input type="checkbox" name="addons" value="care" data-monthly="39" /><span>Care plan <em>$39/mo</em></span></label>
+                </div>
+                <p class="estimate" id="estimate" aria-live="polite">
+                  <span class="estimate-label">Estimate</span>
+                  <span class="estimate-value"><span class="plan-from">from</span> <strong id="estimate-total">$0</strong><span id="estimate-monthly"></span></span>
+                  <span class="estimate-note" id="estimate-note">You get a fixed quote after a free call.</span>
+                  <span class="estimate-fine">A starting estimate, not a quote. The final price can change once I've seen the details.</span>
+                </p>
+              </fieldset>
+
+              <div class="form-group">
+                <label for="name">Name *</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  required
+                  maxlength="100"
+                  placeholder="Your name"
+                  autocomplete="name"
+                  aria-describedby="name-error"
+                />
+                <span class="error-message" id="name-error"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email *</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  maxlength="200"
+                  placeholder="your.email@example.com"
+                  autocomplete="email"
+                  autocorrect="off"
+                  autocapitalize="off"
+                  spellcheck="false"
+                  aria-describedby="email-error"
+                />
+                <span class="error-message" id="email-error"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="ref">Referred by <span class="legend-note">optional</span></label>
+                <input
+                  type="text"
+                  id="ref"
+                  name="ref"
+                  maxlength="100"
+                  placeholder="Who sent you?"
+                  autocomplete="off"
+                  data-discount="10"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="message">Message *</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  required
+                  maxlength="5000"
+                  rows="6"
+                  placeholder="Your message..."
+                  aria-describedby="message-error"
+                ></textarea>
+                <span class="error-message" id="message-error"></span>
+              </div>
+
+              <!-- A field people never see. Bots that fill in every input
+                   fill this one too, and the Worker drops their message. -->
+              <div class="hp" aria-hidden="true">
+                <label for="website">Website</label>
+                <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+              </div>
+
+              <!-- Cloudflare Turnstile, loaded when the form is first used
+                   (form.js). It stays invisible unless Cloudflare wants a
+                   click. -->
+              <div class="turnstile" id="turnstile" data-sitekey="1x00000000000000000000AA"></div>
+
+              <button type="submit" class="btn btn-primary btn-full" data-magnetic>
+                Send message
+              </button>
+
+              <!-- The request drawn as a packet on its way to the inbox. The
+                   figures in the log are the real ones from the request. -->
+              <div class="send-trace" id="send-trace" aria-hidden="true">
+                <span class="send-node">you</span>
+                <span class="send-line"><span class="send-packet"></span></span>
+                <span class="send-node">inbox</span>
+              </div>
+              <p class="send-log" id="send-log" aria-hidden="true"></p>
+
+              <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container footer-inner">
+        <div>
+          <p>&copy; 2026 <a href="index.html">Ryan Yarali</a>. All rights reserved.</p>
+          <p class="footer-tech">Built with HTML, CSS, and JavaScript. No framework. <a href="projects/this-site.html">How it's built</a></p>
+        </div>
+        <div class="footer-social">
+          <a href="mailto:ryan@ryanyarali.com" class="footer-email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            Email
+          </a>
+          <a href="https://github.com/RyanYarali" target="_blank" rel="me noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.93.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.87-1.36-3.87-1.36-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.42-2.69 5.4-5.25 5.68.41.36.78 1.06.78 2.14 0 1.54-.01 2.79-.01 3.17 0 .3.2.66.79.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+            GitHub
+          </a>
+          <button type="button" class="footer-term" data-terminal title="Open the site terminal (Ctrl K)"><kbd aria-hidden="true">Ctrl K</kbd> Terminal</button>
+          <a href="https://www.linkedin.com/in/ryan-yarali/" target="_blank" rel="me noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.55V9h3.57v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>
+            LinkedIn
+          </a>
+        </div>
+      </div>
+      <!-- The name again, set as large as the page allows: decoration only
+           (the copyright line above carries it as text). Its letters rise
+           as the footer scrolls into view. -->
+      <div class="footer-mark" aria-hidden="true" data-lens="accent"><span class="ch" style="--i:0">R</span><span class="ch" style="--i:1">y</span><span class="ch" style="--i:2">a</span><span class="ch" style="--i:3">n</span><span class="ch" style="--i:4">&nbsp;</span><span class="ch" style="--i:5">Y</span><span class="ch" style="--i:6">a</span><span class="ch" style="--i:7">r</span><span class="ch" style="--i:8">a</span><span class="ch" style="--i:9">l</span><span class="ch" style="--i:10">i</span></div>
+    </footer>
+    <script src="assets/js/theme.js?v=20261047"></script>
+    <script src="assets/js/hit.js?v=20261047" defer></script>
+    <script src="assets/js/form.js?v=20261047"></script>
+    <script src="assets/js/main.js?v=20261047"></script>
+    <script src="assets/js/flair.js?v=20261047"></script>
+    <script src="assets/js/interactive.js?v=20261047"></script>
+    <script src="assets/js/cursor.js?v=20261047"></script>
+    <script src="assets/js/ping-sprite.js?v=20261047"></script>
+    <script src="assets/js/ping.js?v=20261047"></script>
+  </body>
+</html>

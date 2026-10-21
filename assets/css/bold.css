@@ -572,6 +572,14 @@ html.js-ready .plan.in-view .skill-icon .pi-a rect {
   letter-spacing: -0.055em;
 }
 
+/* A sentence rather than a word (the services page): big, not hero-big. */
+.page-title h1.title-long {
+  max-width: 14ch;
+  font-size: clamp(3rem, 7.4vw, 6.75rem);
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+}
+
 .title-count {
   position: relative;
   top: -0.25em;
@@ -1908,4 +1916,144 @@ html.js-ready .rise-ready.is-risen .ch {
   grid-column: 1 / -1;
   font-size: 0.78rem;
   color: var(--color-text-subtle);
+}
+
+/* ---------- services page ----------
+ * The page header's buttons, the hello for credit-tag visitors, the client
+ * sites, and the questions. The pricing blocks are styled above. */
+.services-cta {
+  margin-top: 2rem;
+}
+
+.came-from {
+  display: inline-block;
+  margin: 1.5rem 0 0;
+  padding: 0.7rem 1.1rem;
+  font-size: 1rem;
+  color: var(--color-text);
+  background: var(--color-accent-soft);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
+  border-radius: var(--radius-md);
+}
+
+.contact-hire {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.contact-hire a {
+  color: var(--color-text);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 4px;
+}
+
+.contact-hire a:hover {
+  color: var(--color-accent);
+}
+
+.client-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 760px) {
+  .client-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.client-card a {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.75rem 0.75rem 1.25rem;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: border-color var(--transition-base), background-color var(--transition-base);
+}
+
+.client-card a:hover {
+  border-color: var(--color-accent);
+  background: var(--color-surface-2);
+}
+
+.client-card img {
+  width: 100%;
+  height: auto;
+  margin-bottom: 0.75rem;
+  border-radius: var(--radius-md);
+}
+
+.client-name {
+  padding: 0 0.5rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.client-name::after {
+  content: " \2192";
+  color: var(--color-accent);
+}
+
+.client-meta {
+  padding: 0 0.5rem;
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+}
+
+.faq-list {
+  max-width: 760px;
+  border-top: 1px solid var(--color-border-strong);
+}
+
+.faq-item {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.faq-item summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  min-height: 48px;
+  padding: 1rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  content: "+";
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  color: var(--color-accent);
+  transition: transform var(--transition-base);
+}
+
+.faq-item[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.faq-item summary:hover {
+  color: var(--color-accent);
+}
+
+.faq-item p {
+  margin: 0 0 1.25rem;
+  max-width: 62ch;
+  color: var(--color-text-muted);
 }
