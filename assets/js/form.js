@@ -209,7 +209,7 @@
   });
   if (refInput) {
     refInput.addEventListener("input", renderEstimate);
-    // A friend's link (ryanyarali.com/?friend=Sara-Ahmadi) fills in who sent
+    // A friend's link (ryanyarali.com/?friend=Jane-Doe) fills in who sent
     // them. (?ref= belongs to the credit tags on client sites.)
     const fromLink = new URLSearchParams(location.search).get("friend");
     if (fromLink && !refInput.value) refInput.value = fromLink.replace(/[-_+]+/g, " ").trim().slice(0, 100);
