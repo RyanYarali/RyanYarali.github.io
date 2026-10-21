@@ -72,7 +72,7 @@ test("sources: credit tags, friend links, AI, search, social, direct", () => {
   const s = (query, referrer) => sourceOf({ query, referrer }, "ryanyarali.com");
   assert.equal(s("ref=nooklook", ""), "credit:nooklook");
   assert.equal(s("", "https://www.vancobab.ca/menu"), "credit:vancobab");
-  assert.equal(s("friend=Sara-Ahmadi", ""), "friend:Sara Ahmadi");
+  assert.equal(s("friend=Jane-Doe", ""), "friend:Jane Doe");
   assert.equal(s("", "https://chatgpt.com/"), "ai:ChatGPT");
   assert.equal(s("", "https://www.google.ca/"), "search:Google");
   assert.equal(s("", "https://www.linkedin.com/in/x"), "social:LinkedIn");
@@ -102,18 +102,18 @@ test("bots and other sites' pages aren't counted", async () => {
 });
 
 test("a lead arrives in Telegram with where they came from and what they viewed", async () => {
-  await call("/api/hit", { id: "visit-0010", path: "/", q: "friend=Sara-Ahmadi" });
+  await call("/api/hit", { id: "visit-0010", path: "/", q: "friend=Jane-Doe" });
   await call("/api/hit", { id: "visit-0011", path: "/projects/nooklook.html", r: "https://ryanyarali.com/" });
   const res = await call("/api/contact", {
     topic: "business", addons: ["care"], name: "Mina Rahimi", email: "mina@example.com",
-    message: "I need a website for my salon in Burnaby.", ref: "Sara Ahmadi",
+    message: "I need a website for my salon in Burnaby.", ref: "Jane Doe",
   });
   assert.equal(res.status, 200);
   const alert = sent.find((m) => m.method === "sendMessage" && m.text.includes("New lead"));
   assert.ok(alert, "lead alert sent");
   assert.match(alert.text, /from \$810 \+ \$39\/mo \(after 10% referral\)/);
-  assert.match(alert.text, /Referred by <b>Sara Ahmadi<\/b>/);
-  assert.match(alert.text, /friend link from Sara Ahmadi/);
+  assert.match(alert.text, /Referred by <b>Jane Doe<\/b>/);
+  assert.match(alert.text, /friend link from Jane Doe/);
   assert.match(alert.text, /Home → Nook Look/);
   assert.equal(alert.reply_markup.inline_keyboard.length, 2);
   // Telegram worked, so Ryan gets no email; the sender gets their thank-you.
@@ -137,7 +137,7 @@ test("Ryan replies from Telegram: preview first, then the email goes out", async
 });
 
 test("status buttons update the lead; Won with a referral reminds Ryan who he owes", async () => {
-  await call("/api/contact", { topic: "onepage", name: "Reza K", email: "reza@example.com", message: "One-page site for my plumbing business.", ref: "Sara" });
+  await call("/api/contact", { topic: "onepage", name: "Reza K", email: "reza@example.com", message: "One-page site for my plumbing business.", ref: "Jane Doe" });
   await tgUpdate({ callback_query: { id: "cq2", data: "st:1:won", message: { chat: { id: 42 }, message_id: 100 } } });
   assert.equal(env.DB.raw.prepare("SELECT status FROM messages").get().status, "won");
   assert.ok(sent.some((m) => m.method === "editMessageText" && m.text.includes("✅ Won")));

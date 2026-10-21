@@ -38,8 +38,8 @@ test("rush adds a quarter to the whole build", () => {
 });
 
 test("a referral takes 10% off the build, not the care plan", () => {
-  const m = check({ ...good, ref: "Sara Ahmadi" });
-  assert.equal(m.ref, "Sara Ahmadi");
+  const m = check({ ...good, ref: "Jane Doe" });
+  assert.equal(m.ref, "Jane Doe");
   assert.deepEqual(m.estimate, { total: 945, monthly: 39 });
   assert.equal(check({ ...good, ref: "   " }).estimate.total, 1050);
 });
@@ -48,8 +48,8 @@ test("the thank-you mentions the referral discount but never the name typed", ()
   const mail = senderMail(check({ ...good, ref: "visit evil.example" }));
   assert.ok(mail.html.includes("10% referral discount"));
   assert.ok(!mail.html.includes("evil.example"));
-  const owner = ownerMail(check({ ...good, ref: "<b>Sara</b>" }), new Date());
-  assert.ok(owner.html.includes("&lt;b&gt;Sara"));
+  const owner = ownerMail(check({ ...good, ref: "<b>Jane</b>" }), new Date());
+  assert.ok(owner.html.includes("&lt;b&gt;Jane"));
   assert.ok(owner.text.includes("Estimate: from $945 + $39/mo, after 10% referral"));
 });
 
