@@ -24,6 +24,12 @@ const MAX_BODY = 20000; // bytes
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+    // One address: www goes to the bare domain. This catches "/" and every
+    // page the Worker serves; a Cloudflare redirect rule catches the files.
+    if (url.hostname.startsWith("www.")) {
+      url.hostname = url.hostname.slice(4);
+      return Response.redirect(url.toString(), 301);
+    }
     if (url.pathname === "/api/contact") return contact(request, env, ctx, url);
     if (url.pathname === "/api/hit") return hit(request, env, ctx, url);
     if (url.pathname === "/api/telegram" && request.method === "POST") return webhook(env, request, url);
