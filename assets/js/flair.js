@@ -77,6 +77,14 @@
       ["ahahahahahah", "ahahahahahah", ".aaaaaaaaaa.", ".a........a.", ".a.kkk.aa.a.", ".a.kkk.aa.a.", ".a.....aa.a.", ".a.....aa.a.", "aaaaaaaaaaaa"],
       ["hahahahahaha", "hahahahahaha", ".aaaaaaaaaa.", ".a........a.", ".a.hhh.aa.a.", ".a.hhh.ah.a.", ".a.....aa.a.", ".a.....aa.a.", "aaaaaaaaaaaa"],
     ],
+    page: [
+      ["..aaaaaaaa..", "..a......a..", "..a.hhhh.a..", "..a......a..", "..a.kkkk.a..", "..a.kk...a..", "..a......a..", "..a.aaaa.a..", "..a......a..", "..aaaaaaaa.."],
+      ["..aaaaaaaa..", "..a......a..", "..a.kkkk.a..", "..a.kk...a..", "..a......a..", "..a.aaaa.a..", "..a......a..", "..a.hhhh.a..", "..a......a..", "..aaaaaaaa.."],
+    ],
+    cart: [
+      ["a...........", "aaaaaaaaaaa.", ".a.h.h.h.a..", ".a.......a..", "..a.h.h.a...", "..aaaaaaa...", "..a.........", "..aaaaaaaa..", "...k....k...", "..kkk..kkk.."],
+      ["a...........", "aaaaaaaaaaa.", ".a.h.h.h.a..", ".a.......a..", "..a.h.h.a...", "..aaaaaaa...", "..a.........", "..aaaaaaaa..", "..kkk..kkk..", "...k....k..."],
+    ],
     app: [
       ["aaaaaaaaaaaa", "ahaaaaaaaaaa", "aaaaaaaaaaaa", "a..........a", "a.hh..kkkk.a", "a.hh.......a", "a..........a", "a.kk..hhhh.a", "a.kk.......a", "aaaaaaaaaaaa"],
       ["aaaaaaaaaaaa", "ahaaaaaaaaaa", "aaaaaaaaaaaa", "a..........a", "a.kk..hhhh.a", "a.kk.......a", "a..........a", "a.hh..kkkk.a", "a.hh.......a", "aaaaaaaaaaaa"],

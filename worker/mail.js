@@ -3,7 +3,7 @@
 // the sender picked from fixed lists, never their own words, so the form
 // can't be used to mail someone else a stranger's text.
 
-import { TOPICS, ADDONS, money } from "./catalog.js";
+import { TOPICS, ADDONS, REFERRAL, money } from "./catalog.js";
 
 export const esc = (s) =>
   String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -62,7 +62,8 @@ export function ownerMail(m, now) {
 ${row("From", `${esc(m.name)} &lt;<a href="mailto:${esc(m.email)}" style="color:#2450f5">${esc(m.email)}</a>&gt;`)}
 ${row("About", esc(about))}
 ${addons.length ? row("Add-ons", esc(addons.join(", "))) : ""}
-${est ? row("Estimate", esc(est)) : ""}
+${m.ref ? row("Referred by", `${esc(m.ref)} <span style="color:#66666e">(${REFERRAL.percent}% off for them, $${REFERRAL.reward} for the referrer once paid)</span>`) : ""}
+${est ? row("Estimate", esc(est + (m.ref ? `, after ${REFERRAL.percent}% referral` : ""))) : ""}
 ${row("Received", esc(bcTime(now)))}
 </table>
 <div style="white-space:pre-wrap;padding:16px;background:#f3f3f4;border-radius:10px;font-size:15px">${esc(m.message)}</div>
@@ -71,7 +72,8 @@ ${row("Received", esc(bcTime(now)))}
     `${m.name} <${m.email}>`,
     `About: ${about}`,
     ...(addons.length ? [`Add-ons: ${addons.join(", ")}`] : []),
-    ...(est ? [`Estimate: ${est}`] : []),
+    ...(m.ref ? [`Referred by: ${m.ref}`] : []),
+    ...(est ? [`Estimate: ${est}${m.ref ? `, after ${REFERRAL.percent}% referral` : ""}`] : []),
     `Received: ${bcTime(now)}`,
     "",
     m.message,
@@ -88,9 +90,11 @@ export function senderMail(m) {
 
   if (m.estimate) {
     lines.push(
-      `You asked about a <strong>${esc(about.toLowerCase())}</strong>${addons.length ? `, with ${esc(and(m.addons.map((id) => ADDONS[id].say)))}` : ""}. The starting estimate is <strong>${esc(est)}</strong>. After a free 20-minute call I'll send you a fixed quote, before any work begins.`,
+      `You asked about a <strong>${esc(about.toLowerCase())}</strong>${addons.length ? `, with ${esc(and(m.addons.map((id) => ADDONS[id].say)))}` : ""}. The starting estimate is <strong>${esc(est)}</strong>${m.ref ? `, with your ${REFERRAL.percent}% referral discount already taken off` : ""}. This is a starting estimate, not a quote: after a free 20-minute call I'll send you a fixed quote, which may be higher or lower once I know the details, before any work begins.`,
       `If you'd like to book that call now, reply with two or three times that suit you.`,
     );
+  } else if (m.topic === "other") {
+    lines.push(`I'll read through what you need and send you a custom quote. It's free, and you're under no obligation.`);
   } else if (m.topic === "hiring") {
     lines.push(
       `Thanks for thinking of me for a role. My projects and résumé are at <a href="https://ryanyarali.com/" style="color:#2450f5">ryanyarali.com</a> if you'd like them while you wait.`,
@@ -140,7 +144,7 @@ export async function send(env, mail) {
 export async function telegram(env, m) {
   if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) return false;
   const est = estimateText(m.estimate);
-  const text = `📨 ${m.name} (${m.email})\n${TOPICS[m.topic].label}${est ? ` · ${est}` : ""}\n\n${m.message.slice(0, 600)}`;
+  const text = `📨 ${m.name} (${m.email})\n${TOPICS[m.topic].label}${est ? ` · ${est}` : ""}${m.ref ? ` · referred by ${m.ref}` : ""}\n\n${m.message.slice(0, 600)}`;
   try {
     const res = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
       method: "POST",

@@ -70,6 +70,7 @@ export function check(body) {
   const name = str(body.name).replace(/[\u0000-\u001f\u007f]+/g, " ");
   const email = str(body.email).toLowerCase();
   const message = str(body.message);
+  const ref = str(body.ref).replace(/[\u0000-\u001f\u007f]+/g, " ").slice(0, 100);
   const picked = Array.isArray(body.addons) ? [...new Set(body.addons.map(String))] : [];
 
   if (!TOPICS[topic]) return { field: "topic", error: "Pick what your message is about" };
@@ -82,7 +83,7 @@ export function check(body) {
   const addons = isPackage(topic)
     ? picked.filter((id) => ADDONS[id] && (!ADDONS[id].only || ADDONS[id].only === topic))
     : [];
-  return { topic, name, email, message, addons, estimate: estimate(topic, addons) };
+  return { topic, name, email, message, addons, ref, estimate: estimate(topic, addons, Boolean(ref)) };
 }
 
 async function sha256(text) {
@@ -147,9 +148,9 @@ async function contact(request, env, ctx, url) {
     if (recent && recent.n >= PER_HOUR)
       return json({ ok: false, error: "That's a lot of messages. Please email ryan@ryanyarali.com instead." }, 429);
     const row = await env.DB.prepare(
-      "INSERT INTO messages (topic, addons, estimate, monthly, name, email, message, ip_hash) VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id",
+      "INSERT INTO messages (topic, addons, estimate, monthly, name, email, message, ref, ip_hash) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id",
     )
-      .bind(m.topic, JSON.stringify(m.addons), m.estimate?.total ?? null, m.estimate?.monthly ?? null, m.name, m.email, m.message, ipHash)
+      .bind(m.topic, JSON.stringify(m.addons), m.estimate?.total ?? null, m.estimate?.monthly ?? null, m.name, m.email, m.message, m.ref || null, ipHash)
       .first();
     id = row && row.id;
   } catch (e) {

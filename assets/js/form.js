@@ -124,10 +124,14 @@
   const HINTS = {
     hiring: "The role, the team, and how to reach you...",
     portfolio: "Who it's for, links to your résumé or LinkedIn, and when you'd like it...",
+    onepage: "Your business, what you offer, and where you work...",
     business: "Your business, the pages you need, and any sites you like...",
-    custom: "What it should do, who uses it, and your timeline...",
-    other: "Your message...",
+    store: "What you book or sell, how you take payment now, and your timeline...",
+    other: "What you need and your timeline, and I'll send you a quote...",
   };
+  const PACKAGES = ["portfolio", "onepage", "business", "store"];
+  const refInput = document.getElementById("ref");
+  const noteEl = document.getElementById("estimate-note");
 
   const money = (n) => "$" + Math.round(n).toLocaleString("en-CA");
   const totalEl = document.getElementById("estimate-total");
@@ -146,7 +150,10 @@
       percent += Number(box.dataset.percent || 0);
       monthly += Number(box.dataset.monthly || 0);
     });
-    return { total: (base + extras) * (1 + percent / 100), monthly };
+    // Someone sent them: the referral discount comes off the build.
+    const referred = refInput && refInput.value.trim();
+    const off = referred ? 1 - Number(refInput.dataset.discount || 0) / 100 : 1;
+    return { total: (base + extras) * (1 + percent / 100) * off, monthly, referred };
   }
 
   // The total counts up or down to its new value.
@@ -154,6 +161,10 @@
     if (!totalEl) return;
     const next = estimate();
     if (monthlyEl) monthlyEl.textContent = next.monthly ? ` + ${money(next.monthly)}/mo` : "";
+    if (noteEl)
+      noteEl.textContent = next.referred
+        ? `Includes your ${refInput.dataset.discount}% referral discount. You get a fixed quote after a free call.`
+        : "You get a fixed quote after a free call.";
     cancelAnimationFrame(tick);
     if (reducedMotion || !shown) {
       shown = next.total;
@@ -173,7 +184,7 @@
 
   function onTopic() {
     const value = topic();
-    const isPackage = ["portfolio", "business", "custom"].includes(value);
+    const isPackage = PACKAGES.includes(value);
     if (addonGroup) {
       addonGroup.hidden = !isPackage;
       // Add-ons that only fit one package hide (and drop) for the others.
@@ -196,6 +207,12 @@
   form.querySelectorAll('input[name="addons"]').forEach((box) => {
     box.addEventListener("change", renderEstimate);
   });
+  if (refInput) {
+    refInput.addEventListener("input", renderEstimate);
+    // A referral link (ryanyarali.com/?ref=Sara-Ahmadi) fills in who sent them.
+    const fromLink = new URLSearchParams(location.search).get("ref");
+    if (fromLink && !refInput.value) refInput.value = fromLink.replace(/[-_+]+/g, " ").trim().slice(0, 100);
+  }
 
   // "Start a portfolio" and the other package buttons pick that package on
   // the way down to the form.
@@ -211,6 +228,43 @@
 
   // A browser that restores the form on back/forward keeps the choices.
   onTopic();
+
+  // ==================== Referral link ====================
+  // A client types their name and copies a link that fills it in on the
+  // form for whoever they send it to.
+
+  const referForm = document.getElementById("refer-link");
+  if (referForm) {
+    const nameIn = document.getElementById("refer-name");
+    const out = document.getElementById("refer-out");
+    const btn = referForm.querySelector("button");
+    const slug = () => nameIn.value.trim().replace(/\s+/g, "-").slice(0, 60);
+    const link = () => `https://ryanyarali.com/?ref=${encodeURIComponent(slug())}#pricing`;
+    nameIn.addEventListener("input", () => {
+      out.querySelector("span").textContent = slug() || "your-name";
+    });
+    referForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!slug()) {
+        nameIn.focus();
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(link());
+        btn.textContent = "Copied";
+        btn.classList.add("is-done");
+      } catch {
+        // No clipboard (an old browser or an insecure page): select the
+        // link so it can be copied by hand.
+        out.textContent = link();
+        getSelection().selectAllChildren(out);
+      }
+      setTimeout(() => {
+        btn.textContent = "Copy link";
+        btn.classList.remove("is-done");
+      }, 1600);
+    });
+  }
 
   // ==================== Turnstile ====================
   // Cloudflare's bot check loads the first time the form comes near the
@@ -349,6 +403,7 @@
         name: data.get("name"),
         email: data.get("email"),
         message: data.get("message"),
+        ref: data.get("ref"),
         website: data.get("website"),
         token: await turnstileToken(),
       };
