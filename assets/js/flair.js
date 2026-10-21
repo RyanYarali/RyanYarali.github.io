@@ -69,6 +69,26 @@
       ["..aaa.......", "..aha.......", "..aaa.......", "...a.a......", "...a..a.....", "...a...aaa..", "...a...aha..", "...a...aaa..", "...a..a.....", "..aaaa......", "..aha.......", "..aaa......."],
       ["..aaa.......", "..aaa.......", "..aaa.......", "...a.a......", "...a..a.....", "...a...aaa..", "...a...hhh..", "...a...aaa..", "...a..a.....", "..aaaa......", "..aaa.......", "..aaa......."],
     ],
+    folio: [
+      ["aaaaaaaaaaaa", "a..........a", "a.hhh......a", "a.hhh.kkkk.a", "a.hhh......a", "a.....kkk..a", "a.kkkkkkkk.a", "a..........a", "a.kkkkk....a", "aaaaaaaaaaaa"],
+      ["aaaaaaaaaaaa", "a..........a", "a.hhh......a", "a.hhh.kkk..a", "a.hhh......a", "a.....kkkk.a", "a.kkkkk....a", "a..........a", "a.kkkkkkkk.a", "aaaaaaaaaaaa"],
+    ],
+    shop: [
+      ["ahahahahahah", "ahahahahahah", ".aaaaaaaaaa.", ".a........a.", ".a.kkk.aa.a.", ".a.kkk.aa.a.", ".a.....aa.a.", ".a.....aa.a.", "aaaaaaaaaaaa"],
+      ["hahahahahaha", "hahahahahaha", ".aaaaaaaaaa.", ".a........a.", ".a.hhh.aa.a.", ".a.hhh.ah.a.", ".a.....aa.a.", ".a.....aa.a.", "aaaaaaaaaaaa"],
+    ],
+    page: [
+      ["..aaaaaaaa..", "..a......a..", "..a.hhhh.a..", "..a......a..", "..a.kkkk.a..", "..a.kk...a..", "..a......a..", "..a.aaaa.a..", "..a......a..", "..aaaaaaaa.."],
+      ["..aaaaaaaa..", "..a......a..", "..a.kkkk.a..", "..a.kk...a..", "..a......a..", "..a.aaaa.a..", "..a......a..", "..a.hhhh.a..", "..a......a..", "..aaaaaaaa.."],
+    ],
+    cart: [
+      ["a...........", "aaaaaaaaaaa.", ".a.h.h.h.a..", ".a.......a..", "..a.h.h.a...", "..aaaaaaa...", "..a.........", "..aaaaaaaa..", "...k....k...", "..kkk..kkk.."],
+      ["a...........", "aaaaaaaaaaa.", ".a.h.h.h.a..", ".a.......a..", "..a.h.h.a...", "..aaaaaaa...", "..a.........", "..aaaaaaaa..", "..kkk..kkk..", "...k....k..."],
+    ],
+    app: [
+      ["aaaaaaaaaaaa", "ahaaaaaaaaaa", "aaaaaaaaaaaa", "a..........a", "a.hh..kkkk.a", "a.hh.......a", "a..........a", "a.kk..hhhh.a", "a.kk.......a", "aaaaaaaaaaaa"],
+      ["aaaaaaaaaaaa", "ahaaaaaaaaaa", "aaaaaaaaaaaa", "a..........a", "a.kk..hhhh.a", "a.kk.......a", "a..........a", "a.hh..kkkk.a", "a.hh.......a", "aaaaaaaaaaaa"],
+    ],
   };
 
   function drawFrame(svg, map, cls, w, h) {
@@ -95,7 +115,7 @@
   }
 
   function initIcons() {
-    var tiles = document.querySelectorAll(".skill-tile[data-icon]");
+    var tiles = document.querySelectorAll(".skill-tile[data-icon], .plan[data-icon]");
     if (!tiles.length) return;
     [].forEach.call(tiles, function (tile) {
       var frames = ICONS[tile.getAttribute("data-icon")];
@@ -586,6 +606,7 @@
       { cmd: "about", desc: "Who I am and what I'm studying", go: home("#about") },
       { cmd: "projects", desc: "Every project, with the case studies", go: base + "projects.html" },
       { cmd: "skills", desc: "Languages, stack and tools", go: home("#skills") },
+      { cmd: "services", desc: "Websites for your business: packages and prices", go: base + "services.html" },
       { cmd: "contact", desc: "Send me a message", go: home("#contact") },
       { cmd: "resume", desc: "My résumé", go: base + "resume.html" },
       { cmd: "nooklook", desc: "Case study: Nook Look Studio", go: base + "projects/nooklook.html" },

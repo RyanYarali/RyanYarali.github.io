@@ -39,3 +39,6 @@ build/
 .agents/
 .claude/
 skills-lock.json
+# Cloudflare (wrangler) local state and secrets
+.wrangler/
+.dev.vars*
