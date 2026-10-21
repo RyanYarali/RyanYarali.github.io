@@ -239,8 +239,10 @@ place and `interactive.js` draws a figure seeded by that key.
 
 ## Contact form and pricing
 
-The pricing section and the form share one set of prices. They are written in
-`index.html` (shown in the section, and as `data-` attributes on the form's
+The pricing section (on `services.html`, the page for clients; the home page
+stays the portfolio, with a link to it) and the form share one set of prices.
+The contact form is the same markup on both pages. Prices are written in
+`services.html` (shown in the section, and as `data-` attributes on the form's
 inputs, which `assets/js/form.js` adds up into the estimate) and in
 `worker/catalog.js` (used in the emails). `node --test test/*.test.js` fails
 if the two disagree, so change both together.

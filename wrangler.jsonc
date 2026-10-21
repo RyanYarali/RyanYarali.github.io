@@ -21,7 +21,7 @@
     // Worker serves index.html for folders and the 404 page itself.
     "html_handling": "none",
     "not_found_handling": "none",
-    "run_worker_first": ["/api/*"]
+    "run_worker_first": ["/api/*", "/services.html"]
   },
   "d1_databases": [
     {
