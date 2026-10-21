@@ -1442,6 +1442,15 @@ html.js-ready .rise-ready.is-risen .ch {
   content: " \2192";
 }
 
+/* Not public yet: plain text, no arrow. */
+.plan-proof.is-soon {
+  text-decoration: none;
+}
+
+.plan-proof.is-soon::after {
+  content: none;
+}
+
 .plan-cta {
   margin-top: 0.2rem;
 }

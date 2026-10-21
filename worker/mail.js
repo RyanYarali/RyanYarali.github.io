@@ -39,7 +39,7 @@ function estimateText(est) {
 
 // One shared frame: off-white page, a white card, the blue accent rule.
 // Email clients ignore stylesheets, so everything is inline.
-function frame(inner) {
+export function frame(inner) {
   return `<!doctype html><html><body style="margin:0;padding:24px 12px;background:#fafafa;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;color:#0a0a0b">
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td align="center">
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:560px;background:#ffffff;border:1px solid #e8e8ea;border-radius:14px;border-top:4px solid #2450f5">
@@ -136,24 +136,6 @@ export async function send(env, mail) {
     return res.ok;
   } catch (e) {
     console.error("[mail] send failed", e);
-    return false;
-  }
-}
-
-// A one-line Telegram alert, if a bot is set up. Optional.
-export async function telegram(env, m) {
-  if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) return false;
-  const est = estimateText(m.estimate);
-  const text = `📨 ${m.name} (${m.email})\n${TOPICS[m.topic].label}${est ? ` · ${est}` : ""}${m.ref ? ` · referred by ${m.ref}` : ""}\n\n${m.message.slice(0, 600)}`;
-  try {
-    const res = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: env.TELEGRAM_CHAT_ID, text, disable_web_page_preview: true }),
-    });
-    return res.ok;
-  } catch (e) {
-    console.error("[telegram] send failed", e);
     return false;
   }
 }
