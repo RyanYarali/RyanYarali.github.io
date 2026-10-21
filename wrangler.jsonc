@@ -27,7 +27,7 @@
     {
       "binding": "DB",
       "database_name": "ryanyarali",
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "14c145b6-6e61-4c71-aeb8-a71abcb9f239",
       "migrations_dir": "worker/migrations"
     }
   ],
