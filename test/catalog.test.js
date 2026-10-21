@@ -3,7 +3,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { TOPICS, ADDONS } from "../worker/catalog.js";
+import { TOPICS, ADDONS, REFERRAL } from "../worker/catalog.js";
 
 const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const attrs = (tag) => Object.fromEntries([...tag.matchAll(/([\w-]+)="([^"]*)"/g)].map((m) => [m[1], m[2]]));
@@ -33,4 +33,10 @@ test("the pricing section shows the same package prices", () => {
     const card = html.slice(html.indexOf(`data-pick="${id}"`) - 2500, html.indexOf(`data-pick="${id}"`));
     assert.match(card, new RegExp(`plan-amount">\\$${t.from.toLocaleString("en-CA")}<`), id);
   }
+});
+
+test("the referral discount and reward match the page", () => {
+  assert.equal(attrs(html.match(/<input[^>]*id="ref"[^>]*>/)[0])["data-discount"], String(REFERRAL.percent));
+  assert.match(html, new RegExp(`They save ${REFERRAL.percent}%\\.`));
+  assert.match(html, new RegExp(`You get \\$${REFERRAL.reward}\\.`));
 });

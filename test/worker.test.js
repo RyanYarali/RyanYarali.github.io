@@ -10,7 +10,7 @@ test("check accepts a good message and works out the estimate", () => {
   const m = check(good);
   assert.equal(m.error, undefined);
   assert.equal(m.email, "jane@example.com");
-  assert.deepEqual(m.estimate, { total: 1700, monthly: 49 });
+  assert.deepEqual(m.estimate, { total: 1050, monthly: 29 });
 });
 
 test("check names the first bad field", () => {
@@ -34,7 +34,23 @@ test("add-ons: unknown ones, duplicates and ones for another package are dropped
 });
 
 test("rush adds a quarter to the whole build", () => {
-  assert.deepEqual(estimate("portfolio", ["page", "rush"]), { total: 900, monthly: 0 });
+  assert.deepEqual(estimate("portfolio", ["page", "rush"]), { total: 550, monthly: 0 });
+});
+
+test("a referral takes 10% off the build, not the care plan", () => {
+  const m = check({ ...good, ref: "Sara Ahmadi" });
+  assert.equal(m.ref, "Sara Ahmadi");
+  assert.deepEqual(m.estimate, { total: 945, monthly: 29 });
+  assert.equal(check({ ...good, ref: "   " }).estimate.total, 1050);
+});
+
+test("the thank-you mentions the referral discount but never the name typed", () => {
+  const mail = senderMail(check({ ...good, ref: "visit evil.example" }));
+  assert.ok(mail.html.includes("10% referral discount"));
+  assert.ok(!mail.html.includes("evil.example"));
+  const owner = ownerMail(check({ ...good, ref: "<b>Sara</b>" }), new Date());
+  assert.ok(owner.html.includes("&lt;b&gt;Sara"));
+  assert.ok(owner.text.includes("Estimate: from $945 + $29/mo, after 10% referral"));
 });
 
 test("names are greeted by their first word, letters only", () => {
@@ -51,7 +67,7 @@ test("the notice to Ryan escapes everything the sender typed", () => {
   const mail = ownerMail(m, new Date("2026-12-01T20:00:00Z"));
   assert.ok(!mail.html.includes("<img src=x"));
   assert.ok(mail.html.includes("&lt;img src=x"));
-  assert.ok(mail.text.includes("Estimate: from $1,700 + $49/mo"));
+  assert.ok(mail.text.includes("Estimate: from $1,050 + $29/mo"));
 });
 
 test("the thank-you never repeats the sender's message", () => {
@@ -59,7 +75,7 @@ test("the thank-you never repeats the sender's message", () => {
   const mail = senderMail(m);
   assert.ok(!mail.html.includes("evil.example"));
   assert.ok(!mail.text.includes("evil.example"));
-  assert.ok(mail.text.includes("from $1,700 + $49/mo"));
+  assert.ok(mail.text.includes("from $1,050 + $29/mo"));
   assert.equal(mail.subject, "Thanks, Jane. I got your message");
 });
 
