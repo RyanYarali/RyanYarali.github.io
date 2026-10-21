@@ -2076,3 +2076,52 @@ html.js-ready .rise-ready.is-risen .ch {
 .hire-band .care-text {
   max-width: 56ch;
 }
+
+/* ---------- privacy page and the form's privacy line ---------- */
+.legal {
+  max-width: 760px;
+}
+
+.legal h2 {
+  margin: 2.75rem 0 0.75rem;
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  letter-spacing: -0.025em;
+}
+
+.legal h2:first-child {
+  margin-top: 0;
+}
+
+.legal h3 {
+  margin: 1.5rem 0 0.4rem;
+  font-size: 1.1rem;
+}
+
+.legal p,
+.legal li {
+  color: var(--color-text-muted);
+  line-height: 1.7;
+}
+
+.legal ul {
+  padding-left: 1.2rem;
+}
+
+.legal li {
+  margin-bottom: 0.5rem;
+}
+
+.legal a,
+.form-privacy a {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 3px;
+}
+
+.form-privacy {
+  margin: 0.75rem 0 0;
+  font-size: 0.85rem;
+  text-align: center;
+  color: var(--color-text-subtle);
+}

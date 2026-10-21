@@ -84,4 +84,10 @@
       <image:loc>https://ryanyarali.com/assets/site-cover.jpg</image:loc>
     </image:image>
   </url>
+  <url>
+    <loc>https://ryanyarali.com/privacy.html</loc>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
+  </url>
 </urlset>

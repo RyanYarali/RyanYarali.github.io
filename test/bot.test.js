@@ -176,3 +176,16 @@ test("the morning summary", async () => {
 test("B.C. days", () => {
   assert.equal(bcDay(new Date("2026-12-01T06:30:00Z")), "2026-11-30");
 });
+
+test("/forget deletes a sender's messages; the morning tidy drops old data", async () => {
+  await call("/api/contact", { topic: "other", name: "Del Me", email: "del@example.com", message: "Please forget me later." });
+  await tgUpdate({ message: { chat: { id: 42 }, text: "/forget del@example.com" } });
+  assert.match(sent.at(-1).text, /Deleted 1 message/);
+  assert.equal(env.DB.raw.prepare("SELECT COUNT(*) AS n FROM messages").get().n, 0);
+  env.DB.raw.exec("INSERT INTO visits (id, created_at, day, vid, path, source) VALUES ('old-visit-1', '2024-01-01T00:00:00.000Z', '2024-01-01', 'v', '/', 'direct')");
+  env.DB.raw.exec("INSERT INTO messages (created_at, topic, name, email, message, ip_hash, status) VALUES ('2023-01-01T00:00:00.000Z', 'other', 'Old', 'old@example.com', 'old message here', 'h', 'new'), ('2023-01-01T00:00:00.000Z', 'store', 'Client', 'c@example.com', 'paid project here', 'h', 'won')");
+  const { tidy } = await import("../worker/telegram.js");
+  await tidy(env);
+  assert.equal(env.DB.raw.prepare("SELECT COUNT(*) AS n FROM visits WHERE id = 'old-visit-1'").get().n, 0);
+  assert.deepEqual(env.DB.raw.prepare("SELECT name FROM messages").all().map((r) => r.name), ["Client"]);
+});
