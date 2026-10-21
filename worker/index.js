@@ -33,6 +33,9 @@ export default {
     // whoever clicks it is shopping for a website, so they start on Services.
     if (url.pathname === "/" && url.searchParams.has("ref"))
       return Response.redirect(`${url.origin}/services.html${url.search}`, 302);
+    // The short address printed on the share card.
+    if (url.pathname === "/services" || url.pathname === "/services/")
+      return Response.redirect(`${url.origin}/services.html${url.search}`, 301);
     if (url.pathname === "/services.html") return services(request, env, url);
     if (url.pathname.endsWith("/")) {
       const index = await env.ASSETS.fetch(new URL(url.pathname + "index.html", url.origin), request);
