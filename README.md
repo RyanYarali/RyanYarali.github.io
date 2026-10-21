@@ -5,8 +5,10 @@ at BCIT. Built with plain HTML, CSS, and JavaScript. No framework, no build
 step, no dependencies to install. The one library, three.js for the hero
 globe, is vendored in `assets/vendor/`.
 
-Live at [ryanyarali.com](https://ryanyarali.com), deployed from this repository
-via GitHub Pages.
+Live at [ryanyarali.com](https://ryanyarali.com), served by Cloudflare Workers
+(free plan) from this repository: the files are the site, and one small Worker
+in `worker/` handles the contact form and passes the client previews
+(`/taha-portfolio/` and the other GitHub project pages) through to GitHub.
 
 ## Running locally
 
@@ -57,12 +59,17 @@ assets/
     ping-sprite.js    Ping's pixel-art sprite: character maps drawn as SVG rects
     story.js          Home page stacking, About word fill, portrait tilt
   vendor/three/       three.js r186, the one third-party library (see its README)
-CNAME, robots.txt, sitemap.xml, llms.txt, favicon.svg
+robots.txt, sitemap.xml, llms.txt, favicon.svg
+_headers            Response headers and cache rules on Cloudflare
+wrangler.jsonc      Cloudflare config; .assetsignore keeps repo files off the site
+worker/             The Worker: contact form, client previews, D1 migrations
+test/               node --test: prices in sync, form checks, emails, routing
 ```
 
 Every local CSS and JS link carries a `?v=` date tag; bump it on every page
-when a CSS or JS file changes, because GitHub Pages lets browsers cache for
-ten minutes.
+when a CSS or JS file changes. `_headers` lets browsers keep CSS and JS for a
+year on the strength of that tag, so a change without a new tag never reaches
+a returning visitor.
 
 Every stylesheet is linked directly from each page so the browser fetches them
 in parallel rather than discovering them through `@import`. `style.css` is
@@ -75,9 +82,8 @@ navigation, so the internal link graph exists without JavaScript, and the work
 list, so the projects are readable by social link-preview bots and by anything
 that indexes before it renders.
 
-Each indexable page also carries a `rel="canonical"` (GitHub Pages serves the
-same content on the apex domain and on `*.github.io`, and at both `/` and
-`/index.html`), a description under 160 characters, Open Graph and Twitter card
+Each indexable page also carries a `rel="canonical"` (the same content is
+served at both `/` and `/index.html`, and on the `workers.dev` preview), a description under 160 characters, Open Graph and Twitter card
 tags (including `og:site_name`, `og:locale` and image alt text; case studies
 are `og:type` `article` with published and modified times), and a JSON-LD
 `@graph`. Nodes share stable `@id`s across pages so search engines and AI
@@ -231,11 +237,59 @@ and `height` attributes. If it does not, leave the `<canvas data-art="...">` in
 place and `interactive.js` draws a figure seeded by that key.
 
 
-## Contact form
+## Contact form and pricing
 
-The form posts to [Formspree](https://formspree.io). To point it at a
-different endpoint, change the `action` attribute on the form in `index.html`.
-Validation and submission are handled client-side in `assets/js/form.js`.
+The pricing section (on `services.html`, the page for clients; the home page
+stays the portfolio, with a link to it) and the form share one set of prices.
+The contact form is the same markup on both pages. Prices are written in
+`services.html` (shown in the section, and as `data-` attributes on the form's
+inputs, which `assets/js/form.js` adds up into the estimate) and in
+`worker/catalog.js` (used in the emails). `node --test test/*.test.js` fails
+if the two disagree, so change both together.
+
+The form posts JSON to `/api/contact`, handled by `worker/index.js`:
+
+1. checks the origin, a hidden honeypot field and Cloudflare Turnstile;
+2. validates every field again on the server;
+3. allows five messages an hour per visitor (by salted IP hash);
+4. saves the message to D1 (`messages` table), so nothing is lost if email
+   fails;
+5. texts Ryan on Telegram (below), or emails him through Resend if the bot
+   isn't set up or can't send;
+6. sends the sender a thank-you, at most one per address a day. It repeats
+   only what they picked from fixed lists, never their own words.
+
+## The Telegram bot
+
+`worker/telegram.js`, fed by `worker/visits.js` and `assets/js/hit.js` (one
+beacon per page view, no cookies; visitors are a salted hash of IP and
+browser that changes daily; Do Not Track is respected; `?notrack=1` stops
+counting a device). It only talks to `TELEGRAM_CHAT_ID`.
+
+- **Leads**: every message, with the estimate, the referral (and whether the
+  referrer is a past client), where the sender came from (credit tag, friend
+  link, Google, ChatGPT...), the pages they viewed and their time on the site.
+  Buttons: Reply, Call booked, Won, Not a fit. Reply to a lead in Telegram
+  and the bot shows a preview, then emails it from ryan@ryanyarali.com.
+- **Live alerts**: someone arrived from a credit tag (`?ref=` on client
+  sites), a friend link (`?friend=`) or an AI answer. `/alerts` toggles them.
+- **Commands**: `/stats`, `/now`, `/leads`, `/refs` (who to pay the $50),
+  `/alerts`, `/ignoreme`, `/help`.
+- **Every morning at 9** (cron, B.C. time): yesterday's numbers and any
+  lead still waiting after a day.
+
+Set it up: make a bot with @BotFather, `wrangler secret put` the token and a
+random `TELEGRAM_WEBHOOK_SECRET`, open `/api/telegram/setup?key=<secret>`,
+message the bot (it replies with your chat id), `wrangler secret put
+TELEGRAM_CHAT_ID`, and open the setup link again.
+
+Run it locally with `npx wrangler d1 migrations apply ryanyarali --local` once,
+then `npx wrangler dev`. With no `RESEND_API_KEY` the emails are logged
+instead of sent, and with no `TURNSTILE_SECRET` the bot check is skipped. The
+secrets are listed at the top of `wrangler.jsonc`.
+
+Read the saved messages with
+`npx wrangler d1 execute ryanyarali --remote --command "select * from messages order by id desc limit 20"`.
 
 ## Accessibility
 

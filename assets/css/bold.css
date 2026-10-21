@@ -147,12 +147,16 @@
 
 /* Live: the two frames alternate, like a sprite. */
 .skill-tile:hover .skill-icon .pi-a,
-.skill-tile.is-live .skill-icon .pi-a {
+.skill-tile.is-live .skill-icon .pi-a,
+.plan:hover .skill-icon .pi-a,
+.plan.is-live .skill-icon .pi-a {
   animation: pi-frame 0.9s steps(1) infinite;
 }
 
 .skill-tile:hover .skill-icon .pi-b,
-.skill-tile.is-live .skill-icon .pi-b {
+.skill-tile.is-live .skill-icon .pi-b,
+.plan:hover .skill-icon .pi-b,
+.plan.is-live .skill-icon .pi-b {
   display: inline;
   animation: pi-frame 0.9s steps(1) infinite reverse;
 }
@@ -164,11 +168,13 @@
 }
 
 /* Revealed: the icon boots in pixel by pixel. */
-html.js-ready .skill-tile.reveal:not(.in-view) .skill-icon rect {
+html.js-ready .skill-tile.reveal:not(.in-view) .skill-icon rect,
+html.js-ready .plan.reveal:not(.in-view) .skill-icon rect {
   opacity: 0;
 }
 
-html.js-ready .skill-tile.in-view .skill-icon .pi-a rect {
+html.js-ready .skill-tile.in-view .skill-icon .pi-a rect,
+html.js-ready .plan.in-view .skill-icon .pi-a rect {
   animation: pi-boot 1ms steps(1) both;
   animation-delay: calc(var(--d, 0ms) + var(--reveal-index, 0) * 90ms + 200ms);
 }
@@ -401,13 +407,22 @@ html.js-ready .skill-tile.in-view .skill-icon .pi-a rect {
 @media (prefers-reduced-motion: reduce) {
   .skill-tile:hover .skill-icon .pi-a,
   .skill-tile.is-live .skill-icon .pi-a,
-  html.js-ready .skill-tile.in-view .skill-icon .pi-a rect {
+  .plan:hover .skill-icon .pi-a,
+  .plan.is-live .skill-icon .pi-a,
+  html.js-ready .skill-tile.in-view .skill-icon .pi-a rect,
+  html.js-ready .plan.in-view .skill-icon .pi-a rect {
     animation: none;
   }
 
   .skill-tile:hover .skill-icon .pi-b,
-  .skill-tile.is-live .skill-icon .pi-b {
+  .skill-tile.is-live .skill-icon .pi-b,
+  .plan:hover .skill-icon .pi-b,
+  .plan.is-live .skill-icon .pi-b {
     display: none;
+  }
+
+  .addon-group:not([hidden]) {
+    animation: none;
   }
 
   .term[open] {
@@ -555,6 +570,14 @@ html.js-ready .skill-tile.in-view .skill-icon .pi-a rect {
   font-weight: 700;
   line-height: 0.84;
   letter-spacing: -0.055em;
+}
+
+/* A sentence rather than a word (the services page): big, not hero-big. */
+.page-title h1.title-long {
+  max-width: 14ch;
+  font-size: clamp(3rem, 7.4vw, 6.75rem);
+  line-height: 0.92;
+  letter-spacing: -0.045em;
 }
 
 .title-count {
@@ -1245,4 +1268,860 @@ html.js-ready .rise-ready.is-risen .ch {
 .copy-email.is-done {
   color: var(--color-accent);
   border-color: var(--color-accent);
+}
+
+/* ---------- pricing ----------
+ * Three packages as cards, the middle one ruled in the accent; a care plan
+ * strip; the add-ons as a price list; and the four steps of a project. The
+ * pixel icons are flair.js's, as on the skill tiles. */
+.plan-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .plan-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1120px) {
+  .plan-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .plan {
+    padding-inline: 1.25rem;
+  }
+
+  .plan-amount {
+    font-size: clamp(2.4rem, 3.2vw, 3rem);
+  }
+}
+
+.plan {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  min-width: 0;
+  padding: 1.6rem 1.5rem 1.5rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: background-color 300ms var(--ease), border-color 300ms var(--ease);
+}
+
+.plan::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: radial-gradient(color-mix(in srgb, var(--color-accent) 22%, transparent) 1px, transparent 1.4px);
+  background-size: 12px 12px;
+  opacity: 0;
+  transition: opacity 400ms var(--ease);
+  pointer-events: none;
+}
+
+.plan > * {
+  position: relative;
+}
+
+.plan:hover,
+.plan.is-live {
+  background: var(--color-surface-2);
+}
+
+.plan:hover::before,
+.plan.is-live::before {
+  opacity: 1;
+}
+
+.plan.is-featured {
+  border-color: var(--color-accent);
+  box-shadow: inset 0 3px 0 var(--color-accent);
+}
+
+.plan-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.plan-code {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+  font-variant-numeric: tabular-nums;
+}
+
+.plan.is-featured .plan-code,
+.plan:hover .plan-code,
+.plan.is-live .plan-code {
+  color: var(--color-accent);
+}
+
+.plan-name {
+  margin: 0.4rem 0 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+
+.plan-for {
+  margin: 0;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.plan-price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  margin: 0.4rem 0 0.2rem;
+  color: var(--color-text);
+}
+
+.plan-from {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.plan-amount {
+  font-size: clamp(2.6rem, 4.4vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.045em;
+  font-variant-numeric: tabular-nums;
+}
+
+.plan-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.plan-list li {
+  display: flex;
+  gap: 0.7rem;
+  padding: 0.6rem 0;
+  border-top: 1px solid var(--color-border);
+  line-height: 1.45;
+}
+
+/* A one-pixel "bullet", at the icons' scale. */
+.plan-list li::before {
+  content: "";
+  flex: none;
+  width: 7px;
+  height: 7px;
+  margin-top: 0.5em;
+  background: var(--color-accent);
+}
+
+.plan-proof {
+  margin-top: auto;
+  padding-top: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  text-decoration-color: var(--color-border-strong);
+  text-underline-offset: 4px;
+  transition: color var(--transition-fast), text-decoration-color var(--transition-fast);
+}
+
+.plan-proof:hover {
+  color: var(--color-accent);
+  text-decoration-color: var(--color-accent);
+}
+
+.plan-proof::after {
+  content: " \2192";
+}
+
+/* Not public yet: plain text, no arrow. */
+.plan-proof.is-soon {
+  text-decoration: none;
+}
+
+.plan-proof.is-soon::after {
+  content: none;
+}
+
+.plan-cta {
+  margin-top: 0.2rem;
+}
+
+/* A card without an example link still puts its button at the bottom. */
+.plan-list + .plan-cta {
+  margin-top: auto;
+}
+
+/* The care plan: one strip across, in the accent's soft tint. */
+.care {
+  display: grid;
+  gap: 0.75rem 3rem;
+  margin-top: 1rem;
+  padding: 1.5rem;
+  background: var(--color-accent-soft);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
+  border-radius: var(--radius-lg);
+}
+
+@media (min-width: 760px) {
+  .care {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+    align-items: center;
+  }
+}
+
+.care-name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.9rem;
+  margin: 0.35rem 0 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.care-price {
+  color: var(--color-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.care-price small {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.care-text {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+/* Add-ons: a price list. Name, note and price on one line on wide screens;
+   on a phone the note drops under the name. */
+.extras {
+  margin-top: 4.5rem;
+}
+
+.extras-title {
+  margin: 0 0 1.25rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.addon-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--color-border-strong);
+}
+
+.addon-list li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "name price" "note note";
+  gap: 0.15rem 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+@media (min-width: 760px) {
+  .addon-list li {
+    grid-template-columns: minmax(12rem, 1fr) minmax(0, 2fr) 7.5rem;
+    grid-template-areas: "name note price";
+    align-items: baseline;
+  }
+}
+
+.addon-name {
+  grid-area: name;
+  font-weight: 600;
+}
+
+.addon-note {
+  grid-area: note;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
+
+.addon-price {
+  grid-area: price;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  transition: color var(--transition-fast);
+}
+
+.addon-list li:hover .addon-price {
+  color: var(--color-accent);
+}
+
+/* The four steps, numbered like the packages. */
+.steps {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.75rem;
+  margin: 4.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 620px) {
+  .steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1000px) {
+  .steps {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.steps li {
+  padding-top: 1rem;
+  border-top: 2px solid var(--color-border-strong);
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.steps strong {
+  display: block;
+  margin: 0.35rem 0 0.3rem;
+  font-size: 1.15rem;
+  color: var(--color-text);
+}
+
+.step-n {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+}
+
+/* ---------- contact: topic and add-on chips ----------
+ * Real radios and checkboxes, visually hidden; the label is the chip. */
+.chip-group {
+  min-width: 0;
+  margin: 0 0 1.6rem;
+  padding: 0;
+  border: 0;
+}
+
+.chip-group legend {
+  margin-bottom: 0.75rem;
+  padding: 0;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+  transition: color 300ms var(--ease);
+}
+
+.chip-group .error-message {
+  min-height: 0;
+}
+
+.chip-group .error-message:empty {
+  margin: 0;
+}
+
+.chip-group:focus-within legend {
+  color: var(--color-accent);
+}
+
+.legend-note {
+  margin-left: 0.4rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: none;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.contact-form .chip-group .chip {
+  position: relative;
+  display: inline-flex;
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.chip[hidden] {
+  display: none !important;
+}
+
+.contact-form .chip-group .chip input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.chip span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 44px;
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--color-background);
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.chip em {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-style: normal;
+  color: var(--color-text-subtle);
+  font-variant-numeric: tabular-nums;
+}
+
+.chip:hover span {
+  border-color: var(--color-text);
+}
+
+.chip input:focus-visible + span {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.chip input:checked + span {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.chip input:checked + span em {
+  color: var(--color-on-accent);
+}
+
+/* A tick in front of a picked add-on, so the state isn't colour alone. */
+.chip input[type="checkbox"]:checked + span::before {
+  content: "\2713";
+  font-weight: 700;
+}
+
+.chip-group[aria-invalid="true"] .chip span {
+  border-color: var(--color-danger);
+}
+
+.addon-group:not([hidden]) {
+  animation: addon-in 500ms var(--ease-out-expo);
+}
+
+@keyframes addon-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+.estimate {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  gap: 0.2rem 1rem;
+  margin: 1.1rem 0 0;
+  padding: 1rem 1.15rem;
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-md);
+}
+
+.estimate-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.estimate-value {
+  justify-self: end;
+  font-size: 1.05rem;
+  color: var(--color-text);
+}
+
+.estimate-value strong {
+  font-size: 1.6rem;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.estimate-note {
+  grid-column: 1 / -1;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+/* The hidden field for bots: off screen, not display:none, so bots that
+   skip hidden inputs still fill it. */
+.hp {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.turnstile:empty {
+  display: none;
+}
+
+.turnstile {
+  margin-bottom: 1rem;
+}
+
+/* Referral: a second strip under the care plan, with a link maker. */
+.refer {
+  display: grid;
+  gap: 1.25rem 3rem;
+  margin-top: 1rem;
+  padding: 1.5rem;
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-lg);
+}
+
+@media (min-width: 860px) {
+  .refer {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    align-items: center;
+  }
+}
+
+.refer-copy .care-text {
+  margin-top: 0.6rem;
+}
+
+.refer-link label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.refer-row {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.refer-row input {
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0.6rem 0.9rem;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--color-text);
+  background: var(--color-background);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+}
+
+.refer-row input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-soft);
+}
+
+.refer-row .copy-email {
+  min-height: 44px;
+  white-space: nowrap;
+}
+
+.refer-out {
+  margin: 0.6rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--color-text-subtle);
+  overflow-wrap: anywhere;
+}
+
+.refer-out span {
+  color: var(--color-accent);
+}
+
+/* The custom quote box and the note on prices. */
+.quote-cta {
+  display: grid;
+  gap: 1.25rem 2rem;
+  margin-top: 3rem;
+  padding: 1.75rem 1.5rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+@media (min-width: 760px) {
+  .quote-cta {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+}
+
+.quote-cta .care-text {
+  margin-top: 0.5rem;
+}
+
+.price-note {
+  max-width: 62ch;
+  margin: 1.25rem 0 0;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.estimate-fine {
+  grid-column: 1 / -1;
+  font-size: 0.78rem;
+  color: var(--color-text-subtle);
+}
+
+/* ---------- services page ----------
+ * The page header's buttons, the hello for credit-tag visitors, the client
+ * sites, and the questions. The pricing blocks are styled above. */
+.services-cta {
+  margin-top: 2rem;
+}
+
+.came-from[hidden] {
+  display: none;
+}
+
+.came-from {
+  display: inline-block;
+  margin: 1.5rem 0 0;
+  padding: 0.7rem 1.1rem;
+  font-size: 1rem;
+  color: var(--color-text);
+  background: var(--color-accent-soft);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
+  border-radius: var(--radius-md);
+}
+
+.contact-hire {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.contact-hire a {
+  color: var(--color-text);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 4px;
+}
+
+.contact-hire a:hover {
+  color: var(--color-accent);
+}
+
+.client-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 760px) {
+  .client-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.client-card a {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.75rem 0.75rem 1.25rem;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: border-color var(--transition-base), background-color var(--transition-base);
+}
+
+.client-card a:hover {
+  border-color: var(--color-accent);
+  background: var(--color-surface-2);
+}
+
+.client-card img {
+  width: 100%;
+  height: auto;
+  margin-bottom: 0.75rem;
+  border-radius: var(--radius-md);
+}
+
+.client-name {
+  padding: 0 0.5rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.client-name::after {
+  content: " \2192";
+  color: var(--color-accent);
+}
+
+.client-meta {
+  padding: 0 0.5rem;
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+}
+
+.faq-list {
+  max-width: 760px;
+  border-top: 1px solid var(--color-border-strong);
+}
+
+.faq-item {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.faq-item summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  min-height: 48px;
+  padding: 1rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  content: "+";
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  color: var(--color-accent);
+  transition: transform var(--transition-base);
+}
+
+.faq-item[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.faq-item summary:hover {
+  color: var(--color-accent);
+}
+
+.faq-item p {
+  margin: 0 0 1.25rem;
+  max-width: 62ch;
+  color: var(--color-text-muted);
+}
+
+/* Home: the way to the services page. */
+.work-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 2rem;
+}
+
+.hire-band {
+  margin-top: 3rem;
+}
+
+.hire-band .care-text {
+  max-width: 56ch;
+}
+
+/* ---------- privacy page and the form's privacy line ---------- */
+.legal {
+  max-width: 760px;
+}
+
+.legal h2 {
+  margin: 2.75rem 0 0.75rem;
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  letter-spacing: -0.025em;
+}
+
+.legal h2:first-child {
+  margin-top: 0;
+}
+
+.legal h3 {
+  margin: 1.5rem 0 0.4rem;
+  font-size: 1.1rem;
+}
+
+.legal p,
+.legal li {
+  color: var(--color-text-muted);
+  line-height: 1.7;
+}
+
+.legal ul {
+  padding-left: 1.2rem;
+}
+
+.legal li {
+  margin-bottom: 0.5rem;
+}
+
+.legal a,
+.form-privacy a {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 3px;
+}
+
+.form-privacy {
+  margin: 0.75rem 0 0;
+  font-size: 0.85rem;
+  text-align: center;
+  color: var(--color-text-subtle);
 }

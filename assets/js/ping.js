@@ -73,6 +73,7 @@
     lost: "Oops. I got lost too. Let's go home?",
     resume: "The PDF's still cooking. LinkedIn has the full story!",
     projects: "Every project, in one place. Tap one!",
+    services: "Prices up front. Pick a package, or ask for a quote!",
   };
 
   var isHome = !!document.getElementById("hero");

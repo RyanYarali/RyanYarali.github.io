@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("portfolio-theme-override");
+          var theme =
+            stored ||
+            (window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light");
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      })();
+    </script>
+    <link rel="canonical" href="https://ryanyarali.com/privacy.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="What ryanyarali.com collects when you visit or send a message, why, who handles it, how long it is kept, and how to see or delete it." />
+    <meta name="author" content="Ryan Yarali" />
+
+    <!-- Open Graph / social link previews -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Ryan Yarali" />
+    <meta property="og:locale" content="en_CA" />
+    <meta property="og:url" content="https://ryanyarali.com/privacy.html" />
+    <meta property="og:title" content="Privacy | Ryan Yarali" />
+    <meta property="og:description" content="What ryanyarali.com collects when you visit or send a message, why, who handles it, how long it is kept, and how to see or delete it." />
+    <meta property="og:image" content="https://ryanyarali.com/assets/og/ryan.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Ryan Yarali, full-stack developer at BCIT, open to co-op and internships: his photo in front of his portfolio site, with Ping, his pixel-art mascot, saying: Ping! Meet Ryan. He builds for real clients." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Privacy | Ryan Yarali" />
+    <meta name="twitter:description" content="What ryanyarali.com collects when you visit or send a message, why, who handles it, how long it is kept, and how to see or delete it." />
+    <meta name="twitter:image" content="https://ryanyarali.com/assets/og/ryan.jpg" />
+    <meta name="twitter:image:alt" content="Ryan Yarali, full-stack developer at BCIT, open to co-op and internships: his photo in front of his portfolio site, with Ping, his pixel-art mascot, saying: Ping! Meet Ryan. He builds for real clients." />
+
+    <title>Privacy | Ryan Yarali</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400..700&family=IBM+Plex+Mono:wght@400;500&family=Silkscreen&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="assets/css/tokens.css?v=20261051" />
+    <link rel="stylesheet" href="assets/css/reset.css?v=20261051" />
+    <link rel="stylesheet" href="assets/css/typography.css?v=20261051" />
+    <link rel="stylesheet" href="assets/css/layout.css?v=20261051" />
+    <link rel="stylesheet" href="assets/css/components.css?v=20261051" />
+    <link rel="stylesheet" href="assets/css/pages.css?v=20261051" />
+    <link rel="stylesheet" href="assets/css/interactive.css?v=20261051" />
+    <link rel="stylesheet" href="assets/css/motion.css?v=20261051" />
+    <link rel="stylesheet" href="assets/css/bold.css?v=20261051" />
+    <link rel="stylesheet" href="assets/css/style.css?v=20261051" />
+
+
+    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=5" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <!-- Structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://ryanyarali.com/#ryan",
+            "name": "Ryan Yarali",
+            "url": "https://ryanyarali.com/"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://ryanyarali.com/#site",
+            "url": "https://ryanyarali.com/",
+            "name": "Ryan Yarali"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://ryanyarali.com/privacy.html#page",
+            "url": "https://ryanyarali.com/privacy.html",
+            "name": "Privacy",
+            "inLanguage": "en",
+            "dateModified": "2026-10-21T00:00:00-07:00",
+            "isPartOf": {
+              "@id": "https://ryanyarali.com/#site"
+            },
+            "publisher": {
+              "@id": "https://ryanyarali.com/#ryan"
+            }
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <canvas id="site-trace" aria-hidden="true"></canvas>
+    <a href="#main" class="skip-link">Skip to content</a>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="logo" aria-label="Ryan Yarali, Computer Systems Technology, home">
+          <span class="logo-name">Ryan Yarali</span>
+          <span class="logo-subtitle">Computer Systems Technology</span>
+        </a>
+
+        <ul class="nav-links" id="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="index.html#about" class="nav-link">About</a></li>
+          <li><a href="projects.html" class="nav-link">Projects</a></li>
+          <li><a href="index.html#skills" class="nav-link">Skills</a></li>
+          <li><a href="services.html" class="nav-link">Services</a></li>
+          <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <button type="button" class="nav-term" data-terminal aria-label="Open the site terminal, Ctrl K"><kbd>Ctrl K</kbd></button>
+          <button type="button" id="theme-toggle" class="theme-switch">
+            <svg class="theme-switch-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.4"></circle><path d="M12 1.6v2.2M12 20.2v2.2M4 4l1.6 1.6M18.4 18.4l1.6 1.6M1.6 12h2.2M20.2 12h2.2M4 20l1.6-1.6M18.4 5.6l1.6-1.6"></path></svg>
+            <svg class="theme-switch-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          </button>
+          <!-- Points at resume.html until the PDF exists; then swap the href for the PDF and add a download attribute. -->
+          <a href="resume.html" class="nav-resume" data-magnetic>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"></path><polyline points="7 10 12 15 17 10"></polyline><path d="M5 21h14"></path></svg>
+            Résumé
+          </a>
+          <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <main id="main">
+      <section class="page-header">
+        <div class="container page-title reveal">
+          <p class="eyebrow">Last updated October 21, 2026</p>
+          <h1 class="title-long" data-rise>Privacy</h1>
+          <p class="section-intro">
+            The short version: I collect only what I need to answer you and
+            to see which pages are useful. No cookies, no ads, nothing sold,
+            and you can ask me to delete your information at any time.
+          </p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container legal">
+          <h2>Who I am</h2>
+          <p>
+            This site belongs to Ryan Yarali, a web developer in Coquitlam,
+            British Columbia, Canada. I'm responsible for the personal
+            information collected here. Questions or requests:
+            <a href="mailto:ryan@ryanyarali.com">ryan@ryanyarali.com</a>.
+          </p>
+
+          <h2>What I collect</h2>
+          <h3>When you send the contact form</h3>
+          <p>
+            Your name, email address and message; what it's about, any
+            add-ons you picked and who referred you, if you say. To stop
+            spam I also keep a scrambled, one-way code made from your
+            internet address (not the address itself) and a code for your
+            visit that day, which lets me see which pages you looked at
+            before writing.
+          </p>
+          <h3>When you visit</h3>
+          <p>
+            Anonymous page views: the page, the site or link that brought
+            you here, your approximate city and country (from Cloudflare),
+            whether you're on a phone or a computer, and how long the page
+            was open. Each visitor gets a code that changes every day, so a
+            visit can be counted but you can't be followed from one day to
+            the next. I don't store internet addresses and don't use
+            cookies. If your browser sends Do Not Track or Global Privacy
+            Control, nothing is counted at all.
+          </p>
+          <h3>On your device</h3>
+          <p>
+            Your browser remembers whether you chose the light or dark theme.
+            That stays on your device and never reaches me.
+          </p>
+          <h3>The bot check</h3>
+          <p>
+            The form uses Cloudflare Turnstile to tell people from bots. It
+            looks at your browser, not at you, and Cloudflare handles it
+            under <a href="https://www.cloudflare.com/turnstile-privacy-policy/" target="_blank" rel="noopener noreferrer">its own privacy policy</a>.
+          </p>
+
+          <h2>Why</h2>
+          <p>
+            To reply to you, prepare a quote, apply a referral discount, and
+            understand which pages people find useful so I can improve them.
+            I never sell your information, use it for ads, or add you to a
+            mailing list.
+          </p>
+
+          <h2>Who handles it for me</h2>
+          <ul>
+            <li><strong>Cloudflare</strong> hosts the site and stores messages and visit counts.</li>
+            <li><strong>Resend</strong> sends the confirmation email and my replies.</li>
+            <li><strong>Telegram</strong> delivers new messages to my phone.</li>
+            <li><strong>IONOS</strong> hosts my email inbox.</li>
+          </ul>
+          <p>
+            These companies may store or process information outside Canada,
+            including in the United States, where it is subject to local law.
+          </p>
+
+          <h2>How long I keep it</h2>
+          <ul>
+            <li>Messages: up to two years, then they're deleted automatically. If you become a client, I keep what's needed for the project and for business records (the Canada Revenue Agency asks for six years).</li>
+            <li>Visit counts: thirteen months.</li>
+            <li>Unsent reply drafts: seven days.</li>
+          </ul>
+
+          <h2>Your choices</h2>
+          <p>
+            You can ask to see the information I have about you, correct it,
+            or delete it. Email
+            <a href="mailto:ryan@ryanyarali.com">ryan@ryanyarali.com</a>
+            and I'll answer within 30 days. If you're not happy with how I
+            handled it, you can contact the
+            <a href="https://www.priv.gc.ca/" target="_blank" rel="noopener noreferrer">Office of the Privacy Commissioner of Canada</a>.
+          </p>
+
+          <h2>Changes</h2>
+          <p>
+            If this changes, I'll update this page and the date at the top.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container footer-inner">
+        <div>
+          <p>&copy; 2026 <a href="index.html">Ryan Yarali</a>. All rights reserved.</p>
+          <p class="footer-tech">Built with HTML, CSS, and JavaScript. No framework. <a href="projects/this-site.html">How it's built</a> · <a href="privacy.html">Privacy</a></p>
+        </div>
+        <div class="footer-social">
+          <a href="mailto:ryan@ryanyarali.com" class="footer-email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            Email
+          </a>
+          <a href="https://github.com/RyanYarali" target="_blank" rel="me noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.93.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.87-1.36-3.87-1.36-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.42-2.69 5.4-5.25 5.68.41.36.78 1.06.78 2.14 0 1.54-.01 2.79-.01 3.17 0 .3.2.66.79.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+            GitHub
+          </a>
+          <button type="button" class="footer-term" data-terminal title="Open the site terminal (Ctrl K)"><kbd aria-hidden="true">Ctrl K</kbd> Terminal</button>
+          <a href="https://www.linkedin.com/in/ryan-yarali/" target="_blank" rel="me noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.55V9h3.57v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>
+            LinkedIn
+          </a>
+        </div>
+      </div>
+      <!-- The name again, set as large as the page allows: decoration only
+           (the copyright line above carries it as text). Its letters rise
+           as the footer scrolls into view. -->
+      <div class="footer-mark" aria-hidden="true" data-lens="accent"><span class="ch" style="--i:0">R</span><span class="ch" style="--i:1">y</span><span class="ch" style="--i:2">a</span><span class="ch" style="--i:3">n</span><span class="ch" style="--i:4">&nbsp;</span><span class="ch" style="--i:5">Y</span><span class="ch" style="--i:6">a</span><span class="ch" style="--i:7">r</span><span class="ch" style="--i:8">a</span><span class="ch" style="--i:9">l</span><span class="ch" style="--i:10">i</span></div>
+    </footer>
+    <script src="assets/js/theme.js?v=20261051"></script>
+    <script src="assets/js/hit.js?v=20261051" defer></script>
+    <script src="assets/js/form.js?v=20261051"></script>
+    <script src="assets/js/main.js?v=20261051"></script>
+    <script src="assets/js/flair.js?v=20261051"></script>
+    <script src="assets/js/interactive.js?v=20261051"></script>
+    <script src="assets/js/cursor.js?v=20261051"></script>
+    <script src="assets/js/ping-sprite.js?v=20261051"></script>
+    <script src="assets/js/ping.js?v=20261051"></script>
+  </body>
+</html>
