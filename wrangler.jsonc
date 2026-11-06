@@ -23,6 +23,12 @@
     "not_found_handling": "none",
     "run_worker_first": ["/api/*", "/services.html"]
   },
+  // Both addresses are this Worker; www redirects to the bare domain
+  // (worker/index.js).
+  "routes": [
+    { "pattern": "ryanyarali.com", "custom_domain": true },
+    { "pattern": "www.ryanyarali.com", "custom_domain": true }
+  ],
   "d1_databases": [
     {
       "binding": "DB",
