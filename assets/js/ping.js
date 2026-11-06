@@ -72,7 +72,7 @@
 
   var STANDALONE = {
     lost: "Oops. I got lost too. Let's go home?",
-    resume: "The PDF's still cooking. LinkedIn has the full story!",
+    resume: "Fresh off the printer. One page, no fluff!",
     projects: "Every project, in one place. Tap one!",
     services: "Prices up front. Pick a package, or ask for a quote!",
   };

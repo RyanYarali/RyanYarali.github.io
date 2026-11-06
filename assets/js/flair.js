@@ -608,7 +608,7 @@
       { cmd: "skills", desc: "Languages, stack and tools", go: home("#skills") },
       { cmd: "services", desc: "Websites for your business: packages and prices", go: base + "services.html" },
       { cmd: "contact", desc: "Send me a message", go: home("#contact") },
-      { cmd: "resume", desc: "My résumé", go: base + "resume.html" },
+      { cmd: "resume", desc: "My résumé (PDF)", go: base + "Ryan-Yarali-Resume.pdf" },
       { cmd: "termeh", desc: "Case study: Termeh Cafe & Restaurant", go: base + "projects/termeh.html" },
       { cmd: "nooklook", desc: "Case study: Nooklook Studio", go: base + "projects/nooklook.html" },
       { cmd: "doorlook", desc: "Case study: Doorlook", go: base + "projects/doorlook.html" },
