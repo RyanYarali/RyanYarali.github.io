@@ -26,6 +26,26 @@
   </url>
 
   <url>
+    <loc>https://ryanyarali.com/projects/termeh.html</loc>
+    <lastmod>2026-11-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://ryanyarali.com/assets/te-cover.jpg</image:loc>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://ryanyarali.com/projects/doorlook.html</loc>
+    <lastmod>2026-11-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://ryanyarali.com/assets/dl-cover.jpg</image:loc>
+    </image:image>
+  </url>
+
+  <url>
     <loc>https://ryanyarali.com/projects/nooklook.html</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
