@@ -267,6 +267,14 @@
   max-width: 260px;
 }
 
+/* A row of phone captures only (Termeh): three across on wide screens, so
+   none is left alone on its own row. */
+@media (min-width: 900px) {
+  .shots-phones {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 .shot figcaption {
   font-size: 0.8125rem;
   line-height: 1.5;

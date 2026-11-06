@@ -65,13 +65,14 @@
   var QUIPS = {
     "work-nooklook": "Ooh, the photo studio. That one's live!",
     "work-vancobab": "Kebab truck site. I can smell it from here.",
-    "work-termeh": "Bilingual, with an admin panel. Fancy.",
+    "work-termeh": "Pick a table on the map. In two languages!",
+    "work-doorlook": "Houses at twilight. Book in five taps.",
     "work-taskmate": "Built for students. Like Ryan!",
   };
 
   var STANDALONE = {
     lost: "Oops. I got lost too. Let's go home?",
-    resume: "The PDF's still cooking. LinkedIn has the full story!",
+    resume: "Fresh off the printer. One page, no fluff!",
     projects: "Every project, in one place. Tap one!",
     services: "Prices up front. Pick a package, or ask for a quote!",
   };

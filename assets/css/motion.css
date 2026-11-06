@@ -890,8 +890,16 @@ html.work-pinned .work-progress {
     navigation: auto;
   }
 
+  [data-vt="termeh"] {
+    view-transition-name: cover-termeh;
+  }
+
   [data-vt="nooklook"] {
     view-transition-name: cover-nooklook;
+  }
+
+  [data-vt="doorlook"] {
+    view-transition-name: cover-doorlook;
   }
 
   [data-vt="vancobab"] {

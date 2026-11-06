@@ -27,3 +27,7 @@
 
 /assets/og/*
   Cache-Control: public, max-age=604800
+
+/Ryan-Yarali-Resume.pdf
+  Cache-Control: public, max-age=3600
+  Content-Disposition: inline; filename="Ryan-Yarali-Resume.pdf"
