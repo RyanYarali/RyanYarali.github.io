@@ -291,6 +291,14 @@ secrets are listed at the top of `wrangler.jsonc`.
 Read the saved messages with
 `npx wrangler d1 execute ryanyarali --remote --command "select * from messages order by id desc limit 20"`.
 
+### Deploys
+
+Deploys are automatic through Cloudflare Workers Builds, connected on
+2026-11-05. A push to `main` runs `npx wrangler deploy`, so merging a PR
+publishes it. Other branches get preview builds. New D1 migrations still
+need `npx wrangler d1 migrations apply ryanyarali --remote` before the merge.
+Build logs are under Workers & Pages → ryanyarali → Deployments.
+
 ## Accessibility
 
 - Semantic landmarks, a skip-to-content link, and visible focus indicators
