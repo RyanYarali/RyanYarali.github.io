@@ -499,6 +499,7 @@ html.is-stacked main > .section {
 
 /* Every page has to be opaque to cover the one beneath it, and alternating
    grounds keep the edge between two pages visible. */
+html.is-stacked main > .doors,
 html.is-stacked main > .projects,
 html.is-stacked main > .learning {
   background-color: var(--color-background);
