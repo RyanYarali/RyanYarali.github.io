@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("portfolio-theme-override");
+          var theme =
+            stored ||
+            (window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light");
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      })();
+    </script>
+    <link rel="canonical" href="https://ryanyarali.com/projects/termeh.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="How a Coquitlam Persian cafe got a bilingual English and Farsi site where guests pick a real table and staff confirm it from Telegram." />
+    <meta name="author" content="Ryan Yarali" />
+
+    <!-- Open Graph / social link previews -->
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Ryan Yarali" />
+    <meta property="og:locale" content="en_CA" />
+    <meta property="og:url" content="https://ryanyarali.com/projects/termeh.html" />
+    <meta property="og:title" content="Termeh Cafe &amp; Restaurant: Bilingual Booking Site | Ryan Yarali" />
+    <meta property="og:description" content="How a Coquitlam Persian cafe got a bilingual English and Farsi site where guests pick a real table and staff confirm it from Telegram." />
+    <meta property="og:image" content="https://ryanyarali.com/assets/og/termeh.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Termeh Cafe &amp; Restaurant, a case study by Ryan Yarali: a bilingual restaurant site with table booking, beside a screenshot of the project." />
+    <meta property="article:published_time" content="2026-11-05T12:00:00-07:00" />
+    <meta property="article:modified_time" content="2026-11-05T12:00:00-07:00" />
+    <meta property="article:author" content="https://ryanyarali.com/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Termeh Cafe &amp; Restaurant: Bilingual Booking Site | Ryan Yarali" />
+    <meta name="twitter:description" content="How a Coquitlam Persian cafe got a bilingual English and Farsi site where guests pick a real table and staff confirm it from Telegram." />
+    <meta name="twitter:image" content="https://ryanyarali.com/assets/og/termeh.jpg" />
+    <meta name="twitter:image:alt" content="Termeh Cafe &amp; Restaurant, a case study by Ryan Yarali: a bilingual restaurant site with table booking, beside a screenshot of the project." />
+
+    <title>Termeh Cafe &amp; Restaurant: Bilingual Booking Site | Ryan Yarali</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400..700&family=IBM+Plex+Mono:wght@400;500&family=Silkscreen&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../assets/css/tokens.css?v=20261052" />
+    <link rel="stylesheet" href="../assets/css/reset.css?v=20261052" />
+    <link rel="stylesheet" href="../assets/css/typography.css?v=20261052" />
+    <link rel="stylesheet" href="../assets/css/layout.css?v=20261052" />
+    <link rel="stylesheet" href="../assets/css/components.css?v=20261052" />
+    <link rel="stylesheet" href="../assets/css/pages.css?v=20261052" />
+    <link rel="stylesheet" href="../assets/css/interactive.css?v=20261052" />
+    <link rel="stylesheet" href="../assets/css/motion.css?v=20261052" />
+    <link rel="stylesheet" href="../assets/css/bold.css?v=20261052" />
+    <link rel="stylesheet" href="../assets/css/style.css?v=20261052" />
+
+
+    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=5" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <!-- Structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://ryanyarali.com/#ryan",
+            "name": "Ryan Yarali",
+            "url": "https://ryanyarali.com/",
+            "jobTitle": "Full-stack developer",
+            "alumniOf": {
+              "@id": "https://ryanyarali.com/#bcit"
+            },
+            "sameAs": [
+              "https://github.com/RyanYarali",
+              "https://www.linkedin.com/in/ryan-yarali/"
+            ]
+          },
+          {
+            "@type": "CollegeOrUniversity",
+            "@id": "https://ryanyarali.com/#bcit",
+            "name": "British Columbia Institute of Technology",
+            "alternateName": "BCIT",
+            "url": "https://www.bcit.ca/",
+            "sameAs": "https://en.wikipedia.org/wiki/British_Columbia_Institute_of_Technology"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://ryanyarali.com/#site",
+            "url": "https://ryanyarali.com/",
+            "name": "Ryan Yarali",
+            "alternateName": "ryanyarali.com",
+            "description": "Portfolio of Ryan Yarali, full-stack developer and BCIT Computer Systems Technology student in Coquitlam, BC.",
+            "inLanguage": "en",
+            "author": {
+              "@id": "https://ryanyarali.com/#ryan"
+            },
+            "publisher": {
+              "@id": "https://ryanyarali.com/#ryan"
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://ryanyarali.com/projects/termeh.html#project",
+            "name": "Termeh Cafe & Restaurant",
+            "url": "https://termehbc.ca",
+            "description": "Bilingual English and Farsi website for Termeh Cafe & Restaurant in Coquitlam, BC: table booking on a floor map, staff confirmation through a Telegram bot, and a mobile admin panel. Built by Ryan Yarali on Cloudflare Workers and D1.",
+            "image": "https://ryanyarali.com/assets/te-cover.jpg",
+            "creator": {
+              "@id": "https://ryanyarali.com/#ryan"
+            },
+            "dateCreated": "2026",
+            "keywords": "TypeScript, Cloudflare Workers, Hono, D1, Preact, Telegram Bot API, i18n",
+            "subjectOf": {
+              "@id": "https://ryanyarali.com/projects/termeh.html#article"
+            },
+            "inLanguage": [
+              "en",
+              "fa"
+            ]
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://ryanyarali.com/projects/termeh.html#page",
+            "url": "https://ryanyarali.com/projects/termeh.html",
+            "name": "Termeh Cafe & Restaurant: Bilingual Booking Site | Ryan Yarali",
+            "inLanguage": "en",
+            "isPartOf": {
+              "@id": "https://ryanyarali.com/#site"
+            },
+            "breadcrumb": {
+              "@id": "https://ryanyarali.com/projects/termeh.html#breadcrumb"
+            },
+            "primaryImageOfPage": {
+              "@type": "ImageObject",
+              "url": "https://ryanyarali.com/assets/te-cover.jpg"
+            }
+          },
+          {
+            "@type": "Article",
+            "@id": "https://ryanyarali.com/projects/termeh.html#article",
+            "headline": "Termeh Cafe & Restaurant: bilingual booking site",
+            "url": "https://ryanyarali.com/projects/termeh.html",
+            "description": "Case study: how Ryan Yarali rebuilt a Coquitlam Persian restaurant's website with bilingual table booking on Cloudflare Workers.",
+            "image": "https://ryanyarali.com/assets/te-cover.jpg",
+            "inLanguage": "en",
+            "datePublished": "2026-11-05T12:00:00-07:00",
+            "dateModified": "2026-11-05T12:00:00-07:00",
+            "author": {
+              "@id": "https://ryanyarali.com/#ryan"
+            },
+            "publisher": {
+              "@id": "https://ryanyarali.com/#ryan"
+            },
+            "isPartOf": {
+              "@id": "https://ryanyarali.com/#site"
+            },
+            "mainEntityOfPage": {
+              "@id": "https://ryanyarali.com/projects/termeh.html#page"
+            },
+            "about": {
+              "@id": "https://ryanyarali.com/projects/termeh.html#project"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://ryanyarali.com/projects/termeh.html#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://ryanyarali.com/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Projects",
+                "item": "https://ryanyarali.com/projects.html"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Termeh Cafe & Restaurant",
+                "item": "https://ryanyarali.com/projects/termeh.html"
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="project-detail-page termeh-page">
+    <canvas id="site-trace" aria-hidden="true"></canvas>
+    <a href="#main" class="skip-link">Skip to content</a>
+
+        <nav class="navbar">
+      <div class="nav-container">
+        <a href="../index.html" class="logo" aria-label="Ryan Yarali, Computer Systems Technology, home">
+          <span class="logo-name">Ryan Yarali</span>
+          <span class="logo-subtitle">Computer Systems Technology</span>
+        </a>
+
+        <ul class="nav-links" id="nav-links">
+          <li><a href="../index.html" class="nav-link">Home</a></li>
+          <li><a href="../index.html#about" class="nav-link">About</a></li>
+          <li><a href="../projects.html" class="nav-link" aria-current="page">Projects</a></li>
+          <li><a href="../index.html#skills" class="nav-link">Skills</a></li>
+          <li><a href="../services.html" class="nav-link">Services</a></li>
+          <li><a href="../index.html#contact" class="nav-link">Contact</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <button type="button" class="nav-term" data-terminal aria-label="Open the site terminal, Ctrl K"><kbd>Ctrl K</kbd></button>
+          <button type="button" id="theme-toggle" class="theme-switch">
+            <svg class="theme-switch-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.4"></circle><path d="M12 1.6v2.2M12 20.2v2.2M4 4l1.6 1.6M18.4 18.4l1.6 1.6M1.6 12h2.2M20.2 12h2.2M4 20l1.6-1.6M18.4 5.6l1.6-1.6"></path></svg>
+            <svg class="theme-switch-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          </button>
+          <!-- Points at resume.html until the PDF exists; then swap the href for the PDF and add a download attribute. -->
+          <a href="../resume.html" class="nav-resume" data-magnetic>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"></path><polyline points="7 10 12 15 17 10"></polyline><path d="M5 21h14"></path></svg>
+            Résumé
+          </a>
+          <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <main id="main">
+      <div class="project-hero">
+        <div class="container">
+          <a href="../projects.html" class="back-link">&larr; Projects</a>
+          <h1 data-rise>Termeh Cafe &amp; Restaurant</h1>
+          <p>A bilingual restaurant site with real table booking, rebuilt from scratch</p>
+          <div class="project-links">
+            <a
+              href="https://termehbc.ca"
+              class="btn btn-primary"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Visit the site</a
+            >
+          </div>
+          <figure class="case-cover" data-vt="termeh">
+            <img
+              src="../assets/te-cover.jpg"
+              alt="Termeh website on a laptop and a phone: the English home page reads Persian breakfast, slow-cooked ash and saffron tea, and the phone shows the same page in Farsi"
+              width="1400"
+              height="788"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </figure>
+        </div>
+      </div>
+
+      <section class="section">
+        <div class="container">
+          <div class="project-content">
+            <div class="project-section reveal">
+              <h2>Overview</h2>
+              <p>
+                Termeh is a family-run Persian cafe and restaurant on Pinetree
+                Way in Coquitlam, BC. Its guests speak English and Farsi, and
+                it takes a lot of table bookings over the phone. The owners
+                wanted a site in both languages where guests book a real
+                table, and where staff can run bookings, the menu and the
+                hours themselves.
+              </p>
+              <p>
+                There was an older React and Express version that never
+                launched. I audited it first and found HTML injection in the
+                booking emails, rate limits that would lock out every admin
+                at once behind the host's proxy, secrets with hard-coded
+                fallbacks, and no model of how long a table stays taken.
+                I rebuilt it from scratch and treated each of those findings
+                as a requirement. The new site went live at termehbc.ca in
+                October 2026.
+              </p>
+            </div>
+
+            <div class="project-section reveal">
+              <h2>The site</h2>
+              <div class="shots shots-phones">
+                <figure class="reveal shot shot-tall">
+                  <img
+                    src="../assets/te-book.jpg"
+                    alt="Booking page on a phone, step three of five: a floor map of the restaurant with tables named L1, L2, T1, W1 to W5, a sofa, C1, C2, M1 to M3 and R1 to R5, with table L1 highlighted"
+                    loading="lazy"
+                    width="520" height="1125" />
+                  <figcaption>
+                    Guests pick a table on a map of the real room. Tables
+                    already taken at that time are faded.
+                  </figcaption>
+                </figure>
+                <figure class="reveal shot shot-tall">
+                  <img
+                    src="../assets/te-fa.jpg"
+                    alt="The Farsi home page on a phone, laid out right to left, with an open-now badge showing the closing time in Persian numerals"
+                    loading="lazy"
+                    width="520" height="1125" />
+                  <figcaption>
+                    The Farsi site is a full right-to-left layout, not a
+                    translated overlay. Times and dates use Persian numerals.
+                  </figcaption>
+                </figure>
+                <figure class="reveal shot shot-tall">
+                  <img
+                    src="../assets/te-menu.jpg"
+                    alt="Menu page on a phone: a Today's special card for Pasta Alfredo at 12.50 dollars, category chips, a search box, and omelettes listed with their Farsi names"
+                    loading="lazy"
+                    width="520" height="867" />
+                  <figcaption>
+                    The menu: today's special, searchable dishes, and each
+                    item's Farsi name next to the English one.
+                  </figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="project-section reveal">
+              <h2>The brief</h2>
+              <ul>
+                <li>
+                  English and Farsi everywhere: pages, emails, the admin panel
+                  and the staff bot
+                </li>
+                <li>
+                  Guests choose an actual table, and the restaurant confirms
+                  every booking before it counts
+                </li>
+                <li>
+                  No double bookings, ever, even when two people tap the same
+                  table at the same moment
+                </li>
+                <li>
+                  Staff hear about new requests right away, on their phones,
+                  without watching an inbox
+                </li>
+                <li>
+                  The owners change the menu, hours, closures and booking
+                  rules themselves
+                </li>
+                <li>
+                  Low running cost, and a site that stays up without anyone
+                  watching it
+                </li>
+              </ul>
+            </div>
+
+            <div class="project-section reveal">
+              <h2>What I built</h2>
+
+              <h3>Booking on the floor map</h3>
+              <p>
+                Booking takes five short steps: party size and day, a time
+                grouped into breakfast, lunch and dinner, a table on the
+                floor map, contact details, then a review. I drew the map
+                from the owners' own floor plan. The rules match how the
+                room actually works. One to four guests pick a table, or two
+                pushed-together two-tops. Five to ten pick one of the
+                setups staff have defined. Eleven or more send a group
+                request, and staff arrange the seating. A table is held for
+                90 minutes, or 120 for nine or more. Bookings need two
+                hours' notice, or a day for large groups. Every one of these
+                numbers can be changed in the admin.
+              </p>
+
+              <h3>No double bookings</h3>
+              <p>
+                A request is only a request until staff confirm it, but it
+                still holds its tables so nobody else can take them. Each
+                table hold is checked for clashes and written in a single
+                database batch, so two guests racing for the same table
+                can't both get it. Requests that staff don't answer expire
+                on their own and free the table again.
+              </p>
+
+              <h3>Staff work from Telegram</h3>
+              <p>
+                New requests arrive in a Telegram bot with Confirm and
+                Decline buttons. When they
+                tap Confirm, the guest gets an email with the table, the
+                time and a calendar file. A job runs every ten minutes. It
+                nudges staff about requests still waiting, sends guests a
+                reminder the day before with a cancel link, and lets
+                requests that nobody answered expire.
+              </p>
+
+              <h3>An admin panel built for a phone</h3>
+              <p>
+                The admin is a small Preact app that also works in Farsi.
+                It has a Today view, a live floor view, and phone and
+                walk-in bookings with clash warnings. Staff can move any
+                booking to other tables. It also has a menu editor (photos
+                are resized in the browser before upload), hours and
+                holiday closures, tables and setups, staff roles, an
+                activity log, and a maintenance switch that tells every
+                linked staff chat who flipped it.
+              </p>
+
+              <h3>Security and privacy</h3>
+              <p>
+                Passwords are hashed with PBKDF2. Admin logins use signed
+                session cookies, and the forms are rate-limited and
+                protected by Turnstile. Every guest-supplied value is
+                escaped before it goes into an email, and the site sends a
+                strict set of security headers. Booking details are
+                anonymised after twelve months, as the privacy page
+                promises.
+              </p>
+            </div>
+
+            <div class="project-section reveal">
+              <h2>Tech stack</h2>
+              <p>
+                It all runs on Cloudflare: one Worker serves the pages and the
+                API. Hosting comes to about $70 a year.
+              </p>
+              <div class="tech-list">
+                <span class="tech-item">TypeScript</span>
+                <span class="tech-item">Cloudflare Workers</span>
+                <span class="tech-item">Hono (server-rendered JSX)</span>
+                <span class="tech-item">D1 (SQLite)</span>
+                <span class="tech-item">R2</span>
+                <span class="tech-item">Cron Triggers</span>
+                <span class="tech-item">Preact</span>
+                <span class="tech-item">Vite</span>
+                <span class="tech-item">Vitest</span>
+                <span class="tech-item">Resend</span>
+                <span class="tech-item">Telegram Bot API</span>
+                <span class="tech-item">Turnstile</span>
+                <span class="tech-item">GitHub Actions</span>
+              </div>
+
+              <h3>Why it is built this way</h3>
+              <p>
+                The pages are <strong>rendered on the server</strong> in both
+                languages, so they load fast and search engines can read
+                them, and the only JavaScript sent is for the booking flow
+                and the admin. <strong>D1</strong> keeps the data next to the
+                code, and its batched writes make the no-double-booking
+                guarantee simple to reason about. The booking rules are
+                <strong>one shared module</strong>, so the browser and the
+                server can never disagree about which table is free.
+              </p>
+            </div>
+
+            <div class="project-section reveal">
+              <h2>Testing and launch</h2>
+              <ul>
+                <li>
+                  Over 120 automated tests run inside the real Workers
+                  runtime. They cover the booking rules, the API, emails,
+                  the bot and the scheduled jobs. Every push runs them
+                  before anything deploys.
+                </li>
+                <li>
+                  Before launch I made real bookings on the live site in
+                  both languages: book, confirm, decline, cancel, and the
+                  calendar file. I fixed what turned up, such as Farsi
+                  dates in emails.
+                </li>
+                <li>
+                  Lighthouse on mobile: 100 for accessibility, best
+                  practices and SEO
+                </li>
+                <li>
+                  An uptime check runs every 30 minutes, and errors alert
+                  me on Telegram before the restaurant would notice
+                </li>
+                <li>
+                  I wrote a staff guide in English and Farsi so the team
+                  could run bookings from day one
+                </li>
+              </ul>
+            </div>
+
+            <div class="project-section reveal">
+              <h2>Outcome</h2>
+              <p>
+                Termeh takes table bookings online in two languages, and
+                staff confirm them from their phones in a tap. The owners
+                run the menu, hours and rules themselves.
+              </p>
+              <p>
+                I'm still their developer. Next up are online pickup
+                ordering and a counter tablet. Staff will use it to accept
+                orders, set prep times, and seat walk-ins on the same floor
+                map.
+              </p>
+            </div>
+
+            <!-- The way on: the next case study, set big. -->
+            <nav class="next-project" aria-label="Next case study">
+              <a class="next-project-link" href="nooklook.html">
+                <span class="next-project-label">Next case study</span>
+                <span class="next-project-name"><span class="next-project-text">Nooklook Studio</span><svg width="0.6em" height="0.6em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span>
+              </a>
+              <p class="next-project-more">
+                <a href="../projects.html">All projects</a>
+                <a href="../index.html#contact">Get in touch</a>
+              </p>
+            </nav>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <div>
+          <p>&copy; 2026 <a href="../index.html">Ryan Yarali</a>. All rights reserved.</p>
+          <p class="footer-tech">Built with HTML, CSS, and JavaScript. No framework. <a href="this-site.html">How it's built</a> · <a href="../privacy.html">Privacy</a></p>
+        </div>
+        <div class="footer-social">
+          <a href="mailto:ryan@ryanyarali.com" class="footer-email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            Email
+          </a>
+          <a href="https://github.com/RyanYarali" target="_blank" rel="me noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.93.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.87-1.36-3.87-1.36-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.42-2.69 5.4-5.25 5.68.41.36.78 1.06.78 2.14 0 1.54-.01 2.79-.01 3.17 0 .3.2.66.79.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+            GitHub
+          </a>
+          <button type="button" class="footer-term" data-terminal title="Open the site terminal (Ctrl K)"><kbd aria-hidden="true">Ctrl K</kbd> Terminal</button>
+          <a href="https://www.linkedin.com/in/ryan-yarali/" target="_blank" rel="me noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.55V9h3.57v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>
+            LinkedIn
+          </a>
+        </div>
+      </div>
+      <!-- The name again, set as large as the page allows: decoration only
+           (the copyright line above carries it as text). Its letters rise
+           as the footer scrolls into view. -->
+      <div class="footer-mark" aria-hidden="true" data-lens="accent"><span class="ch" style="--i:0">R</span><span class="ch" style="--i:1">y</span><span class="ch" style="--i:2">a</span><span class="ch" style="--i:3">n</span><span class="ch" style="--i:4">&nbsp;</span><span class="ch" style="--i:5">Y</span><span class="ch" style="--i:6">a</span><span class="ch" style="--i:7">r</span><span class="ch" style="--i:8">a</span><span class="ch" style="--i:9">l</span><span class="ch" style="--i:10">i</span></div>
+    </footer>
+    <script src="../assets/js/theme.js?v=20261052"></script>
+    <script src="../assets/js/hit.js?v=20261052" defer></script>
+    <script src="../assets/js/main.js?v=20261052"></script>
+    <script src="../assets/js/flair.js?v=20261052"></script>
+    <script src="../assets/js/interactive.js?v=20261052"></script>
+    <script src="../assets/js/cursor.js?v=20261052"></script>
+    <script src="../assets/js/route.js?v=20261052"></script>
+    <script src="../assets/js/ping-sprite.js?v=20261052"></script>
+    <script src="../assets/js/ping.js?v=20261052"></script>
+  </body>
+</html>

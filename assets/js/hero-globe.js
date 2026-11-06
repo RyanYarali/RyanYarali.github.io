@@ -21,9 +21,10 @@ const R = 1;
 
 // lat/lon in degrees. Projects sit on the face that starts toward the camera.
 const NODES = [
-  { id: "nooklook", label: "Nook Look Studio", project: true, lat: 22, lon: -32, href: "projects/nooklook.html" },
+  { id: "nooklook", label: "Nooklook Studio", project: true, lat: 22, lon: -32, href: "projects/nooklook.html" },
   { id: "vancobab", label: "Vancobab", project: true, lat: -14, lon: 24, href: "https://vancobab.ca" },
-  { id: "termeh", label: "Termeh Cafe", project: true, lat: 40, lon: 52 },
+  { id: "termeh", label: "Termeh Cafe", project: true, lat: 40, lon: 52, href: "projects/termeh.html" },
+  { id: "doorlook", label: "Doorlook", project: true, lat: -26, lon: -58, href: "projects/doorlook.html" },
   { id: "taskmate", label: "TaskMate", project: true, lat: -40, lon: -18, href: "projects/taskmate.html" },
   { id: "js", label: "JavaScript", lat: -6, lon: -72 },
   { id: "react", label: "React", lat: 54, lon: 8 },
@@ -44,8 +45,9 @@ const LINKS = [
   ["nooklook", "wordpress"],
   ["nooklook", "php"],
   ["vancobab", "js"],
-  ["termeh", "react"],
-  ["termeh", "node"],
+  ["doorlook", "wordpress"],
+  ["doorlook", "php"],
+  ["termeh", "js"],
   ["termeh", "sqlite"],
   ["taskmate", "firebase"],
   ["taskmate", "js"],
