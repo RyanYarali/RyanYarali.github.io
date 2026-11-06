@@ -295,7 +295,8 @@ Read the saved messages with
 
 Deploys are automatic through Cloudflare Workers Builds, connected on
 2026-11-05. A push to `main` runs `npx wrangler deploy`, so merging a PR
-publishes it. Other branches get preview builds. New D1 migrations still
+publishes it. Preview builds for other branches are off: Cloudflare's
+branch previews would share the live D1 database and Telegram bot. New D1 migrations still
 need `npx wrangler d1 migrations apply ryanyarali --remote` before the merge.
 Build logs are under Workers & Pages → ryanyarali → Deployments.
 
