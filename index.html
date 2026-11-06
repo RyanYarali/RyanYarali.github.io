@@ -64,16 +64,16 @@
     />
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="assets/css/tokens.css?v=20261052" />
-    <link rel="stylesheet" href="assets/css/reset.css?v=20261052" />
-    <link rel="stylesheet" href="assets/css/typography.css?v=20261052" />
-    <link rel="stylesheet" href="assets/css/layout.css?v=20261052" />
-    <link rel="stylesheet" href="assets/css/components.css?v=20261052" />
-    <link rel="stylesheet" href="assets/css/pages.css?v=20261052" />
-    <link rel="stylesheet" href="assets/css/interactive.css?v=20261052" />
-    <link rel="stylesheet" href="assets/css/motion.css?v=20261052" />
-    <link rel="stylesheet" href="assets/css/bold.css?v=20261052" />
-    <link rel="stylesheet" href="assets/css/style.css?v=20261052" />
+    <link rel="stylesheet" href="assets/css/tokens.css?v=20261053" />
+    <link rel="stylesheet" href="assets/css/reset.css?v=20261053" />
+    <link rel="stylesheet" href="assets/css/typography.css?v=20261053" />
+    <link rel="stylesheet" href="assets/css/layout.css?v=20261053" />
+    <link rel="stylesheet" href="assets/css/components.css?v=20261053" />
+    <link rel="stylesheet" href="assets/css/pages.css?v=20261053" />
+    <link rel="stylesheet" href="assets/css/interactive.css?v=20261053" />
+    <link rel="stylesheet" href="assets/css/motion.css?v=20261053" />
+    <link rel="stylesheet" href="assets/css/bold.css?v=20261053" />
+    <link rel="stylesheet" href="assets/css/style.css?v=20261053" />
 
 
     <!-- Favicon -->
@@ -393,12 +393,11 @@
         </a>
 
         <ul class="nav-links" id="nav-links">
-          <li><a href="#hero" class="nav-link">Home</a></li>
-          <li><a href="#about" class="nav-link">About</a></li>
-          <li><a href="#projects" class="nav-link">Projects</a></li>
-          <li><a href="#skills" class="nav-link">Skills</a></li>
+          <li><a href="projects.html" class="nav-link">Projects</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
           <li><a href="services.html" class="nav-link">Services</a></li>
           <li><a href="#contact" class="nav-link">Contact</a></li>
+          <li class="nav-cta-item"><a href="services.html" class="nav-link nav-cta">Get a website</a></li>
         </ul>
 
         <div class="nav-actions">
@@ -456,16 +455,44 @@
                 <span class="stat-label">projects shipped<br />for clients</span>
               </p>
               <div class="hero-cta">
-                <a href="#projects" class="btn btn-primary" data-magnetic>View projects</a>
-                <a href="#contact" class="btn btn-secondary" data-magnetic>Get in touch</a>
+                <a href="#projects" class="btn btn-primary" data-magnetic>See my work</a>
+                <a href="services.html" class="btn btn-secondary" data-magnetic>Get a website</a>
               </div>
             </div>
           </div>
         </div>
       </header>
 
-      <!-- About Section -->
-      <section class="section about" id="about">
+      <!-- Two doors: the two reasons people land here. -->
+      <section class="section doors" id="doors">
+        <div class="container">
+          <div class="section-heading reveal">
+            <p class="eyebrow">Start here</p>
+            <h2 data-rise>What brings you <span class="highlight">here?</span></h2>
+          </div>
+          <div class="door-grid reveal-group">
+            <a class="door" href="about.html">
+              <span class="plan-code">01 · Hiring</span>
+              <span class="door-title">Hire me</span>
+              <span class="door-text">Co-op, internship or a junior developer role. My background, skills and one-page résumé.</span>
+              <span class="door-go">About me <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span>
+            </a>
+            <a class="door is-client" href="services.html">
+              <span class="plan-code">02 · Clients</span>
+              <span class="door-title">Get a website</span>
+              <span class="door-text">Websites for small businesses in Greater Vancouver, priced up front. From $350, with a free quote.</span>
+              <span class="door-go">Packages and prices <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span>
+            </a>
+          </div>
+          <p class="door-skip reveal">
+            Or skip ahead: <a href="Ryan-Yarali-Resume.pdf" download>download my résumé</a>
+            · <a href="#projects">see my work</a> · <a href="#contact">say hello</a>
+          </p>
+        </div>
+      </section>
+
+      <!-- About, in one sentence. The full story is on about.html. -->
+      <section class="section about about-short" id="about">
         <div class="container">
           <div class="section-heading reveal">
             <p class="eyebrow">About</p>
@@ -478,61 +505,15 @@
             <em>what actually happens between the client and the server.</em>
           </h2>
 
-          <div class="about-grid">
-            <!-- The portrait resolves out of pixels when it scrolls in
-                 (flair.js), then tilts toward the pointer (story.js). -->
-            <div class="about-photo-wrap reveal">
-              <figure class="about-photo" data-pixel-reveal>
-                <img
-                  src="assets/ryan-yarali.jpg"
-                  alt="Portrait of Ryan Yarali in a dark denim shirt against a charcoal backdrop"
-                  width="760"
-                  height="950"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </figure>
-            </div>
-
-            <div class="about-body">
-              <p class="about-text reveal">
-                BCIT's program is hands-on: every course ends in something
-                built and defended, not just graded. That's shaped how I work.
-                I'd rather ship a smaller feature that's solid than a bigger
-                one held together with guesses.
-              </p>
-
-              <dl class="about-facts reveal-group" id="learning">
-                <div>
-                  <dt>Based in</dt>
-                  <dd>Coquitlam, BC, in Greater Vancouver</dd>
-                </div>
-                <div>
-                  <dt>Studying</dt>
-                  <dd><a href="https://www.bcit.ca/programs/computer-systems-technology-diploma-full-time-5500dipma/" target="_blank" rel="noopener noreferrer">Computer Systems Technology Diploma, BCIT</a></dd>
-                </div>
-                <div>
-                  <dt>Option</dt>
-                  <dd>Data Communications &amp; Cyber Security</dd>
-                </div>
-                <div>
-                  <dt>Now</dt>
-                  <dd><span class="status-dot" aria-hidden="true"></span>Term 3 of 4, graduating Apr 2027 (expected)</dd>
-                </div>
-                <div>
-                  <dt>Shipped</dt>
-                  <dd>15+ projects for clients</dd>
-                </div>
-                <div>
-                  <dt>Looking for</dt>
-                  <dd>Co-op, internship and junior developer roles</dd>
-                </div>
-                <div>
-                  <dt>Freelance</dt>
-                  <dd>Websites for small businesses · <a href="services.html">See services</a></dd>
-                </div>
-              </dl>
-            </div>
+          <div class="project-accordion-links about-more reveal">
+            <a class="project-accordion-link" href="about.html">
+              More about me
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+            <a class="project-accordion-link" href="Ryan-Yarali-Resume.pdf" download>
+              Download my résumé
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
           </div>
         </div>
       </section>
@@ -549,12 +530,12 @@
                 <p class="eyebrow">Selected work</p>
                 <h2>What I've shipped</h2>
                 <p class="section-intro work-note">
-                  Seven I'm cleared to show publicly, from client sites to
-                  coursework.
+                  Three live client sites. Seven projects in all, with a
+                  case study for each.
                 </p>
               </div>
               <p class="work-count" aria-hidden="true">
-                <span class="work-count-now">01</span> / 07
+                <span class="work-count-now">01</span> / 03
               </p>
             </div>
             <div class="work-viewport">
@@ -643,118 +624,14 @@
                   </div>
                 </div>
               </li>
-              <li class="work-card" id="work-vancobab">
-                <a class="work-media" href="projects/vancobab.html" data-vt="vancobab" aria-label="Read the Vancobab case study">
-                  <img src="assets/vb-cover.jpg" alt="Vancobab website on a laptop and a phone: the headline Persian kebab, fresh off the grill beside a gold Persian medallion around the flame emblem" loading="lazy" decoding="async" width="1400" height="788" />
-                </a>
-                <div class="work-body">
-                  <p class="work-meta">
-                    <span class="work-num">04</span>
-                    <span>Client · 2026</span>
-                    <span class="project-status" data-status="live">Live</span>
-                  </p>
-                  <h3 class="work-title">Vancobab</h3>
-                  <div class="work-copy">
-                    <p>
-                      A five-page site for a Persian kebab food truck, with a visual identity of its own and a launch list while the truck gets ready.
-                    </p>
-                  </div>
-                  <div class="project-accordion-links">
-                    <a class="project-accordion-link" href="projects/vancobab.html">
-                      Read the case study
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                    </a>
-                    <a class="project-accordion-link" href="https://vancobab.ca" target="_blank" rel="noopener noreferrer">
-                      Visit the site
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                    </a>
-                  </div>
-                </div>
-              </li>
 
-              <li class="work-card" id="work-taskmate">
-                <a class="work-media" href="projects/taskmate.html" data-vt="taskmate" aria-label="Read the TaskMate case study">
-                  <img src="assets/tm-cover.jpg" alt="Three TaskMate phone screens: the home dashboard welcoming Ryan, the To Do list grouped by due date with priorities, and completed tasks with check marks" loading="lazy" decoding="async" width="1400" height="788" />
-                </a>
-                <div class="work-body">
-                  <p class="work-meta">
-                    <span class="work-num">05</span>
-                    <span>Coursework · 2025</span>
-                    <span class="project-status" data-status="other">Shipped</span>
-                  </p>
-                  <h3 class="work-title">TaskMate</h3>
-                  <div class="work-copy">
-                    <p>
-                      A mobile-friendly task manager that pulls students' deadlines out of five different apps and into one list, built on Firebase.
-                    </p>
-                  </div>
-                  <div class="project-accordion-links">
-                    <a class="project-accordion-link" href="projects/taskmate.html">
-                      Read the case study
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                    </a>
-                  </div>
-                </div>
-              </li>
-              <li class="work-card" id="work-foodroutes">
-                <a class="work-media" href="projects/foodroutes.html" data-vt="foodroutes" aria-label="Read the FoodRoutes case study">
-                  <img src="assets/fr-cover.jpg" alt="Three FoodRoutes phone screens: the map with nearby grocery stores in Burnaby and the travel-mode buttons, the saved-routes list, and the sign-up form showing validation errors" loading="lazy" decoding="async" width="1400" height="788" />
-                </a>
-                <div class="work-body">
-                  <p class="work-meta">
-                    <span class="work-num">06</span>
-                    <span>Coursework · 2026</span>
-                    <span class="project-status" data-status="other">Shipped</span>
-                  </p>
-                  <h3 class="work-title">FoodRoutes</h3>
-                  <div class="work-copy">
-                    <p>
-                      A mobile app that finds affordable groceries nearby and gets you there by transit. I built its map, routing, and accounts.
-                    </p>
-                  </div>
-                  <div class="project-accordion-links">
-                    <a class="project-accordion-link" href="projects/foodroutes.html">
-                      Read the case study
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                    </a>
-                    <a class="project-accordion-link" href="https://github.com/RyanYarali/2800-202610-DTC09" target="_blank" rel="noopener noreferrer">
-                      View on GitHub
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                    </a>
-                  </div>
-                </div>
-              </li>
-              <li class="work-card" id="work-hackertycoon">
-                <a class="work-media" href="projects/hackertycoon.html" data-vt="hackertycoon" aria-label="Read the Hacker Tycoon case study">
-                  <img src="assets/ht-cover.jpg" alt="Hacker Tycoon on a laptop: a job board with progress bars, upgrade shops, badges, a suspicion meter at 72%, and three logs over falling green code" loading="lazy" decoding="async" width="1400" height="788" />
-                </a>
-                <div class="work-body">
-                  <p class="work-meta">
-                    <span class="work-num">07</span>
-                    <span>Coursework · 2026</span>
-                    <span class="project-status" data-status="other">Shipped</span>
-                  </p>
-                  <h3 class="work-title">Hacker Tycoon</h3>
-                  <div class="work-copy">
-                    <p>
-                      A JavaFX idle game: take hacking jobs, earn crypto, and stay under the FBI's radar. I wrote about 80% of the game.
-                    </p>
-                  </div>
-                  <div class="project-accordion-links">
-                    <a class="project-accordion-link" href="projects/hackertycoon.html">
-                      Read the case study
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                    </a>
-                  </div>
-                </div>
-              </li>
               </ol>
             </div>
             <div class="container">
               <div class="work-progress" aria-hidden="true"><span></span></div>
               <div class="work-links">
                 <a class="work-all" href="projects.html">
-                  All projects
+                  All seven projects
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                 </a>
                 <a class="work-all" href="services.html">
@@ -767,145 +644,6 @@
         </div>
       </section>
 
-      <!-- Skills Section -->
-      <section class="section skills" id="skills">
-        <div class="container">
-          <div class="section-heading reveal">
-            <p class="eyebrow">Capabilities</p>
-            <h2>Skills &amp; tools</h2>
-          </div>
-
-
-          <!-- One tile per area. Each carries a small pixel-art icon (drawn by
-               flair.js, decoration only) that animates when the tile is
-               hovered, focused or, on a touch screen, scrolled into view. -->
-          <div class="skill-grid reveal-group" aria-label="Skills and technologies">
-            <article class="skill-tile is-wide" data-icon="lang">
-              <div class="skill-tile-top">
-                <svg class="skill-icon" aria-hidden="true" focusable="false"></svg>
-                <span class="skill-count" aria-hidden="true">09</span>
-              </div>
-              <h3 class="skill-name">Languages</h3>
-              <ul class="skill-list" aria-label="Languages">
-                <li>JavaScript</li>
-                <li>C</li>
-                <li>C++</li>
-                <li>Python</li>
-                <li>Java</li>
-                <li>PHP</li>
-                <li>SQL</li>
-                <li>HTML5</li>
-                <li>CSS3</li>
-              </ul>
-            </article>
-            <article class="skill-tile" data-icon="front">
-              <div class="skill-tile-top">
-                <svg class="skill-icon" aria-hidden="true" focusable="false"></svg>
-                <span class="skill-count" aria-hidden="true">03</span>
-              </div>
-              <h3 class="skill-name">Frontend</h3>
-              <ul class="skill-list" aria-label="Frontend">
-                <li>React</li>
-                <li>Responsive design</li>
-                <li>Accessibility fundamentals</li>
-              </ul>
-            </article>
-            <article class="skill-tile" data-icon="back">
-              <div class="skill-tile-top">
-                <svg class="skill-icon" aria-hidden="true" focusable="false"></svg>
-                <span class="skill-count" aria-hidden="true">05</span>
-              </div>
-              <h3 class="skill-name">Backend</h3>
-              <ul class="skill-list" aria-label="Backend">
-                <li>Node.js</li>
-                <li>Express</li>
-                <li>REST API design</li>
-                <li>WordPress</li>
-                <li>Pods</li>
-              </ul>
-            </article>
-            <article class="skill-tile is-wide" data-icon="net">
-              <div class="skill-tile-top">
-                <svg class="skill-icon" aria-hidden="true" focusable="false"></svg>
-                <span class="skill-count" aria-hidden="true">04</span>
-              </div>
-              <h3 class="skill-name">Networking</h3>
-              <ul class="skill-list" aria-label="Networking">
-                <li>TCP/IP</li>
-                <li>Socket programming</li>
-                <li>Network protocols</li>
-                <li>Packet analysis</li>
-              </ul>
-            </article>
-            <article class="skill-tile" data-icon="db">
-              <div class="skill-tile-top">
-                <svg class="skill-icon" aria-hidden="true" focusable="false"></svg>
-                <span class="skill-count" aria-hidden="true">03</span>
-              </div>
-              <h3 class="skill-name">Databases</h3>
-              <ul class="skill-list" aria-label="Databases">
-                <li>MySQL</li>
-                <li>PostgreSQL</li>
-                <li>MongoDB</li>
-              </ul>
-            </article>
-            <article class="skill-tile" data-icon="sys">
-              <div class="skill-tile-top">
-                <svg class="skill-icon" aria-hidden="true" focusable="false"></svg>
-                <span class="skill-count" aria-hidden="true">03</span>
-              </div>
-              <h3 class="skill-name">Systems</h3>
-              <ul class="skill-list" aria-label="Systems">
-                <li>Linux/Unix</li>
-                <li>Systems programming</li>
-                <li>Systems analysis</li>
-              </ul>
-            </article>
-            <article class="skill-tile is-wide" data-icon="seo">
-              <div class="skill-tile-top">
-                <svg class="skill-icon" aria-hidden="true" focusable="false"></svg>
-                <span class="skill-count" aria-hidden="true">04</span>
-              </div>
-              <h3 class="skill-name">SEO &amp; performance</h3>
-              <ul class="skill-list" aria-label="SEO &amp; performance">
-                <li>On-page &amp; local SEO</li>
-                <li>Structured data (JSON-LD)</li>
-                <li>Core Web Vitals tuning</li>
-                <li>Image optimization</li>
-              </ul>
-            </article>
-            <article class="skill-tile is-wide" data-icon="flow">
-              <div class="skill-tile-top">
-                <svg class="skill-icon" aria-hidden="true" focusable="false"></svg>
-                <span class="skill-count" aria-hidden="true">06</span>
-              </div>
-              <h3 class="skill-name">Workflow</h3>
-              <ul class="skill-list" aria-label="Workflow">
-                <li>Git/GitHub</li>
-                <li>Agile/Scrum</li>
-                <li>Testing &amp; debugging</li>
-                <li>OOP</li>
-                <li>Data structures</li>
-                <li>VS Code</li>
-              </ul>
-            </article>
-          </div>
-
-          <!-- For visitors who came for a website rather than a hire. -->
-          <div class="quote-cta hire-band reveal">
-            <div>
-              <p class="plan-code">Freelance</p>
-              <h3 class="care-name">Need a website? <span class="care-price">From $350.</span></h3>
-              <p class="care-text">
-                I build websites for small businesses in Greater Vancouver,
-                and portfolios for people who want to stand out. Prices up
-                front, free quote.
-              </p>
-            </div>
-            <a href="services.html" class="btn btn-primary plan-cta" data-magnetic>See services</a>
-          </div>
-        </div>
-      </section>
 
       <!-- Contact Section -->
       <section class="section contact" id="contact">
@@ -932,8 +670,8 @@
               <!-- The direct line: the address, and a button that copies it
                    (flair.js; it says "Copied" for a moment). -->
               <p class="contact-hire">
-                Need a website? <a href="services.html">See packages and prices</a>,
-                from $350.
+                Need a website? Pick a package and get a live estimate on
+                <a href="services.html#contact">the Services page</a>.
               </p>
               <p class="contact-email">
                 <a href="mailto:ryan@ryanyarali.com">ryan@ryanyarali.com</a>
@@ -960,33 +698,9 @@
                 <legend>What's this about? *</legend>
                 <div class="chips">
                   <label class="chip"><input type="radio" name="topic" value="hiring" required /><span>Hiring / co-op</span></label>
-                  <label class="chip"><input type="radio" name="topic" value="portfolio" data-from="350" /><span>Portfolio site</span></label>
-                  <label class="chip"><input type="radio" name="topic" value="onepage" data-from="450" /><span>One-page site</span></label>
-                  <label class="chip"><input type="radio" name="topic" value="business" data-from="900" /><span>Business website</span></label>
-                  <label class="chip"><input type="radio" name="topic" value="store" data-from="1500" /><span>Bookings or store</span></label>
-                  <label class="chip"><input type="radio" name="topic" value="other" /><span>Custom quote / other</span></label>
+                  <label class="chip"><input type="radio" name="topic" value="other" /><span>A website or something else</span></label>
                 </div>
                 <span class="error-message" id="topic-error"></span>
-              </fieldset>
-
-              <!-- Shown once a package is picked. -->
-              <fieldset class="form-group chip-group addon-group" id="addon-group" hidden>
-                <legend>Add-ons <span class="legend-note">optional</span></legend>
-                <div class="chips">
-                  <label class="chip"><input type="checkbox" name="addons" value="page" data-price="90" /><span>Extra page <em>+$90</em></span></label>
-                  <label class="chip"><input type="checkbox" name="addons" value="language" data-price="250" /><span>Second language <em>+$250</em></span></label>
-                  <label class="chip"><input type="checkbox" name="addons" value="copy" data-price="150" /><span>Copywriting <em>+$150</em></span></label>
-                  <label class="chip"><input type="checkbox" name="addons" value="domain" data-price="60" /><span>Domain and email <em>+$60</em></span></label>
-                  <label class="chip" data-only="portfolio"><input type="checkbox" name="addons" value="linkedin" data-price="80" /><span>LinkedIn refresh <em>+$80</em></span></label>
-                  <label class="chip"><input type="checkbox" name="addons" value="rush" data-percent="25" /><span>Rush <em>+25%</em></span></label>
-                  <label class="chip"><input type="checkbox" name="addons" value="care" data-monthly="39" /><span>Care plan <em>$39/mo</em></span></label>
-                </div>
-                <p class="estimate" id="estimate" aria-live="polite">
-                  <span class="estimate-label">Estimate</span>
-                  <span class="estimate-value"><span class="plan-from">from</span> <strong id="estimate-total">$0</strong><span id="estimate-monthly"></span></span>
-                  <span class="estimate-note" id="estimate-note">You get a fixed quote after a free call.</span>
-                  <span class="estimate-fine">A starting estimate, not a quote. The final price can change once I've seen the details.</span>
-                </p>
               </fieldset>
 
               <div class="form-group">
@@ -1022,18 +736,6 @@
                 <span class="error-message" id="email-error"></span>
               </div>
 
-              <div class="form-group">
-                <label for="ref">Referred by <span class="legend-note">optional</span></label>
-                <input
-                  type="text"
-                  id="ref"
-                  name="ref"
-                  maxlength="100"
-                  placeholder="Who sent you?"
-                  autocomplete="off"
-                  data-discount="10"
-                />
-              </div>
 
               <div class="form-group">
                 <label for="message">Message *</label>
@@ -1128,19 +830,19 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="assets/js/theme.js?v=20261052"></script>
-    <script src="assets/js/hit.js?v=20261052" defer></script>
-    <script src="assets/js/form.js?v=20261052"></script>
-    <script src="assets/js/main.js?v=20261052"></script>
-    <script src="assets/js/flair.js?v=20261052"></script>
+    <script src="assets/js/theme.js?v=20261053"></script>
+    <script src="assets/js/hit.js?v=20261053" defer></script>
+    <script src="assets/js/form.js?v=20261053"></script>
+    <script src="assets/js/main.js?v=20261053"></script>
+    <script src="assets/js/flair.js?v=20261053"></script>
     <!-- Straight after flair.js (its one dependency), so the name appears
          without waiting for the scroll choreography to load. -->
-    <script src="assets/js/hero.js?v=20261052"></script>
-    <script src="assets/js/interactive.js?v=20261052"></script>
-    <script src="assets/js/cursor.js?v=20261052"></script>
-    <script src="assets/js/story.js?v=20261052"></script>
-    <script src="assets/js/route.js?v=20261052"></script>
-    <script src="assets/js/ping-sprite.js?v=20261052"></script>
-    <script src="assets/js/ping.js?v=20261052"></script>
+    <script src="assets/js/hero.js?v=20261053"></script>
+    <script src="assets/js/interactive.js?v=20261053"></script>
+    <script src="assets/js/cursor.js?v=20261053"></script>
+    <script src="assets/js/story.js?v=20261053"></script>
+    <script src="assets/js/route.js?v=20261053"></script>
+    <script src="assets/js/ping-sprite.js?v=20261053"></script>
+    <script src="assets/js/ping.js?v=20261053"></script>
   </body>
 </html>
