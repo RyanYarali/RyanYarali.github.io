@@ -170,6 +170,7 @@ const PAGE_NAMES = {
   "/": "Home",
   "/index.html": "Home",
   "/projects.html": "Projects",
+  "/about.html": "About",
   "/resume.html": "Résumé",
   "/projects/termeh.html": "Termeh",
   "/projects/nooklook.html": "Nook Look",

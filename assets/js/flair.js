@@ -603,9 +603,10 @@
     }
     var COMMANDS = [
       { cmd: "home", desc: "Back to the top of the home page", go: home("#hero") },
-      { cmd: "about", desc: "Who I am and what I'm studying", go: home("#about") },
+      { cmd: "about", desc: "Who I am, what I'm studying, my résumé", go: base + "about.html" },
       { cmd: "projects", desc: "Every project, with the case studies", go: base + "projects.html" },
-      { cmd: "skills", desc: "Languages, stack and tools", go: home("#skills") },
+      { cmd: "skills", desc: "Languages, stack and tools", go: base + "about.html#skills" },
+      { cmd: "hire", desc: "Get a website: packages and prices", go: base + "services.html" },
       { cmd: "services", desc: "Websites for your business: packages and prices", go: base + "services.html" },
       { cmd: "contact", desc: "Send me a message", go: home("#contact") },
       { cmd: "resume", desc: "My résumé (PDF)", go: base + "Ryan-Yarali-Resume.pdf" },

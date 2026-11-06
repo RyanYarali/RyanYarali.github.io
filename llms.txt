@@ -39,7 +39,8 @@ Skills listed on the site:
 
 ## Pages
 
-- [Home](https://ryanyarali.com/): About, selected work, skills, education and contact
+- [Home](https://ryanyarali.com/): Who Ryan is, two ways in (hiring or a website), three featured client sites and contact
+- [About](https://ryanyarali.com/about.html): Background, BCIT program, skills and tools, and the one-page résumé (https://ryanyarali.com/Ryan-Yarali-Resume.pdf)
 - [Services](https://ryanyarali.com/services.html): Website packages and prices for small businesses and portfolios, add-ons, referrals, client sites, FAQ and a quote form
 - [Projects](https://ryanyarali.com/projects.html): All projects with descriptions and tech stacks
 - [Termeh case study](https://ryanyarali.com/projects/termeh.html): Bilingual booking on a floor map, no double bookings, Telegram staff bot, admin panel, testing and launch

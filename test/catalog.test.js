@@ -44,9 +44,17 @@ test("the referral discount and reward match the page", () => {
   assert.match(html, new RegExp(`You get \\$${REFERRAL.reward}\\.`));
 });
 
-test("the form on the home page is the same form", () => {
+test("the home form is the short one: no prices, and every topic is one the Worker accepts", () => {
   const form = (h) => h.slice(h.indexOf('<form\n              class="contact-form"'), h.indexOf("</form>", h.indexOf('class="contact-form"')));
-  assert.equal(form(home), form(html));
+  const homeForm = form(home);
+  const topics = [...homeForm.matchAll(/name="topic" value="([a-z]+)"/g)].map((m) => m[1]);
+  assert.deepEqual(topics, ["hiring", "other"]);
+  for (const t of topics) assert.match(form(html), new RegExp(`name="topic" value="${t}"`));
+  assert.doesNotMatch(homeForm, /data-price|data-from|id="addon-group"/);
+  // Outside the form, the two pages share the same pieces the Worker relies on.
+  for (const id of ["name", "email", "message", "website", "ts-box"]) {
+    assert.match(homeForm, new RegExp(`id="${id}"`));
+  }
 });
 
 test("the home page points to the services page", () => {
