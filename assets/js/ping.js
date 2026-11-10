@@ -251,7 +251,12 @@
     document.body.appendChild(wireSvg);
   }
 
+  var READABLE = "h1, h2, h3, h4, p, a, li, dd, dt, label, input, textarea, button, span, em, strong, small, kbd";
+  // The corner the current line is docked in (see dock()).
+  var held = null;
+
   function showBubble(on) {
+    held = null;
     bubble.classList.toggle("is-on", on);
     if (wire) wire.parentNode.classList.toggle("is-on", on);
     if (on) dock();
@@ -286,12 +291,57 @@
     function clear(sp) {
       return !(r.bottom > sp.top - 12 && r.top < sp.top + h + 12 && r.right > sp.left - 12 && r.left < sp.left + w + 12);
     }
+    // Is there writing or a control under that spot? Sampled on a small
+    // grid, looking through him and his own bubble.
+    function quiet(sp) {
+      for (var gx = 0; gx < 3; gx++) {
+        for (var gy = 0; gy < 3; gy++) {
+          var px = sp.left + 10 + ((w - 20) * gx) / 2;
+          var py = sp.top + 8 + ((h - 16) * gy) / 2;
+          var stack = document.elementsFromPoint(px, py);
+          for (var k = 0; k < stack.length; k++) {
+            var node = stack[k];
+            if (node === bubble || bubble.contains(node) || el.contains(node)) continue;
+            if (node.closest(".ping-wire, .navbar, #site-trace, .route-svg, .cursor-ring")) continue;
+            if (node.matches(READABLE)) return false;
+            // The first real thing under the point decides.
+            if (node.matches("div, section, main, body, html, figure, img, ul, dl, form, fieldset, canvas, svg, path")) break;
+            return false;
+          }
+        }
+      }
+      return true;
+    }
     // His own bottom corner first; when he is down there himself (riding
     // under the gallery, or the goodbye), the other bottom corner; then the
-    // top, under the nav.
-    var pick = spot(mine, false);
-    if (!clear(pick)) pick = spot(other, false);
-    if (!clear(pick)) pick = spot(mine, true);
+    // top, under the nav. The corner is chosen once per line (when the
+    // bubble opens), preferring one that covers no writing, and kept while
+    // he stays clear of it, so the bubble does not hop about mid-sentence.
+    var pick = null;
+    if (held) {
+      pick = spot(held.side, held.atTop);
+      if (!clear(pick)) pick = held = null;
+    }
+    if (!pick) {
+      var order = [
+        [mine, false],
+        [other, false],
+        [mine, true],
+        [other, true],
+      ];
+      for (var o = 0; o < order.length && !pick; o++) {
+        var cand = spot(order[o][0], order[o][1]);
+        if (clear(cand) && quiet(cand)) {
+          pick = cand;
+          held = { side: order[o][0], atTop: order[o][1] };
+        }
+      }
+    }
+    if (!pick) {
+      pick = spot(mine, false);
+      if (!clear(pick)) pick = spot(other, false);
+      if (!clear(pick)) pick = spot(mine, true);
+    }
     var side = pick.side;
     var left = pick.left;
     var top = pick.top;
@@ -310,6 +360,20 @@
     wire.setAttribute("d", "M" + ax.toFixed(1) + " " + ay.toFixed(1) + " C" + ax.toFixed(1) + " " + mid.toFixed(1) + " " + bx.toFixed(1) + " " + mid.toFixed(1) + " " + bx.toFixed(1) + " " + by.toFixed(1));
   }
   window.addEventListener("resize", dock, { passive: true });
+  // The page moves under a docked bubble, so once scrolling settles the
+  // corner is chosen again against what is now beneath it.
+  var settleTimer = 0;
+  window.addEventListener(
+    "scroll",
+    function () {
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(function () {
+        held = null;
+        dock();
+      }, 160);
+    },
+    { passive: true },
+  );
 
   // On a phone in the hero he waits off stage; a line worth saying is kept
   // for when he steps on.
