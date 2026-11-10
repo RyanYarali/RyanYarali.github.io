@@ -78,7 +78,7 @@ test("sources: credit tags, friend links, AI, search, social, direct", () => {
   assert.equal(s("", "https://www.linkedin.com/in/x"), "social:LinkedIn");
   assert.equal(s("", "https://ryanyarali.com/projects.html"), "internal");
   assert.equal(s("", ""), "direct");
-  assert.equal(sourceLabel("credit:nooklook"), "credit tag on Nook Look");
+  assert.equal(sourceLabel("credit:nooklook"), "credit tag on Nooklook");
 });
 
 test("a visit from a credit tag is counted and pings Ryan once a day", async () => {
@@ -92,7 +92,7 @@ test("a visit from a credit tag is counted and pings Ryan once a day", async () 
   assert.equal(rows[0].device, "phone");
   const pings = sent.filter((m) => m.method === "sendMessage");
   assert.equal(pings.length, 1);
-  assert.match(pings[0].text, /credit tag on Nook Look/);
+  assert.match(pings[0].text, /credit tag on Nooklook/);
 });
 
 test("bots and other sites' pages aren't counted", async () => {
@@ -114,7 +114,7 @@ test("a lead arrives in Telegram with where they came from and what they viewed"
   assert.match(alert.text, /from \$810 \+ \$39\/mo \(after 10% referral\)/);
   assert.match(alert.text, /Referred by <b>Jane Doe<\/b>/);
   assert.match(alert.text, /friend link from Jane Doe/);
-  assert.match(alert.text, /Home → Nook Look/);
+  assert.match(alert.text, /Home → Nooklook/);
   assert.equal(alert.reply_markup.inline_keyboard.length, 2);
   // Telegram worked, so Ryan gets no email; the sender gets their thank-you.
   assert.deepEqual(mails.map((m) => m.to[0]), ["mina@example.com"]);
