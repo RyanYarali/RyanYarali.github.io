@@ -1093,12 +1093,6 @@ html.js-ready .about-facts > div.reveal.in-view::before {
   }
 }
 
-@media (max-width: 767px) {
-  .nav-pill {
-    display: none;
-  }
-}
-
 /* The logo: a block cursor blinks after the name on hover. */
 .logo-name::after {
   content: "";
@@ -2153,18 +2147,6 @@ html.js-ready .rise-ready.is-risen .ch {
   }
 }
 
-@media (max-width: 767px) {
-  .nav-cta-item {
-    margin-top: 0.3rem;
-  }
-
-  .nav-link.nav-cta {
-    justify-content: center;
-    color: var(--color-on-accent);
-    background: var(--color-accent);
-  }
-}
-
 /* The middle of the nav gets tight between the tablet and laptop widths. */
 @media (min-width: 768px) and (max-width: 1023px) {
   .nav-link {
@@ -2292,4 +2274,363 @@ html.js-ready .rise-ready.is-risen .ch {
 
 .about-resume .quote-cta {
   margin-top: 0;
+}
+
+
+/* ==================== Phone: the dock ====================
+ * On a phone the section links are a floating glass dock at the foot of the
+ * screen, where a thumb already is, in place of a menu button that hid them.
+ * It is the same list the desktop bar uses (content stays in the HTML); only
+ * its place and shape change. Each link carries a small pixel icon, drawn as
+ * a mask so it takes the link's colour, and the gliding pill (flair.js)
+ * marks the current page. */
+.nav-links .nav-home-item {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --dock-h: 3.75rem;
+    --dock-gap: max(0.7rem, env(safe-area-inset-bottom, 0px));
+    /* What anything else pinned to the bottom of the screen has to clear. */
+    --dock-clear: calc(var(--dock-h) + var(--dock-gap) + 0.75rem);
+    --dock-ico-home: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 11' shape-rendering='crispEdges'%3E%3Cpath d='M5 0h2v1h-2zM4 1h4v1h-4zM3 2h6v1h-6zM2 3h8v1h-8zM1 4h10v1h-10zM2 5h8v1h-8zM2 6h8v1h-8zM2 7h3v1h-3zM7 7h3v1h-3zM2 8h3v1h-3zM7 8h3v1h-3zM2 9h3v1h-3zM7 9h3v1h-3z'/%3E%3C/svg%3E");
+    --dock-ico-projects: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 11' shape-rendering='crispEdges'%3E%3Cpath d='M1 1h10v1h-10zM1 2h10v1h-10zM1 3h1v1h-1zM10 3h1v1h-1zM1 4h1v1h-1zM3 4h4v1h-4zM10 4h1v1h-1zM1 5h1v1h-1zM10 5h1v1h-1zM1 6h1v1h-1zM3 6h6v1h-6zM10 6h1v1h-1zM1 7h1v1h-1zM10 7h1v1h-1zM1 8h10v1h-10z'/%3E%3C/svg%3E");
+    --dock-ico-about: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 11' shape-rendering='crispEdges'%3E%3Cpath d='M5 0h2v1h-2zM4 1h4v1h-4zM4 2h4v1h-4zM5 3h2v1h-2zM3 5h6v1h-6zM2 6h8v1h-8zM1 7h10v1h-10zM1 8h10v1h-10zM1 9h10v1h-10z'/%3E%3C/svg%3E");
+    --dock-ico-services: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 11' shape-rendering='crispEdges'%3E%3Cpath d='M4 1h4v1h-4zM3 2h1v1h-1zM8 2h1v1h-1zM1 3h10v1h-10zM1 4h10v1h-10zM1 5h4v1h-4zM7 5h4v1h-4zM1 6h10v1h-10zM1 7h10v1h-10zM1 8h10v1h-10z'/%3E%3C/svg%3E");
+    --dock-ico-contact: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 11' shape-rendering='crispEdges'%3E%3Cpath d='M1 1h10v1h-10zM1 2h3v1h-3zM8 2h3v1h-3zM1 3h1v1h-1zM3 3h2v1h-2zM7 3h2v1h-2zM10 3h1v1h-1zM1 4h1v1h-1zM4 4h4v1h-4zM10 4h1v1h-1zM1 5h1v1h-1zM5 5h2v1h-2zM10 5h1v1h-1zM1 6h1v1h-1zM10 6h1v1h-1zM1 7h1v1h-1zM10 7h1v1h-1zM1 8h10v1h-10z'/%3E%3C/svg%3E");
+  }
+
+  .nav-links {
+    position: fixed;
+    left: max(0.75rem, env(safe-area-inset-left, 0px));
+    right: max(0.75rem, env(safe-area-inset-right, 0px));
+    bottom: var(--dock-gap);
+    z-index: 1005;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: 0;
+    justify-self: stretch;
+    width: auto;
+    max-width: 26rem;
+    height: var(--dock-h);
+    margin: 0 auto;
+    padding: 0.3rem;
+    list-style: none;
+    border-radius: 1.4rem;
+    border: 1px solid var(--color-border);
+    background: color-mix(in srgb, var(--color-surface) 74%, transparent);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    backdrop-filter: blur(20px) saturate(160%);
+    box-shadow:
+      var(--shadow-lg),
+      inset 0 1px 0 color-mix(in srgb, var(--color-text) 7%, transparent);
+    view-transition-name: site-dock;
+  }
+
+  .nav-links li {
+    display: flex;
+    min-width: 0;
+  }
+
+  .nav-links .nav-home-item {
+    display: flex;
+  }
+
+  /* Services is already in the dock; the call to action would be a sixth
+     button pointing at the same page. */
+  .nav-links .nav-cta-item {
+    display: none;
+  }
+
+  .nav-link {
+    z-index: 1;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.32rem;
+    min-width: 0;
+    min-height: 0;
+    padding: 0;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: var(--color-text-muted);
+    border-radius: 1.1rem;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      color var(--transition-fast),
+      transform 180ms var(--ease);
+  }
+
+  .nav-link::before {
+    content: "";
+    width: 1.5rem;
+    height: 1.375rem;
+    background: currentColor;
+    -webkit-mask: var(--ico) center / contain no-repeat;
+    mask: var(--ico) center / contain no-repeat;
+    transition: transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .nav-link::after {
+    display: none;
+  }
+
+  .nav-link[href$="index.html"] { --ico: var(--dock-ico-home); }
+  .nav-link[href$="projects.html"] { --ico: var(--dock-ico-projects); }
+  .nav-link[href$="about.html"] { --ico: var(--dock-ico-about); }
+  .nav-link[href$="services.html"] { --ico: var(--dock-ico-services); }
+  .nav-link[href$="#contact"] { --ico: var(--dock-ico-contact); }
+
+  .nav-link:active {
+    transform: scale(0.92);
+  }
+
+  /* The current page: full-strength label, accent icon, lifted a touch.
+     When a section link is live (Contact, on the home page), it takes over
+     from the page's own link. */
+  .nav-link.active,
+  .nav-links:not(:has(.nav-link.active)) .nav-link[aria-current="page"] {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .nav-link.active::before,
+  .nav-links:not(:has(.nav-link.active)) .nav-link[aria-current="page"]::before {
+    background: var(--color-accent);
+    transform: translateY(-1px) scale(1.08);
+  }
+
+  .nav-pill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    border-radius: 1.1rem;
+    background: color-mix(in srgb, var(--color-text) 8%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-text) 6%, transparent);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      transform 520ms cubic-bezier(0.34, 1.4, 0.64, 1),
+      width 520ms cubic-bezier(0.34, 1.4, 0.64, 1),
+      opacity 220ms var(--ease);
+  }
+
+  /* Without the script there is no pill, so the current link carries its
+     own ground. */
+  html:not(.js-ready) .nav-link[aria-current="page"] {
+    background: color-mix(in srgb, var(--color-text) 8%, transparent);
+  }
+
+  /* Room under the last thing on the page, and for what else lives at the
+     foot of the screen. */
+  .footer-mark {
+    padding-bottom: var(--dock-clear);
+  }
+
+  /* The dock does this job on a phone: tapping the current page's button
+     scrolls back to the top (main.js). */
+  .back-to-top {
+    display: none;
+  }
+}
+
+/* A short phone held sideways: the dock keeps to one corner and loses its
+   labels' height. */
+@media (max-width: 767px) and (max-height: 430px) {
+  :root {
+    --dock-h: 3rem;
+  }
+
+  .nav-link {
+    font-size: 0;
+    gap: 0;
+  }
+}
+
+@media (max-width: 767px) and (prefers-reduced-motion: reduce) {
+  .nav-pill,
+  .nav-link,
+  .nav-link::before {
+    transition: none;
+  }
+}
+
+@media (max-width: 767px) and (forced-colors: active) {
+  .nav-link::before {
+    background: LinkText;
+  }
+
+  .nav-link[aria-current="page"] {
+    outline: 2px solid Highlight;
+    outline-offset: -4px;
+  }
+}
+
+/* Notches, when the phone is on its side. */
+.nav-container,
+.container {
+  padding-left: max(1.5rem, env(safe-area-inset-left, 0px));
+  padding-right: max(1.5rem, env(safe-area-inset-right, 0px));
+}
+
+@media (min-width: 768px) {
+  .nav-container,
+  .container {
+    padding-left: max(2.5rem, env(safe-area-inset-left, 0px));
+    padding-right: max(2.5rem, env(safe-area-inset-right, 0px));
+  }
+}
+
+@media (min-width: 1024px) {
+  .nav-container,
+  .container {
+    padding-left: max(3.5rem, env(safe-area-inset-left, 0px));
+    padding-right: max(3.5rem, env(safe-area-inset-right, 0px));
+  }
+}
+
+
+/* ==================== Spotlight ====================
+ * A soft light follows the pointer across the big cards, and their edge
+ * lights up nearest to it (flair.js sets --mx / --my on the card under the
+ * pointer). Light only: nothing moves, so it costs no layout. Pointer
+ * devices only; a phone gets the plain card. */
+@property --glow {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .door,
+  .plan,
+  .skill-tile,
+  .quote-cta {
+    background-image: radial-gradient(
+      26rem circle at var(--mx, 50%) var(--my, 0%),
+      color-mix(in srgb, var(--color-accent) calc(var(--glow) * 13%), transparent),
+      transparent 68%
+    );
+    transition-property: --glow, transform, background-color, border-color, box-shadow;
+    transition-duration: 420ms;
+    transition-timing-function: var(--ease);
+  }
+
+  .door::after,
+  .plan::after,
+  .quote-cta::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    padding: 1px;
+    border-radius: inherit;
+    background: radial-gradient(
+      16rem circle at var(--mx, 50%) var(--my, 0%),
+      var(--color-accent),
+      transparent 72%
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box exclude,
+      linear-gradient(#000 0 0);
+    opacity: var(--glow);
+    pointer-events: none;
+  }
+
+  .quote-cta {
+    position: relative;
+  }
+
+  .door:hover,
+  .door:focus-visible,
+  .plan:hover,
+  .skill-tile:hover,
+  .quote-cta:hover {
+    --glow: 1;
+  }
+
+  /* The ring carries the edge now, so the flat accent border steps back. */
+  .door:hover,
+  .door:focus-visible {
+    border-color: var(--color-border-strong);
+  }
+}
+
+/* ==================== Home: the doors, louder ====================
+ * Each door carries a round arrow in its top corner that turns to point
+ * the way and fills with the accent when the card is hovered, focused or
+ * pressed, so the whole card reads as one big button. */
+.door {
+  min-height: 19rem;
+  padding: 1.9rem 1.75rem 1.75rem;
+}
+
+.door::before {
+  content: "";
+  position: absolute;
+  top: 1.35rem;
+  right: 1.35rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 1px solid var(--color-border-strong);
+  background: transparent;
+  transition:
+    background-color 320ms var(--ease),
+    border-color 320ms var(--ease),
+    transform 520ms var(--ease-out-expo);
+}
+
+/* The arrow itself is a mask on a second layer, so it takes token colours. */
+.door .plan-code::after {
+  content: "";
+  position: absolute;
+  top: 1.35rem;
+  right: 1.35rem;
+  width: 3rem;
+  height: 3rem;
+  background: var(--color-text);
+  -webkit-mask: var(--door-arrow) center / 1.15rem no-repeat;
+  mask: var(--door-arrow) center / 1.15rem no-repeat;
+  transition:
+    background-color 320ms var(--ease),
+    transform 520ms var(--ease-out-expo);
+}
+
+.door {
+  --door-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 17 17 7M9 7h8v8'/%3E%3C/svg%3E");
+}
+
+.door:hover::before,
+.door:focus-visible::before,
+.door:active::before {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  transform: scale(1.08);
+}
+
+.door:hover .plan-code::after,
+.door:focus-visible .plan-code::after,
+.door:active .plan-code::after {
+  background-color: var(--color-on-accent);
+  transform: rotate(45deg);
+}
+
+.door:active {
+  transform: scale(0.985);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .door::before,
+  .door .plan-code::after {
+    transition: none;
+  }
 }

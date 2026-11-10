@@ -48,7 +48,7 @@ assets/
   js/
     theme.js          Light/dark theme with system preference + persistence
     form.js           Contact form validation and submission
-    main.js           Mobile menu, scroll reveal, heading scan, active nav, back to top
+    main.js           Scroll reveal, heading scan, active nav, tap current tab to scroll up, back to top
     flair.js          Skill tile pixel icons, project hover preview, Ctrl/Cmd K terminal
     interactive.js    Ambient trace, counters, accordion, magnetic buttons
     hero.js           First-visit intro, hero entrance, lazy globe loader

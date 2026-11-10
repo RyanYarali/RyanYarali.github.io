@@ -278,9 +278,9 @@
       // Across the screen from him, it keeps to its own corner.
       if (side !== mine) l = side === "L" ? gap : vw - w - gap;
       l = clamp(l, gap, vw - w - gap);
-      // Clear of the back-to-top button, which holds the bottom-right corner
-      // (and, on a phone, sits where a full-width bubble would reach).
-      var bottom = gap + (side === "R" || phone ? 64 : 0);
+      // Clear of the back-to-top button, which holds the bottom-right corner,
+      // and on a phone clear of the nav dock along the foot of the screen.
+      var bottom = gap + (phone ? 76 : side === "R" ? 64 : 0);
       return { side: side, left: l, top: atTop ? navBottom : vh - bottom - h };
     }
     function clear(sp) {
