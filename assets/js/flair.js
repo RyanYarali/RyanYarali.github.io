@@ -457,7 +457,7 @@
   // pointer is inside the card, and the CSS draws the light there.
   function initGlow() {
     if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
-    var sel = ".door, .plan, .skill-tile, .quote-cta";
+    var sel = ".door, .plan, .skill-tile, .quote-cta, .contact-form";
     document.addEventListener(
       "pointermove",
       function (e) {
