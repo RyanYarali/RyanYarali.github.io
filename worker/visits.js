@@ -4,7 +4,7 @@
 // and browser that changes every day.
 
 export const CLIENT_SITES = {
-  nooklook: "Nook Look",
+  nooklook: "Nooklook",
   doorlook: "Doorlook",
   vancobab: "Vanco Bab",
   termeh: "Termeh",
@@ -171,9 +171,11 @@ const PAGE_NAMES = {
   "/index.html": "Home",
   "/projects.html": "Projects",
   "/about.html": "About",
+  "/services.html": "Services",
+  "/privacy.html": "Privacy",
   "/resume.html": "Résumé",
   "/projects/termeh.html": "Termeh",
-  "/projects/nooklook.html": "Nook Look",
+  "/projects/nooklook.html": "Nooklook",
   "/projects/doorlook.html": "Doorlook",
   "/projects/vancobab.html": "Vanco Bab",
   "/projects/taskmate.html": "TaskMate",
