@@ -258,8 +258,10 @@
     if (reduced || pages.length < 2) return;
     html.classList.add("is-stacked");
 
+    var HOLD = 0.58;
     var tops = [];
     var stick = [];
+    var rest = [];
     var state = pages.map(function () {
       return { cover: -1, covered: false };
     });
@@ -278,18 +280,24 @@
       });
       tops = [];
       stick = [];
+      rest = [];
       pages.forEach(function (p, i) {
         var h = p.offsetHeight;
         tops.push(flowTops[i]);
-        // A section taller than the screen scrolls through until its bottom
-        // meets the bottom of the viewport, then holds there to be covered.
-        var s = Math.min(0, vh - h);
+        // A section taller than the screen scrolls through, and keeps going
+        // until its bottom edge is HOLD of the way up the viewport; only then
+        // does it hold to be covered. Holding as soon as the bottom edge
+        // arrived meant its last lines were only ever seen at the foot of
+        // the screen, and were covered before they could be read.
+        var s = h > vh ? Math.round(vh * HOLD - h) : 0;
         stick.push(s);
+        // Where its bottom edge rests while it is held.
+        rest.push(s + h);
         p.style.setProperty("--stick-top", s + "px");
         // Sink toward the middle of the part that is actually on screen.
         // Horizontally it sinks toward its own stretch of route (route.js
         // sets --route-x), so the line stays put as the next card covers it.
-        p.style.transformOrigin = "var(--route-x, 50%) " + (h > vh ? h - vh / 2 : h / 2) + "px";
+        p.style.transformOrigin = "var(--route-x, 50%) " + (h - (s + h) / 2) + "px";
       });
     });
 
@@ -297,7 +305,10 @@
       for (var i = 0; i < pages.length - 1; i++) {
         // Where the next section sits on screen: in the flow until it sticks.
         var nextTop = Math.max(tops[i + 1] - y, stick[i + 1]);
-        var cover = Math.round(clamp((vh - nextTop) / vh, 0, 1) * 1000) / 1000;
+        // Covering starts when the next section reaches this one's resting
+        // bottom edge, not when it enters the screen: until then this one
+        // is still scrolling and still being read.
+        var cover = Math.round(clamp((rest[i] - nextTop) / rest[i], 0, 1) * 1000) / 1000;
         var s = state[i];
 
         if (cover !== s.cover) {
