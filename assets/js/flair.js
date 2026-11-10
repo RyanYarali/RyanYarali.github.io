@@ -417,7 +417,10 @@
     }
 
     links.forEach(function (a) {
-      a.addEventListener("pointerenter", function () {
+      a.addEventListener("pointerenter", function (e) {
+        // A finger has no hover: on a touch screen the pill would be left
+        // behind on whatever was last touched.
+        if (e.pointerType && e.pointerType !== "mouse") return;
         place(a);
       });
       a.addEventListener("focus", function () {

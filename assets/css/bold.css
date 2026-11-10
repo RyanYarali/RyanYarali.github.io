@@ -2388,6 +2388,12 @@ html.js-ready .rise-ready.is-risen .ch {
     transform: scale(0.92);
   }
 
+  /* A touch screen keeps :hover on the last thing tapped; don't let that
+     light up a button that isn't the current page. */
+  .nav-link:hover:not(.active):not([aria-current="page"]) {
+    color: var(--color-text-muted);
+  }
+
   /* The current page: full-strength label, accent icon, lifted a touch.
      When a section link is live (Contact, on the home page), it takes over
      from the page's own link. */
@@ -2905,4 +2911,43 @@ html.js-ready .reveal.in-view {
       transform: translateY(26px);
     }
   }
+}
+
+
+/* ==================== Tablet: the bar ====================
+ * Between phone and laptop widths the call to action was wrapping onto two
+ * lines. Links never wrap, and the bar makes room by dropping the logo's
+ * subtitle and tightening the links. */
+.nav-link {
+  white-space: nowrap;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .logo-subtitle {
+    display: none;
+  }
+
+  .nav-container {
+    gap: 0.5rem;
+  }
+
+  .nav-links {
+    gap: 0.1rem;
+  }
+
+  .nav-link {
+    padding-inline: 0.5rem;
+  }
+
+  .nav-cta-item {
+    margin-left: 0.2rem;
+  }
+}
+
+
+/* ==================== 404: Ping speaks over the number, not on it ====================
+ * With no room to his right the bubble flips to his left, which is where
+ * the big 404 is. There it rises clear of the digits instead. */
+.error-page-code .ping.is-flip .ping-bubble {
+  bottom: calc(100% + clamp(1.5rem, 11vw, 5.75rem));
 }

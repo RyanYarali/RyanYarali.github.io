@@ -215,9 +215,26 @@
   // ==================== Scroll Handling ====================
   const backToTopBtn = document.getElementById("back-to-top");
 
+  // The button holds the bottom-right corner, which is where the project
+  // gallery sets its text, so it steps aside while the gallery is on screen.
+  const gallery = document.getElementById("projects");
+  let galleryTop = 0;
+  let galleryEnd = 0;
+  function measureGallery() {
+    if (!gallery || !backToTopBtn) return;
+    galleryTop = naturalTop(gallery);
+    galleryEnd = galleryTop + gallery.offsetHeight;
+  }
+  window.addEventListener("load", measureGallery);
+  window.addEventListener("resize", measureGallery, { passive: true });
+
   function toggleBackToTop() {
     if (!backToTopBtn) return;
-    backToTopBtn.classList.toggle("visible", window.pageYOffset > 400);
+    const y = window.pageYOffset;
+    const vh = window.innerHeight;
+    if (!galleryEnd) measureGallery();
+    const overGallery = galleryEnd > 0 && y + vh > galleryTop + 120 && y + vh * 0.55 < galleryEnd;
+    backToTopBtn.classList.toggle("visible", y > 400 && !overGallery);
   }
 
   // Throttle on animation frames rather than debouncing: the callback reads
