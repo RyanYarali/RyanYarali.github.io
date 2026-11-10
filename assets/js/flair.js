@@ -396,14 +396,14 @@
     pill.className = "nav-pill";
     pill.setAttribute("aria-hidden", "true");
     list.appendChild(pill);
-    var wide = window.matchMedia("(min-width: 768px)");
 
     function current() {
-      return list.querySelector(".nav-link.active, .nav-link[aria-current='page']");
+      // A live section link (Contact, on the home page) wins over the page's.
+      return list.querySelector(".nav-link.active") || list.querySelector(".nav-link[aria-current='page']");
     }
 
     function place(link) {
-      if (!wide.matches || !link) {
+      if (!link || !link.offsetWidth) {
         pill.style.opacity = "0";
         return;
       }
@@ -451,6 +451,25 @@
   // A portrait marked data-pixel-reveal arrives like a packet: when it
   // scrolls in it is drawn as a coarse mosaic that sharpens in steps (6, 10,
   // 16, 26, 44, 72 blocks across), then the real photo takes over.
+
+  // ==================== Spotlight ====================
+  // The big cards light up under the pointer: this only reports where the
+  // pointer is inside the card, and the CSS draws the light there.
+  function initGlow() {
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    var sel = ".door, .plan, .skill-tile, .quote-cta";
+    document.addEventListener(
+      "pointermove",
+      function (e) {
+        var card = e.target.closest && e.target.closest(sel);
+        if (!card) return;
+        var r = card.getBoundingClientRect();
+        card.style.setProperty("--mx", Math.round(e.clientX - r.left) + "px");
+        card.style.setProperty("--my", Math.round(e.clientY - r.top) + "px");
+      },
+      { passive: true },
+    );
+  }
 
   function initPixelReveal() {
     var figs = document.querySelectorAll("[data-pixel-reveal]");
@@ -814,6 +833,7 @@
     initLens();
     initMarqueeSpeed();
     initHeader();
+    initGlow();
     initIcons();
     initPixelReveal();
     initPreview();

@@ -265,13 +265,22 @@
     });
 
     measurers.push(function () {
-      var top = layout.top(main);
+      // Walk every child of main, not only the stacked ones: a page title
+      // above the first section (About, Services) takes up room too, and
+      // leaving it out made that section start to dim a header's height
+      // too early, while it was still being read.
+      var flow = layout.top(main);
+      var flowTops = [];
+      [].slice.call(main.children).forEach(function (el) {
+        var i = pages.indexOf(el);
+        if (i !== -1) flowTops[i] = flow;
+        flow += el.offsetHeight;
+      });
       tops = [];
       stick = [];
-      pages.forEach(function (p) {
+      pages.forEach(function (p, i) {
         var h = p.offsetHeight;
-        tops.push(top);
-        top += h;
+        tops.push(flowTops[i]);
         // A section taller than the screen scrolls through until its bottom
         // meets the bottom of the viewport, then holds there to be covered.
         var s = Math.min(0, vh - h);

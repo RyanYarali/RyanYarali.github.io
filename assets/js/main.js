@@ -6,44 +6,18 @@
 (function () {
   "use strict";
 
-  // ==================== Mobile Menu Toggle ====================
-  const mobileToggle = document.getElementById("mobile-toggle");
-  const navLinks = document.getElementById("nav-links");
-
-  function setMenuOpen(isOpen) {
-    if (!mobileToggle || !navLinks) return;
-    navLinks.classList.toggle("active", isOpen);
-    mobileToggle.classList.toggle("active", isOpen);
-    // The markup carries aria-expanded, so it has to track the real state
-    // rather than sit at "false" while the menu is open.
-    mobileToggle.setAttribute("aria-expanded", String(isOpen));
-  }
-
-  function closeMobileMenu() {
-    setMenuOpen(false);
-  }
-
-  function toggleMobileMenu() {
-    if (!mobileToggle || !navLinks) return;
-    setMenuOpen(!navLinks.classList.contains("active"));
-  }
-
-  if (mobileToggle && navLinks) {
-    mobileToggle.addEventListener("click", toggleMobileMenu);
-
-    const navItems = navLinks.querySelectorAll("a");
-    navItems.forEach((item) => {
-      item.addEventListener("click", () => {
-        closeMobileMenu();
-      });
-    });
-
-    document.addEventListener("click", (e) => {
-      if (!mobileToggle.contains(e.target) && !navLinks.contains(e.target)) {
-        closeMobileMenu();
-      }
-    });
-  }
+  // ==================== Current page link ====================
+  // The link to the page you are already on (the lit button in the phone
+  // dock) scrolls back to the top instead of loading the page again.
+  document.addEventListener("click", (e) => {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    const link = e.target.closest && e.target.closest('.nav-links a[aria-current="page"]');
+    const page = (path) => path.replace(/index\.html$/, "");
+    if (!link || link.hash || page(link.pathname) !== page(location.pathname)) return;
+    e.preventDefault();
+    const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: calm ? "auto" : "smooth" });
+  });
 
   // Mark document as JS-enabled so CSS can safely apply scroll-reveal states.
   document.documentElement.classList.add("js-ready");
