@@ -449,3 +449,19 @@ test("a check is counted, reported to Ryan, and limited per visitor", async () =
   assert.equal(over.ok, false);
   assert.match(over.message, /busy day/);
 });
+
+test("the checker reads this site's own pages from its files, not over the network", async () => {
+  const asked = [];
+  env.ASSETS = {
+    fetch: async (req) => {
+      asked.push(new URL(req.url).pathname);
+      return new Response(GOOD_PAGE, { headers: { "Content-Type": "text/html; charset=utf-8" } });
+    },
+  };
+  for (const u of ["ryanyarali.com", "https://www.ryanyarali.com/services.html"]) {
+    const res = await (await call("/api/check", { url: u })).json();
+    assert.equal(res.ok, true, u);
+    assert.equal(res.host, "ryanyarali.com");
+  }
+  assert.deepEqual(asked, ["/index.html", "/services.html"]);
+});
