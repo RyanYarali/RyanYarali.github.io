@@ -49,16 +49,16 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="assets/css/tokens.css?v=20261059" />
-    <link rel="stylesheet" href="assets/css/reset.css?v=20261059" />
-    <link rel="stylesheet" href="assets/css/typography.css?v=20261059" />
-    <link rel="stylesheet" href="assets/css/layout.css?v=20261059" />
-    <link rel="stylesheet" href="assets/css/components.css?v=20261059" />
-    <link rel="stylesheet" href="assets/css/pages.css?v=20261059" />
-    <link rel="stylesheet" href="assets/css/interactive.css?v=20261059" />
-    <link rel="stylesheet" href="assets/css/motion.css?v=20261059" />
-    <link rel="stylesheet" href="assets/css/bold.css?v=20261059" />
-    <link rel="stylesheet" href="assets/css/style.css?v=20261059" />
+    <link rel="stylesheet" href="assets/css/tokens.css?v=20261061" />
+    <link rel="stylesheet" href="assets/css/reset.css?v=20261061" />
+    <link rel="stylesheet" href="assets/css/typography.css?v=20261061" />
+    <link rel="stylesheet" href="assets/css/layout.css?v=20261061" />
+    <link rel="stylesheet" href="assets/css/components.css?v=20261061" />
+    <link rel="stylesheet" href="assets/css/pages.css?v=20261061" />
+    <link rel="stylesheet" href="assets/css/interactive.css?v=20261061" />
+    <link rel="stylesheet" href="assets/css/motion.css?v=20261061" />
+    <link rel="stylesheet" href="assets/css/bold.css?v=20261061" />
+    <link rel="stylesheet" href="assets/css/style.css?v=20261061" />
 
 
     <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=5" />
@@ -77,6 +77,7 @@
             "url": "https://ryanyarali.com/",
             "jobTitle": "Full-stack developer",
             "email": "mailto:ryan@ryanyarali.com",
+            "telephone": "+1-604-729-3212",
             "sameAs": [
               "https://github.com/RyanYarali",
               "https://www.linkedin.com/in/ryan-yarali/"
@@ -341,6 +342,10 @@
             Vancouver, and portfolios for people who want to stand out. Fast,
             made for phones, set up for Google, and priced up front.
           </p>
+          <p class="serve-area">
+            <span class="status-dot" aria-hidden="true"></span>
+            Coquitlam, Port Moody, Burnaby, Vancouver, Surrey, and remote across B.C.
+          </p>
           <!-- Filled in by the Worker (worker/index.js) for visitors who
                came from the credit tag on a client's site. -->
           <p class="came-from" id="came-from" hidden></p>
@@ -452,30 +457,13 @@
             </p>
           </div>
 
-          <!-- Referral: both sides get something. The link builder is
-               decoration over a plain sentence; form.js fills the form's
-               "Referred by" field from ?friend= on the way in. (?ref= is
-               taken: the credit tags on client sites use it.) -->
-          <div class="refer reveal" id="refer">
-            <div class="refer-copy">
-              <p class="plan-code">Refer a friend</p>
-              <h3 class="care-name">They save 10%. <span class="care-price">You get $50.</span></h3>
-              <p class="care-text">
-                Send someone my way and they get 10% off their first project.
-                Once it's paid, you get $50 off your next invoice or care
-                plan, for every friend who books.
-              </p>
-            </div>
-            <form class="refer-link" id="refer-link" action="#" aria-label="Make your referral link">
-              <label for="refer-name">Your name</label>
-              <div class="refer-row">
-                <input type="text" id="refer-name" maxlength="60" autocomplete="name" placeholder="e.g. Ryan Yarali" />
-                <button type="submit" class="copy-email">Copy link</button>
-              </div>
-              <p class="refer-out" id="refer-out" aria-live="polite">ryanyarali.com/?friend=<span>your-name</span></p>
-            </form>
-          </div>
-
+          <h3 class="extras-title steps-title reveal">How it works</h3>
+          <ol class="steps reveal-group" aria-label="How a project goes">
+            <li><span class="step-n" aria-hidden="true">01</span><strong>Free call</strong> 20 minutes on what you need. You get a fixed quote.</li>
+            <li><span class="step-n" aria-hidden="true">02</span><strong>Design</strong> Demos or a plan for you to pick from and approve.</li>
+            <li><span class="step-n" aria-hidden="true">03</span><strong>Build</strong> A private preview link, so you can follow along.</li>
+            <li><span class="step-n" aria-hidden="true">04</span><strong>Launch</strong> Live on your domain, with a walkthrough. Half to start, half at launch.</li>
+          </ol>
           <div class="extras">
             <h3 class="extras-title reveal">Add-ons</h3>
             <ul class="addon-list reveal-group">
@@ -514,13 +502,30 @@
             project and can change when I quote it. The quote I send you is
             the price you pay.
           </p>
+          <!-- Referral: both sides get something. The link builder is
+               decoration over a plain sentence; form.js fills the form's
+               "Referred by" field from ?friend= on the way in. (?ref= is
+               taken: the credit tags on client sites use it.) -->
+          <div class="refer reveal" id="refer">
+            <div class="refer-copy">
+              <p class="plan-code">Refer a friend</p>
+              <h3 class="care-name">They save 10%. <span class="care-price">You get $50.</span></h3>
+              <p class="care-text">
+                Send someone my way and they get 10% off their first project.
+                Once it's paid, you get $50 off your next invoice or care
+                plan, for every friend who books.
+              </p>
+            </div>
+            <form class="refer-link" id="refer-link" action="#" aria-label="Make your referral link">
+              <label for="refer-name">Your name</label>
+              <div class="refer-row">
+                <input type="text" id="refer-name" maxlength="60" autocomplete="name" placeholder="e.g. Ryan Yarali" />
+                <button type="submit" class="copy-email">Copy link</button>
+              </div>
+              <p class="refer-out" id="refer-out" aria-live="polite">ryanyarali.com/?friend=<span>your-name</span></p>
+            </form>
+          </div>
 
-          <ol class="steps reveal-group" aria-label="How a project goes">
-            <li><span class="step-n" aria-hidden="true">01</span><strong>Free call</strong> 20 minutes on what you need. You get a fixed quote.</li>
-            <li><span class="step-n" aria-hidden="true">02</span><strong>Design</strong> Demos or a plan for you to pick from and approve.</li>
-            <li><span class="step-n" aria-hidden="true">03</span><strong>Build</strong> A private preview link, so you can follow along.</li>
-            <li><span class="step-n" aria-hidden="true">04</span><strong>Launch</strong> Live on your domain, with a walkthrough. Half to start, half at launch.</li>
-          </ol>
         </div>
       </section>
 
@@ -629,6 +634,10 @@
               <p class="contact-email">
                 <a href="mailto:ryan@ryanyarali.com">ryan@ryanyarali.com</a>
                 <button type="button" class="copy-email" data-copy="ryan@ryanyarali.com">Copy</button>
+              </p>
+              <p class="contact-email contact-phone">
+                <a href="tel:+16047293212">604-729-3212</a>
+                <span class="contact-phone-note">Call or text</span>
               </p>
               <p class="contact-links">
                 <a href="https://github.com/RyanYarali" target="_blank" rel="me noopener noreferrer">GitHub</a>
@@ -778,7 +787,7 @@
       <div class="container footer-inner">
         <div>
           <p>&copy; 2026 <a href="index.html">Ryan Yarali</a>. All rights reserved.</p>
-          <p class="footer-tech">Built with HTML, CSS, and JavaScript. No framework. <a href="projects/this-site.html">How it's built</a> · <a href="privacy.html">Privacy</a></p>
+          <p class="footer-tech"><a href="projects/this-site.html">How this site is built</a> · <a href="privacy.html">Privacy</a></p>
         </div>
         <div class="footer-social">
           <a href="mailto:ryan@ryanyarali.com" class="footer-email">
@@ -801,14 +810,14 @@
            as the footer scrolls into view. -->
       <div class="footer-mark" aria-hidden="true" data-lens="accent"><span class="ch" style="--i:0">R</span><span class="ch" style="--i:1">y</span><span class="ch" style="--i:2">a</span><span class="ch" style="--i:3">n</span><span class="ch" style="--i:4">&nbsp;</span><span class="ch" style="--i:5">Y</span><span class="ch" style="--i:6">a</span><span class="ch" style="--i:7">r</span><span class="ch" style="--i:8">a</span><span class="ch" style="--i:9">l</span><span class="ch" style="--i:10">i</span></div>
     </footer>
-    <script src="assets/js/theme.js?v=20261059"></script>
-    <script src="assets/js/hit.js?v=20261059" defer></script>
-    <script src="assets/js/form.js?v=20261059"></script>
-    <script src="assets/js/main.js?v=20261059"></script>
-    <script src="assets/js/flair.js?v=20261059"></script>
-    <script src="assets/js/interactive.js?v=20261059"></script>
-    <script src="assets/js/cursor.js?v=20261059"></script>
-    <script src="assets/js/ping-sprite.js?v=20261059"></script>
-    <script src="assets/js/ping.js?v=20261059"></script>
+    <script src="assets/js/theme.js?v=20261061"></script>
+    <script src="assets/js/hit.js?v=20261061" defer></script>
+    <script src="assets/js/form.js?v=20261061"></script>
+    <script src="assets/js/main.js?v=20261061"></script>
+    <script src="assets/js/flair.js?v=20261061"></script>
+    <script src="assets/js/interactive.js?v=20261061"></script>
+    <script src="assets/js/cursor.js?v=20261061"></script>
+    <script src="assets/js/ping-sprite.js?v=20261061"></script>
+    <script src="assets/js/ping.js?v=20261061"></script>
   </body>
 </html>
