@@ -189,7 +189,7 @@
     if (conn && conn.saveData) return;
 
     function go() {
-      import("./hero-globe.js?v=20261064")
+      import("./hero-globe.js?v=20261065")
         .then(function (mod) {
           mod.mount(host, { reduced: reduced });
         })

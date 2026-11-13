@@ -3628,8 +3628,8 @@ html.ask-open .back-to-top {
   min-height: 44px;
   padding: 0;
   font: inherit;
-  /* 16px keeps iOS from zooming the page when the field is focused. */
-  font-size: 1rem;
+  /* Never under 16px, or iPhones zoom the page when the field is focused. */
+  font-size: max(17px, 1.0625rem);
   color: var(--color-text);
   background: transparent;
   border: 0;
@@ -3683,7 +3683,7 @@ html.ask-open .back-to-top {
    dimmed behind it. */
 @media (max-width: 767px) {
   .ask {
-    inset: auto 0 var(--ask-kb, 0px) 0;
+    inset: auto 0 0 0;
     width: auto;
     max-width: none;
     height: min(78svh, 640px);
@@ -3693,8 +3693,20 @@ html.ask-open .back-to-top {
     box-shadow: var(--shadow-up);
   }
 
+  /* Keyboard open: fill what is left of the screen above it. */
   .ask.has-kb {
-    height: calc(var(--ask-vh, 100svh) - 0.75rem);
+    inset: calc(var(--ask-top, 0px) + 0.5rem) 0 auto 0;
+    height: calc(var(--ask-vh, 100svh) - 0.5rem);
+    max-height: none;
+    animation: none;
+  }
+
+  .ask.has-kb .ask-note {
+    display: none;
+  }
+
+  .ask.has-kb .ask-form {
+    margin-bottom: 0.6rem;
   }
 
   .ask::backdrop {
