@@ -2,10 +2,11 @@
 // serves the repo); this Worker only runs for:
 //   POST /api/contact   the contact form: check, save to D1, text Ryan on
 //                       Telegram (email if that fails), thank the sender
-//   POST /api/hit       page-view beacons from assets/js/hit.js
+//   POST /api/hit       page-view and event beacons from assets/js/hit.js
 //   POST /api/telegram  the Telegram bot's webhook (worker/telegram.js)
 //   GET  /api/telegram/setup?key=...   connects the bot, once
-//   the 9:00 cron       the bot's morning summary
+//   the 9:00 cron       the bot's morning summary (and Monday's week)
+//   the 5-minute cron   checks that the clients' sites are up
 //   "/" and other folders, which get their index.html
 //   any other path that isn't a file here, which is passed to GitHub Pages,
 //   where the client previews live (ryanyarali.com/taha-portfolio and the
@@ -14,10 +15,11 @@
 
 import { TOPICS, ADDONS, isPackage, estimate } from "./catalog.js";
 import { ownerMail, senderMail, send } from "./mail.js";
-import { alertLead, alertVisit, morning, setup, webhook } from "./telegram.js";
+import { alertHit, alertLead, morning, setup, watch, webhook } from "./telegram.js";
 import { CLIENT_SITES, bcDay, recordHit, visitorId } from "./visits.js";
 
 const GITHUB = "https://ryanyarali.github.io";
+const MORNING = "0 16 * * *";
 const PER_HOUR = 5; // messages from one visitor
 const MAX_BODY = 20000; // bytes
 
@@ -50,8 +52,11 @@ export default {
     return fromGitHub(request, env, url);
   },
 
+  // Two timers (wrangler.jsonc): the morning summary at 9:00 B.C. time, and
+  // the client-site check every five minutes.
   async scheduled(event, env, ctx) {
-    ctx.waitUntil(morning(env));
+    if (event && event.cron && event.cron !== MORNING) ctx.waitUntil(watch(env).catch((e) => console.error("[watch]", e)));
+    else ctx.waitUntil(morning(env));
   },
 };
 
@@ -79,8 +84,8 @@ async function hit(request, env, ctx, url) {
   const origin = request.headers.get("Origin");
   if (request.method === "POST" && (!origin || origin === url.origin)) {
     try {
-      const visit = await recordHit(env, request, url);
-      if (visit) ctx.waitUntil(alertVisit(env, visit).catch((e) => console.error("[telegram] visit alert", e)));
+      const what = await recordHit(env, request, url);
+      if (what) ctx.waitUntil(alertHit(env, what).catch((e) => console.error("[telegram] visit alert", e)));
     } catch (e) {
       console.error("[hit] failed", e);
     }

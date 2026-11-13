@@ -1,5 +1,7 @@
 // Page views, counted for the Telegram bot. assets/js/hit.js sends one
-// beacon per page and a second with the time spent when the page is left.
+// beacon per page, a second with the time spent and how far down the visitor
+// got when the page is left, and one for each thing worth knowing about (a
+// résumé download, a link followed off the site, the contact form started).
 // Nothing is stored that could identify someone: vid is a salted hash of IP
 // and browser that changes every day.
 
@@ -44,6 +46,15 @@ const AI = {
 
 const BOT = /bot|crawl|spider|slurp|preview|lighthouse|headless|pagespeed|monitor|curl|wget|python|node-fetch/i;
 export const isBot = (ua) => !ua || BOT.test(ua);
+
+// The network a visit came over is only interesting when it is a company or
+// a school. Internet providers, phone carriers, clouds, VPNs and relays are
+// everyone and no one, so they are left out.
+const COMMON_NETWORK =
+  /telus|shaw|rogers|\bbell\b|\bbce\b|videotron|cogeco|freedom|eastlink|sasktel|teksavvy|novus|comcast|verizon|at&t|at ?and ?t|t-mobile|charter|spectrum|\bcox\b|centurylink|lumen|frontier|sprint|vodafone|orange|telekom|telecom|telefonica|virgin|\bsky\b|\bbt\b|starlink|spacex|mobile|wireless|cellular|broadband|cable|communication|internet|network|\bisp\b|\bdsl\b|fib(er|re)|hosting|datacenter|data center|cloud|google|amazon|microsoft|apple|akamai|fastly|digitalocean|\bovh\b|hetzner|linode|oracle|\bvpn\b|proxy|m247|datacamp|relay|irancell|\bmci\b|mokhaberat|\btci\b|rightel|shatel|pars online/i;
+export const company = (org) => (org && !COMMON_NETWORK.test(org) ? String(org) : null);
+
+export const EVENTS = { resume: "résumé download", out: "link out", form: "form started" };
 
 const clip = (v, n) => String(v || "").replace(/[\u0000-\u001f\u007f]+/g, " ").trim().slice(0, n);
 
@@ -112,8 +123,9 @@ export async function visitorId(env, request, day) {
   return [...new Uint8Array(buf)].slice(0, 10).map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-// POST /api/hit. Returns the visit when it's a new page view (so the caller
-// can raise a live alert), or null.
+// POST /api/hit. Returns what happened, so the caller can raise a live
+// alert: { kind: "view", ...visit }, { kind: "time", vid } or
+// { kind: "event", vid, event, detail, path }. Null when nothing counted.
 export async function recordHit(env, request, url) {
   const ua = request.headers.get("User-Agent") || "";
   if (isBot(ua)) return null;
@@ -131,11 +143,32 @@ export async function recordHit(env, request, url) {
   const day = bcDay(now);
   const vid = await visitorId(env, request, day);
 
-  // The second beacon: time on the page. Only the same visitor can set it.
+  // The second beacon: time on the page and how far down it they got. Only
+  // the same visitor can set it.
   if (body.s != null) {
     const seconds = Math.max(0, Math.min(3600, Math.round(Number(body.s) || 0)));
-    await env.DB.prepare("UPDATE visits SET seconds = ? WHERE id = ? AND vid = ?").bind(seconds, id, vid).run();
-    return null;
+    const depth = body.d == null ? null : Math.max(0, Math.min(100, Math.round(Number(body.d) || 0)));
+    await env.DB.prepare("UPDATE visits SET seconds = ?, depth = MAX(COALESCE(depth, 0), COALESCE(?, depth, 0)) WHERE id = ? AND vid = ?")
+      .bind(seconds, depth, id, vid)
+      .run();
+    return { kind: "time", vid };
+  }
+
+  // Something the visitor did on a page they are known to be on.
+  if (body.e != null) {
+    const event = String(body.e);
+    if (!EVENTS[event]) return null;
+    const page = await env.DB.prepare("SELECT path FROM visits WHERE id = ? AND vid = ?").bind(id, vid).first();
+    if (!page) return null;
+    const detail = clip(body.d, 80).toLowerCase() || null;
+    // One of each per page view is enough (a second click on the same link
+    // says nothing new), and it keeps anyone from flooding the table.
+    const dup = await env.DB.prepare("SELECT COUNT(*) AS n FROM events WHERE vid = ? AND kind = ? AND path = ? AND COALESCE(detail, '') = COALESCE(?, '')")
+      .bind(vid, event, page.path, detail)
+      .first();
+    if (dup && dup.n) return null;
+    await env.DB.prepare("INSERT INTO events (day, vid, kind, detail, path) VALUES (?, ?, ?, ?, ?)").bind(day, vid, event, detail, page.path).run();
+    return { kind: "event", vid, event, detail, path: page.path };
   }
 
   const cf = request.cf || {};
@@ -148,6 +181,7 @@ export async function recordHit(env, request, url) {
     country: clip(cf.country, 2) || null,
     city: clip(cf.city, 60) || null,
     device: /Mobi|Android|iPhone|iPad/i.test(ua) ? "phone" : "computer",
+    org: company(clip(cf.asOrganization, 80)),
   };
   // A page reached from another page of this site keeps the source the
   // visitor arrived with.
@@ -159,11 +193,11 @@ export async function recordHit(env, request, url) {
   }
   const seen = await env.DB.prepare("SELECT COUNT(*) AS n FROM visits WHERE vid = ?").bind(vid).first();
   await env.DB.prepare(
-    "INSERT OR IGNORE INTO visits (id, day, vid, path, source, country, city, device) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+    "INSERT OR IGNORE INTO visits (id, day, vid, path, source, country, city, device, org) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
   )
-    .bind(visit.id, visit.day, visit.vid, visit.path, visit.source, visit.country, visit.city, visit.device)
+    .bind(visit.id, visit.day, visit.vid, visit.path, visit.source, visit.country, visit.city, visit.device, visit.org)
     .run();
-  return { ...visit, firstToday: !seen || seen.n === 0 };
+  return { kind: "view", ...visit, firstToday: !seen || seen.n === 0 };
 }
 
 const PAGE_NAMES = {
@@ -190,7 +224,7 @@ export const place = (v) => [v.city, v.country].filter(Boolean).join(", ") || "s
 // What one visitor did today: where they came from, the pages, the time.
 export async function journey(env, vid) {
   if (!vid) return null;
-  const { results } = await env.DB.prepare("SELECT path, source, seconds, city, country, device FROM visits WHERE vid = ? ORDER BY created_at")
+  const { results } = await env.DB.prepare("SELECT path, source, seconds, city, country, device, org FROM visits WHERE vid = ? ORDER BY created_at")
     .bind(vid)
     .all();
   if (!results.length) return null;
@@ -200,7 +234,18 @@ export async function journey(env, vid) {
     if (pages[pages.length - 1] !== name) pages.push(name);
   }
   const seconds = results.reduce((n, r) => n + (r.seconds || 0), 0);
-  return { source: results[0].source, pages, seconds, where: place(results[0]), device: results[0].device };
+  const did = await env.DB.prepare("SELECT kind, detail FROM events WHERE vid = ? ORDER BY id").bind(vid).all();
+  return {
+    source: results[0].source,
+    pages,
+    distinct: new Set(pages).size,
+    seconds,
+    where: place(results[0]),
+    device: results[0].device,
+    org: (results.find((r) => r.org) || {}).org || null,
+    resume: did.results.some((e) => e.kind === "resume"),
+    out: [...new Set(did.results.filter((e) => e.kind === "out" && e.detail).map((e) => e.detail))],
+  };
 }
 
 export const minutes = (s) => (s < 60 ? `${s}s` : `${Math.round(s / 60)} min`);
@@ -242,13 +287,45 @@ export async function stats(env, from, to) {
     from,
     to,
   );
-  return { ...totals, leads: leads.n, pages, sources, places, phones: phones.n };
+  const did = await all("SELECT kind, COUNT(DISTINCT vid) AS n FROM events WHERE day BETWEEN ? AND ? GROUP BY kind", from, to);
+  const count = (kind) => (did.find((r) => r.kind === kind) || { n: 0 }).n;
+  return { ...totals, leads: leads.n, pages, sources, places, phones: phones.n, resumes: count("resume"), forms: count("form") };
+}
+
+// The long view for /top: pages with how they were read, sources, and
+// where people went when they left.
+export async function top(env, from, to) {
+  const all = async (sql, ...args) => (await env.DB.prepare(sql).bind(...args).all()).results;
+  const pages = await all(
+    `SELECT path, COUNT(*) AS n, ROUND(AVG(seconds)) AS seconds, ROUND(AVG(depth)) AS depth
+     FROM visits WHERE day BETWEEN ? AND ? GROUP BY path ORDER BY n DESC LIMIT 8`,
+    from,
+    to,
+  );
+  const sources = await all(
+    `SELECT source, COUNT(*) AS n FROM (
+       SELECT vid, source FROM visits v WHERE day BETWEEN ? AND ? AND created_at = (SELECT MIN(created_at) FROM visits WHERE vid = v.vid)
+     ) GROUP BY source ORDER BY n DESC LIMIT 8`,
+    from,
+    to,
+  );
+  const out = await all(
+    "SELECT detail, COUNT(DISTINCT vid) AS n FROM events WHERE kind = 'out' AND day BETWEEN ? AND ? GROUP BY detail ORDER BY n DESC LIMIT 8",
+    from,
+    to,
+  );
+  const networks = await all(
+    "SELECT org, COUNT(DISTINCT vid) AS n FROM visits WHERE org IS NOT NULL AND day BETWEEN ? AND ? GROUP BY org ORDER BY n DESC LIMIT 6",
+    from,
+    to,
+  );
+  return { pages, sources, out, networks };
 }
 
 // Visitors seen in the last five minutes, with the page they're on.
 export async function now(env) {
   const { results } = await env.DB.prepare(
-    `SELECT vid, path, source, city, country, device FROM visits v
+    `SELECT vid, path, source, city, country, device, org FROM visits v
      WHERE created_at > strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-5 minutes')
        AND created_at = (SELECT MAX(created_at) FROM visits WHERE vid = v.vid)
      ORDER BY created_at DESC LIMIT 10`,

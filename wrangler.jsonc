@@ -42,6 +42,7 @@
     "MAIL_TO": "ryan@ryanyarali.com"
   },
   // The bot's morning summary: 16:00 UTC is 9:00 in B.C. (UTC-7 all year).
-  "triggers": { "crons": ["0 16 * * *"] },
+  // Every five minutes it also checks the clients' sites (worker/telegram.js).
+  "triggers": { "crons": ["0 16 * * *", "*/5 * * * *"] },
   "observability": { "enabled": true }
 }
