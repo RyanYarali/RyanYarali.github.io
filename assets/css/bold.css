@@ -3163,45 +3163,110 @@ html.js-ready .reveal.in-view {
 }
 
 /* ---------- Ask Ping ----------
- * The chat panel (assets/js/ping-chat.js): a non-modal dialog in the top
- * layer, drawn like Ping's speech boxes with the same stepped pixel border.
- * On a phone it is a sheet above the dock; on a desktop a card in the
- * bottom-right corner. The launcher is a small pill above the dock (phone)
- * or above the back-to-top button (desktop). */
+ * The chat (assets/js/ping-chat.js). Ping himself is the button: a small
+ * "ask" mark rides on his shoulder. The panel is a non-modal dialog in the
+ * top layer: on a phone a sheet that rises from the foot of the screen,
+ * over the dock; on a desktop a card in the bottom-right corner. His
+ * answers read like his speech boxes: a pixel packet header, then the line
+ * typing out behind a block caret. The visitor's own lines are quiet pills.
+ * The one blue thing is the send button. */
+
+/* The mark on Ping's shoulder: a tiny speech box with three dots. */
+.ping-ask {
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  margin-left: -13px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 5px 6px;
+  background: var(--color-text);
+  box-shadow: 2px 2px 0 0 var(--px-shadow);
+  pointer-events: none;
+  animation: ping-ask 2.6s steps(2) infinite;
+}
+
+.ping-ask::after {
+  content: "";
+  position: absolute;
+  left: 11px;
+  bottom: -4px;
+  width: 4px;
+  height: 4px;
+  background: var(--color-text);
+}
+
+.ping-ask i {
+  width: 4px;
+  height: 4px;
+  background: var(--color-background);
+}
+
+@keyframes ping-ask {
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+.ping.is-big .ping-ask,
+html.ask-open .ping-ask {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ping-ask {
+    animation: none;
+  }
+}
+
+/* The real button. On pages with the route it is for keyboards and shows
+   only when focused. Where Ping stands by a heading and scrolls away, it is
+   Ping docked in the corner (.is-dock), shown while he is off screen. */
 .ask-launch {
   position: fixed;
   right: 1.5rem;
-  bottom: 5.25rem;
+  bottom: 6.25rem;
   z-index: var(--z-nav);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  min-height: 44px;
-  padding: 0.35rem 0.95rem 0.35rem 0.6rem;
-  font: inherit;
-  font-size: 0.875rem;
-  font-weight: 600;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  padding: 0;
   color: var(--color-text);
   background: var(--color-surface);
   border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
   cursor: pointer;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(10px);
+  -webkit-tap-highlight-color: transparent;
   transition:
     opacity var(--transition-base),
-    transform var(--transition-base),
-    visibility 0s linear 260ms,
+    transform 420ms var(--ease-out-expo),
+    visibility 0s,
     border-color var(--transition-fast);
 }
 
-.ask-launch.is-on {
-  opacity: 1;
-  visibility: visible;
-  transform: none;
-  transition-delay: 0s;
+.ask-launch img {
+  width: 30px;
+  height: 30px;
+  image-rendering: pixelated;
+}
+
+.ask-launch .ping-ask {
+  top: -7px;
+  left: auto;
+  right: -7px;
+  margin: 0;
+}
+
+.ask-launch-text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .ask-launch:hover,
@@ -3209,124 +3274,121 @@ html.js-ready .reveal.in-view {
   border-color: var(--color-accent);
 }
 
-.ask-launch img {
-  width: 22px;
-  height: 22px;
-  image-rendering: pixelated;
+.ask-launch:active {
+  transform: scale(0.94);
 }
 
+.ask-launch:not(.is-on):not(:focus-visible),
 html.ask-open .ask-launch {
   opacity: 0;
   visibility: hidden;
-}
-
-@media (min-width: 768px) {
-  .ask-launch {
-    right: 2.5rem;
-    bottom: 6.25rem;
-  }
+  transform: translateY(14px) scale(0.9);
+  transition:
+    opacity var(--transition-base),
+    transform 420ms var(--ease-out-expo),
+    visibility 0s linear 260ms;
 }
 
 @media (max-width: 767px) {
   .ask-launch {
-    right: 0.75rem;
-    bottom: calc(var(--dock-clear, 5rem) - 0.15rem);
+    right: 0.9rem;
+    bottom: calc(var(--dock-clear, 5rem) + 0.1rem);
   }
+}
 
-  .ask-launch span {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-
+@media (min-width: 768px) {
   .ask-launch {
-    width: 44px;
-    padding: 0;
-    justify-content: center;
+    right: 2.2rem;
   }
 }
 
 .ask {
-  --bw: 3px;
   position: fixed;
   inset: auto 2.5rem 2.5rem auto;
-  width: min(380px, calc(100vw - 2rem));
-  max-height: min(560px, calc(100dvh - 7rem));
+  width: min(400px, calc(100vw - 2rem));
+  height: min(600px, calc(100dvh - 7.5rem));
   margin: 0;
   padding: 0;
-  border: 0;
   color: var(--color-text);
   background: var(--color-surface);
-  box-shadow:
-    0 calc(var(--bw) * -1) 0 0 var(--color-accent),
-    0 var(--bw) 0 0 var(--color-accent),
-    calc(var(--bw) * -1) 0 0 0 var(--color-accent),
-    var(--bw) 0 0 0 var(--color-accent),
-    calc(var(--bw) * 2.5) calc(var(--bw) * 2.5) 0 0 var(--px-shadow, rgba(0, 0, 0, 0.35));
-  overflow: visible;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
   overscroll-behavior: contain;
 }
 
 .ask:popover-open,
 .ask[open] {
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto auto auto;
-  animation: ask-in 240ms steps(5) both;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  animation: ask-in 420ms var(--ease-out-expo) both;
 }
 
 @keyframes ask-in {
   from {
-    clip-path: inset(100% 0 0 0);
-  }
-  to {
-    clip-path: inset(-12px -16px -16px -12px);
+    opacity: 0;
+    transform: translateY(28px);
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .ask:popover-open,
-  .ask[open] {
-    animation: none;
-  }
+.ask::backdrop {
+  background: transparent;
 }
 
-@media (max-width: 767px) {
-  .ask {
-    inset: auto 0.75rem calc(max(var(--dock-clear, 5rem), var(--ask-kb, 0px) + 0.75rem)) 0.75rem;
-    width: auto;
-    max-height: min(520px, calc(var(--ask-vh, 100dvh) - 6.5rem));
-  }
+html.ask-open .back-to-top {
+  opacity: 0;
+  visibility: hidden;
 }
 
 .ask-head {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 0.6rem 0.6rem 1rem;
+  gap: 0.8rem;
+  padding: 1rem 0.75rem 0.9rem 1.15rem;
   border-bottom: 1px solid var(--color-border);
 }
 
-.ask-tag {
-  font-family: var(--font-pixel);
-  font-size: 0.66rem;
-  letter-spacing: 0.06em;
-  color: var(--color-accent);
+.ask-face {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  background: var(--color-accent-soft);
+  border-radius: var(--radius-md);
+}
+
+.ask-face img {
+  width: 28px;
+  height: 28px;
+  image-rendering: pixelated;
+}
+
+.ask-who {
+  flex: 1;
+  min-width: 0;
 }
 
 .ask-title {
-  flex: 1;
   margin: 0;
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   font-weight: 700;
-  letter-spacing: -0.01em;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.ask-sub {
+  margin: 0.15rem 0 0;
+  font-size: 0.85rem;
+  line-height: 1.3;
+  color: var(--color-text-muted);
 }
 
 .ask-close {
   display: grid;
   place-items: center;
+  flex: none;
   width: 44px;
   height: 44px;
   color: var(--color-text-muted);
@@ -3334,6 +3396,9 @@ html.ask-open .ask-launch {
   border: 0;
   border-radius: var(--radius-pill);
   cursor: pointer;
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast);
 }
 
 .ask-close:hover,
@@ -3345,57 +3410,106 @@ html.ask-open .ask-launch {
 .ask-log {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
-  min-height: 7rem;
-  padding: 1rem;
+  gap: 1.15rem;
+  padding: 1.25rem 1.15rem 1rem;
   overflow-y: auto;
   overscroll-behavior: contain;
+  scrollbar-width: thin;
 }
 
-.ask-msg {
-  max-width: 88%;
+/* A short conversation sits at the foot of the log, next to the field and
+   the thumb, the way messages do. */
+.ask-log > :first-child {
+  margin-top: auto;
+}
+
+.ask:focus {
+  outline: 0;
+}
+
+/* Ping's lines: no bubble, a packet header and the words. */
+.ask-ping {
+  max-width: 34ch;
+}
+
+.ask-ping-head {
+  display: flex;
+  gap: 0.75rem;
+  margin: 0 0 0.35rem;
+  font-family: var(--font-pixel);
+  font-size: 0.62rem;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.ask-ping-head span + span {
+  color: var(--color-text-subtle);
+}
+
+.ask-ping-text {
   margin: 0;
-  padding: 0.6rem 0.8rem;
-  font-size: 0.95rem;
-  line-height: 1.45;
+  color: var(--color-text);
+  font-size: 1.02rem;
+  font-weight: 500;
+  line-height: 1.5;
   white-space: pre-line;
   overflow-wrap: anywhere;
-  border-radius: var(--radius-md);
   unicode-bidi: plaintext;
   text-align: start;
 }
 
-.ask-msg.is-ping {
-  align-self: flex-start;
-  background: var(--color-surface-2);
-  border-bottom-left-radius: 2px;
+.ask-rest {
+  color: transparent;
 }
 
-.ask-msg.is-you {
+.ask-ping.is-typing .ask-rest::before {
+  content: "";
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  margin-right: -0.5em;
+  vertical-align: -0.15em;
+  background: var(--color-accent);
+}
+
+/* The visitor's lines: quiet pills on the right. */
+.ask-you {
   align-self: flex-end;
-  color: var(--color-background);
-  background: var(--color-text);
-  border-bottom-right-radius: 2px;
+  max-width: 82%;
+  margin: 0;
+  padding: 0.6rem 0.95rem;
+  color: var(--color-text);
+  font-size: 0.98rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  unicode-bidi: plaintext;
+  text-align: start;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: 20px 20px 6px 20px;
 }
 
-.ask-msg.is-waiting {
-  display: inline-flex;
+.ask-wait {
+  display: flex;
   gap: 5px;
-  padding: 0.85rem 0.8rem;
+  margin: 0;
+  padding: 0.35rem 0;
 }
 
-.ask-msg.is-waiting span {
+.ask-wait span {
   width: 6px;
   height: 6px;
   background: var(--color-accent);
   animation: ask-dot 900ms steps(2) infinite;
 }
 
-.ask-msg.is-waiting span:nth-child(2) {
+.ask-wait span:nth-child(2) {
   animation-delay: 150ms;
 }
 
-.ask-msg.is-waiting span:nth-child(3) {
+.ask-wait span:nth-child(3) {
   animation-delay: 300ms;
 }
 
@@ -3405,60 +3519,98 @@ html.ask-open .ask-launch {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .ask-msg.is-waiting span {
-    animation: none;
-  }
+/* Three questions to start from: a short list, each row one tap. */
+.ask-starters {
+  display: grid;
+  margin-top: 0.25rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.ask-starter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 52px;
+  padding: 0.6rem 0.15rem;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: start;
+  color: var(--color-text);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.ask-starter svg {
+  flex: none;
+  color: var(--color-text-subtle);
+  transition:
+    transform 320ms var(--ease-out-expo),
+    color var(--transition-fast);
+}
+
+.ask-starter:hover,
+.ask-starter:focus-visible {
+  color: var(--color-accent);
+}
+
+.ask-starter:hover svg,
+.ask-starter:focus-visible svg {
+  color: var(--color-accent);
+  transform: translateX(4px);
 }
 
 .ask-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin: 0.15rem 0 0;
+  margin: -0.35rem 0 0;
 }
 
-.ask-actions a,
-.ask-starter {
+.ask-actions a {
   display: inline-flex;
   align-items: center;
-  min-height: 40px;
-  padding: 0.3rem 0.85rem;
-  font: inherit;
-  font-size: 0.85rem;
+  min-height: 44px;
+  padding: 0.3rem 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: var(--color-text);
   text-decoration: none;
-  background: transparent;
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-pill);
-  cursor: pointer;
   transition: border-color var(--transition-fast);
 }
 
+.ask-actions a.is-main {
+  color: var(--color-background);
+  background: var(--color-text);
+  border-color: var(--color-text);
+}
+
 .ask-actions a:hover,
-.ask-actions a:focus-visible,
-.ask-starter:hover,
-.ask-starter:focus-visible {
+.ask-actions a:focus-visible {
   border-color: var(--color-accent);
 }
 
-.ask-starters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  padding: 0 1rem 0.85rem;
-}
-
-.ask-starters[hidden] {
-  display: none;
-}
-
+/* One field: the question and the send button share a capsule. */
 .ask-form {
   display: flex;
-  gap: 0.5rem;
-  padding: 0.75rem 0.75rem 0.5rem 1rem;
-  border-top: 1px solid var(--color-border);
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.25rem 0.9rem 0;
+  padding: 0.3rem 0.3rem 0.3rem 1.1rem;
+  background: var(--color-background);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  transition: border-color var(--transition-fast);
+}
+
+.ask-form:focus-within {
+  border-color: var(--color-accent);
 }
 
 .ask-label {
@@ -3474,19 +3626,18 @@ html.ask-open .ask-launch {
   flex: 1;
   min-width: 0;
   min-height: 44px;
-  padding: 0.5rem 0.85rem;
+  padding: 0;
   font: inherit;
   /* 16px keeps iOS from zooming the page when the field is focused. */
   font-size: 1rem;
   color: var(--color-text);
-  background: var(--color-background);
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-md);
+  background: transparent;
+  border: 0;
+  outline: 0;
 }
 
-.ask-input:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 1px;
+.ask-input::placeholder {
+  color: var(--color-text-subtle);
 }
 
 .ask-send {
@@ -3495,29 +3646,108 @@ html.ask-open .ask-launch {
   flex: none;
   width: 44px;
   height: 44px;
-  color: var(--color-background);
-  background: var(--color-text);
+  color: var(--color-on-accent);
+  background: var(--color-accent);
   border: 0;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-pill);
   cursor: pointer;
+  transition:
+    transform 200ms var(--ease-out-expo),
+    opacity var(--transition-fast);
+}
+
+.ask-send:active {
+  transform: scale(0.92);
 }
 
 .ask-send:disabled {
-  opacity: 0.45;
+  opacity: 0.4;
   cursor: default;
 }
 
 .ask-note {
   margin: 0;
-  padding: 0 1rem 0.8rem;
-  font-size: 0.72rem;
-  line-height: 1.45;
-  color: var(--color-text-muted);
+  padding: 0.6rem 1.15rem 0.9rem;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  text-align: center;
+  color: var(--color-text-subtle);
 }
 
 .ask-note a {
   color: inherit;
   text-underline-offset: 3px;
+}
+
+/* Phone: a sheet from the foot of the screen, over the dock, with the page
+   dimmed behind it. */
+@media (max-width: 767px) {
+  .ask {
+    inset: auto 0 var(--ask-kb, 0px) 0;
+    width: auto;
+    max-width: none;
+    height: min(78svh, 640px);
+    max-height: calc(var(--ask-vh, 100svh) - 0.75rem);
+    border-width: 1px 0 0;
+    border-radius: 28px 28px 0 0;
+    box-shadow: var(--shadow-up);
+  }
+
+  .ask.has-kb {
+    height: calc(var(--ask-vh, 100svh) - 0.75rem);
+  }
+
+  .ask::backdrop {
+    background: rgba(0, 0, 0, 0.55);
+    animation: ask-dim 300ms var(--ease) both;
+  }
+
+  @keyframes ask-in {
+    from {
+      transform: translateY(100%);
+    }
+  }
+
+  /* The grab mark every sheet has. */
+  .ask-head {
+    position: relative;
+    padding-top: 1.5rem;
+  }
+
+  .ask-head::before {
+    content: "";
+    position: absolute;
+    top: 0.6rem;
+    left: 50%;
+    width: 36px;
+    height: 4px;
+    margin-left: -18px;
+    background: var(--color-border-strong);
+    border-radius: var(--radius-pill);
+  }
+
+  .ask-ping {
+    max-width: 92%;
+  }
+
+  .ask-note {
+    padding-bottom: max(0.9rem, env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@keyframes ask-dim {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ask:popover-open,
+  .ask[open],
+  .ask::backdrop,
+  .ask-wait span {
+    animation: none;
+  }
 }
 
 /* A plain button in the page that opens the chat (the Services questions). */
