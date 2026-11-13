@@ -79,6 +79,7 @@ HOW IT WORKS
 CONTACT
 - Phone: ${PHONE} (call or text).
 - Email: ${EMAIL}.
+- Free website check: on the page check.html anyone can type their site's address and see how it does for speed, on Google and on phones. It is free and needs no sign-up.
 - Contact form with a live estimate: the Services page (services.html), section "Let's talk". Ryan usually replies within a day.
 `.trim();
 

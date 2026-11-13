@@ -75,6 +75,7 @@
     resume: "Fresh off the printer. One page, no fluff!",
     projects: "Every project, in one place. Tap one!",
     services: "Prices up front. Pick a package, or ask for a quote!",
+    check: "Type your address. I'll go and take a look!",
     about: "That's Ryan. The résumé is one click away!",
   };
 

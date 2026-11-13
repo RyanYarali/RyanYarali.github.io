@@ -3794,3 +3794,459 @@ html.ask-open .back-to-top {
 html:not(.js-ready) .ask-inline {
   display: none;
 }
+
+/* ---------- Check my website (check.html) ----------
+ * One field and a button; then the report: the count as a headline, a row
+ * of pixel blocks (one a check, blue for a pass), and each check in plain
+ * words. Blue marks what passed; what failed is set in full-strength text
+ * with what to do about it underneath. */
+.check-form {
+  max-width: 40rem;
+  margin-top: 2.25rem;
+}
+
+.check-label {
+  display: block;
+  margin-bottom: 0.6rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.check-field {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.4rem 0.4rem 1.35rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  transition: border-color var(--transition-fast);
+}
+
+.check-field:focus-within {
+  border-color: var(--color-accent);
+}
+
+.check-field input {
+  flex: 1;
+  min-width: 0;
+  min-height: 52px;
+  padding: 0;
+  font: inherit;
+  /* Never under 16px, or iPhones zoom the page when the field is focused. */
+  font-size: max(17px, 1.15rem);
+  color: var(--color-text);
+  background: transparent;
+  border: 0;
+  outline: 0;
+}
+
+.check-field input::placeholder {
+  color: var(--color-text-subtle);
+}
+
+.check-field .btn {
+  flex: none;
+  min-height: 52px;
+  padding-inline: 1.5rem;
+}
+
+.check-form.is-busy .check-go {
+  opacity: 0.55;
+}
+
+.check-status {
+  margin: 0.9rem 0 0;
+  font-size: 1rem;
+  color: var(--color-text);
+}
+
+.check-status:empty {
+  display: none;
+}
+
+.check-status.is-bad {
+  font-weight: 600;
+}
+
+.check-form.is-busy .check-status::after {
+  content: "";
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  margin-left: 0.3em;
+  vertical-align: -0.15em;
+  background: var(--color-accent);
+  animation: check-caret 800ms steps(2) infinite;
+}
+
+@keyframes check-caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+.check-hint {
+  margin: 0.75rem 0 0;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.check-hint a {
+  color: inherit;
+  text-underline-offset: 3px;
+}
+
+.check-result[hidden] {
+  display: none;
+}
+
+.check-result {
+  scroll-margin-top: 5rem;
+}
+
+.check-host {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  overflow-wrap: anywhere;
+}
+
+.check-score {
+  margin: 0;
+  font-size: clamp(2rem, 6.4vw, 3.75rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  outline: 0;
+}
+
+.check-num {
+  color: var(--color-accent);
+}
+
+.check-bar {
+  display: grid;
+  grid-template-columns: repeat(16, minmax(0, 1fr));
+  gap: clamp(3px, 0.9vw, 8px);
+  max-width: 34rem;
+  margin: 1.5rem 0 0;
+}
+
+.check-bar span {
+  aspect-ratio: 1;
+  border: 2px solid var(--color-border-strong);
+  animation: check-block 260ms steps(3) both;
+  animation-delay: calc(var(--i) * 45ms);
+}
+
+.check-bar span.is-ok {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+@keyframes check-block {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.check-verdict {
+  max-width: 34ch;
+  margin: 1.5rem 0 0;
+  font-size: clamp(1.2rem, 2.4vw, 1.5rem);
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--color-text);
+}
+
+.check-lab[hidden] {
+  display: none;
+}
+
+.check-lab {
+  margin-top: 2.5rem;
+  padding: 1.5rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.check-lab-title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.check-lab-wait {
+  margin: 0.35rem 0 0;
+  color: var(--color-text-muted);
+}
+
+.check-lab-dots {
+  display: flex;
+  gap: 6px;
+  margin-top: 1rem;
+}
+
+.check-lab-dots span {
+  width: 10px;
+  height: 10px;
+  background: var(--color-border-strong);
+  animation: check-run 1.8s steps(1) infinite;
+}
+
+.check-lab-dots span:nth-child(n) {
+  animation-delay: calc((var(--n, 0)) * 150ms);
+}
+
+.check-lab-dots span:nth-child(2) { --n: 1; }
+.check-lab-dots span:nth-child(3) { --n: 2; }
+.check-lab-dots span:nth-child(4) { --n: 3; }
+.check-lab-dots span:nth-child(5) { --n: 4; }
+.check-lab-dots span:nth-child(6) { --n: 5; }
+.check-lab-dots span:nth-child(7) { --n: 6; }
+.check-lab-dots span:nth-child(8) { --n: 7; }
+.check-lab-dots span:nth-child(9) { --n: 8; }
+.check-lab-dots span:nth-child(10) { --n: 9; }
+.check-lab-dots span:nth-child(11) { --n: 10; }
+.check-lab-dots span:nth-child(12) { --n: 11; }
+
+@keyframes check-run {
+  0%,
+  16% {
+    background: var(--color-accent);
+  }
+  17%,
+  100% {
+    background: var(--color-border-strong);
+  }
+}
+
+.check-lab-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1.1rem 0 0;
+}
+
+.check-lab-cell dt {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.check-lab-cell dd {
+  display: grid;
+  margin: 0.2rem 0 0;
+}
+
+.check-lab-num {
+  font-size: clamp(2.2rem, 8vw, 3.25rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--color-text);
+}
+
+.check-lab-word {
+  margin-top: 0.3rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.check-lab-cell.is-poor .check-lab-word {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.check-lab-note {
+  margin: 1.1rem 0 0;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.check-groups {
+  display: grid;
+  gap: 3rem;
+  margin-top: 3.5rem;
+}
+
+@media (min-width: 980px) {
+  .check-groups {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2.5rem;
+    align-items: start;
+  }
+}
+
+.check-group-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0;
+  padding-bottom: 0.9rem;
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+  border-bottom: 2px solid var(--color-border-strong);
+}
+
+.check-count {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--color-text-muted);
+}
+
+.check-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.check-list li {
+  display: flex;
+  gap: 0.85rem;
+  padding: 0.95rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* A filled block for a pass, an empty one for a miss: the same marks as
+   the row of blocks above. */
+.check-mark {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  margin-top: 0.38em;
+  border: 2px solid var(--color-text);
+}
+
+.check-list li.is-ok .check-mark {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.check-text {
+  margin: 0;
+  line-height: 1.4;
+  color: var(--color-text-muted);
+}
+
+.check-list li.is-bad .check-text {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.check-fix {
+  margin: 0.3rem 0 0;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: var(--color-text-muted);
+}
+
+.check-cta {
+  margin-top: 3.5rem;
+}
+
+.check-again {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 1rem;
+  padding: 0;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.check-again:hover,
+.check-again:focus-visible {
+  color: var(--color-text);
+}
+
+.check-cols {
+  display: grid;
+  gap: 1.75rem;
+}
+
+@media (min-width: 760px) {
+  .check-cols {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2.5rem;
+  }
+}
+
+.check-col {
+  padding-top: 1rem;
+  border-top: 2px solid var(--color-border-strong);
+}
+
+.check-col h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.3rem;
+  letter-spacing: -0.02em;
+}
+
+.check-col p {
+  margin: 0;
+  color: var(--color-text-muted);
+  line-height: 1.55;
+}
+
+/* The way in from the Services page. */
+.check-band {
+  display: grid;
+  gap: 1.25rem 2rem;
+  margin-top: 3rem;
+  padding: 1.75rem 1.5rem;
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-lg);
+}
+
+@media (min-width: 760px) {
+  .check-band {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+}
+
+@media (max-width: 520px) {
+  .check-field {
+    flex-wrap: wrap;
+    padding: 0.4rem;
+    border-radius: var(--radius-xl);
+  }
+
+  .check-field input {
+    flex-basis: 100%;
+    padding: 0 0.95rem;
+  }
+
+  .check-field .btn {
+    width: 100%;
+  }
+
+  .check-lab-row {
+    gap: 0.6rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .check-bar span,
+  .check-lab-dots span,
+  .check-form.is-busy .check-status::after {
+    animation: none;
+  }
+}
