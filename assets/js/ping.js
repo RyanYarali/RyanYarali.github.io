@@ -285,7 +285,8 @@
       l = clamp(l, gap, vw - w - gap);
       // Clear of the back-to-top button, which holds the bottom-right corner,
       // and on a phone clear of the nav dock along the foot of the screen.
-      var bottom = gap + (phone ? 76 : side === "R" ? 64 : 0);
+      // The Ask Ping button sits above both on the right.
+      var bottom = gap + (phone ? 76 : side === "R" ? 64 : 0) + (side === "R" ? 52 : 0);
       return { side: side, left: l, top: atTop ? navBottom : vh - bottom - h };
     }
     function clear(sp) {
@@ -625,7 +626,76 @@
     }
     hop();
     happy(600);
+    // A tap is a question waiting to be asked: the chat opens, and his quips
+    // are kept for taps while it is already open.
+    if (!window.PingChat || !window.PingChat.isOpen()) {
+      setPose("wave", 900);
+      return openChat(launcher);
+    }
     say(TAPS[(taps - 1) % TAPS.length], { prio: 3, pose: "wave", hold: 1400 });
+  });
+
+  // ==================== Ask Ping ====================
+  // A small button in the corner (and Ping himself) opens the chat panel,
+  // assets/js/ping-chat.js, which is fetched the first time it is wanted.
+  var me = document.currentScript || document.querySelector('script[src*="ping.js"]');
+  var chatSrc = me && me.src ? me.src.replace(/ping\.js/, "ping-chat.js") : "assets/js/ping-chat.js";
+  var chatLoad = null;
+
+  function openChat(from) {
+    if (window.PingChat) return window.PingChat.open(from);
+    if (!chatLoad) {
+      chatLoad = new Promise(function (resolve, reject) {
+        var sc = document.createElement("script");
+        sc.src = chatSrc;
+        sc.onload = resolve;
+        sc.onerror = function () {
+          chatLoad = null;
+          reject();
+        };
+        document.head.appendChild(sc);
+      });
+    }
+    chatLoad.then(
+      function () {
+        window.PingChat.open(from);
+      },
+      function () {},
+    );
+  }
+
+  var launcher = document.createElement("button");
+  launcher.type = "button";
+  launcher.className = "ask-launch";
+  launcher.setAttribute("aria-haspopup", "dialog");
+  launcher.innerHTML =
+    '<img src="/favicon.svg" alt="" width="22" height="22" /><span>Ask Ping</span>';
+  document.body.appendChild(launcher);
+  launcher.addEventListener("click", function () {
+    openChat(launcher);
+  });
+  // Any button in the page marked data-ask-ping opens it too.
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest("[data-ask-ping]");
+    if (b) openChat(b);
+  });
+
+  // The launcher keeps out of the first screen, where it would sit on the
+  // hero's buttons; it steps in once the page has moved.
+  function showLauncher() {
+    launcher.classList.toggle("is-on", window.scrollY > Math.min(320, window.innerHeight * 0.45));
+  }
+  window.addEventListener("scroll", showLauncher, { passive: true });
+  showLauncher();
+
+  // He reacts while he works on an answer.
+  document.addEventListener("ping:asked", function () {
+    wake();
+    setPose("carry", 4000);
+  });
+  document.addEventListener("ping:answered", function () {
+    hop();
+    happy(900);
   });
 
   // Hovering a project: a comment, pointing at it, once each.
@@ -818,7 +888,7 @@
     happy(1000);
     var line;
     if (!route) line = STANDALONE[spot.getAttribute("data-ping-spot")] || "Ping!";
-    else if (isHome) line = back ? "Ping! Welcome back." : "Ping! I'll show you around.";
+    else if (isHome) line = back ? "Ping! Welcome back. Tap me to ask anything." : "Ping! I'll show you around. Tap me to ask anything.";
     else if (/this site/i.test(pageTitle)) line = "Ping! This page is about how I was made. Kind of.";
     else line = "Ping! Let's dig into " + pageTitle.trim() + ".";
     setPose("cheer", 700);

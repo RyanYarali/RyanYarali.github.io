@@ -3,6 +3,7 @@
 //   POST /api/contact   the contact form: check, save to D1, text Ryan on
 //                       Telegram (email if that fails), thank the sender
 //   POST /api/hit       page-view and event beacons from assets/js/hit.js
+//   POST /api/ping      a visitor's question for Ping (worker/ping.js)
 //   POST /api/telegram  the Telegram bot's webhook (worker/telegram.js)
 //   GET  /api/telegram/setup?key=...   connects the bot, once
 //   the 9:00 cron       the bot's morning summary (and Monday's week)
@@ -15,6 +16,7 @@
 
 import { TOPICS, ADDONS, isPackage, estimate } from "./catalog.js";
 import { ownerMail, senderMail, send } from "./mail.js";
+import { chat } from "./ping.js";
 import { alertHit, alertLead, morning, setup, watch, webhook } from "./telegram.js";
 import { CLIENT_SITES, bcDay, recordHit, visitorId } from "./visits.js";
 
@@ -34,6 +36,7 @@ export default {
     }
     if (url.pathname === "/api/contact") return contact(request, env, ctx, url);
     if (url.pathname === "/api/hit") return hit(request, env, ctx, url);
+    if (url.pathname === "/api/ping") return chat(request, env, ctx, url);
     if (url.pathname === "/api/telegram" && request.method === "POST") return webhook(env, request, url);
     if (url.pathname === "/api/telegram/setup") return setup(env, url);
     if (url.pathname.startsWith("/api/")) return json({ ok: false, error: "Not found" }, 404);

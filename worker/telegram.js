@@ -4,6 +4,7 @@
 // pings him live when someone arrives from a credit tag, a friend's link or
 // an AI answer, downloads the résumé or is plainly reading closely, and
 // answers /stats, /top, /now, /leads, /find, /refs, /sites and /alerts.
+// It also shows him every question a visitor asks Ping on the site.
 // Every morning at 9 it sends yesterday's numbers, nudges him about leads
 // that went quiet, and on Mondays compares the week with the one before.
 // Every five minutes it checks that his clients' sites are up.
@@ -168,6 +169,18 @@ export async function alertHit(env, hit) {
   if ((await setting(env, "alerts", "on")) !== "on") return;
   if (hit.kind === "event" && hit.event === "resume") return alertResume(env, hit.vid);
   if (hit.kind === "view" || hit.kind === "time") return alertHot(env, hit.vid);
+}
+
+// A question put to Ping on the site (worker/ping.js). This message is the
+// only place the words are kept, so Ryan sees what people ask and how Ping
+// answered. A visitor's first question rings; the rest arrive quietly.
+export async function alertChat(env, c) {
+  if (!ready(env)) return;
+  await say(
+    env,
+    `💬 <b>Someone in ${esc(c.where)} asked Ping</b>\n“${esc(c.question)}”\n\n🤖 ${esc(c.answer || "(no answer: Ping was unavailable)")}`,
+    { disable_notification: !c.first },
+  );
 }
 
 // ==================== Client sites ====================

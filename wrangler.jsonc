@@ -37,6 +37,9 @@
       "migrations_dir": "worker/migrations"
     }
   ],
+  // Workers AI, for Ping's answers (worker/ping.js). Free up to 10,000
+  // Neurons a day; ping.js stops well before that.
+  "ai": { "binding": "AI" },
   "vars": {
     "MAIL_FROM": "Ryan Yarali <ryan@ryanyarali.com>",
     "MAIL_TO": "ryan@ryanyarali.com"
