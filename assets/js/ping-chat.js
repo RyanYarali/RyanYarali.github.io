@@ -297,20 +297,41 @@
     close();
   });
 
-  // On a phone the on-screen keyboard covers the foot of the screen: lift
-  // the sheet by however much of the layout it hides.
+  // On a phone the on-screen keyboard covers the foot of the screen, and
+  // iOS also slides the page up under it. While the keyboard is open the
+  // sheet is pinned to the part of the screen that is really visible (the
+  // visual viewport), wherever the browser has moved it.
   var vv = window.visualViewport;
   function fit() {
     if (!vv) return;
-    var hidden = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
-    panel.style.setProperty("--ask-kb", hidden > 80 ? hidden + "px" : "0px");
+    var hidden = Math.max(0, window.innerHeight - vv.height);
+    var kb = hidden > 80;
+    panel.style.setProperty("--ask-top", vv.offsetTop + "px");
     panel.style.setProperty("--ask-vh", vv.height + "px");
-    panel.classList.toggle("has-kb", hidden > 80);
-    if (hidden > 80) toEnd();
+    panel.classList.toggle("has-kb", kb);
+    if (kb) toEnd();
   }
   if (vv) {
     vv.addEventListener("resize", fit);
     vv.addEventListener("scroll", fit);
+  }
+
+  // iPhones zoom the page in when a field is focused. For as long as the
+  // question field has focus the page is told not to, and the visitor's own
+  // pinch zoom is given back the moment they leave it.
+  var ios = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  var meta = document.querySelector('meta[name="viewport"]');
+  var metaWas = meta ? meta.getAttribute("content") : "";
+  if (ios && meta) {
+    var hold = function () {
+      meta.setAttribute("content", metaWas + ", maximum-scale=1");
+    };
+    // Before the tap lands, so the focus itself doesn't zoom.
+    input.addEventListener("touchstart", hold, { passive: true });
+    input.addEventListener("focus", hold);
+    input.addEventListener("blur", function () {
+      meta.setAttribute("content", metaWas);
+    });
   }
 
   window.PingChat = { open: open, close: close, isOpen: isOpen };
