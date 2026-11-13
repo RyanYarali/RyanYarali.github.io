@@ -272,11 +272,25 @@ counting a device). It only talks to `TELEGRAM_CHAT_ID`.
   Buttons: Reply, Call booked, Won, Not a fit. Reply to a lead in Telegram
   and the bot shows a preview, then emails it from ryan@ryanyarali.com.
 - **Live alerts**: someone arrived from a credit tag (`?ref=` on client
-  sites), a friend link (`?friend=`) or an AI answer. `/alerts` toggles them.
-- **Commands**: `/stats`, `/now`, `/leads`, `/refs` (who to pay the $50),
-  `/alerts`, `/ignoreme`, `/help`.
-- **Every morning at 9** (cron, B.C. time): yesterday's numbers and any
-  lead still waiting after a day.
+  sites), a friend link (`?friend=`) or an AI answer; someone downloaded the
+  résumé; someone is reading closely (three pages or three minutes). Each
+  once per visitor a day. `/alerts` toggles them.
+- **Signals** (`events` table, migration 0004): résumé downloads, links
+  followed off the site (host name only), the contact form started, scroll
+  depth per page, and the visitor's network name when it is a company or a
+  school (`company()` in `visits.js` drops providers, carriers and clouds).
+  Anything new collected here must be described in `privacy.html`.
+- **Commands**: `/stats`, `/top 30` (pages with time and depth, sources,
+  outbound clicks, networks), `/now`, `/leads`, `/find name`, `/refs` (who
+  to pay the $50), `/sites`, `/alerts`, `/ignoreme`, `/help` (also refreshes
+  the command menu).
+- **Every morning at 9** (cron, B.C. time): yesterday's numbers, any lead
+  still waiting after a day, and one nudge for a lead that was answered and
+  then went quiet for three days. On Mondays, the week against the one
+  before.
+- **Every five minutes** (second cron): the client sites in `SITES`
+  (`telegram.js`) are fetched; two misses in a row is "down", and Ryan hears
+  once when a site goes down and once when it is back.
 
 Set it up: make a bot with @BotFather, `wrangler secret put` the token and a
 random `TELEGRAM_WEBHOOK_SECRET`, open `/api/telegram/setup?key=<secret>`,

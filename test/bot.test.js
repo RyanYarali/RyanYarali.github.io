@@ -189,3 +189,129 @@ test("/forget deletes a sender's messages; the morning tidy drops old data", asy
   assert.equal(env.DB.raw.prepare("SELECT COUNT(*) AS n FROM visits WHERE id = 'old-visit-1'").get().n, 0);
   assert.deepEqual(env.DB.raw.prepare("SELECT name FROM messages").all().map((r) => r.name), ["Client"]);
 });
+
+// ==================== Signals (migration 0004) ====================
+
+const DESKTOP = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/130 Safari/537.36";
+
+test("a résumé download pings Ryan once, with what the visitor read first", async () => {
+  await call("/api/hit", { id: "visit-0100", path: "/", r: "https://www.linkedin.com/feed/" });
+  await call("/api/hit", { id: "visit-0101", path: "/about.html", r: "https://ryanyarali.com/" });
+  await call("/api/hit", { id: "visit-0101", e: "resume" });
+  await call("/api/hit", { id: "visit-0101", e: "resume" });
+  const pings = sent.filter((m) => /Résumé downloaded/.test(m.text || ""));
+  assert.equal(pings.length, 1);
+  assert.match(pings[0].text, /Home → About[\s\S]*LinkedIn/);
+  assert.equal(env.DB.raw.prepare("SELECT COUNT(*) AS n FROM events WHERE kind = 'resume'").get().n, 1);
+});
+
+test("events need a real page view, a known kind, and are clipped", async () => {
+  await call("/api/hit", { id: "visit-0110", e: "resume" }); // no such page view
+  await call("/api/hit", { id: "visit-0111", path: "/" });
+  await call("/api/hit", { id: "visit-0111", e: "hack" });
+  await call("/api/hit", { id: "visit-0111", e: "out", d: "GitHub.com" + "x".repeat(300) });
+  await call("/api/hit", { id: "visit-0111", e: "out", d: "github.com" }, { "CF-Connecting-IP": "9.9.9.9" }); // someone else's page view
+  const rows = env.DB.raw.prepare("SELECT kind, detail FROM events").all();
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].kind, "out");
+  assert.equal(rows[0].detail.length, 80);
+  assert.ok(rows[0].detail.startsWith("github.com"));
+});
+
+test("a third page makes a visitor hot, once; time and depth are kept", async () => {
+  await call("/api/hit", { id: "visit-0120", path: "/" });
+  await call("/api/hit", { id: "visit-0121", path: "/projects.html", r: "https://ryanyarali.com/" });
+  assert.equal(sent.filter((m) => /good look/.test(m.text || "")).length, 0);
+  await call("/api/hit", { id: "visit-0122", path: "/projects/termeh.html", r: "https://ryanyarali.com/projects.html" });
+  await call("/api/hit", { id: "visit-0123", path: "/about.html", r: "https://ryanyarali.com/" });
+  await call("/api/hit", { id: "visit-0123", s: 40, d: 82 });
+  await call("/api/hit", { id: "visit-0123", s: 55, d: 30 }); // a later beacon never lowers the depth
+  const hot = sent.filter((m) => /good look/.test(m.text || ""));
+  assert.equal(hot.length, 1);
+  assert.match(hot[0].text, /Home → Projects → Termeh/);
+  const row = env.DB.raw.prepare("SELECT seconds, depth FROM visits WHERE id = 'visit-0123'").get();
+  assert.deepEqual({ ...row }, { seconds: 55, depth: 82 });
+});
+
+test("three minutes on one page is hot too; /alerts off silences it", async () => {
+  await call("/api/hit", { id: "visit-0130", path: "/services.html" });
+  await call("/api/hit", { id: "visit-0130", s: 200, d: 100 });
+  assert.equal(sent.filter((m) => /good look/.test(m.text || "")).length, 1);
+  await tgUpdate({ message: { chat: { id: 42 }, text: "/alerts off" } });
+  await call("/api/hit", { id: "visit-0131", path: "/" }, { "CF-Connecting-IP": "5.5.5.5" });
+  await call("/api/hit", { id: "visit-0131", s: 500 }, { "CF-Connecting-IP": "5.5.5.5" });
+  await call("/api/hit", { id: "visit-0131", e: "resume" }, { "CF-Connecting-IP": "5.5.5.5" });
+  assert.equal(sent.filter((m) => /good look|Résumé downloaded/.test(m.text || "")).length, 1);
+});
+
+test("company and school networks are kept; providers and clouds are not", async () => {
+  const { company } = await import("../worker/visits.js");
+  assert.equal(company("TELUS Communications Inc."), null);
+  assert.equal(company("Shaw Communications"), null);
+  assert.equal(company("Cloudflare WARP"), null);
+  assert.equal(company("iCloud Private Relay"), null);
+  assert.equal(company("Amazon.com, Inc."), null);
+  assert.equal(company(""), null);
+  assert.equal(company("British Columbia Institute of Technology"), "British Columbia Institute of Technology");
+  assert.equal(company("Electronic Arts, Inc."), "Electronic Arts, Inc.");
+});
+
+test("/top, /find and /stats show the new numbers", async () => {
+  await call("/api/hit", { id: "visit-0140", path: "/", r: "https://www.google.com/" }, { "User-Agent": DESKTOP });
+  await call("/api/hit", { id: "visit-0140", s: 30, d: 60 }, { "User-Agent": DESKTOP });
+  await call("/api/hit", { id: "visit-0140", e: "out", d: "github.com" }, { "User-Agent": DESKTOP });
+  await call("/api/hit", { id: "visit-0140", e: "form" }, { "User-Agent": DESKTOP });
+  await call("/api/hit", { id: "visit-0140", e: "resume" }, { "User-Agent": DESKTOP });
+  await tgUpdate({ message: { chat: { id: 42 }, text: "/top 7" } });
+  assert.match(sent.at(-1).text, /Last 7 days[\s\S]*1 résumé download[\s\S]*Home · 30s · 60%[\s\S]*Google[\s\S]*github\.com[\s\S]*1 started the contact form, 0 sent it/);
+  await tgUpdate({ message: { chat: { id: 42 }, text: "/stats" } });
+  assert.match(sent.at(-1).text, /1 résumé download · ✍️ 1 started the form, 0 sent it/);
+  await call("/api/contact", { topic: "hiring", name: "Sam Recruiter", email: "sam@example.com", message: "We have a co-op opening for you." });
+  await call("/api/contact", { topic: "other", name: "Pat Owner", email: "pat@example.com", message: "Need a site for my bakery please." }, { "CF-Connecting-IP": "8.8.4.4" });
+  await tgUpdate({ message: { chat: { id: 42 }, text: "/find recruiter" } });
+  assert.match(sent.at(-1).text, /New lead[\s\S]*Sam Recruiter/);
+  assert.ok(sent.at(-1).reply_markup);
+  await tgUpdate({ message: { chat: { id: 42 }, text: "/find example.com" } });
+  assert.match(sent.at(-1).text, /2 leads for[\s\S]*Pat Owner[\s\S]*Sam Recruiter/);
+  await tgUpdate({ message: { chat: { id: 42 }, text: "/find zzzz" } });
+  assert.match(sent.at(-1).text, /Nothing found/);
+});
+
+test("a client site is reported down after two misses, and back once", async () => {
+  const tgFetch = globalThis.fetch;
+  let broken = true;
+  globalThis.fetch = async (url, init) => {
+    if (String(url).includes("api.telegram.org")) return tgFetch(url, init);
+    if (String(url).includes("nooklook.ca") && broken) return new Response("oops", { status: 503 });
+    return new Response("ok");
+  };
+  const tick = async () => {
+    await worker.scheduled({ cron: "*/5 * * * *" }, env, { waitUntil: (p) => p });
+    await new Promise((r) => setTimeout(r, 20));
+  };
+  await tick();
+  assert.equal(sent.length, 0); // one miss is not an outage
+  await tick();
+  await tick();
+  const down = sent.filter((m) => /is down/.test(m.text || ""));
+  assert.equal(down.length, 1);
+  assert.match(down[0].text, /nooklook\.ca is down[\s\S]*HTTP 503/);
+  await tgUpdate({ message: { chat: { id: 42 }, text: "/sites" } });
+  assert.match(sent.at(-1).text, /🟢 termehbc\.ca[\s\S]*🔴 nooklook\.ca/);
+  broken = false;
+  await tick();
+  await tick();
+  assert.equal(sent.filter((m) => /back up/.test(m.text || "")).length, 1);
+});
+
+test("a replied lead that goes quiet gets one nudge; Mondays bring the week", async () => {
+  await call("/api/contact", { topic: "other", name: "Quiet Person", email: "quiet@example.com", message: "Can we talk about a website?" });
+  env.DB.raw.exec("UPDATE messages SET status = 'replied', status_at = '2020-01-01T00:00:00.000Z'");
+  const { morning, weekly } = await import("../worker/telegram.js");
+  await morning(env);
+  assert.match(sent.filter((m) => /Good morning/.test(m.text || "")).at(-1).text, /Worth a follow-up[\s\S]*Quiet Person/);
+  await morning(env);
+  assert.doesNotMatch(sent.filter((m) => /Good morning/.test(m.text || "")).at(-1).text, /Worth a follow-up/);
+  await weekly(env, bcDay(new Date()));
+  assert.match(sent.at(-1).text, /Your week[\s\S]*visitors[\s\S]*lead/);
+});
