@@ -732,7 +732,26 @@
 
   // ==================== Following the route ====================
 
+  // Said once a visit, not once a page: the tab remembers (sessionStorage),
+  // so someone going from page to page isn't told the same thing again.
+  var heard = {
+    has: function (k) {
+      try {
+        return sessionStorage.getItem("ping-heard-" + k) === "1";
+      } catch (e) {
+        return false;
+      }
+    },
+    add: function (k) {
+      try {
+        sessionStorage.setItem("ping-heard-" + k, "1");
+      } catch (e) {}
+    },
+  };
+
   function hopLine(e) {
+    // On a phone his box would sit on the very project card it points at.
+    if (isHome && e.id === "projects" && window.innerWidth <= 700) return null;
     if (isHome) return HOME[e.id];
     if (e.id === "intro") return null;
     for (var i = 0; i < CASE.length; i++) if (CASE[i][0].test(e.label)) return CASE[i][1];
@@ -765,7 +784,10 @@
         happy(800);
         var line = hopLine(e);
         // Point across the page, away from the side the hop is on.
-        if (line) say(line, { once: "hop-" + e.id, prio: 2, pose: e.side === "R" ? "point-l" : "point-r" });
+        if (line && !heard.has(line)) {
+          heard.add(line);
+          say(line, { once: "hop-" + e.id, prio: 2, pose: e.side === "R" ? "point-l" : "point-r" });
+        }
         return;
       }
       if (e.type === "end") {
@@ -903,6 +925,11 @@
     else if (/this site/i.test(pageTitle)) line = "Ping! This page is about how I was made. Kind of.";
     else line = "Ping! Let's dig into " + pageTitle.trim() + ".";
     setPose("cheer", 700);
+    // One greeting a visit. On the pages after the first he waves and
+    // keeps quiet (the 404 page keeps its line: it is the page's joke).
+    var lost = !route && spot.getAttribute("data-ping-spot") === "lost";
+    if (heard.has("hello") && !lost) return;
+    heard.add("hello");
     setTimeout(function () {
       // Priority 2, the same as a section's line: someone who starts
       // scrolling straight away hears about the section they reach rather
