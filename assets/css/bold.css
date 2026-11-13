@@ -3055,3 +3055,101 @@ html.js-ready .reveal.in-view {
     width: min(88vw, 54svh);
   }
 }
+
+/* ---------- customer pass ----------
+ * The services page: where I work, and the four steps right under the
+ * packages. On touch screens the keyboard-only terminal button goes, and
+ * small text links get a finger-sized hit area without moving anything. */
+.serve-area {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  max-width: 46ch;
+  margin: 1.5rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  line-height: 1.7;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.serve-area .status-dot {
+  flex: none;
+  transform: translateY(-0.1em);
+}
+
+.steps-title {
+  margin-top: 4.5rem;
+}
+
+.steps-title + .steps {
+  margin-top: 0;
+}
+
+.steps strong {
+  font-size: 1.3rem;
+  letter-spacing: -0.02em;
+}
+
+.step-n {
+  font-size: 0.85rem;
+}
+
+.price-note + .refer {
+  margin-top: 3rem;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .footer-term {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .footer p a,
+  .footer-social a,
+  .form-privacy a,
+  .contact-links a,
+  .contact-email a,
+  .contact-hire a,
+  .work-all,
+  .project-accordion-link,
+  .breadcrumb a {
+    position: relative;
+  }
+
+  .footer p a::after,
+  .footer-social a::after,
+  .form-privacy a::after,
+  .contact-links a::after,
+  .contact-email a::after,
+  .contact-hire a::after,
+  .work-all::after,
+  .project-accordion-link::after,
+  .breadcrumb a::after {
+    content: "";
+    position: absolute;
+    inset: 50% -0.4rem auto;
+    height: 44px;
+    transform: translateY(-50%);
+  }
+
+  .plan-proof {
+    padding-block: 0.7rem;
+    margin-bottom: -0.3rem;
+  }
+
+  .back-link,
+  .about-facts dd a,
+  .next-project-more a {
+    display: inline-block;
+    padding-block: 0.65rem;
+    margin-block: -0.65rem;
+  }
+
+  .copy-email {
+    min-height: 44px;
+    padding-inline: 1rem;
+  }
+}

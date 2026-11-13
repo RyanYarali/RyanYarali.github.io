@@ -330,6 +330,9 @@
         [other, true],
       ];
       for (var o = 0; o < order.length && !pick; o++) {
+        // On a phone the top of the screen is where the next heading lands,
+        // so his words keep to the foot of it, just above the dock.
+        if (phone && order[o][1]) continue;
         var cand = spot(order[o][0], order[o][1]);
         if (clear(cand) && quiet(cand)) {
           pick = cand;
