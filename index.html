@@ -64,16 +64,16 @@
     />
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="assets/css/tokens.css?v=20261067" />
-    <link rel="stylesheet" href="assets/css/reset.css?v=20261067" />
-    <link rel="stylesheet" href="assets/css/typography.css?v=20261067" />
-    <link rel="stylesheet" href="assets/css/layout.css?v=20261067" />
-    <link rel="stylesheet" href="assets/css/components.css?v=20261067" />
-    <link rel="stylesheet" href="assets/css/pages.css?v=20261067" />
-    <link rel="stylesheet" href="assets/css/interactive.css?v=20261067" />
-    <link rel="stylesheet" href="assets/css/motion.css?v=20261067" />
-    <link rel="stylesheet" href="assets/css/bold.css?v=20261067" />
-    <link rel="stylesheet" href="assets/css/style.css?v=20261067" />
+    <link rel="stylesheet" href="assets/css/tokens.css?v=20261068" />
+    <link rel="stylesheet" href="assets/css/reset.css?v=20261068" />
+    <link rel="stylesheet" href="assets/css/typography.css?v=20261068" />
+    <link rel="stylesheet" href="assets/css/layout.css?v=20261068" />
+    <link rel="stylesheet" href="assets/css/components.css?v=20261068" />
+    <link rel="stylesheet" href="assets/css/pages.css?v=20261068" />
+    <link rel="stylesheet" href="assets/css/interactive.css?v=20261068" />
+    <link rel="stylesheet" href="assets/css/motion.css?v=20261068" />
+    <link rel="stylesheet" href="assets/css/bold.css?v=20261068" />
+    <link rel="stylesheet" href="assets/css/style.css?v=20261068" />
 
 
     <!-- Favicon -->
@@ -481,6 +481,37 @@
               <span class="door-go">Packages and prices <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span>
             </a>
           </div>
+          <!-- The free checker, started from here: the address goes to
+               check.html, which runs it straight away (check.js). -->
+          <form class="check-band check-quick reveal" action="check.html" method="get">
+            <div>
+              <h3 class="care-name">Already have a website?</h3>
+              <p class="care-text">
+                Check it for free. See how it does for speed, on Google and
+                on phones, in plain words.
+              </p>
+            </div>
+            <div class="check-quick-field">
+              <label class="check-label" for="quick-url">Your website address</label>
+              <div class="check-field">
+                <input
+                  type="text"
+                  id="quick-url"
+                  name="url"
+                  inputmode="url"
+                  autocomplete="url"
+                  autocapitalize="off"
+                  autocorrect="off"
+                  spellcheck="false"
+                  enterkeyhint="go"
+                  maxlength="300"
+                  placeholder="yourbusiness.ca"
+                  required
+                />
+                <button type="submit" class="btn btn-primary">Check it</button>
+              </div>
+            </div>
+          </form>
         </div>
       </section>
 
@@ -827,19 +858,19 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="assets/js/theme.js?v=20261067"></script>
-    <script src="assets/js/hit.js?v=20261067" defer></script>
-    <script src="assets/js/form.js?v=20261067"></script>
-    <script src="assets/js/main.js?v=20261067"></script>
-    <script src="assets/js/flair.js?v=20261067"></script>
+    <script src="assets/js/theme.js?v=20261068"></script>
+    <script src="assets/js/hit.js?v=20261068" defer></script>
+    <script src="assets/js/form.js?v=20261068"></script>
+    <script src="assets/js/main.js?v=20261068"></script>
+    <script src="assets/js/flair.js?v=20261068"></script>
     <!-- Straight after flair.js (its one dependency), so the name appears
          without waiting for the scroll choreography to load. -->
-    <script src="assets/js/hero.js?v=20261067"></script>
-    <script src="assets/js/interactive.js?v=20261067"></script>
-    <script src="assets/js/cursor.js?v=20261067"></script>
-    <script src="assets/js/story.js?v=20261067"></script>
-    <script src="assets/js/route.js?v=20261067"></script>
-    <script src="assets/js/ping-sprite.js?v=20261067"></script>
-    <script src="assets/js/ping.js?v=20261067"></script>
+    <script src="assets/js/hero.js?v=20261068"></script>
+    <script src="assets/js/interactive.js?v=20261068"></script>
+    <script src="assets/js/cursor.js?v=20261068"></script>
+    <script src="assets/js/story.js?v=20261068"></script>
+    <script src="assets/js/route.js?v=20261068"></script>
+    <script src="assets/js/ping-sprite.js?v=20261068"></script>
+    <script src="assets/js/ping.js?v=20261068"></script>
   </body>
 </html>

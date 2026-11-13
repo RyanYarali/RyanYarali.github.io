@@ -4250,3 +4250,27 @@ html:not(.js-ready) .ask-inline {
     animation: none;
   }
 }
+
+/* The checker's box on the home page: the same field, inside the band. */
+.check-quick {
+  margin-top: 1.5rem;
+}
+
+.check-quick .check-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.check-quick .check-field {
+  background: var(--color-background);
+}
+
+@media (min-width: 760px) {
+  .check-quick {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 26rem);
+  }
+}
