@@ -292,6 +292,28 @@ counting a device). It only talks to `TELEGRAM_CHAT_ID`.
   (`telegram.js`) are fetched; two misses in a row is "down", and Ryan hears
   once when a site goes down and once when it is back.
 
+### Ask Ping (the chat)
+
+Visitors can put a question to Ping: tap him, the "Ask Ping" button that
+appears once the page has scrolled, or any element with `data-ask-ping`.
+`assets/js/ping.js` adds the button and loads `assets/js/ping-chat.js` on
+first use; the panel is a non-modal `<dialog popover="manual">` styled at the
+end of `bold.css`.
+
+- **Server:** `worker/ping.js`, `POST /api/ping`. It runs on Cloudflare
+  Workers AI through the `AI` binding in `wrangler.jsonc` (free up to 10,000
+  Neurons a day). `MODELS` lists the model and its stand-in.
+- **What he knows:** only `FACTS` in `worker/ping.js`. Prices come from
+  `worker/catalog.js`; the rest is written out by hand, so **when the
+  Services page changes, change `FACTS` too**.
+- **Limits** (`LIMITS`): 20 questions a visitor a day and 150 a day in all,
+  counted as `chat` rows in the `events` table (no text is stored). Past
+  either, or if the model fails, he gives a fixed line with the phone number.
+- **Telegram:** every question and answer is sent to Ryan (`alertChat`); the
+  first from a visitor rings, the rest are silent.
+- **Privacy:** described under "When you ask Ping a question" in
+  `privacy.html`.
+
 Set it up: make a bot with @BotFather, `wrangler secret put` the token and a
 random `TELEGRAM_WEBHOOK_SECRET`, open `/api/telegram/setup?key=<secret>`,
 message the bot (it replies with your chat id), `wrangler secret put
