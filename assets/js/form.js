@@ -227,6 +227,23 @@
     });
   });
 
+  // Arriving from the website checker (check.js): the result is written
+  // into the message, so nobody has to type it out again.
+  try {
+    const checked = JSON.parse(sessionStorage.getItem("site-check") || "null");
+    const message = form.querySelector("#message");
+    if (checked && checked.host && message && !message.value) {
+      sessionStorage.removeItem("site-check");
+      const failed = (checked.failed || []).map((t) => "- " + t).join("\n");
+      message.value =
+        `I checked ${checked.host} with your website checker: ${checked.passed} of ${checked.total} checks passed.` +
+        (failed ? `\n\nWhat it found:\n${failed}` : "") +
+        "\n\nCan you take a look and send me a quote?";
+      const other = form.querySelector('input[name="topic"][value="other"]');
+      if (other && !form.querySelector('input[name="topic"]:checked')) other.checked = true;
+    }
+  } catch (e) {}
+
   // A browser that restores the form on back/forward keeps the choices.
   onTopic();
 

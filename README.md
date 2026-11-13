@@ -292,6 +292,27 @@ counting a device). It only talks to `TELEGRAM_CHAT_ID`.
   (`telegram.js`) are fetched; two misses in a row is "down", and Ryan hears
   once when a site goes down and once when it is back.
 
+### Check my website (`check.html`)
+
+A free tool for business owners: type a site's address, get a plain-words
+report. Linked from the Services page; `/check` redirects to it.
+
+- **Server:** `worker/check.js`. `POST /api/check` loads the page once with
+  a phone user agent and runs the sixteen checks in `CHECKS` (speed, on
+  Google, on phones); each has a plain "good" line, a "bad" line and a
+  "fix". `normalize()` only accepts public host names on the usual ports.
+- **Google's test:** `POST /api/check/lab` calls PageSpeed Insights, which
+  needs a free API key: `wrangler secret put PSI_KEY`. Without the secret
+  the page simply leaves that part out. It only runs for a site the same
+  visitor has just checked, once.
+- **Limits** (`LIMITS`): 8 sites a visitor a day, 200 in all, as `check`
+  rows in `events` (the host name is the `detail`).
+- **Telegram:** each check goes to Ryan with the site and what failed
+  (`alertCheck`): it is a lead.
+- **Page:** `assets/js/check.js` writes the report; "Get a free quote"
+  hands the result to the contact form through `sessionStorage`
+  (`form.js`). Styles are under "Check my website" in `bold.css`.
+
 ### Ask Ping (the chat)
 
 Visitors can put a question to Ping: tap him, the "Ask Ping" button that

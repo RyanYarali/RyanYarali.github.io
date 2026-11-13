@@ -206,6 +206,7 @@ const PAGE_NAMES = {
   "/projects.html": "Projects",
   "/about.html": "About",
   "/services.html": "Services",
+  "/check.html": "Website check",
   "/privacy.html": "Privacy",
   "/resume.html": "Résumé",
   "/projects/termeh.html": "Termeh",

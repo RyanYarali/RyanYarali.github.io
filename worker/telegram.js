@@ -183,6 +183,20 @@ export async function alertChat(env, c) {
   );
 }
 
+// Someone ran a site through the checker (worker/check.js): the site, how
+// it did, and what failed. Then, quietly, Google's scores when they arrive.
+export async function alertCheck(env, c) {
+  if (!ready(env)) return;
+  if (c.lab) {
+    const n = (v) => (v == null ? "?" : v);
+    return say(env, `📊 <b>${esc(c.host)}</b> on Google's phone test: speed ${n(c.lab.speed)} · search ${n(c.lab.search)} · accessibility ${n(c.lab.access)}`, {
+      disable_notification: true,
+    });
+  }
+  const failed = c.failed.length ? "\n" + c.failed.slice(0, 6).map((t) => `✗ ${esc(t)}`).join("\n") : "";
+  await say(env, `🔎 <b>Someone in ${esc(c.where)} checked ${esc(c.host)}</b>\n${c.passed} of ${c.total} checks passed${failed}`);
+}
+
 // ==================== Client sites ====================
 // Every five minutes: is each client's site answering? Two misses in a row
 // count as down (one slow answer is not an outage), and Ryan hears once

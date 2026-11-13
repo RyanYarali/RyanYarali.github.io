@@ -386,3 +386,66 @@ test("only the last few turns are sent, and long questions are cut", () => {
   assert.equal(turns.at(-1).content.length, LIMITS.question);
   assert.ok(turns.every((t) => t.role !== "system"));
 });
+
+// ==================== Check my website ====================
+
+import { normalize, facts, report, CHECKS, LIMITS as CHECK_LIMITS } from "../worker/check.js";
+
+const GOOD_PAGE = `<!doctype html><html lang="en"><head>
+<title>Corner Bakery | Fresh bread in Coquitlam</title>
+<meta name="description" content="Fresh sourdough, pastries and coffee baked every morning in Coquitlam. Open seven days a week.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:title" content="Corner Bakery"><meta property="og:image" content="/a.jpg">
+<script type="application/ld+json">{}</script><script src="a.js" defer></script></head>
+<body><h1>Fresh bread, every morning</h1><a href="tel:+16045550100">Call</a>
+<img src="1.jpg" alt="Loaves" width="4" height="3"><img src="2.jpg" alt="Shop" width="4" height="3"><img src="3.jpg" alt="Oven" width="4" height="3">
+</body></html>`;
+const BAD_PAGE = `<html><head><title>Home</title><meta name="robots" content="noindex">
+<meta name="viewport" content="width=1024, user-scalable=no">
+<script src="1.js"></script><script src="2.js"></script><script src="3.js"></script><script src="4.js"></script></head>
+<body><h1>A</h1><h1>B</h1>${'<img src="x.jpg">'.repeat(12)}</body></html>`;
+
+test("the checker only loads public web addresses", () => {
+  assert.equal(String(normalize("nooklook.ca")), "https://nooklook.ca/");
+  assert.equal(String(normalize(" https://Example-Shop.ca/menu#top ")), "https://example-shop.ca/menu");
+  for (const bad of ["", "localhost", "http://localhost/", "10.0.0.1", "http://192.168.1.1/", "https://u:p@x.com", "x.ca:8080", "javascript:alert(1)", "ftp://x.ca", "two words.ca", "[::1]", "intranet.local"])
+    assert.equal(normalize(bad), null, bad);
+});
+
+test("a well-built page passes every check and a poor one is told why", () => {
+  const good = report(facts(GOOD_PAGE, { ms: 300, finalUrl: "https://bakery.ca/", bytes: GOOD_PAGE.length }));
+  assert.equal(good.passed, CHECKS.length, JSON.stringify(good.checks.filter((c) => !c.ok)));
+  const bad = report(facts(BAD_PAGE, { ms: 2400, finalUrl: "http://old.ca/", bytes: 400000 }));
+  const failed = bad.checks.filter((c) => !c.ok).map((c) => c.id);
+  for (const id of ["fast-answer", "light-page", "few-blocking", "lazy-images", "sized-images", "title", "description", "heading", "indexable", "secure", "share", "schema", "viewport", "zoom", "call", "alt"])
+    assert.ok(failed.includes(id), id);
+  assert.ok(bad.checks.every((c) => c.ok || (c.fix && c.text)));
+});
+
+test("a check is counted, reported to Ryan, and limited per visitor", async () => {
+  const real = globalThis.fetch;
+  globalThis.fetch = async (url, init) => {
+    if (String(url).startsWith("https://bakery.ca")) return new Response(GOOD_PAGE, { headers: { "Content-Type": "text/html; charset=utf-8" } });
+    if (String(url).startsWith("https://gone.ca")) throw new Error("no route");
+    return real(url, init);
+  };
+  const res = await (await call("/api/check", { url: "bakery.ca" })).json();
+  assert.equal(res.ok, true);
+  assert.equal(res.passed, res.total);
+  assert.equal(res.lab, false); // no PSI_KEY in the test env
+  assert.equal(env.DB.raw.prepare("SELECT detail FROM events WHERE kind = 'check'").get().detail, "bakery.ca");
+  assert.match(sent.find((m) => m.text && m.text.includes("checked")).text, /bakery\.ca[\s\S]*16 of 16/);
+
+  const gone = await (await call("/api/check", { url: "gone.ca" })).json();
+  assert.equal(gone.ok, false);
+  assert.match(gone.message, /couldn't reach/);
+  assert.equal((await (await call("/api/check", { url: "not a site" })).json()).ok, false);
+  assert.equal((await call("/api/check", { url: "bakery.ca" }, { Origin: "https://evil.example" })).status, 403);
+  // Google's test is off without a key, and never for a site that wasn't checked.
+  assert.deepEqual(await (await call("/api/check/lab", { url: "bakery.ca" })).json(), { ok: false });
+
+  for (let i = 0; i < CHECK_LIMITS.perVisitor; i++) await call("/api/check", { url: "bakery.ca" });
+  const over = await (await call("/api/check", { url: "bakery.ca" })).json();
+  assert.equal(over.ok, false);
+  assert.match(over.message, /busy day/);
+});

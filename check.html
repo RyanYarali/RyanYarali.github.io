@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("portfolio-theme-override");
+          var theme =
+            stored ||
+            (window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light");
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      })();
+    </script>
+    <link rel="canonical" href="https://ryanyarali.com/check.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="Free website check for small businesses: type your site's address and see how it does for speed, on Google and on phones, in plain words. No sign-up." />
+    <meta name="author" content="Ryan Yarali" />
+
+    <!-- Open Graph / social link previews -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Ryan Yarali" />
+    <meta property="og:locale" content="en_CA" />
+    <meta property="og:url" content="https://ryanyarali.com/check.html" />
+    <meta property="og:title" content="Free Website Check | Ryan Yarali" />
+    <meta property="og:description" content="Free website check for small businesses: type your site's address and see how it does for speed, on Google and on phones, in plain words. No sign-up." />
+    <meta property="og:image" content="https://ryanyarali.com/assets/og/services.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Websites that bring you customers, from $350 and priced up front: Ryan Yarali's client sites Nooklook and Vancobab on laptops and phones, with Ping saying: Need a website? Prices up front!" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Free Website Check | Ryan Yarali" />
+    <meta name="twitter:description" content="Free website check for small businesses: type your site's address and see how it does for speed, on Google and on phones, in plain words. No sign-up." />
+    <meta name="twitter:image" content="https://ryanyarali.com/assets/og/services.jpg" />
+    <meta name="twitter:image:alt" content="Websites that bring you customers, from $350 and priced up front: Ryan Yarali's client sites Nooklook and Vancobab on laptops and phones, with Ping saying: Need a website? Prices up front!" />
+
+    <title>Free Website Check for Small Businesses | Ryan Yarali</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400..700&family=IBM+Plex+Mono:wght@400;500&family=Silkscreen&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="assets/css/tokens.css?v=20261067" />
+    <link rel="stylesheet" href="assets/css/reset.css?v=20261067" />
+    <link rel="stylesheet" href="assets/css/typography.css?v=20261067" />
+    <link rel="stylesheet" href="assets/css/layout.css?v=20261067" />
+    <link rel="stylesheet" href="assets/css/components.css?v=20261067" />
+    <link rel="stylesheet" href="assets/css/pages.css?v=20261067" />
+    <link rel="stylesheet" href="assets/css/interactive.css?v=20261067" />
+    <link rel="stylesheet" href="assets/css/motion.css?v=20261067" />
+    <link rel="stylesheet" href="assets/css/bold.css?v=20261067" />
+    <link rel="stylesheet" href="assets/css/style.css?v=20261067" />
+
+
+    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=5" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <!-- Structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebPage",
+            "@id": "https://ryanyarali.com/check.html#page",
+            "url": "https://ryanyarali.com/check.html",
+            "name": "Free website check",
+            "description": "Free website check for small businesses: type your site's address and see how it does for speed, on Google and on phones, in plain words. No sign-up.",
+            "inLanguage": "en-CA",
+            "author": { "@id": "https://ryanyarali.com/#ryan" },
+            "breadcrumb": { "@id": "https://ryanyarali.com/check.html#breadcrumb" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://ryanyarali.com/check.html#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://ryanyarali.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://ryanyarali.com/services.html" },
+              { "@type": "ListItem", "position": 3, "name": "Free website check", "item": "https://ryanyarali.com/check.html" }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <canvas id="site-trace" aria-hidden="true"></canvas>
+    <a href="#main" class="skip-link">Skip to content</a>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="logo" aria-label="Ryan Yarali, Computer Systems Technology, home">
+          <span class="logo-name">Ryan Yarali</span>
+          <span class="logo-subtitle">Computer Systems Technology</span>
+        </a>
+
+        <ul class="nav-links" id="nav-links">
+          <li class="nav-home-item"><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="projects.html" class="nav-link">Projects</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="services.html" class="nav-link">Services</a></li>
+          <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+          <li class="nav-cta-item"><a href="services.html" class="nav-link nav-cta">Get a website</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <button type="button" class="nav-term" data-terminal aria-label="Open the site terminal, Ctrl K"><kbd>Ctrl K</kbd></button>
+          <button type="button" id="theme-toggle" class="theme-switch">
+            <svg class="theme-switch-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.4"></circle><path d="M12 1.6v2.2M12 20.2v2.2M4 4l1.6 1.6M18.4 18.4l1.6 1.6M1.6 12h2.2M20.2 12h2.2M4 20l1.6-1.6M18.4 5.6l1.6-1.6"></path></svg>
+            <svg class="theme-switch-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          </button>
+          <a href="Ryan-Yarali-Resume.pdf" class="nav-resume" download data-magnetic>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"></path><polyline points="7 10 12 15 17 10"></polyline><path d="M5 21h14"></path></svg>
+            Résumé
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <main id="main">
+      <!-- The checker. The form posts to the site's own Worker
+           (worker/check.js) through assets/js/check.js, which writes the
+           report into #check-result. What it looks at is listed below in
+           plain HTML, so the page says what it does without JavaScript. -->
+      <section class="page-header check-top">
+        <div class="container page-title reveal">
+          <p class="eyebrow" data-ping-spot="check">Free check</p>
+          <h1 class="title-long" data-rise>How good is your website?</h1>
+          <p class="section-intro">
+            Type your site's address. In a few seconds you'll see how it does
+            for speed, on Google and on phones, in plain words. It's free and
+            there's nothing to sign up for.
+          </p>
+          <form class="check-form" id="check-form" action="/api/check" method="POST" novalidate>
+            <label class="check-label" for="check-url">Your website address</label>
+            <div class="check-field">
+              <input
+                type="text"
+                id="check-url"
+                name="url"
+                inputmode="url"
+                autocomplete="url"
+                autocapitalize="off"
+                autocorrect="off"
+                spellcheck="false"
+                enterkeyhint="go"
+                maxlength="300"
+                placeholder="yourbusiness.ca"
+                required
+                aria-describedby="check-status"
+              />
+              <button type="submit" class="btn btn-primary check-go" data-magnetic>Check it</button>
+            </div>
+            <p class="check-status" id="check-status" role="status" aria-live="polite"></p>
+            <p class="check-hint">
+              I load your home page once, the way a phone would.
+              <a href="privacy.html">Privacy</a>
+            </p>
+            <noscript><p class="check-hint">The checker needs JavaScript. Without it, <a href="services.html#contact">send me your address</a> and I'll look at your site myself.</p></noscript>
+          </form>
+        </div>
+      </section>
+
+      <!-- The report, written here by check.js. -->
+      <section class="section check-result" id="check-result" aria-labelledby="check-score" hidden>
+        <div class="container" id="check-out"></div>
+      </section>
+
+      <section class="section check-what" id="what">
+        <div class="container">
+          <div class="section-heading reveal">
+            <p class="eyebrow">What it looks at</p>
+            <h2 data-rise>Sixteen things that decide whether a visitor stays.</h2>
+          </div>
+          <div class="check-cols reveal-group">
+            <article class="check-col">
+              <h3>Speed</h3>
+              <p>How long the server takes to answer, how heavy the page is, and whether images and scripts hold up the first view.</p>
+            </article>
+            <article class="check-col">
+              <h3>On Google</h3>
+              <p>The title and summary Google shows, the main heading, whether the page can be listed at all, and how the link looks when it's shared.</p>
+            </article>
+            <article class="check-col">
+              <h3>On phones</h3>
+              <p>Whether the page fits a phone screen, lets people zoom, has a number they can tap to call, and describes its images.</p>
+            </article>
+          </div>
+          <p class="price-note reveal">
+            This is a first look at one page, not a full audit. For a proper
+            review of your whole site, <a href="services.html#contact">ask me for a free quote</a>.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container footer-inner">
+        <div>
+          <p>&copy; 2026 <a href="index.html">Ryan Yarali</a>. All rights reserved.</p>
+          <p class="footer-tech"><a href="projects/this-site.html">How this site is built</a> · <a href="privacy.html">Privacy</a></p>
+        </div>
+        <div class="footer-social">
+          <a href="mailto:ryan@ryanyarali.com" class="footer-email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            Email
+          </a>
+          <a href="https://github.com/RyanYarali" target="_blank" rel="me noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.93.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.87-1.36-3.87-1.36-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.42-2.69 5.4-5.25 5.68.41.36.78 1.06.78 2.14 0 1.54-.01 2.79-.01 3.17 0 .3.2.66.79.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+            GitHub
+          </a>
+          <button type="button" class="footer-term" data-terminal title="Open the site terminal (Ctrl K)"><kbd aria-hidden="true">Ctrl K</kbd> Terminal</button>
+          <a href="https://www.linkedin.com/in/ryan-yarali/" target="_blank" rel="me noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.55V9h3.57v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>
+            LinkedIn
+          </a>
+        </div>
+      </div>
+      <!-- The name again, set as large as the page allows: decoration only
+           (the copyright line above carries it as text). Its letters rise
+           as the footer scrolls into view. -->
+      <div class="footer-mark" aria-hidden="true" data-lens="accent"><span class="ch" style="--i:0">R</span><span class="ch" style="--i:1">y</span><span class="ch" style="--i:2">a</span><span class="ch" style="--i:3">n</span><span class="ch" style="--i:4">&nbsp;</span><span class="ch" style="--i:5">Y</span><span class="ch" style="--i:6">a</span><span class="ch" style="--i:7">r</span><span class="ch" style="--i:8">a</span><span class="ch" style="--i:9">l</span><span class="ch" style="--i:10">i</span></div>
+    </footer>
+    <script src="assets/js/theme.js?v=20261067"></script>
+    <script src="assets/js/hit.js?v=20261067" defer></script>
+    <script src="assets/js/main.js?v=20261067"></script>
+    <script src="assets/js/flair.js?v=20261067"></script>
+    <script src="assets/js/interactive.js?v=20261067"></script>
+    <script src="assets/js/cursor.js?v=20261067"></script>
+    <script src="assets/js/ping-sprite.js?v=20261067"></script>
+    <script src="assets/js/ping.js?v=20261067"></script>
+    <script src="assets/js/check.js?v=20261067"></script>
+  </body>
+</html>
