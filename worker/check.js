@@ -254,13 +254,31 @@ export function report(f) {
 
 // ==================== Loading the site ====================
 
-async function load(url) {
+// A Worker can't call its own address (Cloudflare answers with an error
+// rather than let it loop), so this site's own pages are read the way
+// index.js serves them: from the repo's files, or from GitHub Pages for the
+// client previews.
+const GITHUB = "https://ryanyarali.github.io";
+const bare = (host) => host.replace(/^www\./, "");
+
+async function own(env, url) {
+  const path = url.pathname.endsWith("/") ? url.pathname + "index.html" : url.pathname;
+  const file = await env.ASSETS.fetch(new Request(new URL(path + url.search, url.origin), { headers: { Accept: "text/html" } }));
+  if (file.status !== 404) return file;
+  return fetch(GITHUB + url.pathname + url.search, { redirect: "follow", headers: { "User-Agent": UA }, signal: AbortSignal.timeout(LIMITS.timeout) });
+}
+
+async function load(url, env, self) {
   const started = Date.now();
-  const res = await fetch(url.toString(), {
-    redirect: "follow",
-    headers: { "User-Agent": UA, Accept: "text/html,application/xhtml+xml;q=0.9,*/*;q=0.5", "Accept-Language": "en-CA,en;q=0.9" },
-    signal: AbortSignal.timeout(LIMITS.timeout),
-  });
+  const mine = self && bare(url.hostname) === bare(self.hostname);
+  if (mine) url = new URL(url.pathname + url.search, self.origin);
+  const res = mine
+    ? await own(env, url)
+    : await fetch(url.toString(), {
+        redirect: "follow",
+        headers: { "User-Agent": UA, Accept: "text/html,application/xhtml+xml;q=0.9,*/*;q=0.5", "Accept-Language": "en-CA,en;q=0.9" },
+        signal: AbortSignal.timeout(LIMITS.timeout),
+      });
   const ms = Date.now() - started;
   const type = res.headers.get("Content-Type") || "";
   if (!res.ok) return { error: res.status === 403 || res.status === 429 || res.status === 503 ? "blocked" : "status", status: res.status };
@@ -268,7 +286,7 @@ async function load(url) {
   const raw = await res.text();
   return {
     ms,
-    finalUrl: res.url || url.toString(),
+    finalUrl: mine ? url.toString() : res.url || url.toString(),
     bytes: raw.length,
     robotsHeader: res.headers.get("X-Robots-Tag") || "",
     html: raw.slice(0, LIMITS.html),
@@ -321,7 +339,7 @@ export async function check(request, env, ctx, url) {
 
   let page;
   try {
-    page = await load(site);
+    page = await load(site, env, url);
   } catch {
     page = { error: "down" };
   }

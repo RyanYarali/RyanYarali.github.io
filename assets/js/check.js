@@ -271,4 +271,18 @@
         if (r.lab) runLab(lab, r.url);
       });
   });
+
+  // Arriving with an address already typed (the box on the home page):
+  // run it straight away. The address is taken out of the page's own
+  // address, so a reload doesn't run the check again.
+  var given = new URLSearchParams(location.search).get("url");
+  if (given) {
+    input.value = given.trim().slice(0, 300);
+    try {
+      history.replaceState(null, "", location.pathname);
+    } catch (e) {}
+    setTimeout(function () {
+      form.requestSubmit ? form.requestSubmit() : button.click();
+    }, 400);
+  }
 })();
