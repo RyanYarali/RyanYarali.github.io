@@ -1,5 +1,5 @@
 /**
- * A joke for friends. Loaded only by a link carrying ?s=<name in base64>
+ * A joke for friends. Loaded only by a link carrying ?s=<name> or ?n=<name>
  * (index.html), never on an ordinary visit.
  *
  * The page opens as usual, breaks, and turns into a "trace" of the visitor:
@@ -13,7 +13,8 @@
  * address details come from GET /api/trace, which only hands the visitor
  * their own request back (worker/trace.js). Seven taps or Escape end it early.
  *
- *   ?s=  the name, base64 (btoa("ATIEH") -> QVRJRUg)
+ *   ?s=  the name, base64 (btoa("ATIEH") -> QVRJRUg), or
+ *   ?n=  the name as plain text, for a link that is quick to write
  *   ?x=  optional extra lines, base64, split on "|": shown as things
  *        "Ryan told me" (kept out of this file so they stay private)
  */
@@ -30,7 +31,7 @@
       return "";
     }
   }
-  var NAME = b64(params.get("s") || "").replace(/\s+/g, " ").trim().slice(0, 24);
+  var NAME = (b64(params.get("s") || "") || params.get("n") || "").replace(/\s+/g, " ").trim().slice(0, 24);
   if (!NAME) return;
   var SHOUT = NAME.toUpperCase();
   var EXTRA = b64(params.get("x") || "")
@@ -712,7 +713,7 @@
       card.appendChild(svg);
     }
     card.appendChild(el("h2", "", "PING!"));
-    card.appendChild(el("h3", "", (early ? "Ok, ok. Breathe, " : "Got you, ") + NAME + ". You weren't hacked. You were pinged."));
+    card.appendChild(el("h3", "", (early ? "Ok, ok. Breathe, " : "Got you, ") + NAME + "."));
     var dl = card.appendChild(el("dl"));
     [
       ["tr-real", "Real", "Your IP address and rough area, your provider, your device, screen, battery, languages and clock, and what you did on this page. Your browser tells this to every website you open. All of them."],
