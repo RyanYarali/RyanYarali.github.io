@@ -171,6 +171,40 @@ export async function alertHit(env, hit) {
   if (hit.kind === "view" || hit.kind === "time") return alertHot(env, hit.vid);
 }
 
+// The joke link (assets/js/trace.js) ran to its end for a friend. This is
+// the "proof" Ryan shows them: their name, town, network and phone are real
+// (what a visit alert already says); the haul under it is made up to match
+// what the page pretended to take. Nothing of it is stored anywhere.
+export function traceText(t) {
+  const gb = (Math.max(300, Math.min(9000, Number(t.mb) || 2300)) / 1000).toFixed(2);
+  const slug = t.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "target";
+  return [
+    `🎯 <b>Target captured: ${esc(t.name.toUpperCase())}</b>`,
+    `📍 ${esc(t.place || "location hidden")}${t.isp ? ` · ${esc(t.isp)}` : ""}`,
+    t.device ? `📱 ${esc([t.device, t.system].filter(Boolean).join(" · "))}` : "",
+    "",
+    "✅ <b>Received and saved on the server</b>",
+    "📷 Front camera · 14 frames",
+    "🎙 Microphone · 00:21 recording",
+    "🖼 Photo library · 4,812 items",
+    "👥 Contacts · 316 people",
+    "💬 Chats · last 2,000 messages",
+    "🔑 Saved passwords · 23",
+    "🔎 Search history · 90 days",
+    "",
+    `📦 <code>${slug}-${t.day}.zip</code> · ${gb} GB`,
+    "Status: stored · ready to share",
+  ]
+    .filter((line, i, all) => line !== "" || all[i - 1] !== "")
+    .join("\n");
+}
+
+// Once a day per visitor, so the address can't be used to flood the chat.
+export async function alertTrace(env, t) {
+  if (!ready(env) || !(await once(env, t.vid, "trace"))) return;
+  await say(env, traceText(t));
+}
+
 // A question put to Ping on the site (worker/ping.js). This message is the
 // only place the words are kept, so Ryan sees what people ask and how Ping
 // answered. A visitor's first question rings; the rest arrive quietly.
