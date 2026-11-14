@@ -872,5 +872,15 @@
     <script src="assets/js/route.js?v=20261068"></script>
     <script src="assets/js/ping-sprite.js?v=20261068"></script>
     <script src="assets/js/ping.js?v=20261068"></script>
+    <!-- A joke for friends: only a link carrying ?s=<name> loads this
+         (assets/js/trace.js). Every other visit never downloads it. -->
+    <script>
+      if (/[?&]s=[\w-]/.test(location.search)) {
+        var traceJs = document.createElement("script");
+        traceJs.src = "assets/js/trace.js?v=20261069";
+        if (document.documentElement.classList.contains("intro-pending")) traceJs.dataset.first = "1";
+        document.body.appendChild(traceJs);
+      }
+    </script>
   </body>
 </html>

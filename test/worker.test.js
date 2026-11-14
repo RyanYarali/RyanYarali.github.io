@@ -137,3 +137,21 @@ test("a credit-tag click lands on the services page", async () => {
   assert.equal(r.status, 302);
   assert.equal(r.headers.get("Location"), "https://ryanyarali.com/services.html?ref=nooklook");
 });
+
+test("trace sends back only this request's own details", async () => {
+  const { facts, trace } = await import("../worker/trace.js");
+  const request = {
+    method: "GET",
+    headers: new Headers({ "CF-Connecting-IP": "203.0.113.7" }),
+    cf: { city: "Coquitlam", region: "British Columbia", country: "CA", postalCode: "V3B", latitude: "49.28", longitude: "-122.79", timezone: "America/Vancouver", asOrganization: "Example Net", asn: 64500, colo: "YVR", httpProtocol: "HTTP/3", tlsVersion: "TLSv1.3" },
+  };
+  const f = facts(request);
+  assert.equal(f.ip, "203.0.113.7");
+  assert.equal(f.lat, 49.28);
+  assert.equal(f.isp, "Example Net");
+  assert.deepEqual(facts({ headers: new Headers() }).lat, null);
+  const res = trace(request);
+  assert.equal(res.headers.get("Cache-Control"), "no-store");
+  assert.equal((await res.json()).colo, "YVR");
+  assert.equal(trace({ ...request, method: "POST" }).status, 405);
+});
