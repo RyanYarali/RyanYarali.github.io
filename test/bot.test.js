@@ -465,3 +465,12 @@ test("the checker reads this site's own pages from its files, not over the netwo
   }
   assert.deepEqual(asked, ["/index.html", "/services.html"]);
 });
+
+test("the joke link's bot message names the friend and escapes what they sent", async () => {
+  const { traceText } = await import("../worker/telegram.js");
+  const text = traceText({ name: "A<b>ti", day: "2026-11-14", place: "Coquitlam, British Columbia, CA", isp: "Example Net", device: "iPhone", system: "iOS 26.1 · Safari", mb: 2310 });
+  assert.ok(text.includes("Target captured: A&lt;B&gt;TI"));
+  assert.ok(text.includes("Coquitlam, British Columbia, CA · Example Net"));
+  assert.ok(text.includes("a-b-ti-2026-11-14.zip</code> · 2.31 GB"));
+  assert.ok(!traceText({ name: "Ati", day: "2026-11-14" }).includes("📱"));
+});

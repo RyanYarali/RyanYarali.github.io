@@ -5,16 +5,22 @@
  * The page opens as usual, breaks, and turns into a "trace" of the visitor:
  * first real things (what every website is told about a visitor: address,
  * rough place, provider, device, screen, languages, clock), then things that
- * are made up (camera, photos, chats, an "upload to Ryan"), then Ping owns
- * up and says which was which.
+ * are made up (camera, photos, chats, an "upload to Ryan"). It ends on
+ * "SENT." and the site comes back; Ryan tells the friend himself that it was
+ * a joke. With &reveal=1 in the link Ping owns up on the spot instead and
+ * says which part was real and which was made up.
  *
  * Rules it keeps: it asks for no permission (no camera, microphone or
- * location prompt), it stores nothing, and it sends nothing anywhere. The
- * address details come from GET /api/trace, which only hands the visitor
- * their own request back (worker/trace.js). Seven taps or Escape end it early.
+ * location prompt) and stores nothing. The address details come from
+ * GET /api/trace, which hands the visitor their own request back. When the
+ * show has run to its end, Ryan's Telegram bot gets one message: the name,
+ * town, network and phone model (no IP address) over a made-up list of what
+ * was "taken", for him to show the friend (worker/trace.js). Seven taps or
+ * Escape end it early, and then nothing is sent.
  *
  *   ?s=  the name, base64 (btoa("ATIEH") -> QVRJRUg), or
  *   ?n=  the name as plain text, for a link that is quick to write
+ *   ?reveal=1  end with Ping's explanation
  *   ?x=  optional extra lines, base64, split on "|": shown as things
  *        "Ryan told me" (kept out of this file so they stay private)
  */
@@ -39,6 +45,8 @@
     .map(function (t) { return t.trim().slice(0, 90); })
     .filter(Boolean)
     .slice(0, 6);
+
+  var OWN_UP = params.get("reveal") === "1";
 
   var calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var RYAN = { lat: 49.2838, lon: -122.7932 }; // Coquitlam, as the site says
@@ -323,6 +331,7 @@
 
   var root, log, live, cancels, taps, awayAt, awayTotal, running, phase, frame;
   var scrolled = 0;
+  var uploaded = 0;
   var SKIP = {};
 
   function el(tag, cls, text) {
@@ -511,6 +520,7 @@
     if (running && phase !== "end") add(el("div", "tr-say", "> turning the phone won't help either."));
   }
   function stop() {
+    if (phase === "sent") return close();
     var list = cancels;
     cancels = [];
     list.forEach(function (c) { c(); });
@@ -674,6 +684,7 @@
       beep(520 + (f % 5) * 60, 22, 0.012);
       await wait(f < 5 ? 520 : 230);
     }
+    uploaded = Math.round(mb);
     sent.textContent = Math.round(mb).toLocaleString() + " MB · sent to Ryan";
     sent.className = "tr-v tr-ok";
     await wait(900);
@@ -718,7 +729,7 @@
     [
       ["tr-real", "Real", "Your IP address and rough area, your provider, your device, screen, battery, languages and clock, and what you did on this page. Your browser tells this to every website you open. All of them."],
       ["tr-fake", "Fake", "The camera, microphone, photos, contacts, chats, passwords and the upload to Ryan. All made up. A website can't touch any of that without you pressing Allow."],
-      ["tr-kept", "Kept", "Nothing. None of it was saved or sent to anyone, Ryan included."],
+      ["tr-kept", "Kept", "Nothing is stored. Ryan's phone got one message with your name, town and phone model, so he knows you fell for it."],
     ].forEach(function (r) {
       var d = dl.appendChild(el("div", r[0]));
       d.appendChild(el("dt", "", r[1]));
@@ -744,6 +755,7 @@
 
   function close() {
     running = false;
+    phase = "closed";
     stop();
     document.removeEventListener("pointerdown", onTap, true);
     document.removeEventListener("keydown", onKey, true);
@@ -806,7 +818,30 @@
       if (e !== SKIP) console.error("[trace]", e);
       early = true;
     }
-    if (root) reveal(early);
+    if (!root) return;
+    if (!early) {
+      try {
+        var dev = device();
+        fetch("/api/trace/done", {
+          method: "POST",
+          keepalive: true,
+          headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify({ name: NAME, device: dev.name, system: [dev.os.trim(), dev.browser].filter(Boolean).join(" · "), mb: uploaded }),
+        }).catch(function () {});
+      } catch (e) {}
+    }
+    if (OWN_UP) return reveal(early);
+    if (early) return close();
+    // No explanation: "sent", a pause, and the site comes back as if
+    // nothing happened. Ryan tells them himself afterwards.
+    phase = "sent";
+    cancelAnimationFrame(frame);
+    var done = root.appendChild(el("div", "tr-big"));
+    done.appendChild(el("h1", "", "SENT."));
+    done.appendChild(el("p", "", "ryan has everything now. he'll message you, " + NAME + "."));
+    beep(990, 500, 0.06);
+    buzz([200, 80, 200]);
+    setTimeout(function () { if (phase === "sent") close(); }, 8000);
   }
 
   function arm() {

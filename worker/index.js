@@ -6,8 +6,9 @@
 //   POST /api/ping      a visitor's question for Ping (worker/ping.js)
 //   POST /api/check     the website checker (worker/check.js), and
 //   POST /api/check/lab Google's phone test for the same site
-//   GET  /api/trace     the visitor's own address details, sent back to them
-//                       and not kept (worker/trace.js)
+//   GET  /api/trace     the joke link for friends (worker/trace.js): the
+//                       visitor's own address details, sent back to them
+//   POST /api/trace/done  and one bot message to Ryan when it has run
 //   POST /api/telegram  the Telegram bot's webhook (worker/telegram.js)
 //   GET  /api/telegram/setup?key=...   connects the bot, once
 //   the 9:00 cron       the bot's morning summary (and Monday's week)
@@ -22,7 +23,7 @@ import { TOPICS, ADDONS, isPackage, estimate } from "./catalog.js";
 import { ownerMail, senderMail, send } from "./mail.js";
 import { check as siteCheck, lab as siteLab } from "./check.js";
 import { chat } from "./ping.js";
-import { trace } from "./trace.js";
+import { trace, done as traceDone } from "./trace.js";
 import { alertHit, alertLead, morning, setup, watch, webhook } from "./telegram.js";
 import { CLIENT_SITES, bcDay, recordHit, visitorId } from "./visits.js";
 
@@ -46,6 +47,7 @@ export default {
     if (url.pathname === "/api/check") return siteCheck(request, env, ctx, url);
     if (url.pathname === "/api/check/lab") return siteLab(request, env, ctx, url);
     if (url.pathname === "/api/trace") return trace(request);
+    if (url.pathname === "/api/trace/done") return traceDone(request, env, ctx, url);
     if (url.pathname === "/api/telegram" && request.method === "POST") return webhook(env, request, url);
     if (url.pathname === "/api/telegram/setup") return setup(env, url);
     if (url.pathname.startsWith("/api/")) return json({ ok: false, error: "Not found" }, 404);

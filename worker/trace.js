@@ -1,8 +1,16 @@
+// The server side of the joke link for friends (assets/js/trace.js).
+//
 // GET /api/trace: what this one request says about whoever sent it (their
 // address and what Cloudflare works out from it: rough place, provider, the
-// data centre they came in through). It is read, sent straight back to the
-// same visitor and never stored or passed on. assets/js/trace.js shows it to
-// them (a joke link for friends, see that file).
+// data centre they came in through). It is sent straight back to the same
+// visitor and not stored.
+//
+// POST /api/trace/done: the joke ran to its end. Ryan's bot gets one
+// message with the friend's name, town, network and phone model (no IP
+// address), over a made-up list of what was "taken" (worker/telegram.js).
+
+import { alertTrace } from "./telegram.js";
+import { bcDay, isBot, visitorId } from "./visits.js";
 
 export function facts(request) {
   const cf = request.cf || {};
@@ -23,6 +31,35 @@ export function facts(request) {
     http: text(cf.httpProtocol, 12),
     tls: text(cf.tlsVersion, 12),
   };
+}
+
+export async function done(request, env, ctx, url) {
+  const none = new Response(null, { status: 204, headers: { "Cache-Control": "no-store" } });
+  const origin = request.headers.get("Origin");
+  if (request.method !== "POST" || (origin && origin !== url.origin) || isBot(request.headers.get("User-Agent"))) return none;
+  let body;
+  try {
+    body = JSON.parse((await request.text()).slice(0, 2000));
+  } catch (e) {
+    return none;
+  }
+  const clean = (v, max) => (typeof v === "string" ? v.replace(/[\u0000-\u001f]+/g, " ").trim().slice(0, max) : "");
+  const name = clean(body && body.name, 24);
+  if (!name) return none;
+  const f = facts(request);
+  const day = bcDay(new Date());
+  const t = {
+    vid: await visitorId(env, request, day),
+    day,
+    name,
+    device: clean(body.device, 60),
+    system: clean(body.system, 40),
+    mb: body.mb,
+    place: [f.city, f.region, f.country].filter(Boolean).join(", "),
+    isp: f.isp,
+  };
+  ctx.waitUntil(alertTrace(env, t).catch((e) => console.error("[telegram] trace", e)));
+  return none;
 }
 
 export function trace(request) {
