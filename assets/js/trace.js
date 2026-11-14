@@ -263,6 +263,60 @@
       o.stop(audio.currentTime + ms / 1000);
     } catch (e) {}
   }
+  // Phones only let a page make sound after the visitor has touched it, so
+  // the first touch anywhere (even before the page breaks) unlocks it, and
+  // the siren starts as soon as it is both wanted and allowed.
+  var siren = null;
+  var sirenWant = 0;
+  function unlock() {
+    if (!audio) {
+      try {
+        // Lets an iPhone play it with the ringer switch on silent.
+        if (navigator.audioSession) navigator.audioSession.type = "playback";
+        audio = new (window.AudioContext || window.webkitAudioContext)();
+      } catch (e) {}
+    }
+    if (audio && audio.state === "suspended") audio.resume().catch(function () {});
+    if (sirenWant && !siren) sirenStart();
+  }
+  ["pointerdown", "pointerup", "touchend", "click", "keydown"].forEach(function (t) {
+    document.addEventListener(t, unlock, true);
+  });
+  function sirenStart() {
+    if (!audio || siren) return;
+    try {
+      var o = audio.createOscillator();
+      var lfo = audio.createOscillator();
+      var depth = audio.createGain();
+      var g = audio.createGain();
+      o.type = "sawtooth";
+      o.frequency.value = 950;
+      lfo.frequency.value = 0.6;
+      depth.gain.value = 380;
+      g.gain.value = 0.0001;
+      g.gain.setTargetAtTime(sirenWant, audio.currentTime, 0.08);
+      lfo.connect(depth).connect(o.frequency);
+      o.connect(g).connect(audio.destination);
+      o.start();
+      lfo.start();
+      siren = { o: o, lfo: lfo, g: g };
+    } catch (e) {}
+  }
+  function sirenLevel(v) {
+    sirenWant = v;
+    if (siren) siren.g.gain.setTargetAtTime(v, audio.currentTime, 0.2);
+    else if (v) sirenStart();
+  }
+  function sirenStop() {
+    sirenWant = 0;
+    if (!siren) return;
+    try {
+      siren.o.stop();
+      siren.lfo.stop();
+    } catch (e) {}
+    siren = null;
+  }
+
   function buzz(pattern) {
     try {
       if (navigator.vibrate) navigator.vibrate(pattern);
@@ -486,11 +540,6 @@
   var TAP_LINES = ["tapping won't help.", "that didn't do anything.", "still here.", "your thumb is fast. not fast enough.", "ok, you're panicking.", "one more and i stop."];
   function onTap(ev) {
     if (!running || phase === "end") return;
-    if (!audio) {
-      try {
-        audio = new (window.AudioContext || window.webkitAudioContext)();
-      } catch (e) {}
-    }
     taps++;
     var x = Math.round(ev.clientX);
     var y = Math.round(ev.clientY);
@@ -542,6 +591,7 @@
     await big("HELLO, " + SHOUT + ".", "you roast my website. now it's my turn.", 1500);
     await big("I SEE YOU.", "give me a few seconds, " + NAME + ".", 1100);
     phase = "trace";
+    sirenLevel(0.06);
 
     await Promise.race([serverReady, wait(1500)]);
     var s = server || {};
@@ -662,6 +712,7 @@
     await bar("saved passwords", "23 FOUND", 900);
     await bar("search history", "OH NO", 700);
 
+    sirenLevel(0.6);
     await head("SENDING TO RYAN");
     var files = add(el("div", "tr-files"));
     var total = add(el("div", "tr-row"));
@@ -707,6 +758,7 @@
 
   function reveal(early) {
     phase = "end";
+    sirenStop();
     cancelAnimationFrame(frame);
     root.querySelectorAll(".tr-big,.tr-tap").forEach(function (n) { n.remove(); });
     if (!calm) root.appendChild(el("div", "tr-flash"));
@@ -756,6 +808,7 @@
   function close() {
     running = false;
     phase = "closed";
+    sirenStop();
     stop();
     document.removeEventListener("pointerdown", onTap, true);
     document.removeEventListener("keydown", onKey, true);
@@ -804,6 +857,7 @@
     live.appendChild(el("b", "", ""));
     document.body.appendChild(root);
     document.documentElement.style.overflow = "hidden";
+    sirenLevel(0.6);
 
     document.addEventListener("pointerdown", onTap, true);
     document.addEventListener("keydown", onKey, true);
